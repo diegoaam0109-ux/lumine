@@ -3,12 +3,13 @@ import { AnimatePresence, motion, useReducedMotion, type Variants } from 'framer
 import { ArrowUpRight, CircleDashed, Moon, Sun } from 'lucide-react'
 import { Lab3D, type Lab3DApi } from '@/lib/lab3d'
 import { cn } from '@/lib/utils'
+import { Emblema, Palabra } from '@/components/logo-vectorial'
 
 export function Logo({ className }: { className?: string }) {
   return (
     <span className={cn('inline-flex items-center gap-2.5 text-fg', className)} role="img" aria-label="Lumine Motors">
-      <span className="emblem" aria-hidden="true" />
-      <span className="wordmark" aria-hidden="true" />
+      <Emblema className="size-[26px] shrink-0" />
+      <Palabra className="h-[15px] w-auto shrink-0" />
     </span>
   )
 }

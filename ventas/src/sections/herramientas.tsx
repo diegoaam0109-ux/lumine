@@ -3,8 +3,8 @@ import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion, use
 import { ArrowUp, CheckCircle2, CircleHelp, RotateCcw, XCircle } from 'lucide-react'
 import { PromptButton, PromptInput, PromptInputAction, PromptInputActions, PromptInputTextarea } from '@/components/ui/ai-prompt-box'
 import { Button } from '@/components/ui/button'
-import { Aparecer, Encabezado, Flecha, PorConfirmar, irA } from '@/components/comunes'
-import { DATOS, clp } from '@/lib/datos'
+import { Aparecer, Encabezado, Flecha, irA } from '@/components/comunes'
+import { COMBUSTIBLES, DATOS, clp } from '@/lib/datos'
 import { cn } from '@/lib/utils'
 
 /* número que se anima al cambiar */
@@ -47,77 +47,97 @@ function Segmentos<T extends string>({ valor, set, ops, etiqueta, id }: { valor:
   )
 }
 
-/* ---------- Calculadora: cuánto gastas hoy y cuánto vale cada 10% ---------- */
+/* ---------- Calculadora: lo que gastas hoy y lo que ahorras con el kit ---------- */
+const AHORRO = (DATOS.ahorroPct ?? 20) / 100
 export function Calculadora() {
   const [tipo, setTipo] = React.useState<'particular' | 'flota'>('particular')
+  const [comb, setComb] = React.useState<string>(COMBUSTIBLES.tipos[0].k)
+  const [precio, setPrecio] = React.useState<number>(COMBUSTIBLES.tipos[0].precio)
   const [km, setKm] = React.useState(40)
   const [dias, setDias] = React.useState(5)
   const [rend, setRend] = React.useState(12)
-  const [precio, setPrecio] = React.useState(1300)
   const [autos, setAutos] = React.useState(20)
-  const cambiarTipo = (t: 'particular' | 'flota') => { setTipo(t); if (t === 'flota') { setKm(180); setDias(6) } else { setKm(40); setDias(5) } }
-  const n = tipo === 'flota' ? autos : 1
-  const kmMes = km * dias * 4.33
-  const litros = (kmMes / Math.max(1, rend)) * n
-  const mes = litros * precio
-  const anual = mes * 12
-  const cada10 = anual * 0.1
-  const ahorro = DATOS.ahorroPct
   const flota = tipo === 'flota'
+  const cambiarTipo = (t: 'particular' | 'flota') => { setTipo(t); if (t === 'flota') { setKm(180); setDias(6) } else { setKm(40); setDias(5) } }
+  const C = COMBUSTIBLES.tipos.find(x => x.k === comb) ?? COMBUSTIBLES.tipos[0]
+  const elegir = (k: string) => { const x = COMBUSTIBLES.tipos.find(t => t.k === k)!; setComb(k); setPrecio(x.precio) }
+  const n = flota ? autos : 1
+  const litrosMes = (km * dias * 4.33 / Math.max(1, rend)) * n
+  const gastoMes = litrosMes * precio
+  const ahorroMes = gastoMes * AHORRO
+  const conLumine = gastoMes - ahorroMes
+  const co2Anio = litrosMes * AHORRO * 12 * C.co2
+  const entero = (v: number) => Math.round(v).toLocaleString('es-CL')
   return (
     <section id="ahorro" className="relative scroll-mt-20 border-t border-line bg-bg py-24 md:py-36" aria-labelledby="ah-t">
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
-        <Encabezado n="03" etiqueta="Ahorro" id="ah-t" titulo={<>Primero, mira cuánto <span className="t-serif normal-case text-accent-text">gastas hoy.</span></>} bajada="Mueve los controles con tus datos reales. El cálculo es solo tuyo: no se guarda ni se envía." />
-        <div className="grid border border-line lg:grid-cols-[1fr_1.1fr]">
+        <Encabezado n="03" etiqueta="Ahorro" id="ah-t" titulo={<>Calcula lo que <span className="t-serif normal-case text-accent-text">dejas de gastar.</span></>} bajada={<>Con tus datos y el precio de hoy. Estimamos un <b className="font-semibold text-fg">{Math.round(AHORRO * 100)}% menos de combustible</b> con el kit; el cálculo es solo tuyo, no se guarda ni se envía.</>} />
+        <div className="grid border border-line lg:grid-cols-[0.95fr_1.15fr]">
+          {/* entrada */}
           <Aparecer className="flex flex-col gap-6 border-line bg-surface p-5 max-lg:border-b md:p-10 lg:border-r">
             <Segmentos id="calc-seg" etiqueta="Tipo de uso" valor={tipo} set={cambiarTipo} ops={[['particular', 'Mi auto'], ['flota', 'Mi flota']]} />
-            {flota ? <Deslizador id="c-autos" n="00" label="Vehículos" valor={autos} set={setAutos} min={2} max={300} unidad="autos" /> : null}
-            <Deslizador id="c-km" n="01" label={flota ? 'Km al día, por auto' : 'Km al día'} valor={km} set={setKm} min={5} max={flota ? 500 : 200} paso={5} unidad="km" />
-            <Deslizador id="c-dias" n="02" label="Días por semana" valor={dias} set={setDias} min={1} max={7} unidad="días" />
-            <Deslizador id="c-rend" n="03" label="Rendimiento" valor={rend} set={setRend} min={5} max={25} unidad="km/L" ayuda="Lo que rinde hoy tu auto en ciudad." />
-            <div className="flex flex-col gap-3 border-t border-line pt-5">
-              <label htmlFor="c-precio" className="t-label flex items-center gap-3 text-muted"><span className="text-dim">04</span>Precio del litro</label>
-              <div className="flex items-baseline gap-2 border-b border-line-2 transition-colors focus-within:border-accent">
-                <span className="t-num text-2xl text-muted">$</span>
-                <input id="c-precio" type="number" inputMode="numeric" min={500} max={3000} value={precio} onChange={e => setPrecio(Math.max(0, Number(e.target.value) || 0))} className="t-num h-14 w-full bg-transparent text-[34px] text-fg outline-none" />
+            <fieldset className="flex flex-col gap-3 border-t border-line pt-5">
+              <legend className="t-label mb-3 flex items-center gap-3 text-muted"><span className="text-dim">01</span>Combustible y precio de hoy</legend>
+              <div className="grid grid-cols-4 gap-1">
+                {COMBUSTIBLES.tipos.map(x => (
+                  <button key={x.k} type="button" aria-pressed={comb === x.k} onClick={() => elegir(x.k)}
+                    className={cn('flex flex-col items-start gap-1 border px-3 py-2.5 text-left transition-colors', comb === x.k ? 'border-accent bg-accent/10' : 'border-line-2 hover:border-fg')}>
+                    <span className={cn('t-label', comb === x.k ? 'text-accent-text' : 'text-fg')}>{x.l}</span>
+                    <span className="t-label-sm text-muted">${x.precio.toLocaleString('es-CL')}</span>
+                  </button>
+                ))}
               </div>
-              <span className="text-sm text-muted">Ponle el precio de tu bencinera: cambia cada semana.</span>
-            </div>
+              <div className="flex items-baseline gap-2 border-b border-line-2 transition-colors focus-within:border-accent">
+                <label htmlFor="c-precio" className="t-label-sm shrink-0 text-muted">Precio litro $</label>
+                <input id="c-precio" type="number" inputMode="numeric" min={500} max={3000} value={precio} onChange={e => setPrecio(Math.max(0, Number(e.target.value) || 0))} className="t-num h-12 w-full bg-transparent text-right text-[30px] text-fg outline-none" />
+              </div>
+              <span className="text-xs leading-relaxed text-dim">{COMBUSTIBLES.fuente}, al {COMBUSTIBLES.fecha}. Si tu bencinera cobra distinto, cámbialo.</span>
+            </fieldset>
+            {flota ? <Deslizador id="c-autos" n="02" label="Vehículos" valor={autos} set={setAutos} min={2} max={300} unidad="autos" /> : null}
+            <Deslizador id="c-km" n={flota ? '03' : '02'} label={flota ? 'Km al día, por auto' : 'Km al día'} valor={km} set={setKm} min={5} max={flota ? 500 : 200} paso={5} unidad="km" />
+            <Deslizador id="c-dias" n={flota ? '04' : '03'} label="Días por semana" valor={dias} set={setDias} min={1} max={7} unidad="días" />
+            <Deslizador id="c-rend" n={flota ? '05' : '04'} label="Rendimiento" valor={rend} set={setRend} min={5} max={25} unidad="km/L" ayuda="Lo que rinde hoy tu auto en ciudad." />
           </Aparecer>
+          {/* lectura */}
           <Aparecer i={1} className="grano relative flex flex-col overflow-hidden bg-well">
-            <div className="foco absolute inset-0 opacity-60" aria-hidden="true" />
+            <div className="foco absolute inset-0 opacity-70" aria-hidden="true" />
             <div className="relative flex items-center justify-between border-b border-line px-5 py-3 md:px-10">
               <span className="t-label-sm flex items-center gap-2 text-muted"><i className="parpadeo size-1.5 bg-accent" />Lectura en vivo</span>
-              <span className="t-label-sm text-dim">{flota ? n + ' vehículos' : '1 vehículo'}</span>
+              <span className="t-label-sm text-dim max-sm:hidden">{flota ? n + ' vehículos' : '1 vehículo'} · {C.l === 'Diésel' ? 'diésel' : 'bencina ' + C.l}</span>
             </div>
-            <div className="relative flex flex-1 flex-col gap-10 p-5 md:p-10">
-              <div>
-                <span className="t-label text-muted">{flota ? 'Tu flota gasta hoy' : 'Tu auto gasta hoy'}</span>
-                <p className="t-num mt-4 text-[clamp(56px,8vw,128px)] leading-[0.85] text-fg"><AnimNum valor={mes} /></p>
-                <p className="t-label mt-3 text-muted">al mes en combustible</p>
+            <div className="relative flex flex-1 flex-col gap-9 p-5 md:p-10">
+              <div aria-live="polite">
+                <span className="t-label text-muted">{flota ? 'Tu flota ahorra' : 'Ahorras'} con Lumine</span>
+                <p className="t-num mt-4 text-[clamp(60px,8.5vw,136px)] leading-[0.85] text-accent-text" data-ahorro-mes><AnimNum valor={ahorroMes} /></p>
+                <p className="t-label mt-3 text-muted">al mes · <span className="text-fg"><AnimNum valor={ahorroMes * 12} /></span> al año</p>
               </div>
-              <dl className="grid grid-cols-2 border-y border-line">
-                <div className="flex flex-col gap-2 border-r border-line py-5 pr-4">
-                  <dt className="t-label-sm text-muted">Al año</dt>
-                  <dd className="t-num text-[clamp(26px,3vw,40px)] leading-none"><AnimNum valor={anual} /></dd>
-                </div>
-                <div className="flex flex-col gap-2 py-5 pl-4 md:pl-6">
-                  <dt className="t-label-sm text-muted">Litros al mes</dt>
-                  <dd className="t-num text-[clamp(26px,3vw,40px)] leading-none"><AnimNum valor={litros} formato={v => Math.round(v).toLocaleString('es-CL')} /></dd>
-                </div>
+              {/* comparación hoy / con Lumine */}
+              <div className="flex flex-col gap-4">
+                {[
+                  { l: 'Hoy gastas', v: gastoMes, w: 1, c: 'bg-fg/80' },
+                  { l: 'Con Lumine', v: conLumine, w: 1 - AHORRO, c: 'bg-accent' },
+                ].map(b => (
+                  <div key={b.l} className="flex flex-col gap-2">
+                    <div className="flex items-baseline justify-between gap-4"><span className="t-label-sm text-muted">{b.l}</span><span className="t-num text-2xl leading-none text-fg"><AnimNum valor={b.v} /><small className="t-label-sm ml-1.5 text-muted">/mes</small></span></div>
+                    <div className="relative h-3 bg-line"><motion.i className={cn('absolute inset-y-0 left-0', b.c)} initial={{ width: 0 }} whileInView={{ width: b.w * 100 + '%' }} viewport={{ once: true }} transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }} /></div>
+                  </div>
+                ))}
+                <span className="t-label-sm self-end text-accent-text">−{Math.round(AHORRO * 100)}% de combustible</span>
+              </div>
+              <dl className="grid border-y border-line sm:grid-cols-3">
+                {[
+                  { k: 'Litros menos', v: <AnimNum valor={litrosMes * AHORRO} formato={entero} />, u: 'al mes' },
+                  { k: 'CO₂ evitado', v: <AnimNum valor={co2Anio} formato={v => entero(v)} />, u: 'kg al año' },
+                  { k: 'En 5 años', v: <AnimNum valor={ahorroMes * 60} />, u: 'a precio de hoy' },
+                ].map((x, i) => (
+                  <div key={x.k} className={cn('grid min-w-0 grid-cols-[1fr_auto] items-baseline gap-x-3 gap-y-1 py-4 sm:flex sm:flex-col sm:gap-2 sm:py-5', i > 0 && 'border-line max-sm:border-t sm:border-l sm:pl-3 md:pl-5', i < 2 && 'sm:pr-3')}>
+                    <dt className="t-label-sm text-muted">{x.k}</dt>
+                    <dd className="t-num row-span-2 truncate text-right text-[clamp(24px,2.4vw,34px)] leading-none sm:text-left">{x.v}</dd>
+                    <span className="t-label-sm text-dim">{x.u}</span>
+                  </div>
+                ))}
               </dl>
-              <div className="flex flex-col gap-2">
-                <span className="t-label-sm text-muted">Cada 10% de ahorro equivale a</span>
-                <p className="t-num text-[clamp(34px,4vw,56px)] leading-none text-accent-text"><AnimNum valor={cada10} /> <small className="t-label-sm text-muted">al año</small></p>
-              </div>
-              <div className="flex flex-col gap-3 border border-dashed border-line-2 p-5">
-                <span className="t-label text-fg">Ahorro con el kit Lumine</span>
-                {ahorro ? (
-                  <p className="t-num text-4xl text-ok"><AnimNum valor={anual * ahorro.min / 100} /> a <AnimNum valor={anual * ahorro.max / 100} /> <small className="t-label-sm text-muted">al año</small></p>
-                ) : (
-                  <div className="flex flex-col items-start gap-2"><PorConfirmar que="Porcentaje de ahorro" /><span className="text-sm leading-relaxed text-muted">Depende de tu uso. Lo estimamos en el diagnóstico y después lo medimos en tu auto con telemetría.</span></div>
-                )}
-              </div>
+              <p className="text-xs leading-relaxed text-dim">Estimación con {Math.round(AHORRO * 100)}% menos de combustible. El ahorro real depende de tu ruta y de cómo manejas: lo confirmamos en el diagnóstico y lo medimos en tu auto con telemetría.</p>
               <Button size="lg" className="mt-auto w-full" onClick={() => irA('compatibilidad')}>Ver si mi auto es compatible <Flecha /></Button>
             </div>
           </Aparecer>

@@ -33,7 +33,29 @@ const chk = (v, m) => { if (v) ok++; else { mal++; console.log('FALLA:', m) } }
     const antes = await pg.locator('#ahorro p.t-num').first().innerText()
     await pg.locator('#ahorro').getByRole('tab', { name: 'Mi flota' }).click(); await pg.waitForTimeout(900)
     chk((await pg.locator('#ahorro p.t-num').first().innerText()) !== antes, vp + ': la calculadora cambia con la flota')
-    chk(/por confirmar/i.test(await pg.innerText('#ahorro')), vp + ': el ahorro del kit queda por confirmar, no se inventa')
+    const txtAh = await pg.innerText('#ahorro')
+    chk(/20% menos de combustible/i.test(txtAh) && /30 de septiembre de 2026/.test(txtAh), vp + ': calcula con 20% y muestra la fecha de los precios')
+    await pg.locator('#ahorro').getByRole('button', { name: /Diésel/ }).click(); await pg.waitForTimeout(300)
+    chk(await pg.inputValue('#c-precio') === '1393', vp + ': elegir diésel carga su precio de hoy')
+    // recorrido 3D: el texto activo siempre se puede leer al bajar
+    {
+      const [ini, fin] = await pg.evaluate(() => { const e = document.getElementById('como-funciona'); const t = e.getBoundingClientRect().top + scrollY; return [t, t + e.offsetHeight - innerHeight] })
+      let malas = 0; const vistos = new Set()
+      for (let y = ini; y <= fin; y += 120) {
+        await pg.evaluate(y => scrollTo(0, y), y); await pg.waitForTimeout(500)
+        const r = await pg.evaluate(() => {
+          const st = document.querySelector('#como-funciona .sticky').getBoundingClientRect()
+          if (st.top > 125) return null
+          const arriba = innerWidth < 1024 ? st.bottom : 0
+          let act = -1, vis = 0
+          document.querySelectorAll('#como-funciona [data-i]').forEach((el, i) => { const t = el.firstElementChild; if (t.hasAttribute('data-activo')) { act = i; const b = t.getBoundingClientRect(); vis = Math.max(0, Math.min(b.bottom, innerHeight) - Math.max(b.top, arriba)) / b.height } })
+          return { act, vis }
+        })
+        if (!r) continue
+        vistos.add(r.act); if (r.act < 0 || r.vis < 0.6) malas++
+      }
+      chk(!malas && vistos.size === 6, vp + ': el texto del recorrido 3D se puede leer en todo momento (' + malas + ' malas, ' + vistos.size + ' pasos)')
+    }
     // verificador
     await pg.evaluate(() => document.getElementById('compatibilidad').scrollIntoView()); await pg.waitForTimeout(1300)
     await pg.locator('#compatibilidad textarea').fill('Kia Rio 2018'); await pg.keyboard.press('Enter'); await pg.waitForTimeout(1700)

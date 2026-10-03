@@ -4,6 +4,7 @@ import { CheckCircle2, Loader2, Mail, MessageCircle } from 'lucide-react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import { Aparecer, Encabezado, Etiqueta, Flecha, Logo, PorConfirmar, irA } from '@/components/comunes'
+import { Palabra } from '@/components/logo-vectorial'
 import { DATOS, HECHOS } from '@/lib/datos'
 import { cn } from '@/lib/utils'
 
@@ -92,7 +93,7 @@ export function Confianza() {
 export function Preguntas() {
   const faq: [string, React.ReactNode][] = [
     ['¿Qué autos pueden llevar el kit?', <>{HECHOS.elegibilidad} Autos con ABS, airbags y control de estabilidad sí pueden. Usa el verificador de arriba y lo confirmamos en el diagnóstico.</>],
-    ['¿Cuánto voy a ahorrar?', <>Depende de cuánto y cómo manejas: el kit asiste sobre todo al partir y al acelerar. Te damos una estimación en el diagnóstico y después la telemetría mide el ahorro real. {DATOS.ahorroPct ? `Rango esperado: ${DATOS.ahorroPct.min} a ${DATOS.ahorroPct.max}%.` : <>Rango de ahorro: <PorConfirmar que="Ahorro" /></>}</>],
+    ['¿Cuánto voy a ahorrar?', <>Depende de cuánto y cómo manejas: el kit asiste sobre todo al partir y al acelerar. Te damos una estimación en el diagnóstico y después la telemetría mide el ahorro real. {DATOS.ahorroPct ? `Estimamos un ${DATOS.ahorroPct}% menos de combustible.` : <>Ahorro: <PorConfirmar que="Ahorro" /></>}</>],
     ['¿Cuánto cuesta?', <>Depende del modelo y de la configuración. {DATOS.precio ? `Desde $${DATOS.precio.desde.toLocaleString('es-CL')}.` : <>Precio: <PorConfirmar que="Precio" /></>} El diagnóstico te deja el valor exacto para tu auto.</>],
     ['¿Pierdo los frenos o el ABS de mi auto?', <>No. {HECHOS.sistemasOriginales} {HECHOS.capaSeguridad}</>],
     ['¿Qué pasa con mi motor original?', HECHOS.ejeTrasero + ' Si el kit está apagado, tu auto anda como siempre.'],
@@ -227,7 +228,7 @@ export function Pie() {
         </nav>
       </div>
       <div className="mx-auto mt-16 max-w-[1440px] px-5 md:px-10" aria-hidden="true">
-        <span className="wordmark !h-auto w-full text-fg opacity-90" />
+        <Palabra className="block h-auto w-full text-fg" />
       </div>
       <div className="mx-auto mt-10 flex max-w-[1440px] flex-col gap-2 border-t border-line px-5 py-6 md:flex-row md:justify-between md:px-10">
         <span className="t-label-sm text-dim">© {new Date().getFullYear()} Lumine Motors</span>

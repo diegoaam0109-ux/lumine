@@ -8,8 +8,8 @@
 export const DATOS = {
   /** Precio del kit instalado, en CLP. Ej.: { desde: 0, hasta: 0 } */
   precio: null as null | { desde: number; hasta?: number },
-  /** Ahorro de combustible esperado, en %. Ej.: { min: 0, max: 0 } */
-  ahorroPct: null as null | { min: number; max: number },
+  /** Ahorro de combustible con el kit, en %. Definido por Lumine Motors: 20% */
+  ahorroPct: 20 as null | number,
   /** Garantía del kit, texto corto. Ej.: "X años o Y km" */
   garantia: null as null | string,
   /** Tiempo de instalación, texto corto. Ej.: "X días hábiles" */
@@ -33,5 +33,19 @@ export const HECHOS = {
   telemetria: 'La telemetría compara el ahorro real con el estimado.',
   desaconsejar: 'Si el uso de tu auto no da ahorro real, el diagnóstico lo dice con evidencia y no se instala.',
 }
+
+/** Precios promedio del litro en la Región Metropolitana.
+    Actualizar aquí cuando cambien (fuente: preciocombustible.cl / bencinaenlinea.cl, CNE). */
+export const COMBUSTIBLES = {
+  fecha: '30 de septiembre de 2026',
+  fuente: 'Promedio Región Metropolitana · preciocombustible.cl',
+  tipos: [
+    { k: 'b93', l: '93', precio: 1459, co2: 2.31 },
+    { k: 'b95', l: '95', precio: 1502, co2: 2.31 },
+    { k: 'b97', l: '97', precio: 1554, co2: 2.31 },
+    { k: 'diesel', l: 'Diésel', precio: 1393, co2: 2.68 },
+  ],
+} as const
+/* co2: kg de CO₂ por litro quemado (factores de emisión de uso común: gasolina 2,31; diésel 2,68) */
 
 export const clp = (n: number) => '$' + Math.round(n).toLocaleString('es-CL')

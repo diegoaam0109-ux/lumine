@@ -177,3 +177,8 @@ sin pasarse del presupuesto y copia los montos con un clic.
   Panel y Ajustes.
 - **Currículo rígido.** El contenido de los módulos se edita desde Ajustes. La estructura (competencias, niveles,
   reglas) sigue en el código a propósito: de ella dependen las reglas y sus pruebas.
+
+## Séptima ronda: recorrido 3D legible
+
+- El paso activo del recorrido "Baja y míralo armarse" ya no depende de una franja delgada de la pantalla: en PC es el texto más cercano al centro y en teléfono el más visible bajo el visor 3D. Ningún texto se apaga mientras se está leyendo.
+- En teléfono, visor algo más bajo, pasos más juntos y un degradado bajo el visor para que el texto que sube se desvanezca en vez de cortarse.

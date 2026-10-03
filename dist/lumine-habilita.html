@@ -1371,9 +1371,10 @@ details.lvl>summary{ padding:12px 14px; }
 .hist-sticky{ position:sticky; top:92px; }
 .hist-stage{ aspect-ratio:auto; height:min(68vh, 560px); min-height:300px; }
 .hist-pasos{ display:flex; flex-direction:column; }
-.hist-paso{ min-height:62vh; display:flex; flex-direction:column; justify-content:center; gap:10px; padding:20px 0; opacity:.28; transform:translateX(10px); transition:opacity .45s var(--ease), transform .45s var(--ease); }
+.hist-paso{ min-height:62vh; display:flex; flex-direction:column; justify-content:center; padding:20px 0; opacity:.4; transform:translateX(10px); transition:opacity .45s var(--ease), transform .45s var(--ease); }
 .hist-paso:last-child{ min-height:48vh; }
 .hist-paso.on{ opacity:1; transform:none; }
+.hist-txt{ display:flex; flex-direction:column; gap:10px; }
 .hist-n{ font-size:12px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--action); }
 .hist-t{ font-family:var(--display); font-stretch:112%; text-transform:uppercase; font-size:clamp(26px,3vw,40px); line-height:1; letter-spacing:-.015em; font-weight:800; }
 .hist-dots{ position:absolute; left:16px; right:16px; bottom:14px; z-index:4; display:flex; gap:6px; pointer-events:none; }
@@ -1382,9 +1383,11 @@ details.lvl>summary{ padding:12px 14px; }
 @media (max-width:860px){
   .hist-grid{ grid-template-columns:minmax(0,1fr); gap:0; }
   .hist-sticky{ top:72px; z-index:2; }
-  .hist-stage{ height:40vh; min-height:240px; }
+  .hist-stage{ height:36vh; min-height:220px; }
   .hist-sticky .lab-frame{ background-color:var(--paper); }
-  .hist-paso{ min-height:62vh; justify-content:flex-end; padding:24px 4px 12vh; transform:none; }
+  /* degradado bajo el visor: el texto que sube se desvanece en vez de cortarse */
+  .hist-sticky::after{ content:""; position:absolute; left:0; right:0; top:100%; height:48px; background:linear-gradient(var(--paper), transparent); pointer-events:none; }
+  .hist-paso{ min-height:44vh; justify-content:flex-start; padding:6vh 4px 0; transform:none; }
   .hist-paso:last-child{ min-height:62vh; }
 }
 
@@ -5633,8 +5636,9 @@ const HISTORIA = [
 function secHistoria(){
   const stage = h('div', { class:'lab-stage hist-stage' });
   const pasos = HISTORIA.map((p, i) => h('div', { class:'hist-paso' + (i === 0 ? ' on' : ''), dataset:{ i:String(i) } },
-    h('span', { class:'hist-n' }, String(i + 1).padStart(2, '0') + ' · ' + p.k), h('h3', { class:'hist-t' }, p.t), h('p', { class:'body ink2' }, p.d)));
+    h('div', { class:'hist-txt' }, h('span', { class:'hist-n' }, String(i + 1).padStart(2, '0') + ' · ' + p.k), h('h3', { class:'hist-t' }, p.t), h('p', { class:'body ink2' }, p.d))));
   const dots = h('div', { class:'hist-dots', 'aria-hidden':'true' }, HISTORIA.map((_, i) => h('i', { class: i === 0 ? 'on' : '' })));
+  const sticky = h('div', { class:'hist-sticky' }, h('div', { class:'lab-frame' }, stage, dots));
   let api = null, actual = -1;
   const activar = i => {
     if(i === actual || !api) return;
@@ -5652,16 +5656,33 @@ function secHistoria(){
     if(!document.body.contains(stage)) return;
     api = Lab3D.crear(stage, { auto:false, hotspots:false, interactivo:true, visibles:[], etiqueta:'Recorrido 3D: el kit Lumine se arma pieza por pieza en el eje trasero de un auto genérico' });
     activar(0);
-    if(window.IntersectionObserver){
-      const io = new IntersectionObserver(es => { for(const e of es) if(e.isIntersecting) activar(Number(e.target.dataset.i)); }, { rootMargin: window.matchMedia && matchMedia('(max-width:860px)').matches ? '-66% 0px -24% 0px' : '-45% 0px -45% 0px' });
-      pasos.forEach(p => io.observe(p));
-    }
+    // paso activo = el texto cuyo centro está más cerca del centro de la zona libre de lectura
+    // (bajo el visor en teléfono, toda la pantalla en PC): no se apaga un texto que se está leyendo
+    let raf = 0;
+    const medir = () => {
+      raf = 0;
+      if(!document.body.contains(stage)){ window.removeEventListener('scroll', pedir); window.removeEventListener('resize', pedir); return; }
+      const movil = window.innerWidth <= 860;
+      const arriba = movil ? sticky.getBoundingClientRect().bottom : 0;
+      const centro = arriba + (window.innerHeight - arriba) * (movil ? 0.42 : 0.5);
+      // PC: el más cercano al centro. Teléfono: el más visible bajo el visor (empate: el de más arriba)
+      let mejor = 0, puntaje = -Infinity;
+      pasos.forEach((el, i) => {
+        const r = el.querySelector('.hist-txt').getBoundingClientRect();
+        const p = movil ? Math.round(Math.max(0, Math.min(r.bottom, window.innerHeight) - Math.max(r.top, arriba)) / r.height * 20) / 20 : -Math.abs((r.top + r.bottom) / 2 - centro);
+        if(p > puntaje){ puntaje = p; mejor = i; }
+      });
+      activar(mejor);
+    };
+    const pedir = () => { if(!raf) raf = requestAnimationFrame(medir); };
+    window.addEventListener('scroll', pedir, { passive:true }); window.addEventListener('resize', pedir);
+    medir();
   }, 0);
   return h('section', { class:'wrap lsec hist', id:'historia' },
     h('div', { class:'center-h', 'data-rv':'' }, eyebrow('El kit, pieza por pieza', 'cube'), h('h2', { class:'h1 xl' }, 'Baja y míralo armarse.'),
       h('p', { class:'lead' }, 'Esto es lo que aprende a instalar un técnico de Lumine, en el mismo orden en que se hace en el taller.')),
     h('div', { class:'hist-grid' },
-      h('div', { class:'hist-sticky' }, h('div', { class:'lab-frame' }, stage, dots)),
+      sticky,
       h('div', { class:'hist-pasos' }, pasos)));
 }
 

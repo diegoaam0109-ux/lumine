@@ -123,9 +123,10 @@ details.lvl>summary{ padding:12px 14px; }
 .hist-sticky{ position:sticky; top:92px; }
 .hist-stage{ aspect-ratio:auto; height:min(68vh, 560px); min-height:300px; }
 .hist-pasos{ display:flex; flex-direction:column; }
-.hist-paso{ min-height:62vh; display:flex; flex-direction:column; justify-content:center; gap:10px; padding:20px 0; opacity:.28; transform:translateX(10px); transition:opacity .45s var(--ease), transform .45s var(--ease); }
+.hist-paso{ min-height:62vh; display:flex; flex-direction:column; justify-content:center; padding:20px 0; opacity:.4; transform:translateX(10px); transition:opacity .45s var(--ease), transform .45s var(--ease); }
 .hist-paso:last-child{ min-height:48vh; }
 .hist-paso.on{ opacity:1; transform:none; }
+.hist-txt{ display:flex; flex-direction:column; gap:10px; }
 .hist-n{ font-size:12px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--action); }
 .hist-t{ font-family:var(--display); font-stretch:112%; text-transform:uppercase; font-size:clamp(26px,3vw,40px); line-height:1; letter-spacing:-.015em; font-weight:800; }
 .hist-dots{ position:absolute; left:16px; right:16px; bottom:14px; z-index:4; display:flex; gap:6px; pointer-events:none; }
@@ -134,9 +135,11 @@ details.lvl>summary{ padding:12px 14px; }
 @media (max-width:860px){
   .hist-grid{ grid-template-columns:minmax(0,1fr); gap:0; }
   .hist-sticky{ top:72px; z-index:2; }
-  .hist-stage{ height:40vh; min-height:240px; }
+  .hist-stage{ height:36vh; min-height:220px; }
   .hist-sticky .lab-frame{ background-color:var(--paper); }
-  .hist-paso{ min-height:62vh; justify-content:flex-end; padding:24px 4px 12vh; transform:none; }
+  /* degradado bajo el visor: el texto que sube se desvanece en vez de cortarse */
+  .hist-sticky::after{ content:""; position:absolute; left:0; right:0; top:100%; height:48px; background:linear-gradient(var(--paper), transparent); pointer-events:none; }
+  .hist-paso{ min-height:44vh; justify-content:flex-start; padding:6vh 4px 0; transform:none; }
   .hist-paso:last-child{ min-height:62vh; }
 }
 

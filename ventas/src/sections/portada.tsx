@@ -4,6 +4,7 @@ import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Aparecer, Escena3D, Etiqueta, Flecha, InterruptorTema, Logo, irA } from '@/components/comunes'
 import { cn } from '@/lib/utils'
+import { PIEZAS_PLANO, Plano } from '@/components/plano'
 
 const LINKS: [string, string][] = [['como-funciona', 'Cómo funciona'], ['para-quien', 'Para quién'], ['ahorro', 'Ahorro'], ['compatibilidad', 'Compatibilidad'], ['preguntas', 'Preguntas']]
 
@@ -132,6 +133,24 @@ export function Manifiesto() {
           </h2>
         </Aparecer>
         <Aparecer i={2}><p className="mx-auto mt-10 max-w-xl text-lg leading-relaxed text-muted">El auto que ya pagaste sigue siendo tuyo. Le sumamos asistencia eléctrica, la instala un duo de técnicos certificados y la medimos con telemetría.</p></Aparecer>
+      </div>
+      <div className="mx-auto mt-20 max-w-[1440px] px-5 md:mt-28 md:px-10">
+        <div className="visor border border-line bg-surface">
+          <i className="esq a" /><i className="esq b" /><i className="esq c" /><i className="esq d" />
+          <div className="flex items-center justify-between border-b border-line px-4 py-2.5 md:px-6">
+            <span className="t-label-sm flex items-center gap-2 text-muted"><i className="parpadeo size-1.5 bg-accent" />Plano · vista lateral</span>
+            <span className="t-label-sm text-dim max-sm:hidden">LM—001 · Kit eje trasero</span>
+          </div>
+          <div className="overflow-hidden px-2 py-6 md:px-8 md:py-10"><Plano className="mx-auto block h-auto w-full max-w-[1200px] max-sm:-mx-[6%] max-sm:w-[112%] max-sm:max-w-none" /></div>
+          <ul className="grid grid-cols-2 border-t border-line lg:grid-cols-4">
+            {PIEZAS_PLANO.map((p, i) => (
+              <li key={p.n} className={cn('flex flex-col gap-1.5 border-line p-4 text-left md:p-6', i % 2 === 0 && 'border-r', i < 2 && 'max-lg:border-b', i === 1 && 'lg:border-r', i === 2 && 'lg:border-r')}>
+                <span className="t-label-sm flex items-center gap-2"><span className={cn('px-1.5 py-0.5', i ? 'bg-accent text-accent-ink' : 'bg-control text-fg')}>{p.n}</span><span className="text-fg">{p.t}</span></span>
+                <span className="text-sm leading-relaxed text-muted">{p.d}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   )

@@ -11,7 +11,7 @@ const PERFILES = [
     k: 'A', l: 'Particulares',
     titulo: <>Gasta menos en bencina <span className="t-serif normal-case text-accent-text">sin cambiar de auto.</span></>,
     puntos: [
-      { t: 'Menos combustible', d: 'El motor eléctrico asiste cuando más consume el auto: al partir y al acelerar.', dato: DATOS.ahorroPct ? `${DATOS.ahorroPct.min} a ${DATOS.ahorroPct.max}% menos` : null, que: 'Ahorro esperado' },
+      { t: 'Menos combustible', d: 'El motor eléctrico asiste cuando más consume el auto: al partir y al acelerar.', dato: DATOS.ahorroPct ? `${DATOS.ahorroPct}% menos` : null, que: 'Ahorro esperado' },
       { t: 'Tu mismo auto', d: 'Sin vender ni endeudarte. El motor original y la tracción delantera quedan como están.' },
       { t: 'Menos emisiones', d: 'Cada litro que no quemas es CO₂ que no sale por el escape.' },
       { t: 'Seguridad intacta', d: 'El freno, el ABS y el control de estabilidad originales siempre mandan sobre el kit.' },
@@ -78,11 +78,31 @@ export function ComoFunciona() {
   const api = React.useRef<Lab3DApi | null>(null)
   const [paso, setPaso] = React.useState(0)
   const refs = React.useRef<(HTMLDivElement | null)[]>([])
+  const visor = React.useRef<HTMLDivElement>(null)
+  /* paso activo = el texto cuyo centro está más cerca del centro de la zona libre de lectura
+     (bajo el visor en teléfono, toda la pantalla en PC): nunca se apaga un texto que todavía se está leyendo */
   React.useEffect(() => {
-    const movil = window.matchMedia('(max-width: 1023px)').matches
-    const io = new IntersectionObserver(es => { for (const e of es) if (e.isIntersecting) setPaso(Number((e.target as HTMLElement).dataset.i)) }, { rootMargin: movil ? '-66% 0px -24% 0px' : '-45% 0px -45% 0px' })
-    refs.current.forEach(r => r && io.observe(r))
-    return () => io.disconnect()
+    let raf = 0
+    const medir = () => {
+      raf = 0
+      const movil = window.innerWidth < 1024
+      const arriba = movil && visor.current ? visor.current.getBoundingClientRect().bottom : 0
+      const centro = arriba + (window.innerHeight - arriba) * (movil ? 0.42 : 0.5)
+      // PC: el más cercano al centro. Teléfono: el más visible bajo el visor (empate: el de más arriba)
+      let mejor = 0, puntaje = -Infinity
+      refs.current.forEach((el, i) => {
+        const t = el?.firstElementChild?.getBoundingClientRect(); if (!t) return
+        const p = movil
+          ? Math.round(Math.max(0, Math.min(t.bottom, window.innerHeight) - Math.max(t.top, arriba)) / t.height * 20) / 20
+          : -Math.abs((t.top + t.bottom) / 2 - centro)
+        if (p > puntaje) { puntaje = p; mejor = i }
+      })
+      setPaso(mejor)
+    }
+    const pedir = () => { if (!raf) raf = requestAnimationFrame(medir) }
+    medir()
+    window.addEventListener('scroll', pedir, { passive: true }); window.addEventListener('resize', pedir)
+    return () => { window.removeEventListener('scroll', pedir); window.removeEventListener('resize', pedir); if (raf) cancelAnimationFrame(raf) }
   }, [])
   React.useEffect(() => {
     const a = api.current; if (!a) return
@@ -99,7 +119,8 @@ export function ComoFunciona() {
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
         <Encabezado n="01" etiqueta="Cómo funciona" id="cf-t" titulo={<>Baja y míralo <span className="t-serif normal-case text-accent-text">armarse.</span></>} bajada="Esto es lo que instala un duo de técnicos Lumine en tu auto, en el mismo orden en que se hace en el taller." />
         <div className="grid gap-0 lg:grid-cols-[1.25fr_1fr] lg:gap-16">
-          <div className="sticky top-[76px] z-10 h-[42svh] min-h-[260px] lg:top-28 lg:h-[min(72svh,640px)]">
+          <div ref={visor} className="sticky top-[76px] z-10 h-[38svh] min-h-[240px] lg:top-28 lg:h-[min(72svh,640px)]">
+            <div className="pointer-events-none absolute inset-x-0 top-full h-14 bg-gradient-to-b from-bg to-transparent lg:hidden" aria-hidden="true" />
             <div className="visor grano relative h-full overflow-hidden border border-line bg-surface">
               <div className="rejilla absolute inset-0" aria-hidden="true" />
               <div className="foco absolute inset-0 opacity-70" aria-hidden="true" />
@@ -122,8 +143,8 @@ export function ComoFunciona() {
           </div>
           <div>
             {PASOS.map((x, i) => (
-              <div key={x.t} ref={el => { refs.current[i] = el }} data-i={i} className="flex min-h-[62svh] flex-col justify-end pb-[12svh] lg:min-h-[64svh] lg:justify-center lg:pb-0">
-                <motion.div animate={quieto ? undefined : { opacity: paso === i ? 1 : 0.22 }} transition={{ duration: 0.45 }} className="flex flex-col gap-5 border-t border-line pt-6">
+              <div key={x.t} ref={el => { refs.current[i] = el }} data-i={i} className="flex min-h-[44svh] flex-col justify-start pt-[6svh] last:min-h-[62svh] lg:min-h-[64svh] lg:justify-center lg:pt-0 lg:last:min-h-[64svh]">
+                <motion.div data-activo={paso === i || undefined} animate={quieto ? undefined : { opacity: paso === i ? 1 : 0.38 }} transition={{ duration: 0.45 }} className="flex flex-col gap-5 border-t border-line pt-6">
                   <span className="t-label flex items-center gap-3"><span className="text-accent-text">{nn(i)}</span><i className="h-px w-6 bg-line-2" /><span className="text-muted">{x.k}</span></span>
                   <h3 className="t-titulo text-[clamp(28px,3.2vw,46px)]">{x.t}</h3>
                   <p className="max-w-md text-lg leading-relaxed text-muted">{x.d}</p>

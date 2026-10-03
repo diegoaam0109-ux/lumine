@@ -334,8 +334,9 @@ const HISTORIA = [
 function secHistoria(){
   const stage = h('div', { class:'lab-stage hist-stage' });
   const pasos = HISTORIA.map((p, i) => h('div', { class:'hist-paso' + (i === 0 ? ' on' : ''), dataset:{ i:String(i) } },
-    h('span', { class:'hist-n' }, String(i + 1).padStart(2, '0') + ' · ' + p.k), h('h3', { class:'hist-t' }, p.t), h('p', { class:'body ink2' }, p.d)));
+    h('div', { class:'hist-txt' }, h('span', { class:'hist-n' }, String(i + 1).padStart(2, '0') + ' · ' + p.k), h('h3', { class:'hist-t' }, p.t), h('p', { class:'body ink2' }, p.d))));
   const dots = h('div', { class:'hist-dots', 'aria-hidden':'true' }, HISTORIA.map((_, i) => h('i', { class: i === 0 ? 'on' : '' })));
+  const sticky = h('div', { class:'hist-sticky' }, h('div', { class:'lab-frame' }, stage, dots));
   let api = null, actual = -1;
   const activar = i => {
     if(i === actual || !api) return;
@@ -353,16 +354,33 @@ function secHistoria(){
     if(!document.body.contains(stage)) return;
     api = Lab3D.crear(stage, { auto:false, hotspots:false, interactivo:true, visibles:[], etiqueta:'Recorrido 3D: el kit Lumine se arma pieza por pieza en el eje trasero de un auto genérico' });
     activar(0);
-    if(window.IntersectionObserver){
-      const io = new IntersectionObserver(es => { for(const e of es) if(e.isIntersecting) activar(Number(e.target.dataset.i)); }, { rootMargin: window.matchMedia && matchMedia('(max-width:860px)').matches ? '-66% 0px -24% 0px' : '-45% 0px -45% 0px' });
-      pasos.forEach(p => io.observe(p));
-    }
+    // paso activo = el texto cuyo centro está más cerca del centro de la zona libre de lectura
+    // (bajo el visor en teléfono, toda la pantalla en PC): no se apaga un texto que se está leyendo
+    let raf = 0;
+    const medir = () => {
+      raf = 0;
+      if(!document.body.contains(stage)){ window.removeEventListener('scroll', pedir); window.removeEventListener('resize', pedir); return; }
+      const movil = window.innerWidth <= 860;
+      const arriba = movil ? sticky.getBoundingClientRect().bottom : 0;
+      const centro = arriba + (window.innerHeight - arriba) * (movil ? 0.42 : 0.5);
+      // PC: el más cercano al centro. Teléfono: el más visible bajo el visor (empate: el de más arriba)
+      let mejor = 0, puntaje = -Infinity;
+      pasos.forEach((el, i) => {
+        const r = el.querySelector('.hist-txt').getBoundingClientRect();
+        const p = movil ? Math.round(Math.max(0, Math.min(r.bottom, window.innerHeight) - Math.max(r.top, arriba)) / r.height * 20) / 20 : -Math.abs((r.top + r.bottom) / 2 - centro);
+        if(p > puntaje){ puntaje = p; mejor = i; }
+      });
+      activar(mejor);
+    };
+    const pedir = () => { if(!raf) raf = requestAnimationFrame(medir); };
+    window.addEventListener('scroll', pedir, { passive:true }); window.addEventListener('resize', pedir);
+    medir();
   }, 0);
   return h('section', { class:'wrap lsec hist', id:'historia' },
     h('div', { class:'center-h', 'data-rv':'' }, eyebrow('El kit, pieza por pieza', 'cube'), h('h2', { class:'h1 xl' }, 'Baja y míralo armarse.'),
       h('p', { class:'lead' }, 'Esto es lo que aprende a instalar un técnico de Lumine, en el mismo orden en que se hace en el taller.')),
     h('div', { class:'hist-grid' },
-      h('div', { class:'hist-sticky' }, h('div', { class:'lab-frame' }, stage, dots)),
+      sticky,
       h('div', { class:'hist-pasos' }, pasos)));
 }
 
