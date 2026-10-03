@@ -7478,7 +7478,7 @@ const PRODUCCION_AUTH = [
   { ic:'lock', t:'Bloqueo y vencimiento', d:'Bloqueo temporal tras varios intentos fallidos, sesión que vence por inactividad y opción de cerrar la sesión en todos los equipos.' },
   { ic:'refresh', t:'Recuperar la contraseña', d:'Llega un enlace al correo que sirve una sola vez y vence. Nadie de Lumine conoce ni puede ver tu contraseña.' },
   { ic:'clipboard', t:'Evaluador externo sin cuenta', d:'No entra a la plataforma. Marca en el kiosco de un equipo de Lumine, con un código de un solo uso para esa validación.' },
-  { ic:'database', t:'Permisos en la base, no en la pantalla', d:'Las mismas 10 reglas de acceso de esta versión se aplican en el servidor: cada técnico lee solo lo suyo. Cada ingreso queda en la bitácora.' }
+  { ic:'database', t:'Permisos en la base, no en la pantalla', d:'Las mismas ' + DB_RULES.length + ' reglas de acceso de esta versión se aplican en el servidor: cada técnico lee solo lo suyo. Cada ingreso queda en la bitácora.' }
 ];
 
 function seccionProduccion(){
