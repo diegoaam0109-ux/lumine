@@ -9,10 +9,11 @@ import { motion, AnimatePresence } from "framer-motion";
    1. Los estilos se insertan una sola vez al montarse, no al importar el archivo (evita efectos al cargar y duplicados).
    2. NodeJS.Timeout -> ReturnType<typeof setInterval> (el tipo de Node no existe en el navegador).
    3. Se exportan las piezas base (PromptInput, PromptInputTextarea, PromptInputActions, PromptInputAction)
-      para armar el verificador de compatibilidad sin voz, imágenes ni Search/Think/Canvas. */
+      para armar el verificador de compatibilidad sin voz, imágenes ni Search/Think/Canvas.
+   4. cn con tailwind-merge y colores de las piezas base pasados a los tokens del tema (oscuro y claro). */
 
-// Utility function for className merging
-const cn = (...classes: (string | undefined | null | false)[]) => classes.filter(Boolean).join(" ");
+// className con tailwind-merge, para que las clases de quien lo usa ganen
+import { cn } from "@/lib/utils";
 
 // Embedded CSS for minimal custom styles
 const styles = `
@@ -53,7 +54,7 @@ interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ className, ...props }, ref) => (
   <textarea
     className={cn(
-      "flex w-full rounded-md border-none bg-transparent px-3 py-2.5 text-base text-gray-100 placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50 min-h-[44px] resize-none scrollbar-thin scrollbar-thumb-[#444444] scrollbar-track-transparent hover:scrollbar-thumb-[#555555]",
+      "flex w-full rounded-md border-none bg-transparent px-3 py-2.5 text-base text-fg placeholder:text-dim focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50 min-h-[44px] resize-none scrollbar-thin scrollbar-thumb-[#444444] scrollbar-track-transparent hover:scrollbar-thumb-[#555555]",
       className
     )}
     ref={ref}
@@ -75,7 +76,7 @@ const TooltipContent = React.forwardRef<
     ref={ref}
     sideOffset={sideOffset}
     className={cn(
-      "z-50 overflow-hidden rounded-md border border-[#333333] bg-[#1F2023] px-3 py-1.5 text-sm text-white shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+      "z-50 overflow-hidden border border-line-2 bg-control px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-fg shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
       className
     )}
     {...props}
@@ -341,7 +342,7 @@ const PromptInput = React.forwardRef<HTMLDivElement, PromptInputProps>(
           <div
             ref={ref}
             className={cn(
-              "rounded-3xl border border-[#444444] bg-[#1F2023] p-2 shadow-[0_8px_30px_rgba(0,0,0,0.24)] transition-all duration-300",
+              "border border-line-2 bg-well p-2 transition-all duration-300",
               isLoading && "border-red-500/70",
               className
             )}

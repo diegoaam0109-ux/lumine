@@ -16,28 +16,36 @@ const chk = (v, m) => { if (v) ok++; else { mal++; console.log('FALLA:', m) } }
     await pg.goto(URL); await pg.waitForTimeout(1500)
     chk(await pg.locator('h1').innerText().then(t => /HÍBRIDO/i.test(t)), vp + ': titular de la portada')
     chk(await pg.locator('canvas').count() >= 2, vp + ': escenas 3D montadas')
-    for (const id of ['flotas', 'como-funciona', 'ahorro', 'compatibilidad', 'proceso', 'confianza', 'preguntas', 'agendar']) {
+    // tema: oscuro por defecto aunque el visor fuerce fondo claro en body; el interruptor cambia y recuerda
+    await pg.addStyleTag({ content: 'body{background:#faf9f5;color:#141413}' })
+    const fondo = () => pg.evaluate(() => getComputedStyle(document.body).backgroundColor)
+    chk(await pg.evaluate(() => document.documentElement.dataset.tema) === 'oscuro' && await fondo() === 'rgb(2, 3, 4)', vp + ': parte en negro')
+    await pg.getByRole('button', { name: 'Cambiar a modo claro' }).click(); await pg.waitForTimeout(600)
+    chk(await fondo() === 'rgb(245, 245, 247)' && await pg.evaluate(() => localStorage.getItem('lumine-tema')) === 'claro', vp + ': el interruptor pasa a claro y lo recuerda')
+    await pg.getByRole('button', { name: 'Cambiar a modo oscuro' }).click(); await pg.waitForTimeout(600)
+    chk(await fondo() === 'rgb(2, 3, 4)', vp + ': vuelve a oscuro')
+    for (const id of ['para-quien', 'como-funciona', 'ahorro', 'compatibilidad', 'proceso', 'confianza', 'preguntas', 'agendar']) {
       await pg.evaluate(x => document.getElementById(x).scrollIntoView(), id); await pg.waitForTimeout(400)
       chk(await pg.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), vp + ': sin desborde en #' + id)
     }
     // calculadora
     await pg.evaluate(() => document.getElementById('ahorro').scrollIntoView()); await pg.waitForTimeout(500)
-    const antes = await pg.locator('#ahorro .tabular-nums').first().innerText()
+    const antes = await pg.locator('#ahorro p.t-num').first().innerText()
     await pg.locator('#ahorro').getByRole('tab', { name: 'Mi flota' }).click(); await pg.waitForTimeout(900)
-    chk((await pg.locator('#ahorro .tabular-nums').first().innerText()) !== antes, vp + ': la calculadora cambia con la flota')
-    chk((await pg.innerText('#ahorro')).includes('Por confirmar'), vp + ': el ahorro del kit queda por confirmar, no se inventa')
+    chk((await pg.locator('#ahorro p.t-num').first().innerText()) !== antes, vp + ': la calculadora cambia con la flota')
+    chk(/por confirmar/i.test(await pg.innerText('#ahorro')), vp + ': el ahorro del kit queda por confirmar, no se inventa')
     // verificador
     await pg.evaluate(() => document.getElementById('compatibilidad').scrollIntoView()); await pg.waitForTimeout(1300)
     await pg.locator('#compatibilidad textarea').fill('Kia Rio 2018'); await pg.keyboard.press('Enter'); await pg.waitForTimeout(1700)
     await pg.getByRole('button', { name: 'No, trasera o 4x4' }).click(); await pg.waitForTimeout(1100)
-    chk((await pg.innerText('#compatibilidad [role=log]')).includes('Por ahora, no'), vp + ': tracción trasera no es candidata')
+    chk(/por ahora, no/i.test(await pg.innerText('#compatibilidad [role=log]')), vp + ': tracción trasera no es candidata')
     await pg.locator('#compatibilidad').getByRole('button', { name: /Otro auto/ }).click(); await pg.waitForTimeout(1100)
     await pg.locator('#compatibilidad textarea').fill('Toyota Yaris 2016'); await pg.keyboard.press('Enter'); await pg.waitForTimeout(1700)
     await pg.getByRole('button', { name: 'No sé' }).click(); await pg.waitForTimeout(1100)
     await pg.getByRole('button', { name: 'Menos de 30 km' }).click(); await pg.waitForTimeout(1100)
     await pg.getByRole('button', { name: 'Para mí' }).click(); await pg.waitForTimeout(1200)
     const log = await pg.innerText('#compatibilidad [role=log]')
-    chk(log.includes('Puede ser candidato') && log.includes('no instalamos'), vp + ': resultado honesto con poco uso')
+    chk(/puede ser candidato/i.test(log) && log.includes('no instalamos'), vp + ': resultado honesto con poco uso')
     await pg.locator('#compatibilidad').getByRole('button', { name: /Agendar diagnóstico/ }).click(); await pg.waitForTimeout(1300)
     chk(await pg.inputValue('#f-auto') === 'Toyota Yaris 2016', vp + ': el verificador completa el formulario')
     // formulario

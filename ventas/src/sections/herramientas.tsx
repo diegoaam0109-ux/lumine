@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion, useTransform } from 'framer-motion'
-import { ArrowRight, ArrowUp, Bot, Car, CheckCircle2, CircleHelp, RotateCcw, Truck, XCircle } from 'lucide-react'
+import { ArrowUp, CheckCircle2, CircleHelp, RotateCcw, XCircle } from 'lucide-react'
 import { PromptButton, PromptInput, PromptInputAction, PromptInputActions, PromptInputTextarea } from '@/components/ui/ai-prompt-box'
 import { Button } from '@/components/ui/button'
-import { Aparecer, Encabezado, PorConfirmar, irA } from '@/components/comunes'
+import { Aparecer, Encabezado, Flecha, PorConfirmar, irA } from '@/components/comunes'
 import { DATOS, clp } from '@/lib/datos'
 import { cn } from '@/lib/utils'
 
@@ -16,18 +16,33 @@ function AnimNum({ valor, formato = clp }: { valor: number; formato?: (n: number
   return <motion.span>{txt}</motion.span>
 }
 
-function Deslizador({ id, label, valor, set, min, max, paso = 1, unidad, ayuda }: { id: string; label: string; valor: number; set: (n: number) => void; min: number; max: number; paso?: number; unidad: string; ayuda?: string }) {
+/* control de instrumento: etiqueta mono, lectura grande, riel fino */
+function Deslizador({ id, n, label, valor, set, min, max, paso = 1, unidad, ayuda }: { id: string; n: string; label: string; valor: number; set: (n: number) => void; min: number; max: number; paso?: number; unidad: string; ayuda?: string }) {
   const pct = ((valor - min) / (max - min)) * 100
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-baseline justify-between gap-4">
-        <label htmlFor={id} className="text-sm font-semibold">{label}</label>
-        <span className="font-display text-xl font-extrabold tabular-nums [font-stretch:110%]">{valor.toLocaleString('es-CL')} <small className="text-sm font-semibold text-muted-foreground">{unidad}</small></span>
+    <div className="flex flex-col gap-3 border-t border-line pt-5">
+      <div className="flex items-end justify-between gap-4">
+        <label htmlFor={id} className="t-label flex items-center gap-3 text-muted"><span className="text-dim">{n}</span>{label}</label>
+        <span className="t-num text-[34px] leading-none text-fg">{valor.toLocaleString('es-CL')}<small className="t-label-sm ml-2 text-muted">{unidad}</small></span>
       </div>
       <input id={id} type="range" min={min} max={max} step={paso} value={valor} onChange={e => set(Number(e.target.value))} aria-describedby={ayuda ? id + '-a' : undefined}
-        className="h-2 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-[#22B8F0] [&::-webkit-slider-thumb]:size-6 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-brand [&::-webkit-slider-thumb]:shadow-[0_0_0_6px_rgba(34,184,240,0.2)]"
-        style={{ background: `linear-gradient(90deg, #22B8F0 ${pct}%, rgba(255,255,255,0.1) ${pct}%)` }} />
-      {ayuda ? <span id={id + '-a'} className="text-xs text-muted-foreground">{ayuda}</span> : null}
+        className="rango" style={{ ['--p' as string]: pct + '%' }} />
+      <div className="t-label-sm flex justify-between text-dim" aria-hidden="true"><span>{min.toLocaleString('es-CL')}</span><span>{max.toLocaleString('es-CL')}</span></div>
+      {ayuda ? <span id={id + '-a'} className="text-sm text-muted">{ayuda}</span> : null}
+    </div>
+  )
+}
+
+/* selector segmentado de bordes rectos */
+function Segmentos<T extends string>({ valor, set, ops, etiqueta, id }: { valor: T; set: (v: T) => void; ops: [T, string][]; etiqueta: string; id: string }) {
+  return (
+    <div role="tablist" aria-label={etiqueta} className="grid grid-cols-2 border border-line-2 p-1">
+      {ops.map(([k, l]) => (
+        <button key={k} role="tab" aria-selected={valor === k} onClick={() => set(k)} className={cn('t-label relative h-11 transition-colors', valor === k ? 'text-accent-ink' : 'text-muted hover:text-fg')}>
+          {valor === k ? <motion.span layoutId={id} className="absolute inset-0 bg-accent" transition={{ type: 'spring', stiffness: 420, damping: 36 }} /> : null}
+          <span className="relative">{l}</span>
+        </button>
+      ))}
     </div>
   )
 }
@@ -43,56 +58,68 @@ export function Calculadora() {
   const cambiarTipo = (t: 'particular' | 'flota') => { setTipo(t); if (t === 'flota') { setKm(180); setDias(6) } else { setKm(40); setDias(5) } }
   const n = tipo === 'flota' ? autos : 1
   const kmMes = km * dias * 4.33
-  const mes = (kmMes / Math.max(1, rend)) * precio * n
+  const litros = (kmMes / Math.max(1, rend)) * n
+  const mes = litros * precio
   const anual = mes * 12
   const cada10 = anual * 0.1
   const ahorro = DATOS.ahorroPct
+  const flota = tipo === 'flota'
   return (
-    <section id="ahorro" className="relative scroll-mt-24 border-t border-white/10 py-24 md:py-32" aria-labelledby="ah-t">
-      <div className="mx-auto max-w-7xl px-5 md:px-8">
-        <Encabezado id="ah-t" eyebrow="Ahorro" titulo={<>Primero, mira cuánto <span className="text-brand">gastas hoy.</span></>} bajada="Mueve los controles con tus datos reales. El cálculo es solo tuyo: no se guarda ni se envía." />
-        <div className="grid gap-6 lg:grid-cols-[1fr_1.05fr]">
-          <Aparecer className="flex flex-col gap-7 rounded-[28px] border border-white/10 bg-card p-6 md:p-8">
-            <div role="tablist" aria-label="Tipo de uso" className="inline-flex self-start rounded-full bg-white/[0.05] p-1">
-              {([['particular', 'Mi auto', Car], ['flota', 'Mi flota', Truck]] as const).map(([k, l, Ic]) => (
-                <button key={k} role="tab" aria-selected={tipo === k} onClick={() => cambiarTipo(k)} className={cn('relative inline-flex h-10 items-center gap-2 rounded-full px-4 text-sm font-semibold transition-colors', tipo === k ? 'text-[#041016]' : 'text-muted-foreground hover:text-foreground')}>
-                  {tipo === k ? <motion.span layoutId="calc-pill" className="absolute inset-0 rounded-full bg-brand" transition={{ type: 'spring', stiffness: 380, damping: 32 }} /> : null}
-                  <Ic className="relative size-4" aria-hidden="true" /><span className="relative">{l}</span>
-                </button>
-              ))}
-            </div>
-            {tipo === 'flota' ? <Deslizador id="c-autos" label="Vehículos en la flota" valor={autos} set={setAutos} min={2} max={300} unidad="autos" /> : null}
-            <Deslizador id="c-km" label={tipo === 'flota' ? 'Kilómetros al día, por auto' : 'Kilómetros al día'} valor={km} set={setKm} min={5} max={tipo === 'flota' ? 500 : 200} paso={5} unidad="km" />
-            <Deslizador id="c-dias" label="Días de uso a la semana" valor={dias} set={setDias} min={1} max={7} unidad="días" />
-            <Deslizador id="c-rend" label="Rendimiento actual" valor={rend} set={setRend} min={5} max={25} unidad="km/L" ayuda="Lo que rinde hoy tu auto en ciudad." />
-            <div className="flex flex-col gap-2">
-              <label htmlFor="c-precio" className="text-sm font-semibold">Precio del litro de bencina</label>
-              <div className="flex items-center gap-2 rounded-2xl border border-white/15 bg-white/[0.03] px-4 focus-within:border-brand">
-                <span className="text-muted-foreground">$</span>
-                <input id="c-precio" type="number" inputMode="numeric" min={500} max={3000} value={precio} onChange={e => setPrecio(Math.max(0, Number(e.target.value) || 0))} className="h-12 w-full bg-transparent text-lg font-semibold tabular-nums outline-none" />
+    <section id="ahorro" className="relative scroll-mt-20 border-t border-line bg-bg py-24 md:py-36" aria-labelledby="ah-t">
+      <div className="mx-auto max-w-[1440px] px-5 md:px-10">
+        <Encabezado n="03" etiqueta="Ahorro" id="ah-t" titulo={<>Primero, mira cuánto <span className="t-serif normal-case text-accent-text">gastas hoy.</span></>} bajada="Mueve los controles con tus datos reales. El cálculo es solo tuyo: no se guarda ni se envía." />
+        <div className="grid border border-line lg:grid-cols-[1fr_1.1fr]">
+          <Aparecer className="flex flex-col gap-6 border-line bg-surface p-5 max-lg:border-b md:p-10 lg:border-r">
+            <Segmentos id="calc-seg" etiqueta="Tipo de uso" valor={tipo} set={cambiarTipo} ops={[['particular', 'Mi auto'], ['flota', 'Mi flota']]} />
+            {flota ? <Deslizador id="c-autos" n="00" label="Vehículos" valor={autos} set={setAutos} min={2} max={300} unidad="autos" /> : null}
+            <Deslizador id="c-km" n="01" label={flota ? 'Km al día, por auto' : 'Km al día'} valor={km} set={setKm} min={5} max={flota ? 500 : 200} paso={5} unidad="km" />
+            <Deslizador id="c-dias" n="02" label="Días por semana" valor={dias} set={setDias} min={1} max={7} unidad="días" />
+            <Deslizador id="c-rend" n="03" label="Rendimiento" valor={rend} set={setRend} min={5} max={25} unidad="km/L" ayuda="Lo que rinde hoy tu auto en ciudad." />
+            <div className="flex flex-col gap-3 border-t border-line pt-5">
+              <label htmlFor="c-precio" className="t-label flex items-center gap-3 text-muted"><span className="text-dim">04</span>Precio del litro</label>
+              <div className="flex items-baseline gap-2 border-b border-line-2 transition-colors focus-within:border-accent">
+                <span className="t-num text-2xl text-muted">$</span>
+                <input id="c-precio" type="number" inputMode="numeric" min={500} max={3000} value={precio} onChange={e => setPrecio(Math.max(0, Number(e.target.value) || 0))} className="t-num h-14 w-full bg-transparent text-[34px] text-fg outline-none" />
               </div>
-              <span className="text-xs text-muted-foreground">Ponle el precio de tu bencinera: cambia cada semana.</span>
+              <span className="text-sm text-muted">Ponle el precio de tu bencinera: cambia cada semana.</span>
             </div>
           </Aparecer>
-          <Aparecer i={1} className="relative flex flex-col gap-6 overflow-hidden rounded-[28px] border border-brand/30 bg-[radial-gradient(600px_300px_at_100%_0%,rgba(34,184,240,0.22),transparent_70%)] bg-card p-6 md:p-8">
-            <div>
-              <span className="eyebrow">{tipo === 'flota' ? 'Tu flota gasta hoy' : 'Tu auto gasta hoy'}</span>
-              <p className="mt-3 font-display text-[clamp(44px,6vw,76px)] font-extrabold leading-none tabular-nums [font-stretch:112%]"><AnimNum valor={mes} /><small className="ml-2 text-xl font-semibold text-muted-foreground">al mes</small></p>
-              <p className="mt-2 text-lg text-muted-foreground"><AnimNum valor={anual} /> al año en combustible</p>
+          <Aparecer i={1} className="grano relative flex flex-col overflow-hidden bg-well">
+            <div className="foco absolute inset-0 opacity-60" aria-hidden="true" />
+            <div className="relative flex items-center justify-between border-b border-line px-5 py-3 md:px-10">
+              <span className="t-label-sm flex items-center gap-2 text-muted"><i className="parpadeo size-1.5 bg-accent" />Lectura en vivo</span>
+              <span className="t-label-sm text-dim">{flota ? n + ' vehículos' : '1 vehículo'}</span>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-              <span className="text-sm text-muted-foreground">Cada 10% de ahorro equivale a</span>
-              <p className="mt-1 font-display text-3xl font-extrabold text-brand tabular-nums [font-stretch:110%]"><AnimNum valor={cada10} /> <small className="text-base font-semibold text-muted-foreground">al año</small></p>
+            <div className="relative flex flex-1 flex-col gap-10 p-5 md:p-10">
+              <div>
+                <span className="t-label text-muted">{flota ? 'Tu flota gasta hoy' : 'Tu auto gasta hoy'}</span>
+                <p className="t-num mt-4 text-[clamp(56px,8vw,128px)] leading-[0.85] text-fg"><AnimNum valor={mes} /></p>
+                <p className="t-label mt-3 text-muted">al mes en combustible</p>
+              </div>
+              <dl className="grid grid-cols-2 border-y border-line">
+                <div className="flex flex-col gap-2 border-r border-line py-5 pr-4">
+                  <dt className="t-label-sm text-muted">Al año</dt>
+                  <dd className="t-num text-[clamp(26px,3vw,40px)] leading-none"><AnimNum valor={anual} /></dd>
+                </div>
+                <div className="flex flex-col gap-2 py-5 pl-4 md:pl-6">
+                  <dt className="t-label-sm text-muted">Litros al mes</dt>
+                  <dd className="t-num text-[clamp(26px,3vw,40px)] leading-none"><AnimNum valor={litros} formato={v => Math.round(v).toLocaleString('es-CL')} /></dd>
+                </div>
+              </dl>
+              <div className="flex flex-col gap-2">
+                <span className="t-label-sm text-muted">Cada 10% de ahorro equivale a</span>
+                <p className="t-num text-[clamp(34px,4vw,56px)] leading-none text-accent-text"><AnimNum valor={cada10} /> <small className="t-label-sm text-muted">al año</small></p>
+              </div>
+              <div className="flex flex-col gap-3 border border-dashed border-line-2 p-5">
+                <span className="t-label text-fg">Ahorro con el kit Lumine</span>
+                {ahorro ? (
+                  <p className="t-num text-4xl text-ok"><AnimNum valor={anual * ahorro.min / 100} /> a <AnimNum valor={anual * ahorro.max / 100} /> <small className="t-label-sm text-muted">al año</small></p>
+                ) : (
+                  <div className="flex flex-col items-start gap-2"><PorConfirmar que="Porcentaje de ahorro" /><span className="text-sm leading-relaxed text-muted">Depende de tu uso. Lo estimamos en el diagnóstico y después lo medimos en tu auto con telemetría.</span></div>
+                )}
+              </div>
+              <Button size="lg" className="mt-auto w-full" onClick={() => irA('compatibilidad')}>Ver si mi auto es compatible <Flecha /></Button>
             </div>
-            <div className="flex flex-col gap-2 rounded-2xl border border-dashed border-white/15 p-5">
-              <span className="text-sm font-semibold">Ahorro con el kit Lumine</span>
-              {ahorro ? (
-                <p className="font-display text-3xl font-extrabold text-ok [font-stretch:110%]"><AnimNum valor={anual * ahorro.min / 100} /> a <AnimNum valor={anual * ahorro.max / 100} /> <small className="text-base font-semibold text-muted-foreground">al año</small></p>
-              ) : (
-                <div className="flex flex-col gap-2"><PorConfirmar que="Porcentaje de ahorro" /><span className="text-sm text-muted-foreground">Depende de tu uso. Lo estimamos en el diagnóstico y después lo medimos en tu auto con telemetría.</span></div>
-              )}
-            </div>
-            <Button size="lg" className="mt-auto group" onClick={() => irA('compatibilidad')}>Ver si mi auto es compatible <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" /></Button>
           </Aparecer>
         </div>
       </div>
@@ -155,57 +182,60 @@ export function Compatibilidad() {
   }
   const ops = paso !== 'auto' && paso !== 'fin' && !escribiendo ? PREGUNTAS[paso].ops : null
   return (
-    <section id="compatibilidad" className="relative scroll-mt-24 border-t border-white/10 bg-[radial-gradient(800px_400px_at_80%_0%,rgba(34,184,240,0.1),transparent_70%)] py-24 md:py-32" aria-labelledby="co-t">
-      <div className="mx-auto grid max-w-7xl gap-10 px-5 md:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+    <section id="compatibilidad" className="relative scroll-mt-20 border-t border-line bg-bg py-24 md:py-36" aria-labelledby="co-t">
+      <div className="mx-auto grid max-w-[1440px] gap-12 px-5 md:px-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
         <div>
-          <Encabezado id="co-t" eyebrow="Compatibilidad" titulo={<>¿Tu auto <span className="text-brand">puede?</span></>} bajada="Tres preguntas y te decimos si tu auto es candidato. Sin registrarte." />
-          <Aparecer i={2} className="flex flex-col gap-3 text-sm text-muted-foreground">
-            <p className="flex gap-3"><CheckCircle2 className="mt-0.5 size-5 shrink-0 text-brand" aria-hidden="true" />El kit va en el eje trasero de autos con tracción delantera.</p>
-            <p className="flex gap-3"><CheckCircle2 className="mt-0.5 size-5 shrink-0 text-brand" aria-hidden="true" />El modelo tiene que estar en nuestra biblioteca de calibraciones: eso lo confirmamos en el diagnóstico.</p>
-            <p className="flex gap-3"><CheckCircle2 className="mt-0.5 size-5 shrink-0 text-brand" aria-hidden="true" />Autos con ABS, airbags y control de estabilidad sí pueden: esos sistemas siguen mandando.</p>
-          </Aparecer>
+          <Encabezado n="04" etiqueta="Compatibilidad" id="co-t" titulo={<>¿Tu auto <span className="t-serif normal-case text-accent-text">puede?</span></>} bajada="Tres preguntas y te decimos si tu auto es candidato. Sin registrarte." apilado />
+          <ol className="flex flex-col">
+            {['El kit va en el eje trasero de autos con tracción delantera.', 'El modelo tiene que estar en nuestra biblioteca de calibraciones: eso lo confirmamos en el diagnóstico.', 'Autos con ABS, airbags y control de estabilidad sí pueden: esos sistemas siguen mandando.'].map((t, i) => (
+              <Aparecer as="li" i={i} key={t} className="grid grid-cols-[44px_1fr] gap-3 border-t border-line py-5 text-[15px] leading-relaxed text-muted">
+                <span className="t-label-sm pt-1 text-accent-text">R{i + 1}</span>{t}
+              </Aparecer>
+            ))}
+          </ol>
         </div>
-        <Aparecer i={1} className="flex h-[min(640px,80svh)] min-h-[480px] flex-col overflow-hidden rounded-[28px] border border-white/10 bg-[#0b1013] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)]">
-          <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
-            <span className="flex items-center gap-3"><span className="grid size-9 place-items-center rounded-full bg-brand/15 text-brand"><Bot className="size-5" aria-hidden="true" /></span><span className="flex flex-col leading-tight"><b className="text-sm">Verificador Lumine</b><small className="text-xs text-muted-foreground">Guiado · no usa IA ni guarda datos</small></span></span>
+        <Aparecer i={1} className="visor flex h-[min(680px,82svh)] min-h-[500px] flex-col border border-line bg-surface">
+          <i className="esq a" /><i className="esq b" /><i className="esq c" /><i className="esq d" />
+          <div className="flex items-center justify-between border-b border-line px-5 py-3">
+            <span className="flex flex-col gap-0.5"><span className="t-label flex items-center gap-2 text-fg"><i className="parpadeo size-1.5 bg-accent" />Verificador Lumine</span><small className="t-label-sm text-dim">Guiado · no usa IA ni guarda datos</small></span>
             <Button size="sm" variant="fantasma" onClick={iniciar} aria-label="Empezar de nuevo"><RotateCcw className="size-4" /> Reiniciar</Button>
           </div>
           <div ref={lista} className="flex flex-1 flex-col gap-3 overflow-y-auto px-4 py-5 md:px-5" role="log" aria-live="polite" aria-label="Conversación del verificador">
             <AnimatePresence initial={false}>
               {msgs.map(m => (
                 <motion.div key={m.id} initial={{ opacity: 0, y: 10, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.25 }}
-                  className={cn('max-w-[88%] rounded-3xl px-4 py-3 text-[15px] leading-relaxed', m.de === 'bot' ? 'self-start rounded-bl-md bg-white/[0.06]' : 'self-end rounded-br-md bg-brand font-medium text-[#041016]')}>
+                  className={cn('max-w-[88%] px-4 py-3 text-[15px] leading-relaxed', m.de === 'bot' ? 'self-start border-l-2 border-accent bg-well' : 'self-end bg-accent font-medium text-accent-ink')}>
                   {m.texto}
                 </motion.div>
               ))}
               {escribiendo ? (
-                <motion.div key="esc" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex gap-1.5 self-start rounded-3xl rounded-bl-md bg-white/[0.06] px-4 py-4" aria-label="Escribiendo">
-                  {[0, 1, 2].map(i => <motion.i key={i} className="size-2 rounded-full bg-muted-foreground" animate={{ y: [0, -4, 0] }} transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }} />)}
+                <motion.div key="esc" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex gap-1.5 self-start border-l-2 border-accent bg-well px-4 py-4" aria-label="Escribiendo">
+                  {[0, 1, 2].map(i => <motion.i key={i} className="size-1.5 bg-muted" animate={{ y: [0, -4, 0] }} transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }} />)}
                 </motion.div>
               ) : null}
             </AnimatePresence>
           </div>
-          <div className="border-t border-white/10 p-3 md:p-4">
+          <div className="border-t border-line p-3 md:p-4">
             {ops ? (
               <div className="mb-3 flex flex-wrap gap-2">
                 {ops.map(([v, l]) => (
                   <motion.button key={v} type="button" whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }} onClick={() => elegir(paso as keyof typeof PREGUNTAS, v, l)}
-                    className="min-h-11 rounded-full border border-brand/40 bg-brand/10 px-4 py-2 text-sm font-semibold text-brand transition-colors hover:bg-brand hover:text-[#041016]">{l}</motion.button>
+                    className="t-label min-h-11 border border-accent/50 px-4 py-2 text-accent-text transition-colors hover:bg-accent hover:text-accent-ink">{l}</motion.button>
                 ))}
               </div>
             ) : null}
             {paso === 'fin' && !escribiendo ? (
               <div className="flex flex-wrap gap-2">
-                <Button className="flex-1" onClick={() => { window.dispatchEvent(new CustomEvent('lumine:prefill', { detail: r })); irA('agendar') }}>Agendar diagnóstico <ArrowRight className="size-4" /></Button>
+                <Button className="flex-1" onClick={() => { window.dispatchEvent(new CustomEvent('lumine:prefill', { detail: r })); irA('agendar') }}>Agendar diagnóstico <Flecha /></Button>
                 <Button variant="borde" onClick={iniciar}><RotateCcw className="size-4" /> Otro auto</Button>
               </div>
             ) : (
-              <PromptInput value={texto} onValueChange={setTexto} onSubmit={enviarAuto} disabled={paso !== 'auto' || escribiendo} className="rounded-[22px] border-white/15 bg-white/[0.03] focus-within:border-brand/60">
+              <PromptInput value={texto} onValueChange={setTexto} onSubmit={enviarAuto} disabled={paso !== 'auto' || escribiendo} className="focus-within:border-accent">
                 <PromptInputTextarea placeholder={paso === 'auto' ? 'Marca, modelo y año de tu auto' : 'Elige una opción arriba'} aria-label="Marca, modelo y año de tu auto" />
                 <PromptInputActions className="justify-end px-1 pb-1">
                   <PromptInputAction tooltip="Enviar">
                     <PromptButton type="button" size="icon" aria-label="Enviar" onClick={enviarAuto} disabled={paso !== 'auto' || texto.trim().length < 2}
-                      className={cn('size-9 rounded-full transition-all', texto.trim().length >= 2 ? 'bg-brand text-[#041016] hover:bg-brand-soft' : 'bg-white/10 text-muted-foreground')}>
+                      className={cn('size-9 rounded-none transition-all', texto.trim().length >= 2 ? 'bg-accent text-accent-ink hover:bg-accent' : 'bg-control text-muted hover:bg-control')}>
                       <ArrowUp className="size-4" />
                     </PromptButton>
                   </PromptInputAction>
@@ -223,18 +253,18 @@ function Resultado({ r }: { r: Resp }) {
   const auto = r.auto || 'tu auto'
   if (r.traccion === 'no') return (
     <div className="flex flex-col gap-2">
-      <span className="inline-flex items-center gap-2 font-bold text-warn"><XCircle className="size-5" aria-hidden="true" /> Por ahora, no</span>
+      <span className="t-label inline-flex items-center gap-2 text-warn"><XCircle className="size-5" aria-hidden="true" /> Por ahora, no</span>
       <span>El kit va en el eje trasero y necesita que {auto} sea de tracción delantera. Si te equivocaste, reinicia: en el diagnóstico lo revisamos igual.</span>
     </div>
   )
   const seguro = r.traccion === 'si'
   return (
     <div className="flex flex-col gap-3">
-      <span className={cn('inline-flex items-center gap-2 font-bold', seguro ? 'text-ok' : 'text-brand')}>{seguro ? <CheckCircle2 className="size-5" aria-hidden="true" /> : <CircleHelp className="size-5" aria-hidden="true" />}{seguro ? 'Buen candidato' : 'Puede ser candidato'}</span>
+      <span className={cn('t-label inline-flex items-center gap-2', seguro ? 'text-ok' : 'text-accent-text')}>{seguro ? <CheckCircle2 className="size-5" aria-hidden="true" /> : <CircleHelp className="size-5" aria-hidden="true" />}{seguro ? 'Buen candidato' : 'Puede ser candidato'}</span>
       <span>{seguro ? `${auto} cumple lo básico.` : `Revisamos la tracción de ${auto} en el diagnóstico.`} Lo último que confirmamos es que su modelo esté en nuestra biblioteca de calibraciones.</span>
-      {r.km === 'bajo' ? <span className="text-muted-foreground">Con poco uso diario el ahorro es menor. Si no te conviene, el diagnóstico te lo dice con evidencia y no instalamos.</span> : null}
-      {r.km === 'alto' ? <span className="text-muted-foreground">Con muchos kilómetros al día, cada punto de ahorro pesa más en tu bolsillo.</span> : null}
-      {r.tipo === 'flota' ? <span className="text-muted-foreground">Para flotas armamos un plan por etapas, sin detener tu operación.</span> : null}
+      {r.km === 'bajo' ? <span className="text-muted">Con poco uso diario el ahorro es menor. Si no te conviene, el diagnóstico te lo dice con evidencia y no instalamos.</span> : null}
+      {r.km === 'alto' ? <span className="text-muted">Con muchos kilómetros al día, cada punto de ahorro pesa más en tu bolsillo.</span> : null}
+      {r.tipo === 'flota' ? <span className="text-muted">Para flotas armamos un plan por etapas, sin detener tu operación.</span> : null}
     </div>
   )
 }

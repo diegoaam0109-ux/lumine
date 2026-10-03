@@ -2,84 +2,152 @@
 @import "tw-animate-css";
 @import "./brand.css";
 
-/* Lumine Motors · sistema visual de la página comercial
-   Marca: celeste Lumine sobre grafito. Tipografías: Archivo (exhibición, ancha) y Figtree (texto).
-   Patrón y checklist: skill UI/UX Pro Max (hero dominante, una acción principal, movimiento con propósito). */
-@custom-variant dark (&:is(.dark *));
+/* =====================================================================
+   Lumine Motors · sistema visual de la página comercial
+   Mezcla de referencias con la marca:
+   - Lamborghini / Ferrari: escenario negro cinematográfico, titular monumental
+     en mayúsculas, bordes rectos, un solo acento (aquí el celeste Lumine).
+   - AWE: etiquetas mono de tablero de instrumentos, líneas finas, píldoras de navegación,
+     acentos editoriales en serif itálica.
+   - Apple: sobriedad, el producto como protagonista, modo claro limpio.
+   ===================================================================== */
+@custom-variant dark (&:where([data-tema="oscuro"], [data-tema="oscuro"] *));
 
 @theme inline {
   --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Archivo", "Figtree", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
+  --font-serif: "Instrument Serif", "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-well: var(--well);
+  --color-control: var(--control);
+  --color-fg: var(--fg);
   --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
-  --color-ring: var(--ring);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
+  --color-dim: var(--dim);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
   --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-brand: #22B8F0;
-  --color-brand-soft: #78d6f7;
-  --color-ok: #4ADE80;
-  --color-warn: #F5B94A;
-  --radius: 1rem;
+  --color-accent-text: var(--accent-text);
+  --color-accent-ink: #031015;
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-crit: var(--crit);
 }
 
-:root {
-  --background: #06090b;
-  --foreground: #eef3f5;
-  --card: #0d1317;
-  --card-foreground: #eef3f5;
-  --muted: #141c21;
-  --muted-foreground: #9aaab1;
-  --border: rgba(186, 215, 247, 0.12);
-  --ring: rgba(34, 184, 240, 0.55);
-  --primary: #22B8F0;
-  --primary-foreground: #041016;
-  --accent: #141c21;
-  --accent-foreground: #eef3f5;
+/* Fuera de capas a propósito: el visor de artefactos inyecta reglas sin capa para body
+   (fondo claro y fuente del sistema) que le ganaban a @layer base. Estas ganan siempre. */
+:root, :root[data-tema="oscuro"] {
+  --bg: #020304;
+  --surface: #0a0d0f;
+  --well: #101417;
+  --control: #1a1e22;
+  --fg: #ececec;
+  --muted: #8b9598;
+  --dim: #4b5154;
+  --line: #1f2427;
+  --line-2: #2e3438;
+  --accent: #22B8F0;
+  --accent-text: #22B8F0;
+  --ok: #4ADE80;
+  --warn: #F5B94A;
+  --crit: #F87171;
+  --glow: rgba(34, 184, 240, 0.28);
+  --grid: rgba(186, 215, 247, 0.04);
+  --scrim: rgba(2, 3, 4, 0.72);
   color-scheme: dark;
 }
+:root[data-tema="claro"] {
+  --bg: #f5f5f7;
+  --surface: #ffffff;
+  --well: #ebecef;
+  --control: #e3e5e8;
+  --fg: #1d1d1f;
+  --muted: #5f6368;
+  --dim: #a1a5aa;
+  --line: #dcdde1;
+  --line-2: #c8cace;
+  --accent: #22B8F0;
+  --accent-text: #0A6F9E;
+  --ok: #157a46;
+  --warn: #9a5b06;
+  --crit: #b42318;
+  --glow: rgba(34, 184, 240, 0.18);
+  --grid: rgba(29, 29, 31, 0.045);
+  --scrim: rgba(245, 245, 247, 0.8);
+  color-scheme: light;
+}
+html, html body {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: var(--bg) !important;
+  color: var(--fg) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 16px !important;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color .4s ease, color .4s ease;
+}
+html { scroll-behavior: smooth; scroll-padding-top: 88px; -webkit-text-size-adjust: 100%; }
+html body { overflow-x: hidden; }
 
 @layer base {
-  * { border-color: var(--border); }
-  html { scroll-behavior: smooth; scroll-padding-top: 88px; -webkit-text-size-adjust: 100%; }
-  body { background: var(--background); color: var(--foreground); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-  ::selection { background: rgba(34, 184, 240, 0.35); }
-  :focus-visible { outline: 2px solid #22B8F0; outline-offset: 3px; border-radius: 8px; }
-  button, a, [role="button"] { cursor: pointer; }
+  * { border-color: var(--line); }
+  ::selection { background: var(--accent); color: #031015; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  button, a, [role="button"], label[for], input[type="range"] { cursor: pointer; }
 }
 
-/* exhibición: Archivo ancho en mayúsculas, como la marca */
-.display { font-family: var(--font-display); font-stretch: 115%; font-weight: 850; text-transform: uppercase; letter-spacing: -0.03em; line-height: 0.92; }
-.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #22B8F0; }
+/* ---------- tipografía ---------- */
+/* monumental: Archivo condensado en mayúsculas (voz Lamborghini) */
+.t-mono-xl { font-family: var(--font-display); font-stretch: 68%; font-weight: 700; text-transform: uppercase; letter-spacing: -0.01em; line-height: 0.84; }
+/* títulos de sección: Archivo ancho de la marca Lumine */
+.t-titulo { font-family: var(--font-display); font-stretch: 112%; font-weight: 800; text-transform: uppercase; letter-spacing: -0.025em; line-height: 0.95; }
+/* acento editorial (voz AWE) */
+.t-serif { font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; letter-spacing: -0.01em; font-stretch: 100%; }
+/* etiquetas de instrumento */
+.t-label { font-family: var(--font-mono); font-size: 11.5px; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; line-height: 1.4; }
+.t-label-sm { font-family: var(--font-mono); font-size: 10.5px; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; }
+.t-num { font-family: var(--font-display); font-stretch: 75%; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.contorno { -webkit-text-stroke: 1px var(--line-2); color: transparent; }
 
-/* ambiente: grilla de plano técnico y focos de luz */
-.ambiente { background:
-  radial-gradient(900px 500px at 70% -10%, rgba(34, 184, 240, 0.22), transparent 65%),
-  radial-gradient(700px 420px at 0% 30%, rgba(34, 184, 240, 0.08), transparent 70%),
-  linear-gradient(rgba(186, 215, 247, 0.045) 1px, transparent 1px) 0 0 / 56px 56px,
-  linear-gradient(90deg, rgba(186, 215, 247, 0.045) 1px, transparent 1px) 0 0 / 56px 56px; }
-.vidrio { background: rgba(13, 19, 23, 0.6); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); border: 1px solid rgba(186, 215, 247, 0.14); box-shadow: inset 0 1px 0 rgba(216, 236, 248, 0.08), 0 20px 50px -20px rgba(0, 0, 0, 0.7); }
-.brillo-texto { background: linear-gradient(100deg, #eef3f5 20%, #22B8F0 45%, #eef3f5 70%); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: brillo 6s ease-in-out infinite; }
-@keyframes brillo { 0%, 100% { background-position: 100% 0; } 50% { background-position: 0 0; } }
+/* ---------- escenario ---------- */
+.rejilla { background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 64px 64px; }
+.foco { background: radial-gradient(60% 55% at 50% 42%, var(--glow), transparent 70%); }
+.grano::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .06; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+:root[data-tema="claro"] .grano::after { opacity: .035; mix-blend-mode: multiply; }
+/* esquinas de visor (HUD) */
+.visor { position: relative; }
+.visor > i.esq { position: absolute; width: 18px; height: 18px; border-color: var(--accent); pointer-events: none; }
+.visor > i.esq.a { top: 0; left: 0; border-top: 1px solid; border-left: 1px solid; }
+.visor > i.esq.b { top: 0; right: 0; border-top: 1px solid; border-right: 1px solid; }
+.visor > i.esq.c { bottom: 0; left: 0; border-bottom: 1px solid; border-left: 1px solid; }
+.visor > i.esq.d { bottom: 0; right: 0; border-bottom: 1px solid; border-right: 1px solid; }
+.barrido { position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: .5; animation: barrido 6s linear infinite; }
+@keyframes barrido { from { top: 0%; } to { top: 100%; } }
+.parpadeo { animation: parpadeo 2.4s ease-in-out infinite; }
+@keyframes parpadeo { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+@keyframes marquesina { to { transform: translateX(-50%); } }
 
-/* escenario 3D */
+/* ---------- 3D ---------- */
 .lab-stage { position: relative; width: 100%; height: 100%; }
 .lab-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; cursor: grab; outline: none; }
 .lab-canvas:active { cursor: grabbing; }
 .lab-hots { position: absolute; inset: 0; pointer-events: none; }
 
-/* marcador honesto de dato comercial pendiente */
-.por-confirmar { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; border: 1px dashed rgba(245, 185, 74, 0.6); color: #F5B94A; font-size: 12px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+/* ---------- controles ---------- */
+.rango { -webkit-appearance: none; appearance: none; width: 100%; height: 24px; background: transparent; }
+.rango::-webkit-slider-runnable-track { height: 2px; background: linear-gradient(90deg, var(--accent) var(--p, 50%), var(--line-2) var(--p, 50%)); }
+.rango::-moz-range-track { height: 2px; background: var(--line-2); }
+.rango::-moz-range-progress { height: 2px; background: var(--accent); }
+.rango::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; margin-top: -8px; background: var(--accent); border: 3px solid var(--bg); box-shadow: 0 0 0 1px var(--accent), 0 0 16px var(--glow); }
+.rango::-moz-range-thumb { width: 14px; height: 14px; border-radius: 0; background: var(--accent); border: 3px solid var(--bg); }
+
+/* dato comercial pendiente */
+.por-confirmar { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border: 1px dashed color-mix(in srgb, var(--warn) 70%, transparent); color: var(--warn); font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
 }
-@keyframes marquesina { to { transform: translateX(-50%); } }

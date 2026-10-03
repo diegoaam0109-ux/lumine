@@ -2,25 +2,29 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
-/* Botón estilo shadcn con las variantes de la marca */
+/* Botón estilo shadcn con la voz de la página:
+   - acento: bloque rectangular celeste (como el amarillo de Lamborghini, un solo acento por pantalla)
+   - borde: rectángulo con línea fina
+   - pildora: control de navegación redondeado (AWE)
+   - fantasma: solo texto en mayúsculas mono con flecha */
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-semibold transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 active:translate-y-px',
+  'group/btn inline-flex items-center justify-center gap-3 whitespace-nowrap font-mono text-[12px] uppercase tracking-[0.14em] transition-all duration-300 disabled:pointer-events-none disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   {
     variants: {
       variant: {
-        default: 'bg-brand text-[#041016] shadow-[0_10px_30px_-10px_rgba(34,184,240,0.7)] hover:bg-brand-soft hover:shadow-[0_14px_40px_-10px_rgba(34,184,240,0.85)]',
-        claro: 'bg-foreground text-background hover:bg-white',
-        borde: 'border border-white/15 bg-white/[0.03] text-foreground hover:bg-white/[0.08] hover:border-white/30',
-        fantasma: 'text-muted-foreground hover:text-foreground hover:bg-white/[0.06]',
+        acento: 'bg-accent text-accent-ink hover:shadow-[0_0_0_1px_var(--accent),0_18px_50px_-12px_var(--glow)] active:translate-y-px',
+        borde: 'border border-line-2 text-fg hover:border-fg',
+        pildora: 'rounded-full bg-control text-fg hover:bg-line-2',
+        fantasma: 'text-fg hover:text-accent-text',
       },
       size: {
-        default: 'h-11 px-5 text-sm',
-        sm: 'h-9 px-4 text-sm',
-        lg: 'h-14 px-7 text-base',
+        default: 'h-12 px-6',
+        sm: 'h-9 px-4 text-[11px]',
+        lg: 'h-14 px-8 text-[12.5px]',
         icon: 'size-10',
       },
     },
-    defaultVariants: { variant: 'default', size: 'default' },
+    defaultVariants: { variant: 'acento', size: 'default' },
   },
 )
 
