@@ -25,6 +25,9 @@ const code = files.map(f => fs.readFileSync(path.join(root, 'src', f), 'utf8')).
   ok(!tec.can('agenda/u_a', 'write'), 'formador NO escribe su agenda (la publica administración)');
   ok(tec.can('marcas/u_a', 'write'), 'formador escribe sus marcas');
   ok(!tec.can('marcas/u_b', 'read'), 'formador NO lee marcas ajenas');
+  ok(tec.can('solicitudes/u_a', 'write') && tec.can('solicitudes/u_a', 'read'), 'técnico escribe su solicitud de rotación');
+  ok(!tec.can('solicitudes/u_b', 'write') && !tec.can('solicitudes/u_b', 'read'), 'técnico NO lee ni escribe la solicitud de otro');
+  ok(adm.can('solicitudes/u_a', 'read'), 'administración lee las solicitudes');
   ok(adm.can('personas/p1', 'write') && adm.can('expedientes/u_a', 'write'), 'administración escribe todo lo de gestión');
   ok(!vis.can('avance/u_v', 'write'), 'un Viewer no escribe ni su propio avance');
   // rutas límite

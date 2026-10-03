@@ -11,8 +11,8 @@ const S = {
   role: 'loading',              // admin | tecnico | postulante | anonimo | sindb | loading
   demoRole: (function(){ try { return sessionStorage.getItem('lh-demo-sesion') || 'visitante'; } catch(e){ return 'visitante'; } })(),
   kiosk: false,
-  D: { personas:{}, sesiones:{}, duos:{}, registros:{}, params:null, gestion:null, contenido:null, avance:{}, marcas:{}, agenda:{}, expedientes:{}, bitacora:{} },
-  mine: { expediente:null, avance:null, agenda:null, marcas:null },
+  D: { personas:{}, sesiones:{}, duos:{}, registros:{}, params:null, gestion:null, contenido:null, avance:{}, marcas:{}, agenda:{}, expedientes:{}, bitacora:{}, solicitudes:{} },
+  mine: { expediente:null, avance:null, agenda:null, marcas:null, solicitud:null },
   loaded: new Set(),
   unsub: [],
   readOnly: false,
@@ -107,7 +107,7 @@ function suscribir(){
   unsubscribeAll();
   if(S.role === 'admin'){
     subCol('personas', 'personas'); subCol('sesiones', 'sesiones'); subCol('duos', 'duos'); subCol('registros', 'registros');
-    subCol('avance', 'avance'); subCol('marcas', 'marcas'); subCol('agenda', 'agenda'); subCol('expedientes', 'expedientes'); subCol('bitacora', 'bitacora');
+    subCol('avance', 'avance'); subCol('marcas', 'marcas'); subCol('agenda', 'agenda'); subCol('expedientes', 'expedientes'); subCol('bitacora', 'bitacora'); subCol('solicitudes', 'solicitudes');
     subDoc('config/parametros', v => { S.D.params = v; }, 'params');
     subDoc('ajustes/gestion', v => { S.D.gestion = v; }, 'gestion');
     subDoc('config/contenido', v => { S.D.contenido = v; }, 'contenido');
@@ -118,6 +118,7 @@ function suscribir(){
     subDoc('avance/' + S.me.id, v => { S.mine.avance = v; }, 'avance');
     subDoc('agenda/' + S.me.id, v => { S.mine.agenda = v; }, 'agenda');
     subDoc('marcas/' + S.me.id, v => { S.mine.marcas = v; }, 'marcas');
+    subDoc('solicitudes/' + S.me.id, v => { S.mine.solicitud = v; }, 'solicitud');
   }
 }
 function cargado(keys){ return keys.every(k => S.loaded.has(k)); }
@@ -193,8 +194,8 @@ async function iniciarVistaPrevia(tipo, pid){
   const dir = { [uid]: { name: nombre, color:'#697177' } };
   S.db = mem; S.user = new MemUser(dir, { level:'interact', id:uid });
   S.preview = { tipo, pid: pid || null, nombre };
-  S.mine = { expediente:null, avance:null, agenda:null, marcas:null };
-  S.D = { personas:{}, sesiones:{}, duos:{}, registros:{}, params:null, gestion:null, contenido:null, avance:{}, marcas:{}, agenda:{}, expedientes:{}, bitacora:{} };
+  S.mine = { expediente:null, avance:null, agenda:null, marcas:null, solicitud:null };
+  S.D = { personas:{}, sesiones:{}, duos:{}, registros:{}, params:null, gestion:null, contenido:null, avance:{}, marcas:{}, agenda:{}, expedientes:{}, bitacora:{}, solicitudes:{} };
   for(const k of Object.keys(UI)) if(/^(postular|prac-|esc-|sim-|mod-)/.test(k)) delete UI[k];
   await identificar();
   S.role = 'tecnico';
@@ -205,7 +206,7 @@ async function salirVistaPrevia(){
   if(!S.preview) return;
   const R = S.real; S.real = null; S.preview = null;
   S.db = R.db; S.user = R.user; S.me = R.me; S.D = R.D;
-  S.mine = { expediente:null, avance:null, agenda:null, marcas:null };
+  S.mine = { expediente:null, avance:null, agenda:null, marcas:null, solicitud:null };
   S.role = 'admin';
   suscribir();
   go('entrar');
@@ -230,16 +231,16 @@ function esFormador(){ return S.role === 'tecnico' && S.mine.agenda && Object.ke
 
 /* ---------- arranque de cada modo ---------- */
 function demoStorageLoad(){
-  try { const raw = localStorage.getItem('lh-demo-v4'); if(!raw) return null; const o = JSON.parse(raw); if(o && o.hoy === S.hoy && o.docs) return o.docs; } catch(e){}
+  try { const raw = localStorage.getItem('lh-demo-v5'); if(!raw) return null; const o = JSON.parse(raw); if(o && o.hoy === S.hoy && o.docs) return o.docs; } catch(e){}
   return null;
 }
 let demoSaveT = null;
 function demoStorageSave(){
   clearTimeout(demoSaveT);
-  demoSaveT = setTimeout(() => { try { localStorage.setItem('lh-demo-v4', JSON.stringify({ hoy:S.hoy, docs:S.mem.dump() })); } catch(e){} }, 400);
+  demoSaveT = setTimeout(() => { try { localStorage.setItem('lh-demo-v5', JSON.stringify({ hoy:S.hoy, docs:S.mem.dump() })); } catch(e){} }, 400);
 }
 function demoReset(){
-  try { localStorage.removeItem('lh-demo-v4'); } catch(e){}
+  try { localStorage.removeItem('lh-demo-v5'); } catch(e){}
   S.mem.load(demoSeed(S.hoy));
   toast('Demostración restablecida');
 }
@@ -256,8 +257,8 @@ async function iniciarDemo(){
   S.mem.setViewer(role.viewer); S.memUser.setViewer(role.viewer);
   S.db = S.mem; S.user = S.memUser;
   S.kiosk = !!role.kiosk;
-  S.mine = { expediente:null, avance:null, agenda:null, marcas:null };
-  S.D = { personas:{}, sesiones:{}, duos:{}, registros:{}, params:null, gestion:null, contenido:null, avance:{}, marcas:{}, agenda:{}, expedientes:{}, bitacora:{} };
+  S.mine = { expediente:null, avance:null, agenda:null, marcas:null, solicitud:null };
+  S.D = { personas:{}, sesiones:{}, duos:{}, registros:{}, params:null, gestion:null, contenido:null, avance:{}, marcas:{}, agenda:{}, expedientes:{}, bitacora:{}, solicitudes:{} };
   await identificar();
   S.role = decidirRol();
   suscribir();

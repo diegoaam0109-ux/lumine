@@ -36,4 +36,5 @@ El orden de los archivos está en `manifest.json` (lo usan el build y las prueba
 ## Publicar la versión real
 
 Capacidades: `db` con `rules: DB_RULES`, `user` con `scopes:["profile"]` y `downloads`.
+Cada vez que cambian las `DB_RULES` (por ejemplo, `solicitudes/{self}` para la rotación de duos) hay que volver a publicar.
 Acceso: Editor = administración; Colaborador = postulante o técnico; el evaluador externo usa el kiosco.

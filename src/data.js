@@ -184,14 +184,33 @@ const ROLES_INFO = [
   {id:'rt',      n:'Responsable Técnico',  ic:'settings', hace:'Administra parámetros, registra incidentes y salidas, revisa indicadores', nove:'No aplica'}
 ];
 
-/* Parámetros por defecto. Los valores sin fijar quedan en null a propósito (informe 5). */
+/* Horas por módulo (aprender + practicar, en horas reloj). Ninguna norma conoce el kit de Lumine:
+   lo que trata la seguridad en alta tensión sale de normas internacionales; lo propio del kit es
+   una estimación que se ajusta cuando exista el procedimiento real. t: norma | mixta | estimacion */
+const HORAS_REF = {
+  'NIV-E': {h:48, t:'norma',      b:'DGUV 209-093: quien no trae formación eléctrica necesita hasta 80 UE para la etapa 2S, contra 16 UE de un mecatrónico. La diferencia, 64 UE de 45 min, es la base eléctrica (≈48 h).'},
+  'NIV-M': {h:40, t:'estimacion', b:'Estimación: una semana de taller (herramientas, torques, frenos y suspensión). Ninguna norma de alta tensión fija la base mecánica.'},
+  'NIV-X': {h:40, t:'estimacion', b:'Estimación: la mitad del curso de 80 h del perfil ChileValora de diagnóstico y mantenimiento de vehículos eléctricos, que parte de sensores, redes y OBD.'},
+  'N1-1':  {h:36, t:'norma',      b:'DGUV 209-093 etapa 2S: entre 16 UE (quien ya trae base eléctrica) y 80 UE (quien no la trae); el piso que más se usa es 48 UE (≈36 h), con al menos 16 de práctica. Coincide con NF C 18-550 en Francia (B2VL y BCL, 3 días) y con el RD 281/2021 de España (seguridad, 50 h).'},
+  'N1-2':  {h:20, t:'mixta',      b:'Primeros auxilios con RCP: 16 h, formato habitual en Chile (la DGUV 204-022 exige 9 UE). Se suman 4 h de incendio de batería y rescate por contacto eléctrico.'},
+  'N1-3':  {h:8,  t:'estimacion', b:'Estimación: una jornada para reconocer ABS, control de estabilidad, airbags y pretensores.'},
+  'N2-1':  {h:24, t:'estimacion', b:'Estimación: tres jornadas. Elegibilidad del kit y estimador de ahorro son propios de Lumine.'},
+  'N2-2':  {h:40, t:'mixta',      b:'Estimación apoyada en el RD 281/2021 de España (alto voltaje y baterías, 95 h, que cubre más que el kit): una semana de montaje, cableado y manejo del banco de baterías.'},
+  'N2-3':  {h:32, t:'mixta',      b:'DGUV 209-093 etapa 3S: 24 UE (≈18 h), al menos 16 de práctica, para trabajar con tensión. Se suman 14 h de integración de la unidad de control (estimación).'},
+  'N2-4':  {h:24, t:'estimacion', b:'Estimación: tres jornadas. Lo fija Ingeniería de Calibración, que enseña y valida el módulo.'},
+  'N2-5':  {h:16, t:'estimacion', b:'Estimación: dos jornadas de dinamómetro, protocolo previo a la certificación y documentación.'},
+  'N3-1':  {h:40, t:'mixta',      b:'Retirar una batería dañada es trabajo con tensión: DGUV 209-093 etapa 3S, 24 UE (≈18 h). Se suman 22 h de postventa, telemetría y atención de clientes (estimación).'},
+  'N4-1':  {h:24, t:'estimacion', b:'Estimación: tres jornadas, el formato habitual de un curso de formación de formadores.'}
+};
+
+/* Parámetros por defecto. El monto del bono queda en null a propósito: lo fija finanzas. */
 const PARAMS_DEF = {
   umbralComp: 85,          // % complementarias (D7)
   umbralFund: 2,           // respuestas correctas de 3 por área para no requerir nivelación
-  revalidacionMeses: 12,   // provisorio: frecuencia por definir (referencia IMI TechSafe: 36)
-  rotacionMinMeses: 3,     // D13 (propuesta)
-  periodoAutonomoDias: null,
-  horasModulo: {},         // {moduloId: horas}
+  revalidacionMeses: 24,   // fijado por el equipo (IMI TechSafe usa 36; la DGUV pide primeros auxilios cada 24)
+  rotacionMinMeses: 4,     // D13 (cerrada): rotación por solicitud, cada 4 meses como mínimo
+  periodoAutonomoDias: 90, // ventana de trabajo autónomo observado de la validación del nivel 3
+  horasModulo: Object.fromEntries(Object.entries(HORAS_REF).map(([k, v]) => [k, v.h])), // {moduloId: horas}
   horasValidacion: {},     // {JT|N1..N4|REV: horas}
   bonoNivel: {},           // {1..4: monto CLP} pendiente de finanzas
   firmaPorNivel: 'confirmada', // D18 (cerrada)

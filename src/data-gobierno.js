@@ -16,7 +16,7 @@ const REGLAS_EVAL = [
 ];
 const REGLAS_AVANCE = [
   ['Se repite solo lo reprobado.', 'Si alguien falla la estación de aislación, repite esa estación y no la validación completa.'],
-  ['Todo duo lleva al menos un técnico de nivel 3 o 4.', 'El nivel 2 trabaja con supervisión, así que dos técnicos de nivel 2 no forman duo por su cuenta.'],
+  ['Todo duo lleva al menos un técnico de nivel 3 o 4.', 'El nivel 2 trabaja con supervisión, así que dos técnicos de nivel 2 no forman duo por su cuenta. Esta regla ordena también la rotación voluntaria de los duos (D13).'],
   ['La primera generación trabaja bajo el Responsable Técnico.', 'Mientras no exista nadie de nivel 3, los duos trabajan con supervisión directa suya, y las validaciones internas las hacen él e Ingeniería de Calibración en el módulo 4.'],
   ['Solo el core de seguridad se revalida.', 'Se repasa y se vuelve a demostrar cada cierto tiempo; el resto del nivel no vence. Como referencia, IMI TechSafe exige actualización en ciclos de tres años.'],
   ['Un incidente de seguridad grave obliga a revalidar.', 'Quien lo protagoniza vuelve a demostrar el core de seguridad antes de trabajar de nuevo con alta tensión. No baja de nivel: solo se suspende esa parte hasta revalidar.']
@@ -82,7 +82,7 @@ const DECISIONES = [
   ['D10','Diseño','Módulos cortos, prácticos, con simulador y elementos interactivos; preguntas planteadas como casos del taller','Cerrada'],
   ['D11','Bono','Por capacitación completa y avance validado, nunca por nota online; monto pendiente de finanzas','Cerrada'],
   ['D12','Organización','Todo el trabajo técnico en duos fijos; teoría individual; validación práctica en duo con nota individual','Cerrada'],
-  ['D13','Rotación','Voluntaria tras 3 meses mínimo; todo duo con al menos un habilitado; el Responsable Técnico puede separar antes por seguridad o conflicto','Propuesta'],
+  ['D13','Rotación','Voluntaria, cada 4 meses como mínimo, por solicitud escrita al Responsable Técnico con los motivos: es una vía abierta para mejorar cómo trabajan los duos. El nuevo duo cumple los requisitos (al menos un técnico de nivel 3 o 4; nunca dos de nivel 1). El Responsable Técnico puede separar antes por seguridad o conflicto','Cerrada'],
   ['D14','Postventa','La gestiona otra área; la ejecuta el duo','Cerrada'],
   ['D15','Vehículos','Se incluyen autos con ABS, airbag y control de estabilidad, aunque el borrador de reglamento hoy los excluye','Cerrada'],
   ['D16','Comunicación','Ventas explica y convence; el técnico entra solo como experto de respaldo para quien quiera hablar con uno','Cerrada'],
@@ -91,13 +91,11 @@ const DECISIONES = [
   ['D19','Calibración nueva','Calibración 100% interna; cargo de Ingeniería de Calibración desde la apertura, con acceso restringido a la biblioteca','Cerrada']
 ];
 const PENDIENTES = [
-  'Fijar la frecuencia de revalidación del core de seguridad',
-  'Fijar horas por módulo, duración del período autónomo y monto del bono por avance',
-  'Confirmar con el proveedor del kit si el banco de baterías llega con carga, cuánto pesa y cómo se monta',
-  'Consultar a la SEC qué licencia corresponde al instalador certificado del borrador de reglamento',
-  'Definir el encuadre del sistema frente al reglamento futuro',
-  'Completar el respaldo externo de la escasez de técnicos con estudios del Ministerio de Energía y SENCE',
-  'Confirmar la columna de mercado del diccionario con evidencia'
+  'Fijar el monto del bono por avance (finanzas)',
+  'Elegir el proveedor del kit y confirmar el peso y el montaje del banco de baterías. Que llega con carga ya está respondido: por avión viaja con hasta 30% (IATA) y por mar sin límite, así que se trata como energizado desde que se recibe',
+  'Confirmar con la SEC la clase de licencia. El borrador de reglamento pide al menos un instalador electricista autorizado por la SEC sin decir la clase; por la escala del D.S. 92 correspondería la clase C si el kit no pasa de 50 kW, o la B si pasa',
+  'Definir el encuadre del sistema frente al reglamento futuro. El borrador ya pide lo que el sistema tiene: un Responsable Técnico ingeniero electricista, un instalador electricista SEC y un instalador mecánico con formación técnica',
+  'Confirmar la columna de mercado del diccionario con los datos reales de la jornada técnica (indicador de oficio demostrado). La oferta revisada (Duoc UC, INACAP y el perfil ChileValora de 2021) respalda el "parcial" en seguridad de alta tensión'
 ];
 const INFORMES = [
   ['Informe 1','Tareas del duo técnico','https://claude.ai/code/artifact/b2b2b149-ebc0-43c6-82fb-c79266bd8bae'],
@@ -111,7 +109,20 @@ const FUENTES = [
   ['O*NET OnLine, 49-3023.00 Automotive Service Technicians and Mechanics','https://www.onetonline.org/link/summary/49-3023.00'],
   ['SEC, Pliego Técnico Normativo RIC N°17 (referencia: rige para instalaciones fijas)','https://www.sec.cl/sitio-web/wp-content/uploads/2021/01/RIC-N17-Operacion-y-Mantenimiento.pdf'],
   ['bbz Arnsberg, Hochvolt: Neue DGUV steht in den Startlöchern (DGUV 209-093)','https://www.bbz-arnsberg.de/blog/hochvolt-neue-dguv-steht-in-den-startloechern'],
-  ['IMI, IMI TechSafe (ciclo de actualización de tres años)','https://www.theimi.org.uk/membership/imi-techsafe']
+  ['IMI, IMI TechSafe (ciclo de actualización de tres años)','https://www.theimi.org.uk/membership/imi-techsafe'],
+  ['DGUV Information 209-093, Qualifizierung für Arbeiten an Fahrzeugen mit Hochvoltsystemen (2021)','https://www.bghm.de/fileadmin/user_upload/Arbeitsschuetzer/Gesetze_Vorschriften/Informationen/209-093.pdf'],
+  ['TÜV SÜD, Qualifikationen nach DGUV Information 209-093 (unidades por etapa y punto de entrada)','https://www.tuvsud.com/INTERSHOP/static/WFS/BA-Academy-DE-Site/-/BA-Academy-DE/de_DE/PDF/AC360-HochVSys-mgr-w-22-03-16.pdf'],
+  ['DGUV, FAQ Elektromobilität (primeros auxilios con RCP, 9 UE; actualización cada dos años)','https://www.dguv.de/medien/fb-holzundmetall/sachgebiete/fahrzeug/bilder/faq_elektromobilitaet.pdf'],
+  ['INRS, Habilitation électrique: foire aux questions (NF C 18-550, recyclage cada 3 años)','https://www.inrs.fr/risques/electriques/habilitation-electrique-foire-aux-questions.html'],
+  ['BOE, Real Decreto 281/2021, curso de especialización en mantenimiento de vehículos híbridos y eléctricos','https://www.boe.es/diario_boe/txt.php?id=BOE-A-2021-7687'],
+  ['CFT Estatal de Valparaíso, Especialista en diagnóstico y mantenimiento de vehículos eléctricos (perfil ChileValora, 80 h)','https://tecnologicovalparaiso.cl/curso-especialista-en-diagnostico-y-mantenimiento-de-vehiculos-electricos/'],
+  ['bia Stuttgart, Hochvolt Stufe 3S (un año de experiencia como 2S antes de trabajar con tensión)','https://www.bia-stuttgart.de/kurse/hochvolt-schulung-stufe-3s/'],
+  ['Subsecretaría de Transportes, borrador de reglamento para la transformación de vehículos a propulsión eléctrica (consulta pública)','https://www.subtrans.gob.cl/wp-content/uploads/2025/09/Reglamento-Transformacio%CC%81n-de-Vehi%CC%81culos-a-Ele%CC%81ctricos-10_12_21-a-consulta-pu%CC%81blica-1.pdf'],
+  ['SEC, Alcance de las licencias de instalador eléctrico (D.S. 92)','https://sec.custhelp.com/app/answers/detail/a_id/584/~/alcance-de-licencias-de-instalador-el%C3%A9ctrico'],
+  ['SENCE, Estudio identifica el capital humano que requerirá la electromovilidad (Ministerio de Energía, Centro UC y OTIC SOFOFA)','https://sence.gob.cl/personas/noticias/estudio-identifica-el-capital-humano-que-se-requerira-para-la-implementacion-de-la-electromovilidad-en-el-pais'],
+  ['Centro UC Políticas Públicas, Electromovilidad en Chile: escenarios de implementación y desarrollo de capital humano','https://politicaspublicas.uc.cl/publicacion/electromovilidad-en-chile-escenarios-de-implementacion-y-desarrollo-de-capital-humano/'],
+  ['Ministerio de Energía, Chile avanza en formación y certificación para la electromovilidad junto a ChileValora','https://energia.gob.cl/noticias/nacional/chile-avanza-en-formacion-y-certificacion-para-la-electromovilidad-junto-chile-valora'],
+  ['IATA, Dangerous Goods Regulations 2026: baterías de litio UN3480 con hasta 30% de carga','https://www.hazmatuniversity.com/news/lithium-battery-air-transport-2026-iata-and-icao-compliance-guide/']
 ];
 
 /* 20 controles de seguridad antes de lanzar (lista entregada por el equipo) */
@@ -119,7 +130,7 @@ const SEGURIDAD = [
   {n:1,  t:'Revisa los permisos', s:'ok', d:'Cuatro tipos de usuario con reglas de acceso que aplica el servidor, no la página: la raíz de la base solo la lee y escribe administración; cada técnico ve únicamente su expediente y su avance; los evaluadores ven solo su agenda.'},
   {n:2,  t:'Panel admin', s:'ok', d:'El panel, las personas, las validaciones, los duos, los indicadores y los ajustes existen solo para nivel administración (Editor o dueño). A cualquier otro la base le responde como si no hubiera datos.'},
   {n:3,  t:'Datos entre clientes', s:'ok', d:'Cada técnico lee solo su propio expediente (ruta con su identificador). Un evaluador recibe solo los ítems que le asignaron. Nadie ve resultados de otro técnico.'},
-  {n:4,  t:'Blinda la base de datos', s:'ok', d:'Regla raíz cerrada para todo lo que no sea administración. Lo único que escribe un técnico es su propio avance online, y por diseño eso no habilita nada: toda autoridad vive en datos que solo escribe administración.'},
+  {n:4,  t:'Blinda la base de datos', s:'ok', d:'Regla raíz cerrada para todo lo que no sea administración. Lo único que escribe un técnico es su propio avance online y su solicitud de rotación, y por diseño eso no habilita nada: toda autoridad vive en datos que solo escribe administración.'},
   {n:5,  t:'Claves privadas', s:'ok', d:'La página no guarda claves, tokens ni contraseñas, y no usa servicios con llave. La biblioteca de calibraciones no se guarda en la plataforma.'},
   {n:6,  t:'Asegura el inicio de sesión', s:'plat', d:'Se entra con la cuenta de la organización en claude.ai. La plataforma no maneja contraseñas propias.'},
   {n:7,  t:'Sesiones caducadas', s:'plat', d:'Las sesiones las administra claude.ai. Si se retira el acceso con la página abierta, la base corta la conexión y la página queda sin datos.'},
@@ -149,5 +160,7 @@ const DB_RULES = [
   {path:'agenda',             read:'admin',    write:'admin'},
   {path:'agenda/{self}',      read:'interact', write:'admin'},
   {path:'marcas',             read:'admin',    write:'admin'},
-  {path:'marcas/{self}',      read:'interact', write:'interact'}
+  {path:'marcas/{self}',      read:'interact', write:'interact'},
+  {path:'solicitudes',        read:'admin',    write:'admin'},
+  {path:'solicitudes/{self}', read:'interact', write:'interact'}
 ];

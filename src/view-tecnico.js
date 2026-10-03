@@ -17,7 +17,7 @@ function planMio(e){ return { modulos: e.plan.modulos || [], nivelacion: e.plan.
 
 /* ---------- MI RUTA ---------- */
 VIEWS.ruta = function(){
-  if(!cargado(['expediente','avance','params'])) return vistaCargando();
+  if(!cargado(['expediente','avance','params','solicitud'])) return vistaCargando();
   const e = miExp();
   if(!e) return page(phead({ title:'Aún no tienes expediente', lead:'Postula para empezar tu diagnóstico.' }), linkBtn('Postular', 'postular', { kind:'action', arrow:true }));
   const n = e.nivel || 0, sig = n < 4 ? n + 1 : null;
@@ -36,13 +36,56 @@ VIEWS.ruta = function(){
     h('div', { class:'card', style:'--pad:18px;margin-bottom:18px' }, trackNiveles(n, e.fechasNivel)),
     h('div', { class:'alert ' + paso.s, style:'margin-bottom:18px' }, h('span', { class:'ai' }, icon(paso.ic, 's20')), h('div', null, h('div', { class:'at' }, paso.t), h('div', { class:'ad' }, paso.d)), sig && !e.suspendidoAT ? h('div', { class:'aa' }, linkBtn('Ir a módulos', 'modulos', { size:'sm', kind:'action' })) : null),
     h('div', { class:'grid g3', style:'--g:14px' },
-      h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Tu duo'), e.duo ? frag(h('div', { class:'row', style:'gap:10px' }, avatar(e.duo.companero), h('div', null, h('b', null, e.duo.companero), h('div', { class:'hint' }, 'Nivel ' + e.duo.companeroNivel + ' · desde ' + fechaCorta(e.duo.desde))))) : h('p', { class:'small muted' }, n >= 1 ? 'Sin duo asignado.' : 'Entras a un duo al validar el nivel 1.')),
+      h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Tu duo'), e.duo ? frag(h('div', { class:'row', style:'gap:10px' }, avatar(e.duo.companero), h('div', null, h('b', null, e.duo.companero), h('div', { class:'hint' }, 'Nivel ' + e.duo.companeroNivel + ' · desde ' + fechaCorta(e.duo.desde)))), bloqueRotacion(e)) : frag(h('p', { class:'small muted' }, n >= 1 ? 'Sin duo asignado.' : 'Entras a un duo al validar el nivel 1.'), bloqueRotacion(e))),
       h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Revalidación de seguridad'), rv.estado === 'na' ? h('p', { class:'small muted' }, 'Aplica desde el nivel 1.') : frag(h('div', { class:'h3' }, fechaCorta(rv.vence)), badge(rv.estado === 'vencida' ? 'Vencida' : rv.estado === 'pronto' ? 'Vence ' + relDias(rv.dias) : 'Vigente', rv.estado === 'vencida' ? 'crit' : rv.estado === 'pronto' ? 'warn' : 'ok'))),
       h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Bono por avance'), (e.bono || []).length ? e.bono.map(b => h('div', { class:'row sb small' }, h('span', null, 'Nivel ' + b.n), h('b', null, b.monto === null ? 'Monto por definir' : clp(b.monto)))) : h('p', { class:'small muted' }, 'Se gana por nivel validado, nunca por nota online.'))),
     h('section', { class:'section card' }, h('div', { class:'card-h' }, h('h2', { class:'h4' }, 'Tus 39 competencias'), h('span', { class:'hint' }, hecho + ' aprobadas o demostradas')), mapa,
       h('div', { class:'cmap-legend', style:'margin-top:12px' }, h('span', null, h('i', { class:'tile core' }), 'Core'), h('span', null, h('i', { class:'tile oficio' }), 'Oficio'), h('span', null, h('i', { class:'tile desarrollo' }), 'Desarrollo'), h('span', null, h('i', { class:'tile oficio skip' }), 'Demostrada'), h('span', null, h('i', { class:'tile core fail' }), 'Repetir'))),
     (e.historial || []).length ? h('section', { class:'section' }, h('h2', { class:'h3', style:'margin-bottom:12px' }, 'Tu historial'), tablaDe(['Validación','Intento','Fecha','Resultado'], e.historial.slice().reverse().map(x => [TIPOS_SESION[x.tipo] ? TIPOS_SESION[x.tipo].l : x.tipo, x.intento === 1 ? '1 · primera nota' : String(x.intento), fechaCorta(x.fecha), badge(x.aprobado ? 'Aprobada' : 'Repite ' + (x.fallidas || []).join(', '), x.aprobado ? 'ok' : 'crit')]))) : null);
 };
+
+/* ---------- rotación de duo (D13): se pide por escrito al Responsable Técnico ---------- */
+function bloqueRotacion(e){
+  const sol = solicitudPendienteMia();
+  const res = e.rotacion && S.mine.solicitud && S.mine.solicitud.rotacion && e.rotacion.id === S.mine.solicitud.rotacion.id ? e.rotacion : null;
+  const out = [];
+  if(res) out.push(h('div', { class:'stack', style:'--g:4px', 'data-rotacion':res.estado },
+    badge(res.estado === 'aprobada' ? 'Rotación aprobada' : 'Rotación rechazada', res.estado === 'aprobada' ? 'ok' : 'warn', res.estado === 'aprobada' ? 'check' : 'info'),
+    h('span', { class:'hint' }, (res.estado === 'aprobada' ? 'El Responsable Técnico te asignará tu nuevo duo.' : 'Respuesta: ' + (res.respuesta || 'sin comentario')) + ' · ' + fechaCorta(res.fecha))));
+  if(!e.duo) return out.length ? frag(out) : null;
+  if(sol){
+    const ret = btn('Retirar', { kind:'ghost', size:'sm', onClick: async () => {
+      const r = await dialog({ title:'Retirar la solicitud', icon:'duo', confirm:'Retirar', body:'Sigues en tu duo actual. Puedes volver a pedir rotación cuando quieras.' });
+      if(!r) return;
+      try { await retirarSolicitudRotacion(); toast('Solicitud retirada'); } catch(err){ toast(errMsg(err), 'crit'); }
+    } });
+    out.push(h('div', { class:'row sb', style:'gap:8px', 'data-rotacion':'pendiente' }, h('div', { class:'stack', style:'--g:2px' }, badge('Rotación pedida', 'info', 'clock'), h('span', { class:'hint' }, 'Enviada el ' + fechaCorta(sol.fecha) + '. La revisa el Responsable Técnico.')), ret));
+    return frag(out);
+  }
+  const chk = puedePedirRotacion(e.duo.desde, params(), S.hoy);
+  if(!chk.ok){ out.push(h('span', { class:'hint' }, chk.motivo + '.')); return frag(out); }
+  out.push(h('div', null, btn('Pedir rotación', { kind:'ghost', size:'sm', icon:'refresh', onClick: () => hojaRotacion(e) })));
+  return frag(out);
+}
+function hojaRotacion(e){
+  openSheet('Pedir rotación de duo', close => {
+    const mot = h('textarea', { class:'textarea', maxlength:'600', autofocus:'', placeholder:'Qué no está funcionando o qué quieres aprender con otra persona' });
+    const pref = inputEl({ maxlength:'200', placeholder:'Opcional' });
+    const cuenta = h('span', { class:'hint', 'aria-live':'polite' });
+    const env = btn('Enviar al Responsable Técnico', { kind:'action', icon:'arrowRight' });
+    const upd = () => { const n = mot.value.trim().length; cuenta.textContent = n >= MIN_MOTIVO_ROTACION ? 'Listo para enviar.' : 'Faltan ' + (MIN_MOTIVO_ROTACION - n) + ' caracteres.'; env.disabled = n < MIN_MOTIVO_ROTACION; };
+    mot.addEventListener('input', upd); setTimeout(upd, 0);
+    env.addEventListener('click', () => busy(env, async () => { await enviarSolicitudRotacion(mot.value, pref.value); toast('Solicitud enviada'); close(); }));
+    return h('div', { class:'stack', style:'--g:16px' },
+      h('p', { class:'body ink2' }, 'Trabajas con ' + e.duo.companero + ' desde el ' + fechaLarga(e.duo.desde) + '. La rotación es voluntaria y es una vía abierta para mejorar cómo trabaja cada duo: explica por qué la pides.'),
+      field('¿Por qué quieres rotar?', mot), cuenta,
+      field('¿Con quién te gustaría trabajar?', pref, 'El Responsable Técnico decide la nueva pareja.'),
+      h('div', { class:'card mist', style:'--pad:14px' }, h('b', { class:'small' }, 'Requisitos del nuevo duo'),
+        h('ul', { class:'small ink2', style:'padding-left:18px;margin-top:6px;display:flex;flex-direction:column;gap:4px' },
+          h('li', null, 'Al menos un técnico de nivel 3 o 4.'), h('li', null, 'Nunca dos técnicos de nivel 1.'), h('li', null, 'Nadie valida a su compañero de duo.'))),
+      h('div', { class:'row end' }, btn('Cancelar', { kind:'ghost', onClick: close }), env));
+  });
+}
 
 /* ---------- MÓDULOS ---------- */
 function estadoModulo(id){ const m = (miAv().modulos || {})[id]; return m ? (m.aprobado ? 'aprobado' : m.revisado ? 'revisado' : 'iniciado') : 'nuevo'; }

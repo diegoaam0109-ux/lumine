@@ -89,6 +89,8 @@ VIEWS.panel = function(){
   if(sinDatos(['personas','sesiones','duos','registros','params'])) return vistaCargando();
   const c = ctx();
   const al = alertas(c);
+  const sols = solicitudesRotacion();
+  if(sols.length) al.unshift({ s:'info', t: sols.length === 1 ? '1 solicitud de rotación por revisar' : sols.length + ' solicitudes de rotación por revisar', d: sols.map(x => x.p.nombre).join(', ') + '. Cada una explica por qué pide cambiar de duo (D13).', ref:{ tipo:'duo' } });
   const act = activos(c.personas);
   const abiertas = c.sesiones.filter(x => x.estado === 'abierta').sort((a, b) => String(a.fecha).localeCompare(String(b.fecha)));
   const post = c.personas.filter(p => p.etapa === 'postulante');
@@ -464,7 +466,7 @@ function tabResumen(p){
     const rv = revalidacion(p, pr, S.hoy);
     cards.push(h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Revalidación de seguridad'),
       rv.estado === 'na' ? h('p', { class:'small muted' }, 'Aplica desde el nivel 1.') : frag(h('div', { class:'h3' }, fechaCorta(rv.vence)), badge(rv.estado === 'vencida' ? 'Vencida' : rv.estado === 'pronto' ? 'Vence ' + relDias(rv.dias) : 'Vigente', rv.estado === 'vencida' ? 'crit' : rv.estado === 'pronto' ? 'warn' : 'ok')),
-      h('p', { class:'hint' }, 'Solo el core de seguridad se revalida, cada ' + pr.revalidacionMeses + ' meses (valor provisorio).')));
+      h('p', { class:'hint' }, 'Solo el core de seguridad se revalida, cada ' + pr.revalidacionMeses + ' meses.')));
     const bn = bono(p, pr);
     cards.push(h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Bono por avance validado'),
       bn.length ? h('div', { class:'stack', style:'--g:4px' }, bn.map(b => h('div', { class:'row sb small' }, h('span', null, 'Nivel ' + b.n + ' · ' + fechaCorta(b.fecha)), h('b', null, b.monto === null ? 'Monto por definir' : clp(b.monto))))) : h('p', { class:'small muted' }, 'Aún sin niveles validados.'),

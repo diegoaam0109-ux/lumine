@@ -220,6 +220,10 @@ function revalidacion(persona, params, hoy){
 /* ---------- duos ---------- */
 function activos(personas){ return personas.filter(p => p.etapa === 'tecnico'); }
 function hayNivel3(personas){ return activos(personas).some(p => (p.nivel || 0) >= 3); }
+function hayNivel2(personas){ return activos(personas).some(p => (p.nivel || 0) >= 2); }
+/* El nivel 1 solo habilita a ser el segundo integrante (encargado de seguridad): dos de nivel 1 no tienen
+   quien ejecute. Solo al arrancar, cuando nadie llegó al nivel 2, trabajan así bajo el Responsable Técnico. */
+const DUO_N1_MOTIVO = 'Dos técnicos de nivel 1 no forman duo: el nivel 1 solo habilita a ser el segundo integrante, encargado de seguridad';
 function duoActivoDe(pid, duos){ return duos.find(d => d.activo && (d.a === pid || d.b === pid)) || null; }
 function companero(pid, duos){ const d = duoActivoDe(pid, duos); return d ? (d.a === pid ? d.b : d.a) : null; }
 function estadoDuo(duo, P, personas, hoy, params){
@@ -228,6 +232,7 @@ function estadoDuo(duo, P, personas, hoy, params){
   if(!a || !b){ out.valido = false; out.alertas.push({s:'crit', t:'Integrante no encontrado'}); return out; }
   out.max = Math.max(a.nivel || 0, b.nivel || 0);
   if((a.nivel || 0) < 1 || (b.nivel || 0) < 1){ out.valido = false; out.alertas.push({s:'crit', t:'Un integrante aún no valida el nivel 1'}); }
+  if(out.max < 2 && hayNivel2(personas)){ out.valido = false; out.alertas.push({s:'crit', t:'Duo de dos técnicos de nivel 1'}); }
   if(out.max < 3){
     if(hayNivel3(personas)){ out.valido = false; out.alertas.push({s:'crit', t:'Duo sin técnico de nivel 3 o 4'}); }
     else { out.supervisionRT = true; out.alertas.push({s:'info', t:'Primera generación: supervisión directa del Responsable Técnico'}); }
@@ -248,6 +253,7 @@ function puedeFormarDuo(aId, bId, P, duos, personas){
     if(duoActivoDe(x.id, duos)) return { ok:false, motivo: x.nombre + ' ya está en un duo activo' };
   }
   const max = Math.max(a.nivel, b.nivel);
+  if(max < 2 && hayNivel2(personas)) return { ok:false, motivo: DUO_N1_MOTIVO };
   if(max < 3 && hayNivel3(personas)) return { ok:false, motivo:'Todo duo lleva al menos un técnico de nivel 3 o 4' };
   if(max < 3) return { ok:true, aviso:'Primera generación: el duo trabaja con supervisión directa del Responsable Técnico' };
   return { ok:true };
@@ -445,6 +451,15 @@ function separacionAnticipada(duo, params, hoy){
   const anticipado = !!libre && diffDays(hoy || hoyISO(), libre) > 0;
   return { anticipado, libreDesde: libre };
 }
+/* D13: la rotación se pide por escrito al Responsable Técnico, explicando por qué, y solo desde el plazo mínimo */
+const MIN_MOTIVO_ROTACION = 20;
+function puedePedirRotacion(duoDesde, params, hoy){
+  if(!duoDesde) return { ok:false, motivo:'Necesitas estar en un duo activo para pedir rotación' };
+  const libre = addMonths(duoDesde, rotacionMeses(params));
+  if(libre && diffDays(hoy || hoyISO(), libre) > 0) return { ok:false, libreDesde: libre, motivo:'Puedes pedir rotación desde el ' + fechaLarga(libre) + ' (' + rotacionMeses(params) + ' meses en el duo)' };
+  return { ok:true, libreDesde: libre };
+}
+function motivoRotacionValido(m){ return typeof m === 'string' && m.trim().length >= MIN_MOTIVO_ROTACION; }
 /* D8: para programar una validación de nivel sin práctica completa se exige un motivo escrito */
 function requisitoD8(persona, tipo, params, avance){
   if(!/^N[1-4]$/.test(tipo)) return { aplica:false, listo:true, faltan:[] };
@@ -580,7 +595,8 @@ function proyectarExpediente(persona, ctx){
     repetir: repetir(persona),
     suspendidoAT: !!persona.suspendidoAT,
     revalidacion: revalidacion(persona, params, hoy),
-    duo: d ? { companero: (P[comp] || {}).nombre || '', companeroNivel: (P[comp] || {}).nivel || 0, desde: d.desde } : null,
+    duo: d ? { companero: (P[comp] || {}).nombre || '', companeroNivel: (P[comp] || {}).nivel || 0, desde: d.desde, rotacionLibre: addMonths(d.desde, rotacionMeses(params)) } : null,
+    rotacion: persona.rotacion ? { id: persona.rotacion.id, estado: persona.rotacion.estado, respuesta: persona.rotacion.respuesta || '', fecha: persona.rotacion.fecha } : null,
     bono: bono(persona, params),
     demo: !!persona.demo
   };
@@ -597,4 +613,4 @@ function numCL(n, dec){ if(n === null || n === undefined || !isFinite(n)) return
 function iniciales(nombre){ const p = String(nombre || '?').trim().split(/\s+/); return ((p[0] || '?')[0] + ((p[1] || '')[0] || '')).toUpperCase(); }
 function relDias(dias){ if(dias === null || dias === undefined) return ''; if(dias === 0) return 'hoy'; if(dias === 1) return 'mañana'; if(dias === -1) return 'ayer'; return dias > 0 ? 'en ' + dias + ' días' : 'hace ' + (-dias) + ' días'; }
 
-if(typeof module !== 'undefined') module.exports = { fechaValida, enPeriodo, rotacionMeses, separacionAnticipada, requisitoD8, motivoValido, barajar, armarIntento, contenidoModulo, vecinosModulo, calcularBonos, candidatosPorNivel, revisarConsistencia, stableJSON, isoDate, hoyISO, parseISO, addDays, addMonths, diffDays, monthsBetween, validId, nid, reqComp, mapaPreliminar, puntajeFundamentos, nivelacionPorFundamentos, nivelacionFinal, saltadas, planPersonal, evaluadorDe, itemsValidacion, preaprobadas, evaluar, exigenciaEfectiva, minimoParaQueImporte, repetir, modulosDelNivel, listoParaPresentarse, revalidacion, estadoDuo, puedeFormarDuo, puedeValidar, bono, resumenRuta, alertas, indicadores, proyectarExpediente, companero, duoActivoDe, fechaLarga, estadoDiagnostico, recibidasSinAceptar, hayNivel3 };
+if(typeof module !== 'undefined') module.exports = { fechaValida, enPeriodo, rotacionMeses, separacionAnticipada, requisitoD8, motivoValido, barajar, armarIntento, contenidoModulo, vecinosModulo, calcularBonos, candidatosPorNivel, revisarConsistencia, stableJSON, isoDate, hoyISO, parseISO, addDays, addMonths, diffDays, monthsBetween, validId, nid, reqComp, mapaPreliminar, puntajeFundamentos, nivelacionPorFundamentos, nivelacionFinal, saltadas, planPersonal, evaluadorDe, itemsValidacion, preaprobadas, evaluar, exigenciaEfectiva, minimoParaQueImporte, repetir, modulosDelNivel, listoParaPresentarse, revalidacion, estadoDuo, puedeFormarDuo, puedeValidar, bono, resumenRuta, alertas, indicadores, proyectarExpediente, companero, duoActivoDe, fechaLarga, estadoDiagnostico, recibidasSinAceptar, hayNivel3, hayNivel2, puedePedirRotacion, motivoRotacionValido };

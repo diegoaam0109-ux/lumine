@@ -28,6 +28,16 @@ const n2mods = MODULOS.filter(m=>m.nivel===2).flatMap(m=>m.cod).sort(); eq(n2mod
 ok(COMP.every(x => x.ta.every(t => TAREAS[t])), 'toda competencia remite a tareas existentes');
 eq(DECISIONES.length, 19, '19 decisiones');
 eq(DECISIONES.find(d => d[0] === 'D18')[3], 'Cerrada', 'D18 firma por nivel cerrada');
+eq(DECISIONES.find(d => d[0] === 'D13')[3], 'Cerrada', 'D13 rotación cerrada');
+ok(!PENDIENTES.some(x => /revalidaci|horas por m|escasez/i.test(x)), 'revalidación, horas y escasez ya no figuran en pendientes');
+// D13: solicitud de rotación
+eq(puedePedirRotacion('2026-01-10', PARAMS_DEF, '2026-05-09').ok, false, 'D13: antes de 4 meses no se pide rotación');
+eq(puedePedirRotacion('2026-01-10', PARAMS_DEF, '2026-05-10').ok, true, 'D13: a los 4 meses se puede pedir');
+eq(puedePedirRotacion(null, PARAMS_DEF, '2026-05-10').ok, false, 'D13: sin duo no se pide rotación');
+const pRot = { id:'pr', nombre:'R', etapa:'tecnico', nivel:2, rotacion:{ id:'rot_1', estado:'rechazada', respuesta:'Todavía no', fecha:'2026-05-11', por:'u_rt' } };
+const exRot = proyectarExpediente(pRot, { params:PARAMS_DEF, duos:[{ id:'dr', a:'pr', b:'a', desde:'2026-01-10', activo:true }], P:{ pr:pRot, a:{ id:'a', nombre:'A', nivel:3 } }, hoy:'2026-05-12' });
+eq([exRot.duo.rotacionLibre, exRot.rotacion.estado, exRot.rotacion.por], ['2026-05-10', 'rechazada', undefined], 'el expediente muestra desde cuándo se rota y la respuesta, sin quién respondió');
+eq([motivoRotacionValido('No me gusta'), motivoRotacionValido('Quiero aprender aislación con alguien eléctrico')], [false, true], 'D13: el motivo se explica (20 caracteres o más)');
 ok(!PENDIENTES.some(x => /firma por nivel/i.test(x)), 'D18 ya no figura en pendientes');
 eq(SEGURIDAD.length, 20, '20 controles'); eq(FUNDAMENTOS.filter(q=>q.area==='electrica').length, 3, '3 preguntas eléctricas');
 
@@ -47,7 +57,10 @@ const pMec = { id:'p', perfil:'mecanico', etapa:'postulante', fundamentos:{ resp
 const plan = planPersonal(pMec, PARAMS_DEF);
 eq(plan.nivelacion, ['NIV-E','NIV-X'], 'plan: nivelación union'); eq(plan.saltadas, ['C08','C09','C13','C17','C27'], 'plan: 5 saltadas'); eq(plan.total, 34, 'plan: 39 - 5 = 34 por cursar');
 eq(plan.core.length, 13, 'core completo siempre'); ok(plan.modulos.includes('NIV-E') && !plan.modulos.includes('NIV-M'), 'módulos de nivelación según plan');
-eq(plan.horas, null, 'sin horas definidas: null');
+eq(plan.horas, plan.modulos.reduce((s, id) => s + HORAS_REF[id].h, 0), 'horas por defecto: las de referencia de cada módulo');
+eq(planPersonal(pMec, Object.assign({}, PARAMS_DEF, { horasModulo:{} })).horas, null, 'sin horas definidas: null');
+ok(MODULOS.every(m => HORAS_REF[m.id] && HORAS_REF[m.id].h > 0 && HORAS_REF[m.id].b.length > 20 && ['norma','mixta','estimacion'].includes(HORAS_REF[m.id].t)), 'cada módulo tiene horas de referencia con su base');
+eq([PARAMS_DEF.revalidacionMeses, PARAMS_DEF.rotacionMinMeses, PARAMS_DEF.periodoAutonomoDias], [24, 4, 90], 'revalidación 24 meses, rotación 4 meses, período autónomo 90 días');
 const plan2 = planPersonal(pMec, Object.assign({}, PARAMS_DEF, { horasModulo: Object.fromEntries(MODULOS.map(m=>[m.id, 2])) }));
 eq(plan2.horas, plan2.modulos.length * 2, 'horas con parámetros');
 // jornada no puede saltar core ni desarrollo
@@ -85,7 +98,11 @@ const P = Object.fromEntries(ps.map(p=>[p.id,p])); ok(puedeFormarDuo('a','b',P,[
 ok(!puedeFormarDuo('a','e',P,[],ps).ok, 'nivel 0 no entra a duo');
 const ps1 = ps.map(p => Object.assign({}, p, { nivel: Math.min(p.nivel, 2) })); const P1 = Object.fromEntries(ps1.map(p=>[p.id,p]));
 const r1 = puedeFormarDuo('b','c',P1,[],ps1);
-ok(r1.ok && r1.aviso, 'primera generación: permitido con supervisión del RT'); const duos = [{ id:'d1', a:'a', b:'b', desde:'2026-08-01', activo:true }]; ok(!puedeFormarDuo('a','c',P,duos,ps).ok, 'no se puede estar en dos duos'); const ed = estadoDuo(duos[0], P, ps, '2026-09-27', { rotacionMinMeses:3 }); ok(ed.valido && !ed.puedeRotar && ed.rotacionLibre === '2026-11-01', 'rotación mínima 3 meses');
+ok(r1.ok && r1.aviso, 'primera generación: permitido con supervisión del RT');
+ok(!puedeFormarDuo('d','f',Object.assign({ f:{ id:'f', nombre:'F', etapa:'tecnico', nivel:1 } }, P1),[],ps1.concat([{ id:'f', nombre:'F', etapa:'tecnico', nivel:1 }])).ok, 'dos de nivel 1 no forman duo cuando ya hay nivel 2');
+const ps0 = [{ id:'g', nombre:'G', etapa:'tecnico', nivel:1 }, { id:'k', nombre:'K', etapa:'tecnico', nivel:1 }]; const r0 = puedeFormarDuo('g','k',Object.fromEntries(ps0.map(p=>[p.id,p])),[],ps0);
+ok(r0.ok && r0.aviso, 'al arrancar (nadie en nivel 2) dos de nivel 1 trabajan bajo el Responsable Técnico');
+ok(!estadoDuo({ id:'x', a:'d', b:'f', desde:'2026-01-01', activo:true }, Object.assign({ f:{ id:'f', nombre:'F', etapa:'tecnico', nivel:1 } }, P1), ps1.concat([{ id:'f', nombre:'F', etapa:'tecnico', nivel:1 }]), '2026-02-01', PARAMS_DEF).valido, 'estadoDuo marca inválido un duo de dos nivel 1'); const duos = [{ id:'d1', a:'a', b:'b', desde:'2026-08-01', activo:true }]; ok(!puedeFormarDuo('a','c',P,duos,ps).ok, 'no se puede estar en dos duos'); const ed = estadoDuo(duos[0], P, ps, '2026-09-27', { rotacionMinMeses:3 }); ok(ed.valido && !ed.puedeRotar && ed.rotacionLibre === '2026-11-01', 'rotación mínima 3 meses');
 
 
 // --- quién valida ---

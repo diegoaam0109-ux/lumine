@@ -8,7 +8,7 @@
 
 /* Identificadores fijos del escenario de demostración. Las pruebas y el recorrido
    guiado los leen de aquí, así un cambio en el escenario no deja pruebas mintiendo. */
-const DEMO_IDS = { sesionJT:'s_jt_felipe', felipe:'p_felipe', formadora:'u_camila', tecnico:'u_ignacio', postulante:'u_nuevo', rt:'u_rt' };
+const DEMO_IDS = { sesionJT:'s_jt_felipe', felipe:'p_felipe', formadora:'u_camila', tecnico:'u_ignacio', postulante:'u_nuevo', rt:'u_rt', solicitante:'u_valentina' };
 const DEMO_DIR = {
   u_rt:        { name:'Responsable Técnico', color:'#1f2326' },
   u_ic:        { name:'Ingeniería de Calibración', color:'#0A7AAD' },
@@ -136,7 +136,7 @@ function demoSeed(hoy){
     antecedentes: ant('electromovilidad', 1, 'Técnico en electromovilidad', ['at'], ['C03','C09','C16']),
     fundamentos:{ respuestas: resp(3,2,3), fecha:d(-184) } });
   jornada(d(-175), {}, { C03:'s', C04:'s', C09:'s', C16:'s', C19:'n' }, valentina);
-  aprobar(valentina, 1, [{ f:-105 }]);
+  aprobar(valentina, 1, [{ f:-135 }]);
   intento(valentina, 2, -18, ['C19','C24']);
 
   /* ---- postulantes tipo del informe 4 ---- */
@@ -160,10 +160,10 @@ function demoSeed(hoy){
 
   /* ---- duos ---- */
   const duos = [
-    { id:'d_hist1', a:'p_camila', b:'p_javiera', desde:d(-360), hasta:d(-100), activo:false, motivoFin:'Rotación voluntaria' },
+    { id:'d_hist1', a:'p_camila', b:'p_javiera', desde:d(-360), hasta:d(-134), activo:false, motivoFin:'Rotación voluntaria' },
     { id:'d_hist2', a:'p_matias', b:'p_rodrigo', desde:d(-358), hasta:d(-120), activo:false, motivoFin:'Rotación voluntaria' },
     { id:'d_hist3', a:'p_rodrigo', b:'p_ignacio', desde:d(-120), hasta:d(-25), activo:false, motivoFin:'Salida de un integrante' },
-    { id:'d_camila', a:'p_camila', b:'p_valentina', desde:d(-100), activo:true },
+    { id:'d_camila', a:'p_camila', b:'p_valentina', desde:d(-130), activo:true },
     { id:'d_javiera', a:'p_javiera', b:'p_tomas', desde:d(-110), activo:true },
     { id:'d_matias', a:'p_matias', b:'p_ignacio', desde:d(-24), activo:true }
   ];
@@ -204,7 +204,11 @@ function demoSeed(hoy){
     hecho(['NIV-E','NIV-X','N1-2','N1-3','N2-1','N2-2','N2-3','N2-4','N2-5']),
     { 'N1-1': { revisado:true, aprobado:true, intentos:2, primera:{ ok:4, total:5, fecha:d(-150) }, mejor:{ ok:5, total:5, fecha:d(-149) } },
       'N3-1': { revisado:false, intentos:0 } }), actualizado:ts(-2) });
-  put('avance/u_valentina', { modulos: Object.assign(hecho(['N1-2','N1-3','N2-1','N2-2','N2-3','N2-4','N2-5']), { 'N1-1': { revisado:true, aprobado:true, intentos:1, primera:{ ok:5, total:5, fecha:d(-130) }, mejor:{ ok:5, total:5, fecha:d(-130) } } }), actualizado:ts(-5) });
+  put('avance/u_valentina', { modulos: Object.assign(hecho(['N1-2','N1-3','N2-1','N2-2','N2-3','N2-4','N2-5']), { 'N1-1': { revisado:true, aprobado:true, intentos:1, primera:{ ok:5, total:5, fecha:d(-140) }, mejor:{ ok:5, total:5, fecha:d(-140) } } }), actualizado:ts(-5) });
+  /* ---- solicitud de rotación (D13): la escribe la propia técnica ---- */
+  put('solicitudes/u_valentina', { rotacion:{ id:'rot_demo1', fecha:d(-3), enviada:ts(-3), duoDesde:d(-130),
+    motivo:'Con Camila aprendí mucho del proceso, pero reprobé aislación y la capa de seguridad. Me serviría trabajar con alguien que venga de la electricidad.',
+    preferencia:'Javiera Soto' }, demo:true });
   put('avance/u_tomas', { modulos: hecho(['NIV-M','N1-1','N1-2','N1-3','N2-1','N2-2','N2-3','N2-4','N2-5']), actualizado:ts(-12) });
 
   /* ---- parámetros y gestión ---- */

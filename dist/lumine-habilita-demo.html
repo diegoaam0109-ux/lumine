@@ -1443,14 +1443,33 @@ const ROLES_INFO = [
   {id:'rt',      n:'Responsable Técnico',  ic:'settings', hace:'Administra parámetros, registra incidentes y salidas, revisa indicadores', nove:'No aplica'}
 ];
 
-/* Parámetros por defecto. Los valores sin fijar quedan en null a propósito (informe 5). */
+/* Horas por módulo (aprender + practicar, en horas reloj). Ninguna norma conoce el kit de Lumine:
+   lo que trata la seguridad en alta tensión sale de normas internacionales; lo propio del kit es
+   una estimación que se ajusta cuando exista el procedimiento real. t: norma | mixta | estimacion */
+const HORAS_REF = {
+  'NIV-E': {h:48, t:'norma',      b:'DGUV 209-093: quien no trae formación eléctrica necesita hasta 80 UE para la etapa 2S, contra 16 UE de un mecatrónico. La diferencia, 64 UE de 45 min, es la base eléctrica (≈48 h).'},
+  'NIV-M': {h:40, t:'estimacion', b:'Estimación: una semana de taller (herramientas, torques, frenos y suspensión). Ninguna norma de alta tensión fija la base mecánica.'},
+  'NIV-X': {h:40, t:'estimacion', b:'Estimación: la mitad del curso de 80 h del perfil ChileValora de diagnóstico y mantenimiento de vehículos eléctricos, que parte de sensores, redes y OBD.'},
+  'N1-1':  {h:36, t:'norma',      b:'DGUV 209-093 etapa 2S: entre 16 UE (quien ya trae base eléctrica) y 80 UE (quien no la trae); el piso que más se usa es 48 UE (≈36 h), con al menos 16 de práctica. Coincide con NF C 18-550 en Francia (B2VL y BCL, 3 días) y con el RD 281/2021 de España (seguridad, 50 h).'},
+  'N1-2':  {h:20, t:'mixta',      b:'Primeros auxilios con RCP: 16 h, formato habitual en Chile (la DGUV 204-022 exige 9 UE). Se suman 4 h de incendio de batería y rescate por contacto eléctrico.'},
+  'N1-3':  {h:8,  t:'estimacion', b:'Estimación: una jornada para reconocer ABS, control de estabilidad, airbags y pretensores.'},
+  'N2-1':  {h:24, t:'estimacion', b:'Estimación: tres jornadas. Elegibilidad del kit y estimador de ahorro son propios de Lumine.'},
+  'N2-2':  {h:40, t:'mixta',      b:'Estimación apoyada en el RD 281/2021 de España (alto voltaje y baterías, 95 h, que cubre más que el kit): una semana de montaje, cableado y manejo del banco de baterías.'},
+  'N2-3':  {h:32, t:'mixta',      b:'DGUV 209-093 etapa 3S: 24 UE (≈18 h), al menos 16 de práctica, para trabajar con tensión. Se suman 14 h de integración de la unidad de control (estimación).'},
+  'N2-4':  {h:24, t:'estimacion', b:'Estimación: tres jornadas. Lo fija Ingeniería de Calibración, que enseña y valida el módulo.'},
+  'N2-5':  {h:16, t:'estimacion', b:'Estimación: dos jornadas de dinamómetro, protocolo previo a la certificación y documentación.'},
+  'N3-1':  {h:40, t:'mixta',      b:'Retirar una batería dañada es trabajo con tensión: DGUV 209-093 etapa 3S, 24 UE (≈18 h). Se suman 22 h de postventa, telemetría y atención de clientes (estimación).'},
+  'N4-1':  {h:24, t:'estimacion', b:'Estimación: tres jornadas, el formato habitual de un curso de formación de formadores.'}
+};
+
+/* Parámetros por defecto. El monto del bono queda en null a propósito: lo fija finanzas. */
 const PARAMS_DEF = {
   umbralComp: 85,          // % complementarias (D7)
   umbralFund: 2,           // respuestas correctas de 3 por área para no requerir nivelación
-  revalidacionMeses: 12,   // provisorio: frecuencia por definir (referencia IMI TechSafe: 36)
-  rotacionMinMeses: 3,     // D13 (propuesta)
-  periodoAutonomoDias: null,
-  horasModulo: {},         // {moduloId: horas}
+  revalidacionMeses: 24,   // fijado por el equipo (IMI TechSafe usa 36; la DGUV pide primeros auxilios cada 24)
+  rotacionMinMeses: 4,     // D13 (cerrada): rotación por solicitud, cada 4 meses como mínimo
+  periodoAutonomoDias: 90, // ventana de trabajo autónomo observado de la validación del nivel 3
+  horasModulo: Object.fromEntries(Object.entries(HORAS_REF).map(([k, v]) => [k, v.h])), // {moduloId: horas}
   horasValidacion: {},     // {JT|N1..N4|REV: horas}
   bonoNivel: {},           // {1..4: monto CLP} pendiente de finanzas
   firmaPorNivel: 'confirmada', // D18 (cerrada)
@@ -1742,7 +1761,7 @@ const REGLAS_EVAL = [
 ];
 const REGLAS_AVANCE = [
   ['Se repite solo lo reprobado.', 'Si alguien falla la estación de aislación, repite esa estación y no la validación completa.'],
-  ['Todo duo lleva al menos un técnico de nivel 3 o 4.', 'El nivel 2 trabaja con supervisión, así que dos técnicos de nivel 2 no forman duo por su cuenta.'],
+  ['Todo duo lleva al menos un técnico de nivel 3 o 4.', 'El nivel 2 trabaja con supervisión, así que dos técnicos de nivel 2 no forman duo por su cuenta. Esta regla ordena también la rotación voluntaria de los duos (D13).'],
   ['La primera generación trabaja bajo el Responsable Técnico.', 'Mientras no exista nadie de nivel 3, los duos trabajan con supervisión directa suya, y las validaciones internas las hacen él e Ingeniería de Calibración en el módulo 4.'],
   ['Solo el core de seguridad se revalida.', 'Se repasa y se vuelve a demostrar cada cierto tiempo; el resto del nivel no vence. Como referencia, IMI TechSafe exige actualización en ciclos de tres años.'],
   ['Un incidente de seguridad grave obliga a revalidar.', 'Quien lo protagoniza vuelve a demostrar el core de seguridad antes de trabajar de nuevo con alta tensión. No baja de nivel: solo se suspende esa parte hasta revalidar.']
@@ -1808,7 +1827,7 @@ const DECISIONES = [
   ['D10','Diseño','Módulos cortos, prácticos, con simulador y elementos interactivos; preguntas planteadas como casos del taller','Cerrada'],
   ['D11','Bono','Por capacitación completa y avance validado, nunca por nota online; monto pendiente de finanzas','Cerrada'],
   ['D12','Organización','Todo el trabajo técnico en duos fijos; teoría individual; validación práctica en duo con nota individual','Cerrada'],
-  ['D13','Rotación','Voluntaria tras 3 meses mínimo; todo duo con al menos un habilitado; el Responsable Técnico puede separar antes por seguridad o conflicto','Propuesta'],
+  ['D13','Rotación','Voluntaria, cada 4 meses como mínimo, por solicitud escrita al Responsable Técnico con los motivos: es una vía abierta para mejorar cómo trabajan los duos. El nuevo duo cumple los requisitos (al menos un técnico de nivel 3 o 4; nunca dos de nivel 1). El Responsable Técnico puede separar antes por seguridad o conflicto','Cerrada'],
   ['D14','Postventa','La gestiona otra área; la ejecuta el duo','Cerrada'],
   ['D15','Vehículos','Se incluyen autos con ABS, airbag y control de estabilidad, aunque el borrador de reglamento hoy los excluye','Cerrada'],
   ['D16','Comunicación','Ventas explica y convence; el técnico entra solo como experto de respaldo para quien quiera hablar con uno','Cerrada'],
@@ -1817,13 +1836,11 @@ const DECISIONES = [
   ['D19','Calibración nueva','Calibración 100% interna; cargo de Ingeniería de Calibración desde la apertura, con acceso restringido a la biblioteca','Cerrada']
 ];
 const PENDIENTES = [
-  'Fijar la frecuencia de revalidación del core de seguridad',
-  'Fijar horas por módulo, duración del período autónomo y monto del bono por avance',
-  'Confirmar con el proveedor del kit si el banco de baterías llega con carga, cuánto pesa y cómo se monta',
-  'Consultar a la SEC qué licencia corresponde al instalador certificado del borrador de reglamento',
-  'Definir el encuadre del sistema frente al reglamento futuro',
-  'Completar el respaldo externo de la escasez de técnicos con estudios del Ministerio de Energía y SENCE',
-  'Confirmar la columna de mercado del diccionario con evidencia'
+  'Fijar el monto del bono por avance (finanzas)',
+  'Elegir el proveedor del kit y confirmar el peso y el montaje del banco de baterías. Que llega con carga ya está respondido: por avión viaja con hasta 30% (IATA) y por mar sin límite, así que se trata como energizado desde que se recibe',
+  'Confirmar con la SEC la clase de licencia. El borrador de reglamento pide al menos un instalador electricista autorizado por la SEC sin decir la clase; por la escala del D.S. 92 correspondería la clase C si el kit no pasa de 50 kW, o la B si pasa',
+  'Definir el encuadre del sistema frente al reglamento futuro. El borrador ya pide lo que el sistema tiene: un Responsable Técnico ingeniero electricista, un instalador electricista SEC y un instalador mecánico con formación técnica',
+  'Confirmar la columna de mercado del diccionario con los datos reales de la jornada técnica (indicador de oficio demostrado). La oferta revisada (Duoc UC, INACAP y el perfil ChileValora de 2021) respalda el "parcial" en seguridad de alta tensión'
 ];
 const INFORMES = [
   ['Informe 1','Tareas del duo técnico','https://claude.ai/code/artifact/b2b2b149-ebc0-43c6-82fb-c79266bd8bae'],
@@ -1837,7 +1854,20 @@ const FUENTES = [
   ['O*NET OnLine, 49-3023.00 Automotive Service Technicians and Mechanics','https://www.onetonline.org/link/summary/49-3023.00'],
   ['SEC, Pliego Técnico Normativo RIC N°17 (referencia: rige para instalaciones fijas)','https://www.sec.cl/sitio-web/wp-content/uploads/2021/01/RIC-N17-Operacion-y-Mantenimiento.pdf'],
   ['bbz Arnsberg, Hochvolt: Neue DGUV steht in den Startlöchern (DGUV 209-093)','https://www.bbz-arnsberg.de/blog/hochvolt-neue-dguv-steht-in-den-startloechern'],
-  ['IMI, IMI TechSafe (ciclo de actualización de tres años)','https://www.theimi.org.uk/membership/imi-techsafe']
+  ['IMI, IMI TechSafe (ciclo de actualización de tres años)','https://www.theimi.org.uk/membership/imi-techsafe'],
+  ['DGUV Information 209-093, Qualifizierung für Arbeiten an Fahrzeugen mit Hochvoltsystemen (2021)','https://www.bghm.de/fileadmin/user_upload/Arbeitsschuetzer/Gesetze_Vorschriften/Informationen/209-093.pdf'],
+  ['TÜV SÜD, Qualifikationen nach DGUV Information 209-093 (unidades por etapa y punto de entrada)','https://www.tuvsud.com/INTERSHOP/static/WFS/BA-Academy-DE-Site/-/BA-Academy-DE/de_DE/PDF/AC360-HochVSys-mgr-w-22-03-16.pdf'],
+  ['DGUV, FAQ Elektromobilität (primeros auxilios con RCP, 9 UE; actualización cada dos años)','https://www.dguv.de/medien/fb-holzundmetall/sachgebiete/fahrzeug/bilder/faq_elektromobilitaet.pdf'],
+  ['INRS, Habilitation électrique: foire aux questions (NF C 18-550, recyclage cada 3 años)','https://www.inrs.fr/risques/electriques/habilitation-electrique-foire-aux-questions.html'],
+  ['BOE, Real Decreto 281/2021, curso de especialización en mantenimiento de vehículos híbridos y eléctricos','https://www.boe.es/diario_boe/txt.php?id=BOE-A-2021-7687'],
+  ['CFT Estatal de Valparaíso, Especialista en diagnóstico y mantenimiento de vehículos eléctricos (perfil ChileValora, 80 h)','https://tecnologicovalparaiso.cl/curso-especialista-en-diagnostico-y-mantenimiento-de-vehiculos-electricos/'],
+  ['bia Stuttgart, Hochvolt Stufe 3S (un año de experiencia como 2S antes de trabajar con tensión)','https://www.bia-stuttgart.de/kurse/hochvolt-schulung-stufe-3s/'],
+  ['Subsecretaría de Transportes, borrador de reglamento para la transformación de vehículos a propulsión eléctrica (consulta pública)','https://www.subtrans.gob.cl/wp-content/uploads/2025/09/Reglamento-Transformacio%CC%81n-de-Vehi%CC%81culos-a-Ele%CC%81ctricos-10_12_21-a-consulta-pu%CC%81blica-1.pdf'],
+  ['SEC, Alcance de las licencias de instalador eléctrico (D.S. 92)','https://sec.custhelp.com/app/answers/detail/a_id/584/~/alcance-de-licencias-de-instalador-el%C3%A9ctrico'],
+  ['SENCE, Estudio identifica el capital humano que requerirá la electromovilidad (Ministerio de Energía, Centro UC y OTIC SOFOFA)','https://sence.gob.cl/personas/noticias/estudio-identifica-el-capital-humano-que-se-requerira-para-la-implementacion-de-la-electromovilidad-en-el-pais'],
+  ['Centro UC Políticas Públicas, Electromovilidad en Chile: escenarios de implementación y desarrollo de capital humano','https://politicaspublicas.uc.cl/publicacion/electromovilidad-en-chile-escenarios-de-implementacion-y-desarrollo-de-capital-humano/'],
+  ['Ministerio de Energía, Chile avanza en formación y certificación para la electromovilidad junto a ChileValora','https://energia.gob.cl/noticias/nacional/chile-avanza-en-formacion-y-certificacion-para-la-electromovilidad-junto-chile-valora'],
+  ['IATA, Dangerous Goods Regulations 2026: baterías de litio UN3480 con hasta 30% de carga','https://www.hazmatuniversity.com/news/lithium-battery-air-transport-2026-iata-and-icao-compliance-guide/']
 ];
 
 /* 20 controles de seguridad antes de lanzar (lista entregada por el equipo) */
@@ -1845,7 +1875,7 @@ const SEGURIDAD = [
   {n:1,  t:'Revisa los permisos', s:'ok', d:'Cuatro tipos de usuario con reglas de acceso que aplica el servidor, no la página: la raíz de la base solo la lee y escribe administración; cada técnico ve únicamente su expediente y su avance; los evaluadores ven solo su agenda.'},
   {n:2,  t:'Panel admin', s:'ok', d:'El panel, las personas, las validaciones, los duos, los indicadores y los ajustes existen solo para nivel administración (Editor o dueño). A cualquier otro la base le responde como si no hubiera datos.'},
   {n:3,  t:'Datos entre clientes', s:'ok', d:'Cada técnico lee solo su propio expediente (ruta con su identificador). Un evaluador recibe solo los ítems que le asignaron. Nadie ve resultados de otro técnico.'},
-  {n:4,  t:'Blinda la base de datos', s:'ok', d:'Regla raíz cerrada para todo lo que no sea administración. Lo único que escribe un técnico es su propio avance online, y por diseño eso no habilita nada: toda autoridad vive en datos que solo escribe administración.'},
+  {n:4,  t:'Blinda la base de datos', s:'ok', d:'Regla raíz cerrada para todo lo que no sea administración. Lo único que escribe un técnico es su propio avance online y su solicitud de rotación, y por diseño eso no habilita nada: toda autoridad vive en datos que solo escribe administración.'},
   {n:5,  t:'Claves privadas', s:'ok', d:'La página no guarda claves, tokens ni contraseñas, y no usa servicios con llave. La biblioteca de calibraciones no se guarda en la plataforma.'},
   {n:6,  t:'Asegura el inicio de sesión', s:'plat', d:'Se entra con la cuenta de la organización en claude.ai. La plataforma no maneja contraseñas propias.'},
   {n:7,  t:'Sesiones caducadas', s:'plat', d:'Las sesiones las administra claude.ai. Si se retira el acceso con la página abierta, la base corta la conexión y la página queda sin datos.'},
@@ -1875,7 +1905,9 @@ const DB_RULES = [
   {path:'agenda',             read:'admin',    write:'admin'},
   {path:'agenda/{self}',      read:'interact', write:'admin'},
   {path:'marcas',             read:'admin',    write:'admin'},
-  {path:'marcas/{self}',      read:'interact', write:'interact'}
+  {path:'marcas/{self}',      read:'interact', write:'interact'},
+  {path:'solicitudes',        read:'admin',    write:'admin'},
+  {path:'solicitudes/{self}', read:'interact', write:'interact'}
 ];
 
 /* =====================================================================
@@ -2100,6 +2132,10 @@ function revalidacion(persona, params, hoy){
 /* ---------- duos ---------- */
 function activos(personas){ return personas.filter(p => p.etapa === 'tecnico'); }
 function hayNivel3(personas){ return activos(personas).some(p => (p.nivel || 0) >= 3); }
+function hayNivel2(personas){ return activos(personas).some(p => (p.nivel || 0) >= 2); }
+/* El nivel 1 solo habilita a ser el segundo integrante (encargado de seguridad): dos de nivel 1 no tienen
+   quien ejecute. Solo al arrancar, cuando nadie llegó al nivel 2, trabajan así bajo el Responsable Técnico. */
+const DUO_N1_MOTIVO = 'Dos técnicos de nivel 1 no forman duo: el nivel 1 solo habilita a ser el segundo integrante, encargado de seguridad';
 function duoActivoDe(pid, duos){ return duos.find(d => d.activo && (d.a === pid || d.b === pid)) || null; }
 function companero(pid, duos){ const d = duoActivoDe(pid, duos); return d ? (d.a === pid ? d.b : d.a) : null; }
 function estadoDuo(duo, P, personas, hoy, params){
@@ -2108,6 +2144,7 @@ function estadoDuo(duo, P, personas, hoy, params){
   if(!a || !b){ out.valido = false; out.alertas.push({s:'crit', t:'Integrante no encontrado'}); return out; }
   out.max = Math.max(a.nivel || 0, b.nivel || 0);
   if((a.nivel || 0) < 1 || (b.nivel || 0) < 1){ out.valido = false; out.alertas.push({s:'crit', t:'Un integrante aún no valida el nivel 1'}); }
+  if(out.max < 2 && hayNivel2(personas)){ out.valido = false; out.alertas.push({s:'crit', t:'Duo de dos técnicos de nivel 1'}); }
   if(out.max < 3){
     if(hayNivel3(personas)){ out.valido = false; out.alertas.push({s:'crit', t:'Duo sin técnico de nivel 3 o 4'}); }
     else { out.supervisionRT = true; out.alertas.push({s:'info', t:'Primera generación: supervisión directa del Responsable Técnico'}); }
@@ -2128,6 +2165,7 @@ function puedeFormarDuo(aId, bId, P, duos, personas){
     if(duoActivoDe(x.id, duos)) return { ok:false, motivo: x.nombre + ' ya está en un duo activo' };
   }
   const max = Math.max(a.nivel, b.nivel);
+  if(max < 2 && hayNivel2(personas)) return { ok:false, motivo: DUO_N1_MOTIVO };
   if(max < 3 && hayNivel3(personas)) return { ok:false, motivo:'Todo duo lleva al menos un técnico de nivel 3 o 4' };
   if(max < 3) return { ok:true, aviso:'Primera generación: el duo trabaja con supervisión directa del Responsable Técnico' };
   return { ok:true };
@@ -2325,6 +2363,15 @@ function separacionAnticipada(duo, params, hoy){
   const anticipado = !!libre && diffDays(hoy || hoyISO(), libre) > 0;
   return { anticipado, libreDesde: libre };
 }
+/* D13: la rotación se pide por escrito al Responsable Técnico, explicando por qué, y solo desde el plazo mínimo */
+const MIN_MOTIVO_ROTACION = 20;
+function puedePedirRotacion(duoDesde, params, hoy){
+  if(!duoDesde) return { ok:false, motivo:'Necesitas estar en un duo activo para pedir rotación' };
+  const libre = addMonths(duoDesde, rotacionMeses(params));
+  if(libre && diffDays(hoy || hoyISO(), libre) > 0) return { ok:false, libreDesde: libre, motivo:'Puedes pedir rotación desde el ' + fechaLarga(libre) + ' (' + rotacionMeses(params) + ' meses en el duo)' };
+  return { ok:true, libreDesde: libre };
+}
+function motivoRotacionValido(m){ return typeof m === 'string' && m.trim().length >= MIN_MOTIVO_ROTACION; }
 /* D8: para programar una validación de nivel sin práctica completa se exige un motivo escrito */
 function requisitoD8(persona, tipo, params, avance){
   if(!/^N[1-4]$/.test(tipo)) return { aplica:false, listo:true, faltan:[] };
@@ -2460,7 +2507,8 @@ function proyectarExpediente(persona, ctx){
     repetir: repetir(persona),
     suspendidoAT: !!persona.suspendidoAT,
     revalidacion: revalidacion(persona, params, hoy),
-    duo: d ? { companero: (P[comp] || {}).nombre || '', companeroNivel: (P[comp] || {}).nivel || 0, desde: d.desde } : null,
+    duo: d ? { companero: (P[comp] || {}).nombre || '', companeroNivel: (P[comp] || {}).nivel || 0, desde: d.desde, rotacionLibre: addMonths(d.desde, rotacionMeses(params)) } : null,
+    rotacion: persona.rotacion ? { id: persona.rotacion.id, estado: persona.rotacion.estado, respuesta: persona.rotacion.respuesta || '', fecha: persona.rotacion.fecha } : null,
     bono: bono(persona, params),
     demo: !!persona.demo
   };
@@ -2477,7 +2525,7 @@ function numCL(n, dec){ if(n === null || n === undefined || !isFinite(n)) return
 function iniciales(nombre){ const p = String(nombre || '?').trim().split(/\s+/); return ((p[0] || '?')[0] + ((p[1] || '')[0] || '')).toUpperCase(); }
 function relDias(dias){ if(dias === null || dias === undefined) return ''; if(dias === 0) return 'hoy'; if(dias === 1) return 'mañana'; if(dias === -1) return 'ayer'; return dias > 0 ? 'en ' + dias + ' días' : 'hace ' + (-dias) + ' días'; }
 
-if(typeof module !== 'undefined') module.exports = { fechaValida, enPeriodo, rotacionMeses, separacionAnticipada, requisitoD8, motivoValido, barajar, armarIntento, contenidoModulo, vecinosModulo, calcularBonos, candidatosPorNivel, revisarConsistencia, stableJSON, isoDate, hoyISO, parseISO, addDays, addMonths, diffDays, monthsBetween, validId, nid, reqComp, mapaPreliminar, puntajeFundamentos, nivelacionPorFundamentos, nivelacionFinal, saltadas, planPersonal, evaluadorDe, itemsValidacion, preaprobadas, evaluar, exigenciaEfectiva, minimoParaQueImporte, repetir, modulosDelNivel, listoParaPresentarse, revalidacion, estadoDuo, puedeFormarDuo, puedeValidar, bono, resumenRuta, alertas, indicadores, proyectarExpediente, companero, duoActivoDe, fechaLarga, estadoDiagnostico, recibidasSinAceptar, hayNivel3 };
+if(typeof module !== 'undefined') module.exports = { fechaValida, enPeriodo, rotacionMeses, separacionAnticipada, requisitoD8, motivoValido, barajar, armarIntento, contenidoModulo, vecinosModulo, calcularBonos, candidatosPorNivel, revisarConsistencia, stableJSON, isoDate, hoyISO, parseISO, addDays, addMonths, diffDays, monthsBetween, validId, nid, reqComp, mapaPreliminar, puntajeFundamentos, nivelacionPorFundamentos, nivelacionFinal, saltadas, planPersonal, evaluadorDe, itemsValidacion, preaprobadas, evaluar, exigenciaEfectiva, minimoParaQueImporte, repetir, modulosDelNivel, listoParaPresentarse, revalidacion, estadoDuo, puedeFormarDuo, puedeValidar, bono, resumenRuta, alertas, indicadores, proyectarExpediente, companero, duoActivoDe, fechaLarga, estadoDiagnostico, recibidasSinAceptar, hayNivel3, hayNivel2, puedePedirRotacion, motivoRotacionValido };
 
 /* =====================================================================
    Lumine Habilita · capa de datos
@@ -2714,7 +2762,7 @@ const W = {
 
 /* Identificadores fijos del escenario de demostración. Las pruebas y el recorrido
    guiado los leen de aquí, así un cambio en el escenario no deja pruebas mintiendo. */
-const DEMO_IDS = { sesionJT:'s_jt_felipe', felipe:'p_felipe', formadora:'u_camila', tecnico:'u_ignacio', postulante:'u_nuevo', rt:'u_rt' };
+const DEMO_IDS = { sesionJT:'s_jt_felipe', felipe:'p_felipe', formadora:'u_camila', tecnico:'u_ignacio', postulante:'u_nuevo', rt:'u_rt', solicitante:'u_valentina' };
 const DEMO_DIR = {
   u_rt:        { name:'Responsable Técnico', color:'#1f2326' },
   u_ic:        { name:'Ingeniería de Calibración', color:'#0A7AAD' },
@@ -2842,7 +2890,7 @@ function demoSeed(hoy){
     antecedentes: ant('electromovilidad', 1, 'Técnico en electromovilidad', ['at'], ['C03','C09','C16']),
     fundamentos:{ respuestas: resp(3,2,3), fecha:d(-184) } });
   jornada(d(-175), {}, { C03:'s', C04:'s', C09:'s', C16:'s', C19:'n' }, valentina);
-  aprobar(valentina, 1, [{ f:-105 }]);
+  aprobar(valentina, 1, [{ f:-135 }]);
   intento(valentina, 2, -18, ['C19','C24']);
 
   /* ---- postulantes tipo del informe 4 ---- */
@@ -2866,10 +2914,10 @@ function demoSeed(hoy){
 
   /* ---- duos ---- */
   const duos = [
-    { id:'d_hist1', a:'p_camila', b:'p_javiera', desde:d(-360), hasta:d(-100), activo:false, motivoFin:'Rotación voluntaria' },
+    { id:'d_hist1', a:'p_camila', b:'p_javiera', desde:d(-360), hasta:d(-134), activo:false, motivoFin:'Rotación voluntaria' },
     { id:'d_hist2', a:'p_matias', b:'p_rodrigo', desde:d(-358), hasta:d(-120), activo:false, motivoFin:'Rotación voluntaria' },
     { id:'d_hist3', a:'p_rodrigo', b:'p_ignacio', desde:d(-120), hasta:d(-25), activo:false, motivoFin:'Salida de un integrante' },
-    { id:'d_camila', a:'p_camila', b:'p_valentina', desde:d(-100), activo:true },
+    { id:'d_camila', a:'p_camila', b:'p_valentina', desde:d(-130), activo:true },
     { id:'d_javiera', a:'p_javiera', b:'p_tomas', desde:d(-110), activo:true },
     { id:'d_matias', a:'p_matias', b:'p_ignacio', desde:d(-24), activo:true }
   ];
@@ -2910,7 +2958,11 @@ function demoSeed(hoy){
     hecho(['NIV-E','NIV-X','N1-2','N1-3','N2-1','N2-2','N2-3','N2-4','N2-5']),
     { 'N1-1': { revisado:true, aprobado:true, intentos:2, primera:{ ok:4, total:5, fecha:d(-150) }, mejor:{ ok:5, total:5, fecha:d(-149) } },
       'N3-1': { revisado:false, intentos:0 } }), actualizado:ts(-2) });
-  put('avance/u_valentina', { modulos: Object.assign(hecho(['N1-2','N1-3','N2-1','N2-2','N2-3','N2-4','N2-5']), { 'N1-1': { revisado:true, aprobado:true, intentos:1, primera:{ ok:5, total:5, fecha:d(-130) }, mejor:{ ok:5, total:5, fecha:d(-130) } } }), actualizado:ts(-5) });
+  put('avance/u_valentina', { modulos: Object.assign(hecho(['N1-2','N1-3','N2-1','N2-2','N2-3','N2-4','N2-5']), { 'N1-1': { revisado:true, aprobado:true, intentos:1, primera:{ ok:5, total:5, fecha:d(-140) }, mejor:{ ok:5, total:5, fecha:d(-140) } } }), actualizado:ts(-5) });
+  /* ---- solicitud de rotación (D13): la escribe la propia técnica ---- */
+  put('solicitudes/u_valentina', { rotacion:{ id:'rot_demo1', fecha:d(-3), enviada:ts(-3), duoDesde:d(-130),
+    motivo:'Con Camila aprendí mucho del proceso, pero reprobé aislación y la capa de seguridad. Me serviría trabajar con alguien que venga de la electricidad.',
+    preferencia:'Javiera Soto' }, demo:true });
   put('avance/u_tomas', { modulos: hecho(['NIV-M','N1-1','N1-2','N1-3','N2-1','N2-2','N2-3','N2-4','N2-5']), actualizado:ts(-12) });
 
   /* ---- parámetros y gestión ---- */
@@ -3742,8 +3794,8 @@ const S = {
   role: 'loading',              // admin | tecnico | postulante | anonimo | sindb | loading
   demoRole: (function(){ try { return sessionStorage.getItem('lh-demo-sesion') || 'visitante'; } catch(e){ return 'visitante'; } })(),
   kiosk: false,
-  D: { personas:{}, sesiones:{}, duos:{}, registros:{}, params:null, gestion:null, contenido:null, avance:{}, marcas:{}, agenda:{}, expedientes:{}, bitacora:{} },
-  mine: { expediente:null, avance:null, agenda:null, marcas:null },
+  D: { personas:{}, sesiones:{}, duos:{}, registros:{}, params:null, gestion:null, contenido:null, avance:{}, marcas:{}, agenda:{}, expedientes:{}, bitacora:{}, solicitudes:{} },
+  mine: { expediente:null, avance:null, agenda:null, marcas:null, solicitud:null },
   loaded: new Set(),
   unsub: [],
   readOnly: false,
@@ -3838,7 +3890,7 @@ function suscribir(){
   unsubscribeAll();
   if(S.role === 'admin'){
     subCol('personas', 'personas'); subCol('sesiones', 'sesiones'); subCol('duos', 'duos'); subCol('registros', 'registros');
-    subCol('avance', 'avance'); subCol('marcas', 'marcas'); subCol('agenda', 'agenda'); subCol('expedientes', 'expedientes'); subCol('bitacora', 'bitacora');
+    subCol('avance', 'avance'); subCol('marcas', 'marcas'); subCol('agenda', 'agenda'); subCol('expedientes', 'expedientes'); subCol('bitacora', 'bitacora'); subCol('solicitudes', 'solicitudes');
     subDoc('config/parametros', v => { S.D.params = v; }, 'params');
     subDoc('ajustes/gestion', v => { S.D.gestion = v; }, 'gestion');
     subDoc('config/contenido', v => { S.D.contenido = v; }, 'contenido');
@@ -3849,6 +3901,7 @@ function suscribir(){
     subDoc('avance/' + S.me.id, v => { S.mine.avance = v; }, 'avance');
     subDoc('agenda/' + S.me.id, v => { S.mine.agenda = v; }, 'agenda');
     subDoc('marcas/' + S.me.id, v => { S.mine.marcas = v; }, 'marcas');
+    subDoc('solicitudes/' + S.me.id, v => { S.mine.solicitud = v; }, 'solicitud');
   }
 }
 function cargado(keys){ return keys.every(k => S.loaded.has(k)); }
@@ -3924,8 +3977,8 @@ async function iniciarVistaPrevia(tipo, pid){
   const dir = { [uid]: { name: nombre, color:'#697177' } };
   S.db = mem; S.user = new MemUser(dir, { level:'interact', id:uid });
   S.preview = { tipo, pid: pid || null, nombre };
-  S.mine = { expediente:null, avance:null, agenda:null, marcas:null };
-  S.D = { personas:{}, sesiones:{}, duos:{}, registros:{}, params:null, gestion:null, contenido:null, avance:{}, marcas:{}, agenda:{}, expedientes:{}, bitacora:{} };
+  S.mine = { expediente:null, avance:null, agenda:null, marcas:null, solicitud:null };
+  S.D = { personas:{}, sesiones:{}, duos:{}, registros:{}, params:null, gestion:null, contenido:null, avance:{}, marcas:{}, agenda:{}, expedientes:{}, bitacora:{}, solicitudes:{} };
   for(const k of Object.keys(UI)) if(/^(postular|prac-|esc-|sim-|mod-)/.test(k)) delete UI[k];
   await identificar();
   S.role = 'tecnico';
@@ -3936,7 +3989,7 @@ async function salirVistaPrevia(){
   if(!S.preview) return;
   const R = S.real; S.real = null; S.preview = null;
   S.db = R.db; S.user = R.user; S.me = R.me; S.D = R.D;
-  S.mine = { expediente:null, avance:null, agenda:null, marcas:null };
+  S.mine = { expediente:null, avance:null, agenda:null, marcas:null, solicitud:null };
   S.role = 'admin';
   suscribir();
   go('entrar');
@@ -3961,16 +4014,16 @@ function esFormador(){ return S.role === 'tecnico' && S.mine.agenda && Object.ke
 
 /* ---------- arranque de cada modo ---------- */
 function demoStorageLoad(){
-  try { const raw = localStorage.getItem('lh-demo-v4'); if(!raw) return null; const o = JSON.parse(raw); if(o && o.hoy === S.hoy && o.docs) return o.docs; } catch(e){}
+  try { const raw = localStorage.getItem('lh-demo-v5'); if(!raw) return null; const o = JSON.parse(raw); if(o && o.hoy === S.hoy && o.docs) return o.docs; } catch(e){}
   return null;
 }
 let demoSaveT = null;
 function demoStorageSave(){
   clearTimeout(demoSaveT);
-  demoSaveT = setTimeout(() => { try { localStorage.setItem('lh-demo-v4', JSON.stringify({ hoy:S.hoy, docs:S.mem.dump() })); } catch(e){} }, 400);
+  demoSaveT = setTimeout(() => { try { localStorage.setItem('lh-demo-v5', JSON.stringify({ hoy:S.hoy, docs:S.mem.dump() })); } catch(e){} }, 400);
 }
 function demoReset(){
-  try { localStorage.removeItem('lh-demo-v4'); } catch(e){}
+  try { localStorage.removeItem('lh-demo-v5'); } catch(e){}
   S.mem.load(demoSeed(S.hoy));
   toast('Demostración restablecida');
 }
@@ -3987,8 +4040,8 @@ async function iniciarDemo(){
   S.mem.setViewer(role.viewer); S.memUser.setViewer(role.viewer);
   S.db = S.mem; S.user = S.memUser;
   S.kiosk = !!role.kiosk;
-  S.mine = { expediente:null, avance:null, agenda:null, marcas:null };
-  S.D = { personas:{}, sesiones:{}, duos:{}, registros:{}, params:null, gestion:null, contenido:null, avance:{}, marcas:{}, agenda:{}, expedientes:{}, bitacora:{} };
+  S.mine = { expediente:null, avance:null, agenda:null, marcas:null, solicitud:null };
+  S.D = { personas:{}, sesiones:{}, duos:{}, registros:{}, params:null, gestion:null, contenido:null, avance:{}, marcas:{}, agenda:{}, expedientes:{}, bitacora:{}, solicitudes:{} };
   await identificar();
   S.role = decidirRol();
   suscribir();
@@ -4511,6 +4564,42 @@ async function terminarDuo(did, motivo){
   return { anticipado };
 }
 
+/* ---------- solicitudes de rotación (D13) ----------
+   El técnico escribe su solicitud en su propio documento; la respuesta vive en personas/,
+   que solo escribe administración. Así nadie se aprueba su propia rotación. */
+function solicitudesRotacion(){
+  return Object.entries(S.D.solicitudes || {})
+    .map(([uid, doc]) => ({ uid, sol: doc && doc.rotacion, p: personaPorUid(uid) }))
+    .filter(x => x.sol && x.sol.id && x.p && x.p.etapa === 'tecnico' && !(x.p.rotacion && x.p.rotacion.id === x.sol.id))
+    .map(x => Object.assign(x, { duo: duoActivoDe(x.p.id, duos()) }))
+    .sort((a, b) => String(a.sol.enviada || '').localeCompare(String(b.sol.enviada || '')));
+}
+async function resolverSolicitudRotacion(uid, aprobar, respuesta){
+  requireAdmin(); mustId(uid);
+  return conCandado('rotacion:' + uid, async () => {
+    const x = solicitudesRotacion().find(s => s.uid === uid);
+    if(!x) throw new Error('La solicitud ya no está pendiente');
+    const r = txt(respuesta, 300);
+    if(!aprobar && !motivoValido(r)) throw new Error('Explica por qué se rechaza');
+    const res = { id: x.sol.id, estado: aprobar ? 'aprobada' : 'rechazada', respuesta: r, fecha: S.hoy, por: S.me.id };
+    const pasos = [];
+    if(aprobar){
+      if(!x.duo) throw new Error(x.p.nombre + ' ya no está en un duo activo');
+      // el plazo se revisa aquí con la fecha del duo, no con lo que diga la solicitud
+      const sep = separacionAnticipada(x.duo, params(), S.hoy);
+      if(sep.anticipado) throw new Error('El duo cumple ' + rotacionMeses(params()) + ' meses el ' + fechaLarga(sep.libreDesde) + ': antes no se rota por solicitud (D13)');
+      pasos.push({ path:'duos/' + x.duo.id, op:'update', data:{ activo:false, hasta: S.hoy, motivoFin: txt('Rotación pedida por ' + x.p.nombre + ': ' + x.sol.motivo, 300), anticipado:false } });
+    }
+    pasos.push({ path:'personas/' + x.p.id, op:'update', data:{ rotacion: res, actualizado: nowISO() } });
+    await transaccion(aprobar ? 'Aprobación de la rotación' : 'Rechazo de la rotación', pasos);
+    if(aprobar) S.D.duos[x.duo.id] = Object.assign({}, x.duo, { activo:false, hasta: S.hoy });
+    S.D.personas[x.p.id] = Object.assign({}, x.p, { rotacion: res });
+    await logEvento(aprobar ? 'Rotación aprobada' : 'Rotación rechazada', x.p.id, x.p.nombre + (r ? ': ' + r : ''));
+    await syncMuchos(aprobar ? [x.duo.a, x.duo.b] : [x.p.id]);
+    return res;
+  });
+}
+
 /* ---------- parámetros, gestión y equipo ---------- */
 function numOrNull(v, min, max){ if(v === '' || v === null || v === undefined) return null; const n = Number(v); if(!isFinite(n)) return null; return clamp(n, min, max); }
 async function guardarParametros(pp){
@@ -4606,6 +4695,34 @@ async function marcarRevisado(mid){
 async function guardarSimulador(mid, datos){
   await W.upsert(miAvancePath(), { modulos: { [mid]: { sim: datos } } }, !!S.mine.avance);
 }
+/* Solicitud de rotación: el técnico la escribe en su propio documento (D13) */
+function miSolicitudPath(){ if(!validId(S.me.id)) throw new Error('Sin identidad: no se puede enviar la solicitud'); return 'solicitudes/' + S.me.id; }
+function solicitudPendienteMia(){
+  const sol = S.mine.solicitud && S.mine.solicitud.rotacion;
+  if(!sol) return null;
+  const e = S.mine.expediente;
+  if(e && e.rotacion && e.rotacion.id === sol.id) return null; // ya tiene respuesta
+  return sol;
+}
+async function enviarSolicitudRotacion(motivo, preferencia){
+  return conCandado('rotacion:' + S.me.id, async () => {
+    const e = S.mine.expediente;
+    if(!e || !e.duo) throw new Error('Necesitas estar en un duo activo para pedir rotación');
+    const chk = puedePedirRotacion(e.duo.desde, params(), S.hoy);
+    if(!chk.ok) throw new Error(chk.motivo);
+    if(solicitudPendienteMia()) throw new Error('Ya tienes una solicitud pendiente');
+    const m = txt(motivo, 600);
+    if(!motivoRotacionValido(m)) throw new Error('Explica por qué quieres rotar (al menos ' + MIN_MOTIVO_ROTACION + ' caracteres)');
+    const doc = { rotacion: { id: nid('rot'), motivo: m, preferencia: txt(preferencia, 200), fecha: S.hoy, enviada: nowISO(), duoDesde: e.duo.desde } };
+    await W.set(miSolicitudPath(), doc);
+    S.mine.solicitud = doc;
+  });
+}
+async function retirarSolicitudRotacion(){
+  if(!solicitudPendienteMia()) throw new Error('No tienes una solicitud pendiente');
+  await W.set(miSolicitudPath(), { rotacion: null, retirada: nowISO() });
+  S.mine.solicitud = { rotacion: null };
+}
 async function enviarMarcas(sid, items, obs){
   return conCandado('envio:' + sid, () => enviarMarcas_(sid, items, obs));
 }
@@ -4621,7 +4738,7 @@ async function enviarMarcas_(sid, items, obs){
 }
 
 /* ---------- respaldo: exportar y restaurar con prueba en seco ---------- */
-const BK_COLS = ['personas','sesiones','duos','registros','avance','marcas','agenda','expedientes','bitacora'];
+const BK_COLS = ['personas','sesiones','duos','registros','avance','marcas','agenda','expedientes','bitacora','solicitudes'];
 const BK_DOCS = ['config/parametros','config/contenido','ajustes/gestion'];
 function armarRespaldo(){
   requireAdmin();
@@ -5456,6 +5573,8 @@ VIEWS.panel = function(){
   if(sinDatos(['personas','sesiones','duos','registros','params'])) return vistaCargando();
   const c = ctx();
   const al = alertas(c);
+  const sols = solicitudesRotacion();
+  if(sols.length) al.unshift({ s:'info', t: sols.length === 1 ? '1 solicitud de rotación por revisar' : sols.length + ' solicitudes de rotación por revisar', d: sols.map(x => x.p.nombre).join(', ') + '. Cada una explica por qué pide cambiar de duo (D13).', ref:{ tipo:'duo' } });
   const act = activos(c.personas);
   const abiertas = c.sesiones.filter(x => x.estado === 'abierta').sort((a, b) => String(a.fecha).localeCompare(String(b.fecha)));
   const post = c.personas.filter(p => p.etapa === 'postulante');
@@ -5831,7 +5950,7 @@ function tabResumen(p){
     const rv = revalidacion(p, pr, S.hoy);
     cards.push(h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Revalidación de seguridad'),
       rv.estado === 'na' ? h('p', { class:'small muted' }, 'Aplica desde el nivel 1.') : frag(h('div', { class:'h3' }, fechaCorta(rv.vence)), badge(rv.estado === 'vencida' ? 'Vencida' : rv.estado === 'pronto' ? 'Vence ' + relDias(rv.dias) : 'Vigente', rv.estado === 'vencida' ? 'crit' : rv.estado === 'pronto' ? 'warn' : 'ok')),
-      h('p', { class:'hint' }, 'Solo el core de seguridad se revalida, cada ' + pr.revalidacionMeses + ' meses (valor provisorio).')));
+      h('p', { class:'hint' }, 'Solo el core de seguridad se revalida, cada ' + pr.revalidacionMeses + ' meses.')));
     const bn = bono(p, pr);
     cards.push(h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Bono por avance validado'),
       bn.length ? h('div', { class:'stack', style:'--g:4px' }, bn.map(b => h('div', { class:'row sb small' }, h('span', null, 'Nivel ' + b.n + ' · ' + fechaCorta(b.fecha)), h('b', null, b.monto === null ? 'Monto por definir' : clp(b.monto))))) : h('p', { class:'small muted' }, 'Aún sin niveles validados.'),
@@ -6327,8 +6446,9 @@ VIEWS.agenda = function(){
 
 /* ---------- DUOS ---------- */
 VIEWS.duos = function(){
-  if(sinDatos(['personas','duos'])) return vistaCargando();
+  if(sinDatos(['personas','duos','solicitudes'])) return vistaCargando();
   const ps = personas(); const P = Pmap(); const pr = params();
+  const sols = solicitudesRotacion();
   const act = duos().filter(d => d.activo);
   const hist = duos().filter(d => !d.activo).sort((a, b) => String(b.hasta || '').localeCompare(String(a.hasta || '')));
   const sinDuo = activos(ps).filter(p => !duoActivoDe(p.id, duos()));
@@ -6356,14 +6476,43 @@ VIEWS.duos = function(){
       actions:[ btn('Formar duo', { kind:'action', icon:'plus', onClick: hojaFormarDuo }) ] }),
     h('div', { class:'card mist', style:'--pad:16px;margin-bottom:20px' }, h('ol', { class:'rules' },
       h('li', null, h('span', null, h('b', null, 'Todo duo lleva al menos un técnico de nivel 3 o 4. '), 'Mientras no exista nadie de nivel 3, trabajan bajo supervisión directa del Responsable Técnico.')),
-      h('li', null, h('span', null, h('b', null, 'Rotación voluntaria desde ' + pr.rotacionMinMeses + ' meses. '), 'Antes, el Responsable Técnico separa solo por seguridad o conflicto.')),
+      h('li', null, h('span', null, h('b', null, 'Rotación voluntaria cada ' + pr.rotacionMinMeses + ' meses como mínimo, por solicitud. '), 'El técnico explica por qué y el Responsable Técnico decide. Antes del plazo solo se separa por seguridad o conflicto (D13).')),
+      h('li', null, h('span', null, h('b', null, 'Dos técnicos de nivel 1 nunca forman duo. '), 'El nivel 1 solo habilita a ser el segundo integrante, encargado de seguridad.')),
       h('li', null, h('span', null, h('b', null, 'Nadie valida a su compañero de duo. '), 'La plataforma bloquea la marca.')))),
+    sols.length ? seccionSolicitudes(sols, pr) : null,
     act.length ? h('div', { class:'grid g2', style:'--g:14px' }, cards) : emptyState('duo', 'Sin duos activos', 'Forma el primero cuando haya técnicos con nivel 1 validado.'),
     sinDuo.length ? h('section', { class:'section' }, h('h2', { class:'h3', style:'margin-bottom:12px' }, 'Técnicos sin duo'), h('div', { class:'tag-row' }, sinDuo.map(p => badge(p.nombre + ' · N' + (p.nivel || 0), (p.nivel || 0) >= 1 ? 'warn' : 'line')))) : null,
     hist.length ? h('section', { class:'section' }, h('details', { class:'disc' }, h('summary', null, 'Historial de duos (' + hist.length + ')', icon('chevDown')),
       h('div', { class:'dbody' }, h('div', { class:'tscroll' }, h('table', { class:'t' }, h('thead', null, h('tr', null, h('th', null, 'Integrantes'), h('th', null, 'Desde'), h('th', null, 'Hasta'), h('th', null, 'Motivo'))),
         h('tbody', null, hist.map(d => h('tr', null, h('td', null, nombreP(d.a) + ' y ' + nombreP(d.b)), h('td', null, fechaCorta(d.desde)), h('td', null, fechaCorta(d.hasta)), h('td', null, d.motivoFin || '—'))))))))) : null);
 };
+function seccionSolicitudes(sols, pr){
+  const item = x => {
+    const sep = x.duo ? separacionAnticipada(x.duo, pr, S.hoy) : null;
+    const comp = x.duo ? nombreP(x.duo.a === x.p.id ? x.duo.b : x.duo.a) : null;
+    const req = [
+      x.duo ? (sep.anticipado ? badge('Cumple ' + pr.rotacionMinMeses + ' meses el ' + fechaCorta(sep.libreDesde), 'warn', 'clock') : badge('Cumple ' + pr.rotacionMinMeses + ' meses en el duo', 'ok', 'check')) : badge('Ya no está en un duo', 'line'),
+      badge('Motivo escrito', 'ok', 'check')
+    ];
+    const apr = btn('Aprobar y separar', { kind:'action', size:'sm', icon:'check', disabled: !x.duo || sep.anticipado || null, onClick: async () => {
+      const r = await dialog({ title:'Aprobar la rotación', icon:'duo', confirm:'Aprobar', body:'Termina el duo de ' + x.p.nombre + ' y ' + comp + '. Después forma los nuevos duos: la plataforma exige al menos un técnico de nivel 3 o 4 y nunca dos de nivel 1.', motivo:{ label:'Comentario para ' + x.p.nombre.split(' ')[0] + ' (opcional)', required:false } });
+      if(!r) return;
+      try { await resolverSolicitudRotacion(x.uid, true, r.motivo || ''); toast('Rotación aprobada'); } catch(err){ toast(errMsg(err), 'crit'); }
+    } });
+    const rech = btn('Rechazar', { kind:'ghost', size:'sm', onClick: async () => {
+      const r = await dialog({ title:'Rechazar la rotación', icon:'duo', confirm:'Rechazar', body:'El duo sigue igual. ' + x.p.nombre.split(' ')[0] + ' verá tu respuesta en su ruta.', motivo:{ label:'Respuesta', required:true, min:5 } });
+      if(!r) return;
+      try { await resolverSolicitudRotacion(x.uid, false, r.motivo); toast('Rotación rechazada'); } catch(err){ toast(errMsg(err), 'crit'); }
+    } });
+    return h('div', { class:'card stack', style:'--g:10px', 'data-solicitud': x.uid },
+      h('div', { class:'row sb', style:'gap:10px' }, h('div', { class:'row', style:'gap:10px' }, avatar(x.p.nombre, colorDe(x.p)), h('div', null, h('b', null, x.p.nombre), h('div', { class:'hint' }, 'Nivel ' + (x.p.nivel || 0) + (comp ? ' · en duo con ' + comp + ' desde ' + fechaCorta(x.duo.desde) : '')))), h('span', { class:'hint' }, 'Enviada el ' + fechaCorta(x.sol.fecha))),
+      h('blockquote', { class:'small', style:'margin:0;padding-left:12px;border-left:3px solid var(--line)' }, x.sol.motivo),
+      x.sol.preferencia ? h('p', { class:'small ink2' }, h('b', null, 'Le gustaría trabajar con: '), x.sol.preferencia) : null,
+      h('div', { class:'tag-row' }, req),
+      h('div', { class:'row end', style:'gap:8px' }, rech, apr));
+  };
+  return h('section', { style:'margin-bottom:20px' }, h('h2', { class:'h3', style:'margin-bottom:12px' }, 'Solicitudes de rotación (' + sols.length + ')'), h('div', { class:'grid g2', style:'--g:14px' }, sols.map(item)));
+}
 function hojaFormarDuo(){
   const cand = activos(personas()).filter(p => (p.nivel || 0) >= 1 && !duoActivoDe(p.id, duos()));
   openSheet('Formar duo', close => {
@@ -6531,6 +6680,7 @@ VIEWS.diccionario = function(){
 
 /* ---------- panel de seguridad (20 controles) ---------- */
 const SEG_L = { ok:['Cubierto','ok'], plat:['Lo cubre claude.ai','info'], pend:['Pendiente de operación','warn'], na:['No aplica','line'] };
+const HORAS_T = { norma:'Norma', mixta:'Norma y estimación', estimacion:'Estimación' };
 function panelSeguridad(full){
   const cnt = k => SEGURIDAD.filter(x => x.s === k).length;
   return h('div', { class:'stack', style:'--g:16px' },
@@ -6572,12 +6722,12 @@ function ajParametros(){
       fila('Umbral de complementarias (%)', umb, 'D7: seguridad y producto siempre al 100%.'),
       h('div', { class:'notice warn', style:'margin:12px 0' }, icon('info'), h('div', null, h('b', null, 'Exigencia real con ' + pr.umbralComp + '%: '), ex.map(x => 'nivel ' + x.n + ' ' + x.req + ' de ' + x.total).join(' · ') + '. Con menos de ' + minimoParaQueImporte(pr.umbralComp) + ' complementarias en una validación, el umbral equivale a 100%. Hoy ninguna validación llega a ese número.')),
       fila('Fundamentos: correctas por área para no nivelar', bind(numIn(pr.umbralFund, { min:'1', max:'3' }), st, 'umbralFund'), 'De 3 preguntas por área. Solo puede sumar nivelación.'),
-      fila('Revalidación del core de seguridad (meses)', bind(numIn(pr.revalidacionMeses, { min:'1', max:'60' }), st, 'revalidacionMeses'), 'Provisorio. Referencia: IMI TechSafe usa ciclos de 36 meses. Lumine por definir.'),
-      fila('Rotación mínima de duos (meses)', bind(numIn(pr.rotacionMinMeses, { min:'0', max:'24' }), st, 'rotacionMinMeses'), 'D13 (propuesta).'),
-      fila('Período autónomo del nivel 3 (días)', bind(numIn(pr.periodoAutonomoDias, { min:'1', max:'365' }), st, 'periodoAutonomoDias'), 'Sin fijar: depende del procedimiento real.'),
+      fila('Revalidación del core de seguridad (meses)', bind(numIn(pr.revalidacionMeses, { min:'1', max:'60' }), st, 'revalidacionMeses'), 'Fijado por el equipo en 24 meses. Referencias: IMI TechSafe usa 36; la DGUV pide actualizar primeros auxilios cada 24.'),
+      fila('Rotación mínima de duos (meses)', bind(numIn(pr.rotacionMinMeses, { min:'0', max:'24' }), st, 'rotacionMinMeses'), 'D13: por solicitud al Responsable Técnico, desde este plazo.'),
+      fila('Período autónomo del nivel 3 (días)', bind(numIn(pr.periodoAutonomoDias, { min:'1', max:'365' }), st, 'periodoAutonomoDias'), 'Ventana de trabajo autónomo observado. Ninguna norma fija la ventana; 90 días caben dentro de un mismo duo (rotación cada 4 meses).'),
       fila('Firma por nivel (D18)', badge('Cerrada', 'ok'), 'Nivel 3 firma su trabajo propio; nivel 4 firma revisiones cruzadas. Lo legal lo firma solo el Responsable Técnico (D17).')),
-    h('div', { class:'card' }, h('h3', { class:'h4', style:'margin-bottom:6px' }, 'Horas por módulo'), h('p', { class:'hint' }, 'Sin fijar a propósito: dependen del procedimiento real del kit (informe 5).'),
-      MODULOS.map(m => fila(m.nombre, bind(numIn(pr.horasModulo[m.id], { min:'0', max:'500' }), st.horasModulo, m.id), m.id))),
+    h('div', { class:'card' }, h('h3', { class:'h4', style:'margin-bottom:6px' }, 'Horas por módulo'), h('p', { class:'hint' }, 'Aprender y practicar, en horas reloj. Lo de alta tensión sale de normas internacionales; lo propio del kit es estimación hasta tener el procedimiento real.'),
+      MODULOS.map(m => { const r = HORAS_REF[m.id]; return fila(m.nombre, bind(numIn(pr.horasModulo[m.id], { min:'0', max:'500' }), st.horasModulo, m.id), r ? h('span', null, badge(HORAS_T[r.t], r.t === 'norma' ? 'ok' : r.t === 'mixta' ? 'info' : 'line'), ' ', m.id + ' · ' + r.h + ' h de referencia. ' + r.b) : m.id); })),
     h('div', { class:'card' }, h('h3', { class:'h4', style:'margin-bottom:6px' }, 'Horas por validación'), Object.keys(TIPOS_SESION).map(t => fila(TIPOS_SESION[t].l, bind(numIn(pr.horasValidacion[t], { min:'0', max:'200' }), st.horasValidacion, t)))),
     tarjetaBonos(pr, st, fila, bind),
     h('div', { class:'card' }, h('h3', { class:'h4', style:'margin-bottom:6px' }, 'Costos para el indicador de costo (CLP)'), h('p', { class:'hint' }, 'Los ingresa administración. Mientras falten, el indicador muestra qué falta en vez de inventar un número.'),
@@ -6784,7 +6934,7 @@ function planMio(e){ return { modulos: e.plan.modulos || [], nivelacion: e.plan.
 
 /* ---------- MI RUTA ---------- */
 VIEWS.ruta = function(){
-  if(!cargado(['expediente','avance','params'])) return vistaCargando();
+  if(!cargado(['expediente','avance','params','solicitud'])) return vistaCargando();
   const e = miExp();
   if(!e) return page(phead({ title:'Aún no tienes expediente', lead:'Postula para empezar tu diagnóstico.' }), linkBtn('Postular', 'postular', { kind:'action', arrow:true }));
   const n = e.nivel || 0, sig = n < 4 ? n + 1 : null;
@@ -6803,13 +6953,56 @@ VIEWS.ruta = function(){
     h('div', { class:'card', style:'--pad:18px;margin-bottom:18px' }, trackNiveles(n, e.fechasNivel)),
     h('div', { class:'alert ' + paso.s, style:'margin-bottom:18px' }, h('span', { class:'ai' }, icon(paso.ic, 's20')), h('div', null, h('div', { class:'at' }, paso.t), h('div', { class:'ad' }, paso.d)), sig && !e.suspendidoAT ? h('div', { class:'aa' }, linkBtn('Ir a módulos', 'modulos', { size:'sm', kind:'action' })) : null),
     h('div', { class:'grid g3', style:'--g:14px' },
-      h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Tu duo'), e.duo ? frag(h('div', { class:'row', style:'gap:10px' }, avatar(e.duo.companero), h('div', null, h('b', null, e.duo.companero), h('div', { class:'hint' }, 'Nivel ' + e.duo.companeroNivel + ' · desde ' + fechaCorta(e.duo.desde))))) : h('p', { class:'small muted' }, n >= 1 ? 'Sin duo asignado.' : 'Entras a un duo al validar el nivel 1.')),
+      h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Tu duo'), e.duo ? frag(h('div', { class:'row', style:'gap:10px' }, avatar(e.duo.companero), h('div', null, h('b', null, e.duo.companero), h('div', { class:'hint' }, 'Nivel ' + e.duo.companeroNivel + ' · desde ' + fechaCorta(e.duo.desde)))), bloqueRotacion(e)) : frag(h('p', { class:'small muted' }, n >= 1 ? 'Sin duo asignado.' : 'Entras a un duo al validar el nivel 1.'), bloqueRotacion(e))),
       h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Revalidación de seguridad'), rv.estado === 'na' ? h('p', { class:'small muted' }, 'Aplica desde el nivel 1.') : frag(h('div', { class:'h3' }, fechaCorta(rv.vence)), badge(rv.estado === 'vencida' ? 'Vencida' : rv.estado === 'pronto' ? 'Vence ' + relDias(rv.dias) : 'Vigente', rv.estado === 'vencida' ? 'crit' : rv.estado === 'pronto' ? 'warn' : 'ok'))),
       h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Bono por avance'), (e.bono || []).length ? e.bono.map(b => h('div', { class:'row sb small' }, h('span', null, 'Nivel ' + b.n), h('b', null, b.monto === null ? 'Monto por definir' : clp(b.monto)))) : h('p', { class:'small muted' }, 'Se gana por nivel validado, nunca por nota online.'))),
     h('section', { class:'section card' }, h('div', { class:'card-h' }, h('h2', { class:'h4' }, 'Tus 39 competencias'), h('span', { class:'hint' }, hecho + ' aprobadas o demostradas')), mapa,
       h('div', { class:'cmap-legend', style:'margin-top:12px' }, h('span', null, h('i', { class:'tile core' }), 'Core'), h('span', null, h('i', { class:'tile oficio' }), 'Oficio'), h('span', null, h('i', { class:'tile desarrollo' }), 'Desarrollo'), h('span', null, h('i', { class:'tile oficio skip' }), 'Demostrada'), h('span', null, h('i', { class:'tile core fail' }), 'Repetir'))),
     (e.historial || []).length ? h('section', { class:'section' }, h('h2', { class:'h3', style:'margin-bottom:12px' }, 'Tu historial'), tablaDe(['Validación','Intento','Fecha','Resultado'], e.historial.slice().reverse().map(x => [TIPOS_SESION[x.tipo] ? TIPOS_SESION[x.tipo].l : x.tipo, x.intento === 1 ? '1 · primera nota' : String(x.intento), fechaCorta(x.fecha), badge(x.aprobado ? 'Aprobada' : 'Repite ' + (x.fallidas || []).join(', '), x.aprobado ? 'ok' : 'crit')]))) : null);
 };
+
+/* ---------- rotación de duo (D13): se pide por escrito al Responsable Técnico ---------- */
+function bloqueRotacion(e){
+  const sol = solicitudPendienteMia();
+  const res = e.rotacion && S.mine.solicitud && S.mine.solicitud.rotacion && e.rotacion.id === S.mine.solicitud.rotacion.id ? e.rotacion : null;
+  const out = [];
+  if(res) out.push(h('div', { class:'stack', style:'--g:4px', 'data-rotacion':res.estado },
+    badge(res.estado === 'aprobada' ? 'Rotación aprobada' : 'Rotación rechazada', res.estado === 'aprobada' ? 'ok' : 'warn', res.estado === 'aprobada' ? 'check' : 'info'),
+    h('span', { class:'hint' }, (res.estado === 'aprobada' ? 'El Responsable Técnico te asignará tu nuevo duo.' : 'Respuesta: ' + (res.respuesta || 'sin comentario')) + ' · ' + fechaCorta(res.fecha))));
+  if(!e.duo) return out.length ? frag(out) : null;
+  if(sol){
+    const ret = btn('Retirar', { kind:'ghost', size:'sm', onClick: async () => {
+      const r = await dialog({ title:'Retirar la solicitud', icon:'duo', confirm:'Retirar', body:'Sigues en tu duo actual. Puedes volver a pedir rotación cuando quieras.' });
+      if(!r) return;
+      try { await retirarSolicitudRotacion(); toast('Solicitud retirada'); } catch(err){ toast(errMsg(err), 'crit'); }
+    } });
+    out.push(h('div', { class:'row sb', style:'gap:8px', 'data-rotacion':'pendiente' }, h('div', { class:'stack', style:'--g:2px' }, badge('Rotación pedida', 'info', 'clock'), h('span', { class:'hint' }, 'Enviada el ' + fechaCorta(sol.fecha) + '. La revisa el Responsable Técnico.')), ret));
+    return frag(out);
+  }
+  const chk = puedePedirRotacion(e.duo.desde, params(), S.hoy);
+  if(!chk.ok){ out.push(h('span', { class:'hint' }, chk.motivo + '.')); return frag(out); }
+  out.push(h('div', null, btn('Pedir rotación', { kind:'ghost', size:'sm', icon:'refresh', onClick: () => hojaRotacion(e) })));
+  return frag(out);
+}
+function hojaRotacion(e){
+  openSheet('Pedir rotación de duo', close => {
+    const mot = h('textarea', { class:'textarea', maxlength:'600', autofocus:'', placeholder:'Qué no está funcionando o qué quieres aprender con otra persona' });
+    const pref = inputEl({ maxlength:'200', placeholder:'Opcional' });
+    const cuenta = h('span', { class:'hint', 'aria-live':'polite' });
+    const env = btn('Enviar al Responsable Técnico', { kind:'action', icon:'arrowRight' });
+    const upd = () => { const n = mot.value.trim().length; cuenta.textContent = n >= MIN_MOTIVO_ROTACION ? 'Listo para enviar.' : 'Faltan ' + (MIN_MOTIVO_ROTACION - n) + ' caracteres.'; env.disabled = n < MIN_MOTIVO_ROTACION; };
+    mot.addEventListener('input', upd); setTimeout(upd, 0);
+    env.addEventListener('click', () => busy(env, async () => { await enviarSolicitudRotacion(mot.value, pref.value); toast('Solicitud enviada'); close(); }));
+    return h('div', { class:'stack', style:'--g:16px' },
+      h('p', { class:'body ink2' }, 'Trabajas con ' + e.duo.companero + ' desde el ' + fechaLarga(e.duo.desde) + '. La rotación es voluntaria y es una vía abierta para mejorar cómo trabaja cada duo: explica por qué la pides.'),
+      field('¿Por qué quieres rotar?', mot), cuenta,
+      field('¿Con quién te gustaría trabajar?', pref, 'El Responsable Técnico decide la nueva pareja.'),
+      h('div', { class:'card mist', style:'--pad:14px' }, h('b', { class:'small' }, 'Requisitos del nuevo duo'),
+        h('ul', { class:'small ink2', style:'padding-left:18px;margin-top:6px;display:flex;flex-direction:column;gap:4px' },
+          h('li', null, 'Al menos un técnico de nivel 3 o 4.'), h('li', null, 'Nunca dos técnicos de nivel 1.'), h('li', null, 'Nadie valida a su compañero de duo.'))),
+      h('div', { class:'row end' }, btn('Cancelar', { kind:'ghost', onClick: close }), env));
+  });
+}
 
 /* ---------- MÓDULOS ---------- */
 function estadoModulo(id){ const m = (miAv().modulos || {})[id]; return m ? (m.aprobado ? 'aprobado' : m.revisado ? 'revisado' : 'iniciado') : 'nuevo'; }

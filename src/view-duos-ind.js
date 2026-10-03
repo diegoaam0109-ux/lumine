@@ -5,8 +5,9 @@
 
 /* ---------- DUOS ---------- */
 VIEWS.duos = function(){
-  if(sinDatos(['personas','duos'])) return vistaCargando();
+  if(sinDatos(['personas','duos','solicitudes'])) return vistaCargando();
   const ps = personas(); const P = Pmap(); const pr = params();
+  const sols = solicitudesRotacion();
   const act = duos().filter(d => d.activo);
   const hist = duos().filter(d => !d.activo).sort((a, b) => String(b.hasta || '').localeCompare(String(a.hasta || '')));
   const sinDuo = activos(ps).filter(p => !duoActivoDe(p.id, duos()));
@@ -34,14 +35,43 @@ VIEWS.duos = function(){
       actions:[ btn('Formar duo', { kind:'action', icon:'plus', onClick: hojaFormarDuo }) ] }),
     h('div', { class:'card mist', style:'--pad:16px;margin-bottom:20px' }, h('ol', { class:'rules' },
       h('li', null, h('span', null, h('b', null, 'Todo duo lleva al menos un técnico de nivel 3 o 4. '), 'Mientras no exista nadie de nivel 3, trabajan bajo supervisión directa del Responsable Técnico.')),
-      h('li', null, h('span', null, h('b', null, 'Rotación voluntaria desde ' + pr.rotacionMinMeses + ' meses. '), 'Antes, el Responsable Técnico separa solo por seguridad o conflicto.')),
+      h('li', null, h('span', null, h('b', null, 'Rotación voluntaria cada ' + pr.rotacionMinMeses + ' meses como mínimo, por solicitud. '), 'El técnico explica por qué y el Responsable Técnico decide. Antes del plazo solo se separa por seguridad o conflicto (D13).')),
+      h('li', null, h('span', null, h('b', null, 'Dos técnicos de nivel 1 nunca forman duo. '), 'El nivel 1 solo habilita a ser el segundo integrante, encargado de seguridad.')),
       h('li', null, h('span', null, h('b', null, 'Nadie valida a su compañero de duo. '), 'La plataforma bloquea la marca.')))),
+    sols.length ? seccionSolicitudes(sols, pr) : null,
     act.length ? h('div', { class:'grid g2', style:'--g:14px' }, cards) : emptyState('duo', 'Sin duos activos', 'Forma el primero cuando haya técnicos con nivel 1 validado.'),
     sinDuo.length ? h('section', { class:'section' }, h('h2', { class:'h3', style:'margin-bottom:12px' }, 'Técnicos sin duo'), h('div', { class:'tag-row' }, sinDuo.map(p => badge(p.nombre + ' · N' + (p.nivel || 0), (p.nivel || 0) >= 1 ? 'warn' : 'line')))) : null,
     hist.length ? h('section', { class:'section' }, h('details', { class:'disc' }, h('summary', null, 'Historial de duos (' + hist.length + ')', icon('chevDown')),
       h('div', { class:'dbody' }, h('div', { class:'tscroll' }, h('table', { class:'t' }, h('thead', null, h('tr', null, h('th', null, 'Integrantes'), h('th', null, 'Desde'), h('th', null, 'Hasta'), h('th', null, 'Motivo'))),
         h('tbody', null, hist.map(d => h('tr', null, h('td', null, nombreP(d.a) + ' y ' + nombreP(d.b)), h('td', null, fechaCorta(d.desde)), h('td', null, fechaCorta(d.hasta)), h('td', null, d.motivoFin || '—'))))))))) : null);
 };
+function seccionSolicitudes(sols, pr){
+  const item = x => {
+    const sep = x.duo ? separacionAnticipada(x.duo, pr, S.hoy) : null;
+    const comp = x.duo ? nombreP(x.duo.a === x.p.id ? x.duo.b : x.duo.a) : null;
+    const req = [
+      x.duo ? (sep.anticipado ? badge('Cumple ' + pr.rotacionMinMeses + ' meses el ' + fechaCorta(sep.libreDesde), 'warn', 'clock') : badge('Cumple ' + pr.rotacionMinMeses + ' meses en el duo', 'ok', 'check')) : badge('Ya no está en un duo', 'line'),
+      badge('Motivo escrito', 'ok', 'check')
+    ];
+    const apr = btn('Aprobar y separar', { kind:'action', size:'sm', icon:'check', disabled: !x.duo || sep.anticipado || null, onClick: async () => {
+      const r = await dialog({ title:'Aprobar la rotación', icon:'duo', confirm:'Aprobar', body:'Termina el duo de ' + x.p.nombre + ' y ' + comp + '. Después forma los nuevos duos: la plataforma exige al menos un técnico de nivel 3 o 4 y nunca dos de nivel 1.', motivo:{ label:'Comentario para ' + x.p.nombre.split(' ')[0] + ' (opcional)', required:false } });
+      if(!r) return;
+      try { await resolverSolicitudRotacion(x.uid, true, r.motivo || ''); toast('Rotación aprobada'); } catch(err){ toast(errMsg(err), 'crit'); }
+    } });
+    const rech = btn('Rechazar', { kind:'ghost', size:'sm', onClick: async () => {
+      const r = await dialog({ title:'Rechazar la rotación', icon:'duo', confirm:'Rechazar', body:'El duo sigue igual. ' + x.p.nombre.split(' ')[0] + ' verá tu respuesta en su ruta.', motivo:{ label:'Respuesta', required:true, min:5 } });
+      if(!r) return;
+      try { await resolverSolicitudRotacion(x.uid, false, r.motivo); toast('Rotación rechazada'); } catch(err){ toast(errMsg(err), 'crit'); }
+    } });
+    return h('div', { class:'card stack', style:'--g:10px', 'data-solicitud': x.uid },
+      h('div', { class:'row sb', style:'gap:10px' }, h('div', { class:'row', style:'gap:10px' }, avatar(x.p.nombre, colorDe(x.p)), h('div', null, h('b', null, x.p.nombre), h('div', { class:'hint' }, 'Nivel ' + (x.p.nivel || 0) + (comp ? ' · en duo con ' + comp + ' desde ' + fechaCorta(x.duo.desde) : '')))), h('span', { class:'hint' }, 'Enviada el ' + fechaCorta(x.sol.fecha))),
+      h('blockquote', { class:'small', style:'margin:0;padding-left:12px;border-left:3px solid var(--line)' }, x.sol.motivo),
+      x.sol.preferencia ? h('p', { class:'small ink2' }, h('b', null, 'Le gustaría trabajar con: '), x.sol.preferencia) : null,
+      h('div', { class:'tag-row' }, req),
+      h('div', { class:'row end', style:'gap:8px' }, rech, apr));
+  };
+  return h('section', { style:'margin-bottom:20px' }, h('h2', { class:'h3', style:'margin-bottom:12px' }, 'Solicitudes de rotación (' + sols.length + ')'), h('div', { class:'grid g2', style:'--g:14px' }, sols.map(item)));
+}
 function hojaFormarDuo(){
   const cand = activos(personas()).filter(p => (p.nivel || 0) >= 1 && !duoActivoDe(p.id, duos()));
   openSheet('Formar duo', close => {

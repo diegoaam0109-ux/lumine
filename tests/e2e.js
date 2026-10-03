@@ -256,6 +256,43 @@ async function ir(pg, h){ await pg.evaluate(x => go(x), h); await pg.waitForTime
     await pg.context().close();
   }
 
+  /* 4b. Rotación de duo por solicitud al Responsable Técnico (D13) */
+  for(const vp of ['pc','telefono']){
+    const pg = await abrir(browser, vp, 'light');
+    const sol = await pg.evaluate(() => DEMO_IDS.solicitante);
+    await ir(pg, 'duos');
+    ok(await pg.locator('[data-solicitud="' + sol + '"]').count() === 1, vp + ' D13: el RT ve la solicitud pendiente de la demo');
+    ok(await sinDesborde(pg), vp + ' D13: duos con solicitudes sin desborde horizontal');
+    await rol(pg, 'tecnico'); await ir(pg, 'ruta');
+    ok((await pg.innerText('#main')).includes('Puedes pedir rotación desde'), vp + ' D13: antes de 4 meses el técnico ve desde cuándo puede pedir');
+    const antes = await pg.evaluate(async () => { try { await enviarSolicitudRotacion('Quiero aprender con otra persona del taller', ''); return 'envió'; } catch(e){ return e.message; } });
+    ok(/desde/.test(antes), vp + ' D13: la acción rechaza pedir antes del plazo');
+    await rol(pg, 'rt'); await pg.evaluate(async () => { const p = params(); p.rotacionMinMeses = 0; await guardarParametros(p); });
+    await rol(pg, 'tecnico'); await ir(pg, 'ruta');
+    await pg.getByRole('button', { name:'Pedir rotación' }).click(); await pg.waitForTimeout(250);
+    const env = pg.getByRole('button', { name:'Enviar al Responsable Técnico' });
+    ok(await env.isDisabled(), vp + ' D13: sin motivo explicado no se envía');
+    await pg.locator('.sheet textarea').fill('Quiero aprender calibración con otra persona del taller');
+    await env.click(); await pg.waitForTimeout(400);
+    ok(await pg.locator('[data-rotacion="pendiente"]').count() === 1, vp + ' D13: el técnico ve su solicitud pendiente');
+    const ajena = await pg.evaluate(async x => { try { await S.db.doc('solicitudes/' + x).set({ rotacion:null }); return 'escribió'; } catch(e){ return e.code || e.message; } }, sol);
+    ok(ajena !== 'escribió', vp + ' D13: un técnico no toca la solicitud de otro');
+    await rol(pg, 'rt'); await ir(pg, 'duos');
+    ok(await pg.locator('[data-solicitud]').count() === 2, vp + ' D13: el RT ve las dos solicitudes');
+    await pg.locator('[data-solicitud="u_ignacio"]').getByRole('button', { name:'Rechazar' }).click(); await pg.waitForTimeout(250);
+    await pg.locator('.dialog textarea').fill('Matías recién empieza a formarte; lo vemos en dos meses');
+    await pg.locator('.dialog').getByRole('button', { name:'Rechazar' }).click(); await pg.waitForTimeout(400);
+    await pg.locator('[data-solicitud="' + sol + '"]').getByRole('button', { name:'Aprobar y separar' }).click(); await pg.waitForTimeout(250);
+    await pg.locator('.dialog').getByRole('button', { name:'Aprobar' }).click(); await pg.waitForTimeout(500);
+    const st = await pg.evaluate(() => ({ activo: S.D.duos.d_camila.activo, sols: solicitudesRotacion().length, bit: Object.values(S.D.bitacora).some(b => /Rotación aprobada/.test(b.a || b.accion || JSON.stringify(b))) }));
+    ok(st.activo === false && st.sols === 0, vp + ' D13: aprobar separa el duo y vacía la lista');
+    ok(st.bit, vp + ' D13: la decisión queda en la bitácora');
+    await rol(pg, 'tecnico'); await ir(pg, 'ruta');
+    ok(await pg.locator('[data-rotacion="rechazada"]').count() === 1 && (await pg.innerText('#main')).includes('lo vemos en dos meses'), vp + ' D13: el técnico ve la respuesta del RT');
+    ok(!pg.errores.length, vp + ' D13 sin errores: ' + pg.errores.join(' | '));
+    await pg.context().close();
+  }
+
   /* 5. Versión real abierta fuera de claude.ai: avisa y no se rompe */
   {
     const pg = await abrir(browser, 'pc', 'light', 'lumine-habilita.html');

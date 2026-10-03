@@ -52,6 +52,7 @@ VIEWS.diccionario = function(){
 
 /* ---------- panel de seguridad (20 controles) ---------- */
 const SEG_L = { ok:['Cubierto','ok'], plat:['Lo cubre claude.ai','info'], pend:['Pendiente de operación','warn'], na:['No aplica','line'] };
+const HORAS_T = { norma:'Norma', mixta:'Norma y estimación', estimacion:'Estimación' };
 function panelSeguridad(full){
   const cnt = k => SEGURIDAD.filter(x => x.s === k).length;
   return h('div', { class:'stack', style:'--g:16px' },
@@ -93,12 +94,12 @@ function ajParametros(){
       fila('Umbral de complementarias (%)', umb, 'D7: seguridad y producto siempre al 100%.'),
       h('div', { class:'notice warn', style:'margin:12px 0' }, icon('info'), h('div', null, h('b', null, 'Exigencia real con ' + pr.umbralComp + '%: '), ex.map(x => 'nivel ' + x.n + ' ' + x.req + ' de ' + x.total).join(' · ') + '. Con menos de ' + minimoParaQueImporte(pr.umbralComp) + ' complementarias en una validación, el umbral equivale a 100%. Hoy ninguna validación llega a ese número.')),
       fila('Fundamentos: correctas por área para no nivelar', bind(numIn(pr.umbralFund, { min:'1', max:'3' }), st, 'umbralFund'), 'De 3 preguntas por área. Solo puede sumar nivelación.'),
-      fila('Revalidación del core de seguridad (meses)', bind(numIn(pr.revalidacionMeses, { min:'1', max:'60' }), st, 'revalidacionMeses'), 'Provisorio. Referencia: IMI TechSafe usa ciclos de 36 meses. Lumine por definir.'),
-      fila('Rotación mínima de duos (meses)', bind(numIn(pr.rotacionMinMeses, { min:'0', max:'24' }), st, 'rotacionMinMeses'), 'D13 (propuesta).'),
-      fila('Período autónomo del nivel 3 (días)', bind(numIn(pr.periodoAutonomoDias, { min:'1', max:'365' }), st, 'periodoAutonomoDias'), 'Sin fijar: depende del procedimiento real.'),
+      fila('Revalidación del core de seguridad (meses)', bind(numIn(pr.revalidacionMeses, { min:'1', max:'60' }), st, 'revalidacionMeses'), 'Fijado por el equipo en 24 meses. Referencias: IMI TechSafe usa 36; la DGUV pide actualizar primeros auxilios cada 24.'),
+      fila('Rotación mínima de duos (meses)', bind(numIn(pr.rotacionMinMeses, { min:'0', max:'24' }), st, 'rotacionMinMeses'), 'D13: por solicitud al Responsable Técnico, desde este plazo.'),
+      fila('Período autónomo del nivel 3 (días)', bind(numIn(pr.periodoAutonomoDias, { min:'1', max:'365' }), st, 'periodoAutonomoDias'), 'Ventana de trabajo autónomo observado. Ninguna norma fija la ventana; 90 días caben dentro de un mismo duo (rotación cada 4 meses).'),
       fila('Firma por nivel (D18)', badge('Cerrada', 'ok'), 'Nivel 3 firma su trabajo propio; nivel 4 firma revisiones cruzadas. Lo legal lo firma solo el Responsable Técnico (D17).')),
-    h('div', { class:'card' }, h('h3', { class:'h4', style:'margin-bottom:6px' }, 'Horas por módulo'), h('p', { class:'hint' }, 'Sin fijar a propósito: dependen del procedimiento real del kit (informe 5).'),
-      MODULOS.map(m => fila(m.nombre, bind(numIn(pr.horasModulo[m.id], { min:'0', max:'500' }), st.horasModulo, m.id), m.id))),
+    h('div', { class:'card' }, h('h3', { class:'h4', style:'margin-bottom:6px' }, 'Horas por módulo'), h('p', { class:'hint' }, 'Aprender y practicar, en horas reloj. Lo de alta tensión sale de normas internacionales; lo propio del kit es estimación hasta tener el procedimiento real.'),
+      MODULOS.map(m => { const r = HORAS_REF[m.id]; return fila(m.nombre, bind(numIn(pr.horasModulo[m.id], { min:'0', max:'500' }), st.horasModulo, m.id), r ? h('span', null, badge(HORAS_T[r.t], r.t === 'norma' ? 'ok' : r.t === 'mixta' ? 'info' : 'line'), ' ', m.id + ' · ' + r.h + ' h de referencia. ' + r.b) : m.id); })),
     h('div', { class:'card' }, h('h3', { class:'h4', style:'margin-bottom:6px' }, 'Horas por validación'), Object.keys(TIPOS_SESION).map(t => fila(TIPOS_SESION[t].l, bind(numIn(pr.horasValidacion[t], { min:'0', max:'200' }), st.horasValidacion, t)))),
     tarjetaBonos(pr, st, fila, bind),
     h('div', { class:'card' }, h('h3', { class:'h4', style:'margin-bottom:6px' }, 'Costos para el indicador de costo (CLP)'), h('p', { class:'hint' }, 'Los ingresa administración. Mientras falten, el indicador muestra qué falta en vez de inventar un número.'),

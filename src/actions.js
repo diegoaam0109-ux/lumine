@@ -495,6 +495,42 @@ async function terminarDuo(did, motivo){
   return { anticipado };
 }
 
+/* ---------- solicitudes de rotación (D13) ----------
+   El técnico escribe su solicitud en su propio documento; la respuesta vive en personas/,
+   que solo escribe administración. Así nadie se aprueba su propia rotación. */
+function solicitudesRotacion(){
+  return Object.entries(S.D.solicitudes || {})
+    .map(([uid, doc]) => ({ uid, sol: doc && doc.rotacion, p: personaPorUid(uid) }))
+    .filter(x => x.sol && x.sol.id && x.p && x.p.etapa === 'tecnico' && !(x.p.rotacion && x.p.rotacion.id === x.sol.id))
+    .map(x => Object.assign(x, { duo: duoActivoDe(x.p.id, duos()) }))
+    .sort((a, b) => String(a.sol.enviada || '').localeCompare(String(b.sol.enviada || '')));
+}
+async function resolverSolicitudRotacion(uid, aprobar, respuesta){
+  requireAdmin(); mustId(uid);
+  return conCandado('rotacion:' + uid, async () => {
+    const x = solicitudesRotacion().find(s => s.uid === uid);
+    if(!x) throw new Error('La solicitud ya no está pendiente');
+    const r = txt(respuesta, 300);
+    if(!aprobar && !motivoValido(r)) throw new Error('Explica por qué se rechaza');
+    const res = { id: x.sol.id, estado: aprobar ? 'aprobada' : 'rechazada', respuesta: r, fecha: S.hoy, por: S.me.id };
+    const pasos = [];
+    if(aprobar){
+      if(!x.duo) throw new Error(x.p.nombre + ' ya no está en un duo activo');
+      // el plazo se revisa aquí con la fecha del duo, no con lo que diga la solicitud
+      const sep = separacionAnticipada(x.duo, params(), S.hoy);
+      if(sep.anticipado) throw new Error('El duo cumple ' + rotacionMeses(params()) + ' meses el ' + fechaLarga(sep.libreDesde) + ': antes no se rota por solicitud (D13)');
+      pasos.push({ path:'duos/' + x.duo.id, op:'update', data:{ activo:false, hasta: S.hoy, motivoFin: txt('Rotación pedida por ' + x.p.nombre + ': ' + x.sol.motivo, 300), anticipado:false } });
+    }
+    pasos.push({ path:'personas/' + x.p.id, op:'update', data:{ rotacion: res, actualizado: nowISO() } });
+    await transaccion(aprobar ? 'Aprobación de la rotación' : 'Rechazo de la rotación', pasos);
+    if(aprobar) S.D.duos[x.duo.id] = Object.assign({}, x.duo, { activo:false, hasta: S.hoy });
+    S.D.personas[x.p.id] = Object.assign({}, x.p, { rotacion: res });
+    await logEvento(aprobar ? 'Rotación aprobada' : 'Rotación rechazada', x.p.id, x.p.nombre + (r ? ': ' + r : ''));
+    await syncMuchos(aprobar ? [x.duo.a, x.duo.b] : [x.p.id]);
+    return res;
+  });
+}
+
 /* ---------- parámetros, gestión y equipo ---------- */
 function numOrNull(v, min, max){ if(v === '' || v === null || v === undefined) return null; const n = Number(v); if(!isFinite(n)) return null; return clamp(n, min, max); }
 async function guardarParametros(pp){
@@ -590,6 +626,34 @@ async function marcarRevisado(mid){
 async function guardarSimulador(mid, datos){
   await W.upsert(miAvancePath(), { modulos: { [mid]: { sim: datos } } }, !!S.mine.avance);
 }
+/* Solicitud de rotación: el técnico la escribe en su propio documento (D13) */
+function miSolicitudPath(){ if(!validId(S.me.id)) throw new Error('Sin identidad: no se puede enviar la solicitud'); return 'solicitudes/' + S.me.id; }
+function solicitudPendienteMia(){
+  const sol = S.mine.solicitud && S.mine.solicitud.rotacion;
+  if(!sol) return null;
+  const e = S.mine.expediente;
+  if(e && e.rotacion && e.rotacion.id === sol.id) return null; // ya tiene respuesta
+  return sol;
+}
+async function enviarSolicitudRotacion(motivo, preferencia){
+  return conCandado('rotacion:' + S.me.id, async () => {
+    const e = S.mine.expediente;
+    if(!e || !e.duo) throw new Error('Necesitas estar en un duo activo para pedir rotación');
+    const chk = puedePedirRotacion(e.duo.desde, params(), S.hoy);
+    if(!chk.ok) throw new Error(chk.motivo);
+    if(solicitudPendienteMia()) throw new Error('Ya tienes una solicitud pendiente');
+    const m = txt(motivo, 600);
+    if(!motivoRotacionValido(m)) throw new Error('Explica por qué quieres rotar (al menos ' + MIN_MOTIVO_ROTACION + ' caracteres)');
+    const doc = { rotacion: { id: nid('rot'), motivo: m, preferencia: txt(preferencia, 200), fecha: S.hoy, enviada: nowISO(), duoDesde: e.duo.desde } };
+    await W.set(miSolicitudPath(), doc);
+    S.mine.solicitud = doc;
+  });
+}
+async function retirarSolicitudRotacion(){
+  if(!solicitudPendienteMia()) throw new Error('No tienes una solicitud pendiente');
+  await W.set(miSolicitudPath(), { rotacion: null, retirada: nowISO() });
+  S.mine.solicitud = { rotacion: null };
+}
 async function enviarMarcas(sid, items, obs){
   return conCandado('envio:' + sid, () => enviarMarcas_(sid, items, obs));
 }
@@ -605,7 +669,7 @@ async function enviarMarcas_(sid, items, obs){
 }
 
 /* ---------- respaldo: exportar y restaurar con prueba en seco ---------- */
-const BK_COLS = ['personas','sesiones','duos','registros','avance','marcas','agenda','expedientes','bitacora'];
+const BK_COLS = ['personas','sesiones','duos','registros','avance','marcas','agenda','expedientes','bitacora','solicitudes'];
 const BK_DOCS = ['config/parametros','config/contenido','ajustes/gestion'];
 function armarRespaldo(){
   requireAdmin();

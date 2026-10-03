@@ -1,5 +1,30 @@
 # Cambios de esta versión
 
+## Quinta ronda: D13 cerrada, revalidación, horas y período autónomo con fuentes (03-10-2026)
+
+- **D13, rotación de duos: cerrada.** Voluntaria, cada 4 meses como mínimo, por solicitud escrita al Responsable
+  Técnico explicando por qué (al menos 20 caracteres). El técnico la pide desde *Mi ruta › Tu duo*, puede
+  retirarla y ve la respuesta. El jefe la ve en *Duos* (y un aviso en el Panel), con los requisitos revisados, y
+  la aprueba (se termina el duo, en una sola operación con deshacer) o la rechaza con respuesta. La solicitud vive
+  en `solicitudes/{uid}`, lo único nuevo que escribe un técnico; la respuesta vive en `personas/`, que solo escribe
+  administración, así que nadie se aprueba solo. Todo queda en la bitácora y en el respaldo.
+- **Requisito nuevo del duo:** dos técnicos de nivel 1 nunca forman duo (el nivel 1 solo habilita a ser el segundo
+  integrante). Única excepción: al arrancar, cuando nadie llegó al nivel 2, trabajan bajo el Responsable Técnico
+  (regla de avance 3).
+- **Revalidación del core de seguridad: 24 meses** (antes 12, provisorio). Sale de pendientes.
+- **Horas por módulo con fuente** (`HORAS_REF`): 392 h si se cursa todo. Lo de alta tensión sale de DGUV 209-093,
+  NF C 18-550, RD 281/2021 y DGUV 204-022; lo propio del kit es estimación y así se marca. Ajustes muestra la
+  base de cada número. El plan personal y el costo por técnico ya calculan horas.
+- **Período autónomo del nivel 3: 90 días.** Ninguna norma fija la ventana de observación; 90 días caben dentro
+  de un mismo duo.
+- **Consultas pendientes investigadas:** escasez de técnicos (estudio Ministerio de Energía, SENCE y Centro UC:
+  cerrada con fuentes); licencia SEC (el borrador pide un instalador electricista SEC sin clase; por el D.S. 92
+  sería C hasta 50 kW o B sobre eso, falta confirmación de la SEC); batería del kit (llega con carga: hasta 30%
+  por avión, sin límite por mar; peso y montaje dependen del proveedor que se elija). 14 fuentes nuevas.
+- Demo: clave de almacenamiento v5; Valentina tiene una solicitud de rotación pendiente.
+- **Versión real:** hay que volver a publicar con `DB_RULES` actualizadas (incluye `solicitudes`).
+- Pruebas: 137 de reglas, 27 de la base y 333 en navegador (24 nuevas del flujo de rotación).
+
 ## Cuarta ronda: D18 cerrada y revisión contra los informes (03-10-2026)
 
 - **D18, firma por nivel: cerrada.** El nivel 3 (autónomo) firma su trabajo propio: checklist de pruebas y registro
