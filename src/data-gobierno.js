@@ -65,7 +65,7 @@ const TAREAS = {
   '8.2':'Trabajar en duo con roles alternados y comunicación constante durante la tarea',
   '8.3':'Atender la consulta técnica de un cliente que ventas deriva, como experto de respaldo',
   '8.4':'Formar a otros técnicos, desde el nivel formador',
-  '8.5':'Firmar verificaciones internas de calidad, desde el nivel que se defina'
+  '8.5':'Firmar verificaciones internas de calidad: el nivel autónomo firma su trabajo propio y el nivel formador las revisiones cruzadas (D18)'
 };
 
 /* Registro de decisiones (informe 1) */
@@ -87,11 +87,10 @@ const DECISIONES = [
   ['D15','Vehículos','Se incluyen autos con ABS, airbag y control de estabilidad, aunque el borrador de reglamento hoy los excluye','Cerrada'],
   ['D16','Comunicación','Ventas explica y convence; el técnico entra solo como experto de respaldo para quien quiera hablar con uno','Cerrada'],
   ['D17','Firma legal','El Responsable Técnico firma todo lo que exige la autoridad','Cerrada'],
-  ['D18','Firma interna','Nivel 3 firma su trabajo propio; nivel 4 firma revisiones cruzadas (propuesta amarrada a C39 y C38)','Pendiente'],
+  ['D18','Firma interna','Nivel 3 firma su trabajo propio (checklist de pruebas y registro de calibración del propio duo); nivel 4 firma revisiones cruzadas (calibración de otro duo y validaciones internas). Amarrada a C39 y C38','Cerrada'],
   ['D19','Calibración nueva','Calibración 100% interna; cargo de Ingeniería de Calibración desde la apertura, con acceso restringido a la biblioteca','Cerrada']
 ];
 const PENDIENTES = [
-  'Confirmar la firma por nivel: nivel 3 firma su trabajo, nivel 4 firma revisiones cruzadas',
   'Fijar la frecuencia de revalidación del core de seguridad',
   'Fijar horas por módulo, duración del período autónomo y monto del bono por avance',
   'Confirmar con el proveedor del kit si el banco de baterías llega con carga, cuánto pesa y cómo se monta',

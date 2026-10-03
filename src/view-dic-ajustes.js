@@ -96,7 +96,7 @@ function ajParametros(){
       fila('Revalidación del core de seguridad (meses)', bind(numIn(pr.revalidacionMeses, { min:'1', max:'60' }), st, 'revalidacionMeses'), 'Provisorio. Referencia: IMI TechSafe usa ciclos de 36 meses. Lumine por definir.'),
       fila('Rotación mínima de duos (meses)', bind(numIn(pr.rotacionMinMeses, { min:'0', max:'24' }), st, 'rotacionMinMeses'), 'D13 (propuesta).'),
       fila('Período autónomo del nivel 3 (días)', bind(numIn(pr.periodoAutonomoDias, { min:'1', max:'365' }), st, 'periodoAutonomoDias'), 'Sin fijar: depende del procedimiento real.'),
-      fila('Firma por nivel (D18)', (() => { const e = selectEl([['propuesta','Propuesta: N3 firma su trabajo, N4 revisiones cruzadas'],['confirmada','Confirmada por el equipo']], pr.firmaPorNivel, { style:'max-width:320px' }); e.addEventListener('change', () => { st.firmaPorNivel = e.value; }); return e; })(), null)),
+      fila('Firma por nivel (D18)', badge('Cerrada', 'ok'), 'Nivel 3 firma su trabajo propio; nivel 4 firma revisiones cruzadas. Lo legal lo firma solo el Responsable Técnico (D17).')),
     h('div', { class:'card' }, h('h3', { class:'h4', style:'margin-bottom:6px' }, 'Horas por módulo'), h('p', { class:'hint' }, 'Sin fijar a propósito: dependen del procedimiento real del kit (informe 5).'),
       MODULOS.map(m => fila(m.nombre, bind(numIn(pr.horasModulo[m.id], { min:'0', max:'500' }), st.horasModulo, m.id), m.id))),
     h('div', { class:'card' }, h('h3', { class:'h4', style:'margin-bottom:6px' }, 'Horas por validación'), Object.keys(TIPOS_SESION).map(t => fila(TIPOS_SESION[t].l, bind(numIn(pr.horasValidacion[t], { min:'0', max:'200' }), st.horasValidacion, t)))),

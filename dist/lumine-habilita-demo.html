@@ -1453,7 +1453,7 @@ const PARAMS_DEF = {
   horasModulo: {},         // {moduloId: horas}
   horasValidacion: {},     // {JT|N1..N4|REV: horas}
   bonoNivel: {},           // {1..4: monto CLP} pendiente de finanzas
-  firmaPorNivel: 'propuesta',
+  firmaPorNivel: 'confirmada', // D18 (cerrada)
   v: 1
 };
 const GESTION_DEF = {
@@ -1712,7 +1712,7 @@ const CONTENIDO = {
     capsulas: [
       {t:'Enseñar un procedimiento', c:'C38', puntos:['Explicar para qué sirve, demostrar, practicar guiado y recién después practicar solo.','Un paso a la vez. Si el aprendiz se equivoca, se corrige en el momento y se repite.','Lo de seguridad se enseña con el porqué: así se recuerda.']},
       {t:'Evaluar a otro técnico', c:'C38', puntos:['Se evalúa con la pauta de sabe o no sabe, por competencia.','Durante la evaluación no se ayuda: se observa. La enseñanza fue antes.','Nadie evalúa a su compañero de duo: la plataforma lo bloquea.']},
-      {t:'Revisiones cruzadas', c:'C38', puntos:['El nivel 4 firma revisiones cruzadas del trabajo de otros (propuesta D18).','Una revisión se firma solo si se verificó, no por confianza.','Lo que se encuentra se registra y se conversa con quien hizo el trabajo.']}
+      {t:'Revisiones cruzadas', c:'C38', puntos:['El nivel 4 firma revisiones cruzadas del trabajo de otros (D18).','Una revisión se firma solo si se verificó, no por confianza.','Lo que se encuentra se registra y se conversa con quien hizo el trabajo.']}
     ],
     practica: [
       {c:'C38', q:'Tu aprendiz se salta un paso durante su evaluación. ¿Qué haces?', o:['Le soplas el paso para que no repruebe','Detienes la evaluación y le enseñas','Lo marcas como no sabe en esa competencia; la enseñanza fue antes','Lo dejas pasar si el resultado final salió bien'], a:2, x:'En la evaluación se observa y se marca. Si es de seguridad y hay riesgo, se detiene el trabajo.'},
@@ -1791,7 +1791,7 @@ const TAREAS = {
   '8.2':'Trabajar en duo con roles alternados y comunicación constante durante la tarea',
   '8.3':'Atender la consulta técnica de un cliente que ventas deriva, como experto de respaldo',
   '8.4':'Formar a otros técnicos, desde el nivel formador',
-  '8.5':'Firmar verificaciones internas de calidad, desde el nivel que se defina'
+  '8.5':'Firmar verificaciones internas de calidad: el nivel autónomo firma su trabajo propio y el nivel formador las revisiones cruzadas (D18)'
 };
 
 /* Registro de decisiones (informe 1) */
@@ -1813,11 +1813,10 @@ const DECISIONES = [
   ['D15','Vehículos','Se incluyen autos con ABS, airbag y control de estabilidad, aunque el borrador de reglamento hoy los excluye','Cerrada'],
   ['D16','Comunicación','Ventas explica y convence; el técnico entra solo como experto de respaldo para quien quiera hablar con uno','Cerrada'],
   ['D17','Firma legal','El Responsable Técnico firma todo lo que exige la autoridad','Cerrada'],
-  ['D18','Firma interna','Nivel 3 firma su trabajo propio; nivel 4 firma revisiones cruzadas (propuesta amarrada a C39 y C38)','Pendiente'],
+  ['D18','Firma interna','Nivel 3 firma su trabajo propio (checklist de pruebas y registro de calibración del propio duo); nivel 4 firma revisiones cruzadas (calibración de otro duo y validaciones internas). Amarrada a C39 y C38','Cerrada'],
   ['D19','Calibración nueva','Calibración 100% interna; cargo de Ingeniería de Calibración desde la apertura, con acceso restringido a la biblioteca','Cerrada']
 ];
 const PENDIENTES = [
-  'Confirmar la firma por nivel: nivel 3 firma su trabajo, nivel 4 firma revisiones cruzadas',
   'Fijar la frecuencia de revalidación del core de seguridad',
   'Fijar horas por módulo, duración del período autónomo y monto del bono por avance',
   'Confirmar con el proveedor del kit si el banco de baterías llega con carga, cuánto pesa y cómo se monta',
@@ -4523,7 +4522,7 @@ async function guardarParametros(pp){
     revalidacionMeses: clamp(Math.round(numParam(pp.revalidacionMeses, 12)), 1, 60),
     rotacionMinMeses: clamp(Math.round(numParam(pp.rotacionMinMeses, 3)), 0, 24),
     periodoAutonomoDias: numOrNull(pp.periodoAutonomoDias, 1, 365),
-    firmaPorNivel: pp.firmaPorNivel === 'confirmada' ? 'confirmada' : 'propuesta',
+    firmaPorNivel: 'confirmada', // D18 cerrada: ya no se edita
     horasModulo: {}, horasValidacion: {}, bonoNivel: {}, v:1
   };
   for(const m of MODULOS) clean.horasModulo[m.id] = numOrNull(pp.horasModulo && pp.horasModulo[m.id], 0, 500);
@@ -6576,7 +6575,7 @@ function ajParametros(){
       fila('Revalidación del core de seguridad (meses)', bind(numIn(pr.revalidacionMeses, { min:'1', max:'60' }), st, 'revalidacionMeses'), 'Provisorio. Referencia: IMI TechSafe usa ciclos de 36 meses. Lumine por definir.'),
       fila('Rotación mínima de duos (meses)', bind(numIn(pr.rotacionMinMeses, { min:'0', max:'24' }), st, 'rotacionMinMeses'), 'D13 (propuesta).'),
       fila('Período autónomo del nivel 3 (días)', bind(numIn(pr.periodoAutonomoDias, { min:'1', max:'365' }), st, 'periodoAutonomoDias'), 'Sin fijar: depende del procedimiento real.'),
-      fila('Firma por nivel (D18)', (() => { const e = selectEl([['propuesta','Propuesta: N3 firma su trabajo, N4 revisiones cruzadas'],['confirmada','Confirmada por el equipo']], pr.firmaPorNivel, { style:'max-width:320px' }); e.addEventListener('change', () => { st.firmaPorNivel = e.value; }); return e; })(), null)),
+      fila('Firma por nivel (D18)', badge('Cerrada', 'ok'), 'Nivel 3 firma su trabajo propio; nivel 4 firma revisiones cruzadas. Lo legal lo firma solo el Responsable Técnico (D17).')),
     h('div', { class:'card' }, h('h3', { class:'h4', style:'margin-bottom:6px' }, 'Horas por módulo'), h('p', { class:'hint' }, 'Sin fijar a propósito: dependen del procedimiento real del kit (informe 5).'),
       MODULOS.map(m => fila(m.nombre, bind(numIn(pr.horasModulo[m.id], { min:'0', max:'500' }), st.horasModulo, m.id), m.id))),
     h('div', { class:'card' }, h('h3', { class:'h4', style:'margin-bottom:6px' }, 'Horas por validación'), Object.keys(TIPOS_SESION).map(t => fila(TIPOS_SESION[t].l, bind(numIn(pr.horasValidacion[t], { min:'0', max:'200' }), st.horasValidacion, t)))),

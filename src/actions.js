@@ -506,7 +506,7 @@ async function guardarParametros(pp){
     revalidacionMeses: clamp(Math.round(numParam(pp.revalidacionMeses, 12)), 1, 60),
     rotacionMinMeses: clamp(Math.round(numParam(pp.rotacionMinMeses, 3)), 0, 24),
     periodoAutonomoDias: numOrNull(pp.periodoAutonomoDias, 1, 365),
-    firmaPorNivel: pp.firmaPorNivel === 'confirmada' ? 'confirmada' : 'propuesta',
+    firmaPorNivel: 'confirmada', // D18 cerrada: ya no se edita
     horasModulo: {}, horasValidacion: {}, bonoNivel: {}, v:1
   };
   for(const m of MODULOS) clean.horasModulo[m.id] = numOrNull(pp.horasModulo && pp.horasModulo[m.id], 0, 500);

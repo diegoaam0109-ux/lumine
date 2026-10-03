@@ -1,5 +1,16 @@
 # Cambios de esta versión
 
+## Cuarta ronda: D18 cerrada y revisión contra los informes (03-10-2026)
+
+- **D18, firma por nivel: cerrada.** El nivel 3 (autónomo) firma su trabajo propio: checklist de pruebas y registro
+  de calibración del propio duo. El nivel 4 (formador) firma revisiones cruzadas: calibración de otro duo y
+  validaciones internas. Lo legal sigue siendo solo del Responsable Técnico (D17). Cambia el registro de
+  decisiones, la tarea 8.5, el módulo N4-1 y Ajustes › Parámetros, donde ya no es una opción editable.
+  Sale de la lista de pendientes.
+- **Revisión contra los informes 1 a 6.** Las 39 competencias (nivel, prioridad, criticidad, forma de evaluar,
+  quién valida y mercado), las 35 tareas, las 17 reglas, los 8 indicadores, los 4 tipos de usuario y las 4 reglas
+  automáticas coinciden con los informes. No hubo otras diferencias.
+
 ## Tercera ronda: experiencia (03-10-2026)
 
 - **Base oscura** con tema claro a elección (menú › Tema). La preferencia queda en el navegador.

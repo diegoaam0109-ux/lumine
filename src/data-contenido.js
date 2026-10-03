@@ -236,7 +236,7 @@ const CONTENIDO = {
     capsulas: [
       {t:'Enseñar un procedimiento', c:'C38', puntos:['Explicar para qué sirve, demostrar, practicar guiado y recién después practicar solo.','Un paso a la vez. Si el aprendiz se equivoca, se corrige en el momento y se repite.','Lo de seguridad se enseña con el porqué: así se recuerda.']},
       {t:'Evaluar a otro técnico', c:'C38', puntos:['Se evalúa con la pauta de sabe o no sabe, por competencia.','Durante la evaluación no se ayuda: se observa. La enseñanza fue antes.','Nadie evalúa a su compañero de duo: la plataforma lo bloquea.']},
-      {t:'Revisiones cruzadas', c:'C38', puntos:['El nivel 4 firma revisiones cruzadas del trabajo de otros (propuesta D18).','Una revisión se firma solo si se verificó, no por confianza.','Lo que se encuentra se registra y se conversa con quien hizo el trabajo.']}
+      {t:'Revisiones cruzadas', c:'C38', puntos:['El nivel 4 firma revisiones cruzadas del trabajo de otros (D18).','Una revisión se firma solo si se verificó, no por confianza.','Lo que se encuentra se registra y se conversa con quien hizo el trabajo.']}
     ],
     practica: [
       {c:'C38', q:'Tu aprendiz se salta un paso durante su evaluación. ¿Qué haces?', o:['Le soplas el paso para que no repruebe','Detienes la evaluación y le enseñas','Lo marcas como no sabe en esa competencia; la enseñanza fue antes','Lo dejas pasar si el resultado final salió bien'], a:2, x:'En la evaluación se observa y se marca. Si es de seguridad y hay riesgo, se detiene el trabajo.'},

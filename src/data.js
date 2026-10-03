@@ -194,7 +194,7 @@ const PARAMS_DEF = {
   horasModulo: {},         // {moduloId: horas}
   horasValidacion: {},     // {JT|N1..N4|REV: horas}
   bonoNivel: {},           // {1..4: monto CLP} pendiente de finanzas
-  firmaPorNivel: 'propuesta',
+  firmaPorNivel: 'confirmada', // D18 (cerrada)
   v: 1
 };
 const GESTION_DEF = {

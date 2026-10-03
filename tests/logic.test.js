@@ -27,6 +27,8 @@ eq(ESTACIONES_EXT.slice().sort(),COMP.filter(x=>x.p==='oficio'&&x.v==='ext').map
 const n2mods = MODULOS.filter(m=>m.nivel===2).flatMap(m=>m.cod).sort(); eq(n2mods, COMP.filter(x=>x.n===2 && x.c!=='C36').map(x=>x.c).sort(), 'módulos N2 = 22 competencias + C36 transversal'); eq(MODULOS.filter(m=>m.nivel===1).flatMap(m=>m.cod).sort(),COMP.filter(x=>x.n===1).map(x=>x.c).sort(), 'módulos N1 cubren nivel 1'); eq(MODULOS.filter(m=>m.nivel===3).flatMap(m=>m.cod).sort(),COMP.filter(x=>x.n===3).map(x=>x.c).sort(), 'módulo N3 cubre nivel 3'); eq(Object.keys(TAREAS).length, 35, '35 tareas');
 ok(COMP.every(x => x.ta.every(t => TAREAS[t])), 'toda competencia remite a tareas existentes');
 eq(DECISIONES.length, 19, '19 decisiones');
+eq(DECISIONES.find(d => d[0] === 'D18')[3], 'Cerrada', 'D18 firma por nivel cerrada');
+ok(!PENDIENTES.some(x => /firma por nivel/i.test(x)), 'D18 ya no figura en pendientes');
 eq(SEGURIDAD.length, 20, '20 controles'); eq(FUNDAMENTOS.filter(q=>q.area==='electrica').length, 3, '3 preguntas eléctricas');
 
 // --- diagnóstico con los perfiles del informe 4 ---
