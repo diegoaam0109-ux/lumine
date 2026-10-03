@@ -1,5 +1,30 @@
 # Cambios de esta versión
 
+## Sexta ronda: diseño, sencillez y experiencia (03-10-2026)
+
+**Técnico**
+- Mi ruta rehecha: una sola acción principal ("Continúa con…", "Tu validación es el…"), anillo con las competencias listas y barras por nivel.
+- Celebración a pantalla completa al validar un nivel, con confeti (se apaga con movimiento reducido) y lo que desde hoy puede hacer.
+- Credencial digital con código QR propio (sin librerías), estado vigente o vencido, y descarga como imagen. El código cambia con cada nivel.
+- Avisos con campana: validación programada, nivel nuevo, respuesta a la rotación, revalidación por vencer, temas por repasar.
+- Lenguaje de taller: el técnico ya no ve códigos (C14, N2-3, D9); ve temas en palabras.
+- El expediente ahora trae las próximas validaciones (tipo y fecha, nunca la pauta) y el código de credencial.
+
+**Portada**
+- De 11 secciones a 6: portada, recorrido del kit en 3D que se arma al bajar, cómo funciona, plan por perfil, laboratorio y taller, cierre.
+- Un solo botón principal según quién mira (Postular, Ir a mi ruta, Abrir el panel).
+- Nueva sección "El sistema" con niveles, nivel 2, pauta, permisos, indicadores y todas las fuentes.
+
+**Administración**
+- Panel con "Hoy": todo lo que pide acción, ordenado por urgencia.
+- Personas en embudo (postulante → diagnóstico → nivel 1 … nivel 4), con vista de lista opcional.
+- Calendario mensual de validaciones.
+- Búsqueda rápida Ctrl+K o /: personas, validaciones, ajustes, módulos y competencias. Pegando un código LH… verifica la credencial.
+- Ajustes en 3 grupos: Reglas, Contenido y equipo, Sistema.
+
+**Detalles**
+- Esqueletos de carga, ayudas "?" de una línea, botones de 48 px en pantallas táctiles (guantes), indicador animado en la barra inferior, transición entre vistas en teléfono, pie de página más corto.
+
 ## Quinta ronda: D13 cerrada, revalidación, horas y período autónomo con fuentes (03-10-2026)
 
 - **D13, rotación de duos: cerrada.** Voluntaria, cada 4 meses como mínimo, por solicitud escrita al Responsable

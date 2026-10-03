@@ -90,39 +90,52 @@ VIEWS.panel = function(){
   const c = ctx();
   const al = alertas(c);
   const sols = solicitudesRotacion();
-  if(sols.length) al.unshift({ s:'info', t: sols.length === 1 ? '1 solicitud de rotación por revisar' : sols.length + ' solicitudes de rotación por revisar', d: sols.map(x => x.p.nombre).join(', ') + '. Cada una explica por qué pide cambiar de duo (D13).', ref:{ tipo:'duo' } });
+  if(sols.length) al.unshift({ s:'info', t: sols.length === 1 ? '1 solicitud de rotación por revisar' : sols.length + ' solicitudes de rotación por revisar', d: sols.map(x => x.p.nombre).join(', ') + '. Cada una explica por qué pide cambiar de duo.', ref:{ tipo:'duo' } });
   const act = activos(c.personas);
   const abiertas = c.sesiones.filter(x => x.estado === 'abierta').sort((a, b) => String(a.fecha).localeCompare(String(b.fecha)));
   const post = c.personas.filter(p => p.etapa === 'postulante');
   const dAct = c.duos.filter(d => d.activo);
   const dVal = dAct.filter(d => estadoDuo(d, c.P, c.personas, S.hoy, c.params).valido).length;
   const porNivel = [0,1,2,3,4].map(n => act.filter(p => (p.nivel || 0) === n).length);
-  const bit = Object.values(S.D.bitacora).flatMap(m => Object.values(m.eventos || {})).sort((a, b) => String(b.t).localeCompare(String(a.t))).slice(0, 7);
+  const bit = Object.values(S.D.bitacora).flatMap(m => Object.values(m.eventos || {})).sort((a, b) => String(b.t).localeCompare(String(a.t))).slice(0, 6);
   resolverPerfiles(bit.map(e => e.uid));
 
-  const stats = h('div', { class:'grid g4 keep2', style:'--g:12px' },
-    h('div', { class:'card stat' }, h('span', { class:'sl' }, icon('users', 's16'), 'Técnicos activos'), h('span', { class:'sv' }, String(act.length)),
-      h('span', { class:'sd' }, porNivel.map((v, i) => (i === 0 ? 'formación ' : 'N' + i + ' ') + v).join(' · '))),
-    h('div', { class:'card stat' }, h('span', { class:'sl' }, icon('duo', 's16'), 'Duos válidos'), h('span', { class:'sv' }, String(dVal), h('small', null, 'de ' + dAct.length)), h('span', { class:'sd' }, 'con al menos un nivel 3 o 4')),
-    h('div', { class:'card stat' }, h('span', { class:'sl' }, icon('clipboard', 's16'), 'Validaciones abiertas'), h('span', { class:'sv' }, String(abiertas.length)), h('span', { class:'sd' }, abiertas.filter(x => x.fecha <= S.hoy).length + ' para hoy o atrasadas')),
-    h('div', { class:'card stat' }, h('span', { class:'sl' }, icon('userPlus', 's16'), 'Postulantes'), h('span', { class:'sv' }, String(post.length)), h('span', { class:'sd' }, post.filter(p => p.jornada && p.jornada.fecha).length + ' con diagnóstico completo')));
+  /* HOY: todo lo que pide una acción, en un solo lugar y ordenado por urgencia */
+  const rank = { crit:0, warn:1, info:2 };
+  const hoyItems = abiertas.filter(x => x.fecha && x.fecha <= S.hoy).map(sx => ({ s: sx.fecha < S.hoy ? 'warn' : 'info', t: TIPOS_SESION[sx.tipo].l + ' · ' + nombreP(sx.pid), d: sx.fecha < S.hoy ? 'Atrasada desde el ' + fechaCorta(sx.fecha) + '.' : 'Programada para hoy.', ref:{ tipo:'sesion', id:sx.id } }))
+    .concat(al.filter(a => !(a.ref && a.ref.tipo === 'sesion' && abiertas.some(x => x.id === a.ref.id && x.fecha <= S.hoy))))
+    .sort((a, b) => rank[a.s] - rank[b.s]);
+  const todo = ui('panel-todo', false);
+  const nCrit = hoyItems.filter(x => x.s === 'crit').length;
+  const hoyCard = h('section', { class:'hoy-card' + (hoyItems.length ? (nCrit ? ' crit' : '') : ' ok'), 'aria-labelledby':'hoy-t' },
+    h('div', { class:'hoy-h' },
+      h('div', { class:'stack', style:'--g:6px;min-width:0' }, h('span', { class:'next-ey' }, 'Hoy · ' + fechaLarga(S.hoy)),
+        h('h2', { class:'next-t', id:'hoy-t' }, hoyItems.length ? (hoyItems.length === 1 ? '1 cosa requiere tu atención' : hoyItems.length + ' cosas requieren tu atención') : 'Todo en orden por hoy')),
+      h('div', { class:'hoy-n', 'aria-hidden':'true' }, hoyItems.length ? h('b', { class:'num' }, String(hoyItems.length)) : icon('checkCircle', 's32'))),
+    hoyItems.length ? h('div', { class:'alerts' }, (todo ? hoyItems : hoyItems.slice(0, 5)).map(a => alertaItem(a))) : h('p', { class:'small ink2' }, 'Sin validaciones atrasadas ni alertas. Las reglas automáticas revisan duos, revalidaciones y suspensiones cada vez que cambia un dato.'),
+    hoyItems.length > 5 ? h('div', { class:'row' }, btn(todo ? 'Ver menos' : 'Ver las ' + hoyItems.length, { kind:'quiet', size:'sm', icon: todo ? 'minus' : 'plus', onClick: () => { UI['panel-todo'] = !todo; render(true); } })) : null);
 
-  const alertList = al.length ? h('div', { class:'alerts' }, al.map(a => alertaItem(a))) : emptyState('checkCircle', 'Sin alertas', 'Todas las reglas automáticas están en orden.');
-  const prox = abiertas.length ? h('div', { class:'stack', style:'--g:8px' }, abiertas.slice(0, 6).map(sx => sesionItem(sx))) : emptyState('calendar', 'Sin validaciones abiertas', null, btn('Programar validación', { kind:'ghost', size:'sm', icon:'plus', onClick: () => hojaNuevaSesion() }));
+  const stats = h('div', { class:'grid g4 keep2', style:'--g:12px' },
+    h('a', { class:'card stat link', href:'#personas' }, h('span', { class:'sl' }, icon('users', 's16'), 'Técnicos activos'), h('span', { class:'sv' }, String(act.length)),
+      h('span', { class:'sd' }, porNivel.map((v, i) => (i === 0 ? 'formación ' : 'N' + i + ' ') + v).join(' · '))),
+    h('a', { class:'card stat link', href:'#duos' }, h('span', { class:'sl' }, icon('duo', 's16'), 'Duos válidos', ayuda('Válido: tiene al menos un técnico de nivel 3 o 4 y nunca dos de nivel 1. En la primera generación trabajan con supervisión del Responsable Técnico.')), h('span', { class:'sv' }, String(dVal), h('small', null, 'de ' + dAct.length)), h('span', { class:'sd' }, 'con al menos un nivel 3 o 4')),
+    h('a', { class:'card stat link', href:'#validaciones' }, h('span', { class:'sl' }, icon('clipboard', 's16'), 'Validaciones abiertas'), h('span', { class:'sv' }, String(abiertas.length)), h('span', { class:'sd' }, abiertas.filter(x => x.fecha <= S.hoy).length + ' para hoy o atrasadas')),
+    h('a', { class:'card stat link', href:'#personas' }, h('span', { class:'sl' }, icon('userPlus', 's16'), 'Postulantes'), h('span', { class:'sv' }, String(post.length)), h('span', { class:'sd' }, post.filter(p => p.jornada && p.jornada.fecha).length + ' con diagnóstico completo')));
+
+  const semana = abiertas.filter(x => x.fecha > S.hoy && diffDays(S.hoy, x.fecha) <= 14);
+  const prox = semana.length ? h('div', { class:'stack', style:'--g:8px' }, semana.slice(0, 5).map(sx => sesionItem(sx))) : emptyState('calendar', 'Nada programado en las próximas dos semanas', null, btn('Programar validación', { kind:'ghost', size:'sm', icon:'plus', onClick: () => hojaNuevaSesion() }));
   const actividad = bit.length ? h('div', { class:'stack', style:'--g:0' }, bit.map(e => h('div', { class:'row nw', style:'gap:10px;padding:9px 0;border-bottom:1px solid var(--line);align-items:flex-start' },
     h('span', { class:'dot spark', style:'margin-top:7px' }), h('div', { class:'grow' }, h('div', { class:'small', style:'font-weight:600' }, e.a), h('div', { class:'hint' }, (e.d ? e.d + ' · ' : '') + nombreUid(e.uid) + ' · ' + fechaHora(e.t)))))) : h('p', { class:'hint' }, 'Aún no hay actividad este mes.');
 
   return page(
     phead({ eyebrow:'Panel · ' + (ROL_L[miRol()] || 'Administración'), eic:'grid', title:'Estado del taller',
-      lead: act.length + ' técnicos activos, ' + dAct.length + ' duos y ' + abiertas.length + ' validaciones abiertas. Las reglas automáticas revisan duos, revalidaciones y suspensiones cada vez que cambia un dato.',
-      actions:[ btn('Nuevo postulante', { kind:'action', icon:'userPlus', onClick: hojaNuevoPostulante }), btn('Programar validación', { kind:'owner', icon:'plus', onClick: () => hojaNuevaSesion() }) ] }),
+      actions:[ btn('Nuevo postulante', { kind:'ghost', icon:'userPlus', onClick: hojaNuevoPostulante }), btn('Programar validación', { kind:'action', icon:'plus', onClick: () => hojaNuevaSesion() }) ] }),
     avisosSalud(),
+    hoyCard,
     stats,
     h('div', { class:'grid', style:'grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px;margin-top:24px', id:'panel-cols' },
-      h('section', { class:'stack', style:'--g:12px' }, h('div', { class:'section-h', style:'margin:0' }, h('h2', { class:'h3' }, 'Alertas'), badge(al.length + (al.length === 1 ? ' activa' : ' activas'), al.some(a => a.s === 'crit') ? 'crit' : al.length ? 'warn' : 'ok')), alertList),
-      h('div', { class:'stack', style:'--g:24px' },
-        h('section', { class:'stack', style:'--g:12px' }, h('div', { class:'section-h', style:'margin:0' }, h('h2', { class:'h3' }, 'Validaciones abiertas'), h('a', { href:'#validaciones', class:'small' }, 'Ver todas')), prox),
-        h('section', { class:'card' }, h('div', { class:'card-h' }, h('h2', { class:'h4' }, 'Actividad reciente'), h('a', { href:'#ajustes-bitacora', class:'small' }, 'Bitácora')), actividad))));
+      h('section', { class:'stack', style:'--g:12px' }, h('div', { class:'section-h', style:'margin:0' }, h('h2', { class:'h3' }, 'Próximas dos semanas'), h('a', { href:'#validaciones', class:'small', on:{ click: () => { UI['val-tab'] = 'calendario'; } } }, 'Ver calendario')), prox),
+      h('section', { class:'card' }, h('div', { class:'card-h' }, h('h2', { class:'h4' }, 'Actividad reciente'), h('a', { href:'#ajustes-bitacora', class:'small' }, 'Bitácora')), actividad)));
 };
 function alertaItem(a){
   let accion = null;
@@ -180,20 +193,39 @@ VIEWS.personas = function(){
           h('div', { class:'hint' }, perfilL(p.perfil) + (p.etapa === 'tecnico' ? ' · ' + nivelNombre(p.nivel || 0) : '')), pasoCorto(p), estadoTags(p))))));
     listBox.appendChild(t); listBox.appendChild(cards);
   }
-  pintarLista();
+  const vista = ui('personas-vista', 'embudo');
+  if(vista === 'embudo') listBox.appendChild(embudoPersonas(ps.filter(p => (p.etapa === 'postulante' || p.etapa === 'tecnico') && (!qq || p.nombre.toLowerCase().includes(qq)))));
+  else pintarLista();
   const search = h('input', { class:'input', type:'search', placeholder:'Buscar por nombre', value:q, 'aria-label':'Buscar persona', maxlength:'60' });
   search.addEventListener('input', () => { UI['personas-q'] = search.value; });
   search.addEventListener('change', () => render(true));
   search.addEventListener('keydown', e => { if(e.key === 'Enter'){ UI['personas-q'] = search.value; search.blur(); render(true); } });
   const post = ps.filter(p => p.etapa === 'postulante' && p.jornada && p.jornada.fecha);
   return page(
-    phead({ eyebrow:'Selección y seguimiento', eic:'users', title:'Personas', lead:'Postulantes en diagnóstico, técnicos por nivel y salidas. El expediente de cada persona reúne su diagnóstico, su plan y su historial de validaciones.',
+    phead({ eyebrow:'Selección y seguimiento', eic:'users', title:'Personas', lead:'De postulante a formador. Toca a una persona para ver su expediente.',
       actions:[ btn('Comparar postulantes', { kind:'ghost', icon:'swap', disabled: post.length < 2 || null, onClick: hojaComparar }), btn('Nuevo postulante', { kind:'action', icon:'userPlus', onClick: hojaNuevoPostulante }) ] }),
     postulacionesPendientes(),
-    h('div', { class:'filters' }, filtros.map(([k, l]) => { const b = h('button', { type:'button', class:'chip', 'aria-pressed': f === k ? 'true' : 'false' }, l, h('span', { class:'n' }, String(cnt(k)))); b.addEventListener('click', () => { UI['personas-f'] = k; render(true); }); return b; }),
+    h('div', { class:'filters' }, segmented([{ v:'embudo', l:'Embudo', ic:'layers' }, { v:'lista', l:'Lista', ic:'list' }], vista, v => { UI['personas-vista'] = v; render(true); }, { label:'Vista' }),
+      vista === 'lista' ? filtros.map(([k, l]) => { const b = h('button', { type:'button', class:'chip', 'aria-pressed': f === k ? 'true' : 'false' }, l, h('span', { class:'n' }, String(cnt(k)))); b.addEventListener('click', () => { UI['personas-f'] = k; render(true); }); return b; }) : null,
       h('div', { class:'searchbox' }, icon('search'), search)),
     listBox);
 };
+/* Embudo: cada persona en la columna de su etapa, de postulante a formador */
+function embudoPersonas(ps){
+  const cols = [
+    { t:'Postulantes', d:'Diagnóstico en curso', f: p => p.etapa === 'postulante' && !(p.jornada && p.jornada.fecha) },
+    { t:'Diagnóstico listo', d:'Decidir ingreso', f: p => p.etapa === 'postulante' && p.jornada && p.jornada.fecha },
+    { t:'En formación', d:'Hacia el nivel 1', f: p => p.etapa === 'tecnico' && !(p.nivel >= 1) }
+  ].concat([1,2,3,4].map(n => ({ t:'Nivel ' + n, d: NIVEL[n].corto, f: p => p.etapa === 'tecnico' && p.nivel === n, n })));
+  return h('div', { class:'embudo', role:'list', 'aria-label':'Personas por etapa' }, cols.map(c => {
+    const xs = ps.filter(c.f);
+    return h('section', { class:'emb-col', role:'listitem', 'aria-label': c.t + ': ' + xs.length },
+      h('div', { class:'emb-h' }, h('div', null, h('b', null, c.t), h('span', { class:'hint', style:'display:block' }, c.d)), h('span', { class:'emb-n num' }, String(xs.length))),
+      h('div', { class:'emb-list' }, xs.length ? xs.map(p => h('a', { class:'emb-card', href:'#persona-' + p.id },
+        h('div', { class:'row nw', style:'gap:8px' }, avatar(p.nombre, colorDe(p)), h('b', { class:'small', style:'min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap' }, p.nombre)),
+        pasoCorto(p), p.suspendidoAT ? badge('Suspendido AT', 'crit') : null)) : h('span', { class:'hint emb-vacio' }, 'Nadie aquí')));
+  }));
+}
 function colorDe(p){ return p.uid && PROFILES[p.uid] && PROFILES[p.uid].color ? PROFILES[p.uid].color : null; }
 function pasoCorto(p){
   const x = proximoPaso(p);

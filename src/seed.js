@@ -217,7 +217,8 @@ function demoSeed(hoy){
 
   /* ---- expedientes (proyección que ve cada técnico) ---- */
   const P = Object.fromEntries(personas.map(p => [p.id, p]));
-  const ctx = { params: PARAMS_DEF, duos, P, hoy };
+  const sesionesSeed = Object.keys(docs).filter(k => k.startsWith('sesiones/')).map(k => docs[k]);
+  const ctx = { params: PARAMS_DEF, duos, P, hoy, sesiones: sesionesSeed };
   for(const p of personas) if(p.uid && p.etapa === 'tecnico') put('expedientes/' + p.uid, proyectarExpediente(p, ctx));
 
   /* ---- bitácora ---- */

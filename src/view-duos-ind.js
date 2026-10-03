@@ -31,7 +31,7 @@ VIEWS.duos = function(){
       h('div', { class:'row sb' }, h('span', { class:'hint' }, 'Desde ' + fechaCorta(d.desde) + ' · ' + (e.puedeRotar ? 'rotación libre' : 'rotación libre desde ' + fechaCorta(e.rotacionLibre))), term));
   });
   return page(
-    phead({ eyebrow:'Organización del trabajo', eic:'duo', title:'Duos', lead:'Todo el trabajo técnico se hace en duos fijos. La teoría es individual y la validación práctica se hace en duo con nota individual (D12).',
+    phead({ eyebrow:'Organización del trabajo', eic:'duo', title:'Duos', lead:'Todo el trabajo técnico se hace en parejas fijas. La validación es en duo, con nota individual.',
       actions:[ btn('Formar duo', { kind:'action', icon:'plus', onClick: hojaFormarDuo }) ] }),
     h('div', { class:'card mist', style:'--pad:16px;margin-bottom:20px' }, h('ol', { class:'rules' },
       h('li', null, h('span', null, h('b', null, 'Todo duo lleva al menos un técnico de nivel 3 o 4. '), 'Mientras no exista nadie de nivel 3, trabajan bajo supervisión directa del Responsable Técnico.')),

@@ -4,7 +4,8 @@
     "styles-base.css",
     "styles-shell.css",
     "styles-views.css",
-    "styles-fx.css"
+    "styles-fx.css",
+    "styles-xp.css"
   ],
   "js": [
     "data.js",
@@ -14,6 +15,7 @@
     "store.js",
     "seed.js",
     "ui-core.js",
+    "ui-qr.js",
     "engine3d.js",
     "motion.js",
     "app-state.js",
@@ -27,6 +29,7 @@
     "view-tecnico.js",
     "view-lab.js",
     "view-login.js",
+    "ui-buscar.js",
     "app.js"
   ],
   "logic": [

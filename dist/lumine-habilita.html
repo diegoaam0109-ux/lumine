@@ -1246,6 +1246,212 @@ form.nope{ animation:nope .4s; }
 @media (max-width:860px){ .lg-wrap{ grid-template-columns:minmax(0,1fr); } .lg-demo{ position:static; } }
 @media (max-width:520px){ .lg-grid{ grid-template-columns:minmax(0,1fr); } .lg-card{ --pad:16px; } }
 
+/* ============ Lumine Habilita · experiencia v2 ============
+   Mi ruta con anillo y una sola acción principal, avisos, celebración
+   de nivel, credencial digital, portada con recorrido del kit,
+   administración (hoy, embudo, calendario, búsqueda rápida) y
+   esqueletos de carga. */
+
+/* ---------- Mi ruta ---------- */
+.ruta-hero{ display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:20px; align-items:end; margin-bottom:6px; }
+@media (max-width:900px){ .ruta-hero{ grid-template-columns:minmax(0,1fr); } }
+.next-card{ position:relative; display:flex; flex-direction:column; gap:10px; padding:22px; border-radius:var(--r-lg); border:1px solid var(--ice-line); overflow:hidden;
+  background:radial-gradient(520px 220px at 0% 0%, color-mix(in srgb, var(--action) 18%, transparent), transparent 70%), var(--card); box-shadow:var(--glass), var(--shadow-float); }
+.next-card.warn{ border-color:color-mix(in srgb, var(--warn) 45%, transparent); background:radial-gradient(520px 220px at 0% 0%, var(--warn-bg), transparent 70%), var(--card); }
+.next-card.crit{ border-color:color-mix(in srgb, var(--crit) 45%, transparent); background:radial-gradient(520px 220px at 0% 0%, var(--crit-bg), transparent 70%), var(--card); }
+.next-card.ok{ border-color:color-mix(in srgb, var(--ok) 40%, transparent); background:radial-gradient(520px 220px at 0% 0%, var(--ok-bg), transparent 70%), var(--card); }
+.next-ic{ width:38px; height:38px; border-radius:12px; display:grid; place-items:center; background:var(--action); color:var(--on-action); flex:none; }
+.next-card.warn .next-ic{ background:var(--warn); color:var(--on-status); }
+.next-card.crit .next-ic{ background:var(--crit); color:var(--on-status); }
+.next-card.ok .next-ic{ background:var(--ok); color:var(--on-status); }
+.next-ey{ font-size:12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); }
+.next-t{ font-family:var(--display); font-stretch:108%; font-size:clamp(22px,2.6vw,30px); line-height:1.1; letter-spacing:-.01em; }
+.next-d{ color:var(--ink-2); font-size:15px; max-width:60ch; }
+.next-card .btn.lg{ min-height:52px; }
+
+.ring-card{ display:flex; gap:20px; align-items:center; --pad:20px; }
+@media (max-width:420px){ .ring-card{ flex-direction:column; align-items:stretch; } .ring{ align-self:center; } }
+.ring{ position:relative; width:136px; height:136px; flex:none; }
+.ring svg{ width:100%; height:100%; transform:rotate(-90deg); }
+.ring-b{ fill:none; stroke:var(--line-2); stroke-width:10; }
+.ring-v{ fill:none; stroke:var(--action); stroke-width:10; stroke-linecap:round; transition:stroke-dashoffset 1.2s var(--ease); filter:drop-shadow(0 0 6px color-mix(in srgb, var(--action) 45%, transparent)); }
+.ring-t{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1; }
+.ring-t b{ font-family:var(--display); font-size:40px; font-weight:850; font-stretch:112%; }
+.ring-t span{ font-size:12px; color:var(--muted); margin-top:4px; }
+.lvbar{ display:grid; grid-template-columns:26px minmax(0,1fr) 38px; gap:8px; align-items:center; }
+.lvbar .progress{ height:7px; }
+.lvbar.ok .progress i{ background:var(--ok); }
+.lvbar.now span:first-child{ color:var(--action); font-weight:700; }
+
+.tile-card{ min-height:132px; }
+.cred-mini{ display:flex; flex-direction:column; gap:8px; text-align:left; color:inherit; font:inherit; cursor:pointer; transition:border-color .15s, transform .2s var(--ease);
+  background:radial-gradient(260px 120px at 100% 0%, color-mix(in srgb, var(--action) 16%, transparent), transparent 70%), var(--card); }
+.cred-mini:hover{ border-color:var(--action); transform:translateY(-2px); }
+.cred-mini .ic{ color:var(--action); }
+.tile-go{ margin-top:auto; display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:var(--action); }
+
+details.lvl>summary{ padding:12px 14px; }
+.lvl-n{ width:30px; height:30px; border-radius:50%; display:grid; place-items:center; font-size:13px; font-weight:700; border:1.5px solid var(--line-2); color:var(--muted); flex:none; }
+.lvl-n.ok{ background:var(--ok); border-color:var(--ok); color:var(--on-status); }
+.crow.tema{ grid-template-columns:auto minmax(0,1fr) auto; }
+.crow.tema .dot{ margin:0 2px; }
+
+/* ---------- avisos ---------- */
+.bell{ position:relative; }
+.bell-n{ position:absolute; top:3px; right:3px; min-width:18px; height:18px; padding:0 5px; border-radius:99px; background:var(--crit); color:#fff; font-size:11px; font-weight:700; display:grid; place-items:center; box-shadow:0 0 0 2px var(--nav-bg); animation:pop .3s var(--ease) both; }
+.alert.aviso{ width:100%; text-align:left; font:inherit; color:inherit; cursor:pointer; transition:border-color .15s; }
+.alert.aviso:hover{ border-color:var(--line-2); }
+.alert.aviso.nuevo{ border-color:var(--ice-line); background:var(--ice); }
+
+/* ---------- celebración ---------- */
+.celebra{ position:fixed; inset:0; z-index:150; display:grid; place-items:center; padding:20px; background:color-mix(in srgb, var(--paper) 86%, transparent); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); animation:fade .3s both; }
+.confeti{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.celebra-in{ position:relative; display:flex; flex-direction:column; align-items:center; text-align:center; gap:12px; max-width:560px; animation:pop .45s var(--ease) both; }
+.celebra-in .lead{ max-width:46ch; margin-inline:auto; }
+.cel-badge{ position:relative; width:132px; height:132px; display:grid; place-items:center; margin-bottom:6px; }
+.cel-badge b{ position:relative; font-family:var(--display); font-size:72px; font-weight:850; font-stretch:118%; color:var(--action); text-shadow:0 0 40px color-mix(in srgb, var(--action) 60%, transparent); }
+.cel-ring{ position:absolute; inset:0; border-radius:50%; border:3px solid var(--action); box-shadow:0 0 0 10px color-mix(in srgb, var(--action) 12%, transparent), 0 0 60px color-mix(in srgb, var(--action) 45%, transparent); animation:celRing 1.6s var(--ease) both; }
+@keyframes celRing{ from{ transform:scale(.4) rotate(-90deg); opacity:0; } 60%{ transform:scale(1.08); opacity:1; } to{ transform:none; } }
+.celebra-in .pips i{ width:22px; height:8px; }
+
+/* ---------- credencial ---------- */
+.cred{ --ink:#eef3f5; --ink-2:#b9c7cd; --muted:#8a9aa1; --line-2:rgba(186,215,247,.25); --spark:#22B8F0;
+  position:relative; display:flex; flex-direction:column; gap:18px; padding:20px; border-radius:20px; color:var(--ink); overflow:hidden;
+  background:radial-gradient(420px 220px at 100% 0%, rgba(34,184,240,.28), transparent 65%), radial-gradient(rgba(255,255,255,.06) 1px, transparent 1.3px) 0 0/14px 14px, linear-gradient(140deg, #0d1a21, #070a0c);
+  border:1px solid rgba(34,184,240,.35); box-shadow:0 30px 60px -24px rgba(0,0,0,.7), inset 0 1px 0 rgba(216,236,248,.12); }
+.cred::before{ content:""; position:absolute; left:0; right:0; top:0; height:4px; background:linear-gradient(90deg, transparent, #22B8F0, transparent); }
+.cred::after{ content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(115deg, transparent 35%, rgba(255,255,255,.08) 45%, transparent 55%); transform:translateX(-100%); animation:credBrillo 3.2s ease-in-out 0.4s 1 both; }
+@keyframes credBrillo{ to{ transform:translateX(100%); } }
+.cred-top{ display:flex; justify-content:space-between; align-items:center; gap:10px; color:var(--ink); }
+.cred-top .wordmark{ height:13px; }
+.cred-top .emblem{ width:22px; height:22px; color:#22B8F0; }
+.cred-k{ font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+.cred-mid{ display:flex; gap:16px; align-items:center; }
+.cred-lv{ width:64px; height:64px; border-radius:18px; display:grid; place-items:center; flex:none; font-family:var(--display); font-size:40px; font-weight:850; font-stretch:115%; color:#061015; background:#22B8F0; box-shadow:0 0 30px rgba(34,184,240,.5); }
+.cred-n{ font-size:20px; line-height:1.2; }
+.cred-l{ font-size:13.5px; color:var(--ink-2); }
+.cred .pips i{ background:rgba(255,255,255,.18); } .cred .pips i.on{ background:#eef3f5; } .cred .pips i.now{ background:#22B8F0; }
+.cred-bot{ display:grid; grid-template-columns:minmax(0,1fr) 128px; gap:16px; align-items:end; }
+.cred-dl{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:6px 14px; margin:0; font-size:13px; }
+.cred-dl dt{ color:var(--muted); }
+.cred-dl dd{ margin:0; min-width:0; overflow-wrap:anywhere; }
+.cred-st{ font-weight:700; }
+.cred-st.ok{ color:#4ADE80; } .cred-st.crit{ color:#F87171; }
+.cred-qr{ background:#fff; border-radius:12px; padding:4px; line-height:0; }
+.cred-qr svg{ width:100%; height:auto; display:block; }
+@media (max-width:420px){ .cred-bot{ grid-template-columns:minmax(0,1fr) 104px; } .cred-n{ font-size:17px; } }
+
+/* ---------- esqueletos de carga ---------- */
+.skel{ display:flex; flex-direction:column; gap:16px; }
+.sk{ border-radius:12px; background:linear-gradient(90deg, var(--mist) 25%, color-mix(in srgb, var(--mist) 60%, var(--line-2)) 37%, var(--mist) 63%); background-size:400% 100%; animation:skel 1.4s ease infinite; }
+@keyframes skel{ from{ background-position:100% 50%; } to{ background-position:0 50%; } }
+.sk.t{ height:14px; width:30%; } .sk.h{ height:40px; width:55%; } .sk.p{ height:16px; width:75%; } .sk.c{ height:130px; }
+.skel .grid .sk.c{ height:110px; }
+
+/* ---------- ayudas de una línea ---------- */
+.ayuda{ display:inline-grid; place-items:center; width:18px; height:18px; margin-left:4px; border-radius:50%; border:1px solid var(--line-2); background:var(--card); color:var(--muted); font-size:11px; font-weight:700; cursor:help; vertical-align:1px; padding:0; line-height:1; }
+.ayuda:hover,.ayuda:focus-visible{ color:var(--action); border-color:var(--action); }
+
+/* ---------- toque cómodo en taller (guantes) ---------- */
+.yn button{ min-height:44px; }
+.kiosk .kbtns button{ height:60px; font-size:16px; }
+@media (pointer:coarse){ .btn{ --bh:46px; } .btn.sm{ --bh:40px; } .yn button{ min-height:48px; } .opt{ min-height:52px; } .chip{ min-height:40px; } }
+
+/* ---------- barra inferior: indicador animado ---------- */
+.tabbar a{ position:relative; }
+.tabbar a[aria-current="page"]::before{ content:""; position:absolute; top:2px; left:50%; width:22px; height:3px; margin-left:-11px; border-radius:3px; background:var(--action); box-shadow:0 0 10px var(--action); animation:pop .25s var(--ease) both; }
+@media (max-width:719px){ #main{ overflow-x:clip; } .view-enter{ animation:vistaMovil .32s var(--ease) both; } @keyframes vistaMovil{ from{ opacity:0; transform:translateX(14px); } to{ opacity:1; transform:none; } } }
+
+/* ---------- portada: recorrido del kit con el scroll ---------- */
+.hero-ver{ display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:var(--ink-2); font-weight:600; }
+.hero-ver:hover{ color:var(--action); }
+.hero-ver .ic{ animation:bajar 1.8s ease-in-out infinite; }
+@keyframes bajar{ 0%,100%{ transform:none; } 50%{ transform:translateY(4px); } }
+.hist-grid{ display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:40px; align-items:start; }
+.hist-sticky{ position:sticky; top:92px; }
+.hist-stage{ aspect-ratio:auto; height:min(68vh, 560px); min-height:300px; }
+.hist-pasos{ display:flex; flex-direction:column; }
+.hist-paso{ min-height:62vh; display:flex; flex-direction:column; justify-content:center; gap:10px; padding:20px 0; opacity:.28; transform:translateX(10px); transition:opacity .45s var(--ease), transform .45s var(--ease); }
+.hist-paso:last-child{ min-height:48vh; }
+.hist-paso.on{ opacity:1; transform:none; }
+.hist-n{ font-size:12px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--action); }
+.hist-t{ font-family:var(--display); font-stretch:112%; text-transform:uppercase; font-size:clamp(26px,3vw,40px); line-height:1; letter-spacing:-.015em; font-weight:800; }
+.hist-dots{ position:absolute; left:16px; right:16px; bottom:14px; z-index:4; display:flex; gap:6px; pointer-events:none; }
+.hist-dots i{ flex:1; height:3px; border-radius:3px; background:var(--line-2); transition:background .4s; }
+.hist-dots i.on{ background:var(--action); box-shadow:0 0 8px var(--action); }
+@media (max-width:860px){
+  .hist-grid{ grid-template-columns:minmax(0,1fr); gap:0; }
+  .hist-sticky{ top:72px; z-index:2; }
+  .hist-stage{ height:40vh; min-height:240px; }
+  .hist-sticky .lab-frame{ background-color:var(--paper); }
+  .hist-paso{ min-height:62vh; justify-content:flex-end; padding:24px 4px 12vh; transform:none; }
+  .hist-paso:last-child{ min-height:62vh; }
+}
+
+/* ---------- panel: Hoy ---------- */
+.hoy-card{ display:flex; flex-direction:column; gap:14px; padding:22px; margin-bottom:18px; border-radius:var(--r-lg); border:1px solid var(--ice-line);
+  background:radial-gradient(600px 220px at 0% 0%, color-mix(in srgb, var(--action) 14%, transparent), transparent 70%), var(--card); box-shadow:var(--glass), var(--shadow-float); }
+.hoy-card.crit{ border-color:color-mix(in srgb, var(--crit) 40%, transparent); background:radial-gradient(600px 220px at 0% 0%, var(--crit-bg), transparent 70%), var(--card); }
+.hoy-card.ok{ border-color:color-mix(in srgb, var(--ok) 40%, transparent); background:radial-gradient(600px 220px at 0% 0%, var(--ok-bg), transparent 70%), var(--card); }
+.hoy-h{ display:flex; justify-content:space-between; align-items:center; gap:16px; }
+.hoy-n{ flex:none; width:64px; height:64px; border-radius:18px; display:grid; place-items:center; background:var(--action); color:var(--on-action); }
+.hoy-n b{ font-family:var(--display); font-size:34px; font-weight:850; font-stretch:112%; }
+.hoy-card.crit .hoy-n{ background:var(--crit); color:var(--on-status); }
+.hoy-card.ok .hoy-n{ background:var(--ok-bg); color:var(--ok); }
+a.card.stat{ display:flex; transition:border-color .15s, transform .2s var(--ease); }
+a.card.stat:hover{ border-color:var(--line-2); transform:translateY(-2px); }
+
+/* ---------- personas: embudo ---------- */
+.embudo{ display:grid; grid-auto-flow:column; grid-auto-columns:minmax(200px,1fr); gap:10px; overflow-x:auto; padding-bottom:10px; scroll-snap-type:x mandatory; }
+.emb-col{ display:flex; flex-direction:column; gap:8px; min-width:0; padding:10px; border-radius:14px; background:var(--mist); border:1px solid var(--line); scroll-snap-align:start; }
+.emb-h{ display:flex; justify-content:space-between; align-items:flex-start; gap:8px; padding:2px 4px 6px; }
+.emb-h b{ font-size:13.5px; }
+.emb-n{ min-width:26px; height:26px; padding:0 8px; border-radius:99px; background:var(--card); border:1px solid var(--line-2); display:grid; place-items:center; font-size:12px; font-weight:700; }
+.emb-list{ display:flex; flex-direction:column; gap:6px; }
+.emb-card{ display:flex; flex-direction:column; gap:8px; padding:10px; border-radius:10px; background:var(--card); border:1px solid var(--line); color:inherit; text-decoration:none; box-shadow:var(--glass); transition:border-color .15s, transform .15s; }
+.emb-card:hover{ border-color:var(--action); color:inherit; transform:translateY(-1px); }
+.emb-card .av{ width:26px; height:26px; font-size:10px; }
+.emb-vacio{ padding:10px 4px; }
+@media (max-width:719px){ .embudo{ grid-auto-columns:78%; } }
+
+/* ---------- calendario de validaciones ---------- */
+.cal{ display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:4px; }
+.cal-dow{ font-size:11.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); padding:4px 6px; }
+.cal-d{ min-height:96px; padding:6px; border-radius:10px; background:var(--card); border:1px solid var(--line); display:flex; flex-direction:column; gap:4px; min-width:0; }
+.cal-d.vacio{ background:transparent; border-color:transparent; }
+.cal-d.hoy{ border-color:var(--action); box-shadow:0 0 0 2px var(--ring); }
+.cal-num{ font-size:12px; font-weight:700; color:var(--muted); }
+.cal-d.hoy .cal-num{ color:var(--action); }
+.cal-ev{ display:block; font-size:11.5px; font-weight:600; padding:3px 6px; border-radius:6px; text-decoration:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--on-action); background:var(--action); }
+.cal-ev.jt{ background:#7c5cc4; color:#fff; } .cal-ev.rev{ background:var(--warn); color:var(--on-status); }
+.cal-ev.cerrada{ background:var(--mist); color:var(--muted); border:1px solid var(--line-2); }
+.cal-ev:hover{ filter:brightness(1.1); }
+.cal-key{ width:12px; height:12px; border-radius:3px; display:inline-block; background:var(--action); }
+.cal-key.jt{ background:#7c5cc4; } .cal-key.rev{ background:var(--warn); } .cal-key.cerrada{ background:var(--mist); border:1px solid var(--line-2); }
+@media (max-width:719px){ .cal-d{ min-height:52px; padding:4px; } .cal-ev{ height:6px; padding:0; font-size:0; border-radius:3px; } .cal-ev span{ display:none; } .cal-dow{ font-size:10px; padding:2px; text-align:center; letter-spacing:0; } }
+
+/* ---------- ajustes en grupos ---------- */
+.aj-grupos .seg{ display:flex; width:100%; }
+.aj-grupos .seg button{ height:40px; flex:1 1 0; justify-content:center; min-width:0; padding:0 10px; }
+@media (max-width:560px){ .aj-grupos .seg .ic{ display:none; } .aj-grupos .seg button{ font-size:12.5px; padding:0 6px; white-space:normal; line-height:1.15; height:44px; } }
+
+/* ---------- búsqueda rápida ---------- */
+.cmdk-wrap{ position:fixed; inset:0; z-index:120; display:flex; justify-content:center; align-items:flex-start; padding:12vh 16px 16px; }
+.cmdk{ width:min(640px,100%); max-height:70vh; display:flex; flex-direction:column; background:var(--raised); border:1px solid var(--line-2); border-radius:18px; box-shadow:var(--shadow-pop); overflow:hidden; animation:pop .2s var(--ease) both; }
+.cmdk-top{ display:flex; align-items:center; gap:10px; padding:12px 16px; border-bottom:1px solid var(--line); color:var(--muted); }
+.cmdk-in{ flex:1; min-width:0; border:0; background:transparent; font-size:17px; color:var(--ink); outline:none; padding:6px 0; }
+.cmdk-kbd{ font-family:var(--mono); font-size:11px; padding:2px 6px; border-radius:6px; border:1px solid var(--line-2); color:var(--muted); }
+.cmdk-l{ overflow-y:auto; padding:6px; overscroll-behavior:contain; }
+.cmdk-g{ font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); padding:10px 10px 4px; }
+.cmdk-it{ display:flex; align-items:center; gap:12px; padding:9px 10px; border-radius:10px; cursor:pointer; }
+.cmdk-it.on{ background:var(--ice); }
+.cmdk-it.muda{ cursor:default; }
+.cmdk-ic{ width:30px; height:30px; border-radius:9px; display:grid; place-items:center; background:var(--mist); color:var(--action); flex:none; }
+.cmdk-t{ display:flex; flex-direction:column; min-width:0; flex:1; }
+.cmdk-t b{ font-size:14px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.cmdk-pie{ padding:8px 16px; border-top:1px solid var(--line); }
+@media (max-width:719px){ .cmdk-wrap{ padding-top:10px; } .cmdk{ max-height:80vh; } }
+
 </style>
 <div id="pre" class="pre" aria-hidden="true"><div class="pre-in"><span class="emblem pre-em"></span><span class="wordmark pre-wm"></span><span class="pre-cap">Habilita · técnico instalador</span><span class="pre-bar"><i></i></span></div></div>
 <div id="demobar" class="demobar"></div>
@@ -2510,8 +2716,23 @@ function proyectarExpediente(persona, ctx){
     duo: d ? { companero: (P[comp] || {}).nombre || '', companeroNivel: (P[comp] || {}).nivel || 0, desde: d.desde, rotacionLibre: addMonths(d.desde, rotacionMeses(params)) } : null,
     rotacion: persona.rotacion ? { id: persona.rotacion.id, estado: persona.rotacion.estado, respuesta: persona.rotacion.respuesta || '', fecha: persona.rotacion.fecha } : null,
     bono: bono(persona, params),
+    proximas: proximasValidaciones(persona.id, ctx.sesiones),
+    credencial: codigoCredencial(persona),
     demo: !!persona.demo
   };
+}
+/* Validaciones abiertas de una persona: el técnico solo ve tipo y fecha, nunca la pauta. */
+function proximasValidaciones(pid, sesiones){
+  return (sesiones || []).filter(s => s.pid === pid && s.estado === 'abierta').map(s => ({ tipo: s.tipo, fecha: s.fecha || null })).sort((a, b) => byCode(a.fecha || '', b.fecha || ''));
+}
+/* Código de la credencial digital: cambia con cada nivel validado, así una credencial vieja deja de calzar.
+   Administración lo verifica en la búsqueda rápida (Ctrl+K). */
+function codigoCredencial(persona){
+  const n = persona.nivel || 0;
+  if(persona.etapa !== 'tecnico' || n < 1) return null;
+  const f = (persona.fechasNivel || {})[n] || '';
+  const h = semillaDe('lumine-credencial:' + persona.id + ':' + n + ':' + f).toString(36).toUpperCase().padStart(7, '0');
+  return 'LH' + n + '-' + h.slice(0, 4) + '-' + h.slice(4, 7);
 }
 
 /* ---------- formato ---------- */
@@ -2525,7 +2746,7 @@ function numCL(n, dec){ if(n === null || n === undefined || !isFinite(n)) return
 function iniciales(nombre){ const p = String(nombre || '?').trim().split(/\s+/); return ((p[0] || '?')[0] + ((p[1] || '')[0] || '')).toUpperCase(); }
 function relDias(dias){ if(dias === null || dias === undefined) return ''; if(dias === 0) return 'hoy'; if(dias === 1) return 'mañana'; if(dias === -1) return 'ayer'; return dias > 0 ? 'en ' + dias + ' días' : 'hace ' + (-dias) + ' días'; }
 
-if(typeof module !== 'undefined') module.exports = { fechaValida, enPeriodo, rotacionMeses, separacionAnticipada, requisitoD8, motivoValido, barajar, armarIntento, contenidoModulo, vecinosModulo, calcularBonos, candidatosPorNivel, revisarConsistencia, stableJSON, isoDate, hoyISO, parseISO, addDays, addMonths, diffDays, monthsBetween, validId, nid, reqComp, mapaPreliminar, puntajeFundamentos, nivelacionPorFundamentos, nivelacionFinal, saltadas, planPersonal, evaluadorDe, itemsValidacion, preaprobadas, evaluar, exigenciaEfectiva, minimoParaQueImporte, repetir, modulosDelNivel, listoParaPresentarse, revalidacion, estadoDuo, puedeFormarDuo, puedeValidar, bono, resumenRuta, alertas, indicadores, proyectarExpediente, companero, duoActivoDe, fechaLarga, estadoDiagnostico, recibidasSinAceptar, hayNivel3, hayNivel2, puedePedirRotacion, motivoRotacionValido };
+if(typeof module !== 'undefined') module.exports = { fechaValida, enPeriodo, rotacionMeses, separacionAnticipada, requisitoD8, motivoValido, barajar, armarIntento, contenidoModulo, vecinosModulo, calcularBonos, candidatosPorNivel, revisarConsistencia, stableJSON, isoDate, hoyISO, parseISO, addDays, addMonths, diffDays, monthsBetween, validId, nid, reqComp, mapaPreliminar, puntajeFundamentos, nivelacionPorFundamentos, nivelacionFinal, saltadas, planPersonal, evaluadorDe, itemsValidacion, preaprobadas, evaluar, exigenciaEfectiva, minimoParaQueImporte, repetir, modulosDelNivel, listoParaPresentarse, revalidacion, estadoDuo, puedeFormarDuo, puedeValidar, bono, resumenRuta, alertas, indicadores, proyectarExpediente, companero, duoActivoDe, fechaLarga, estadoDiagnostico, recibidasSinAceptar, hayNivel3, hayNivel2, puedePedirRotacion, motivoRotacionValido, proximasValidaciones, codigoCredencial };
 
 /* =====================================================================
    Lumine Habilita · capa de datos
@@ -2761,6 +2982,7 @@ const W = {
 
 const SVGNS = 'http://www.w3.org/2000/svg';
 const ICONS = {
+  bell:'<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
   home:'<path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/>',
   grid:'<rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/>',
   users:'<circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9.5" r="2.5"/><path d="M16.2 14.6c2.2.2 3.8 1.8 4.3 4.4"/>',
@@ -2908,6 +3130,14 @@ async function busy(button, fn){
   try { return await fn(); }
   catch(e){ toast(errMsg(e), 'crit'); console.error(e); }
   finally { if(button){ button.classList.remove('busy'); button.removeAttribute('aria-busy'); button.disabled = false; } }
+}
+/* "?" que explica un término en una línea, sin párrafos fijos en la pantalla */
+function ayuda(texto){
+  const b = h('button', { type:'button', class:'ayuda', 'aria-label':'Qué significa: ' + texto }, '?');
+  const ver = () => showTip(b, h('span', null, texto));
+  b.addEventListener('mouseenter', ver); b.addEventListener('focus', ver); b.addEventListener('click', ev => { ev.preventDefault(); ev.stopPropagation(); ver(); });
+  b.addEventListener('mouseleave', hideTip); b.addEventListener('blur', hideTip);
+  return b;
 }
 function badge(text, kind, ic){ return h('span', { class:'badge' + (kind ? ' ' + kind : '') }, ic ? icon(ic) : null, text); }
 function codeTag(c){ return h('span', { class:'code' }, c); }
@@ -3087,6 +3317,157 @@ function setTheme(t){
   if(typeof Lab3D !== 'undefined') Lab3D.temaCambio();
 }
 function getTheme(){ try { return localStorage.getItem('lh-theme2') === 'light' ? 'light' : 'dark'; } catch(e){ return 'dark'; } }
+
+/* =====================================================================
+   Lumine Habilita · generador de códigos QR propio (sin librerías)
+   Modo byte, corrección de errores M, versiones 1 a 6 (hasta 106 bytes).
+   Basado en la norma ISO/IEC 18004: Reed-Solomon sobre GF(256),
+   intercalado de bloques, ocho máscaras y elección por penalización.
+   ===================================================================== */
+'use strict';
+
+const QR = (() => {
+  /* [datos por bloque, corrección por bloque, bloques] con nivel M */
+  const BLOQUES = { 1:[16,10,1], 2:[28,16,1], 3:[44,26,1], 4:[32,18,2], 5:[43,24,2], 6:[27,16,4] };
+  const ALINEA = { 1:[], 2:[6,18], 3:[6,22], 4:[6,26], 5:[6,30], 6:[6,34] };
+  const EXP = new Array(512), LOG = new Array(256);
+  { let x = 1; for(let i = 0; i < 255; i++){ EXP[i] = x; LOG[x] = i; x <<= 1; if(x & 0x100) x ^= 0x11d; } for(let i = 255; i < 512; i++) EXP[i] = EXP[i - 255]; }
+  const mul = (a, b) => (a && b) ? EXP[LOG[a] + LOG[b]] : 0;
+  function generador(n){
+    let g = [1];
+    for(let i = 0; i < n; i++){ const ng = new Array(g.length + 1).fill(0); for(let j = 0; j < g.length; j++){ ng[j] ^= g[j]; ng[j + 1] ^= mul(g[j], EXP[i]); } g = ng; }
+    return g;
+  }
+  function correccion(datos, n){
+    const g = generador(n), r = new Array(n).fill(0);
+    for(const d of datos){ const f = d ^ r[0]; r.shift(); r.push(0); for(let j = 0; j < n; j++) r[j] ^= mul(g[j + 1], f); }
+    return r;
+  }
+  function bytesDe(texto){ return Array.from(new TextEncoder().encode(String(texto))); }
+
+  function codificar(texto){
+    const bytes = bytesDe(texto);
+    let v = 1;
+    while(v <= 6 && 4 + 8 + 8 * bytes.length > 8 * BLOQUES[v][0] * BLOQUES[v][2]) v++;
+    if(v > 6) throw new Error('Texto demasiado largo para el código QR');
+    const [porBloque, ecBloque, nb] = BLOQUES[v];
+    const cap = porBloque * nb;
+    // flujo de bits: modo byte (0100), largo (8 bits), datos, terminador y relleno
+    const bits = [];
+    const poner = (val, n) => { for(let i = n - 1; i >= 0; i--) bits.push((val >>> i) & 1); };
+    poner(4, 4); poner(bytes.length, 8); for(const b of bytes) poner(b, 8);
+    poner(0, Math.min(4, cap * 8 - bits.length));
+    while(bits.length % 8) bits.push(0);
+    const datos = [];
+    for(let i = 0; i < bits.length; i += 8){ let b = 0; for(let j = 0; j < 8; j++) b = (b << 1) | bits[i + j]; datos.push(b); }
+    for(let k = 0; datos.length < cap; k++) datos.push(k % 2 ? 0x11 : 0xEC);
+    // bloques, corrección e intercalado
+    const bl = [], ec = [];
+    for(let i = 0; i < nb; i++){ const d = datos.slice(i * porBloque, (i + 1) * porBloque); bl.push(d); ec.push(correccion(d, ecBloque)); }
+    const final = [];
+    for(let i = 0; i < porBloque; i++) for(const d of bl) final.push(d[i]);
+    for(let i = 0; i < ecBloque; i++) for(const e of ec) final.push(e[i]);
+    return dibujar(v, final);
+  }
+
+  function dibujar(v, cw){
+    const n = 17 + 4 * v;
+    const m = Array.from({ length:n }, () => new Array(n).fill(false));
+    const fn = Array.from({ length:n }, () => new Array(n).fill(false));
+    const set = (x, y, on) => { m[y][x] = on; fn[y][x] = true; };
+    for(let i = 0; i < n; i++){ set(6, i, i % 2 === 0); set(i, 6, i % 2 === 0); }
+    const buscador = (cx, cy) => { for(let dy = -4; dy <= 4; dy++) for(let dx = -4; dx <= 4; dx++){ const x = cx + dx, y = cy + dy; if(x < 0 || y < 0 || x >= n || y >= n) continue; const d = Math.max(Math.abs(dx), Math.abs(dy)); set(x, y, d !== 2 && d !== 4); } };
+    buscador(3, 3); buscador(n - 4, 3); buscador(3, n - 4);
+    const al = ALINEA[v], u = al.length - 1;
+    for(let i = 0; i < al.length; i++) for(let j = 0; j < al.length; j++){
+      if((i === 0 && j === 0) || (i === 0 && j === u) || (i === u && j === 0)) continue;
+      for(let dy = -2; dy <= 2; dy++) for(let dx = -2; dx <= 2; dx++) set(al[i] + dx, al[j] + dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1);
+    }
+    formato(m, set, n, 0); // reserva las zonas de formato
+    // datos en zigzag
+    let k = 0;
+    for(let der = n - 1; der >= 1; der -= 2){
+      if(der === 6) der = 5;
+      for(let vert = 0; vert < n; vert++) for(let j = 0; j < 2; j++){
+        const x = der - j, arriba = ((der + 1) & 2) === 0, y = arriba ? n - 1 - vert : vert;
+        if(!fn[y][x] && k < cw.length * 8){ m[y][x] = ((cw[k >>> 3] >>> (7 - (k & 7))) & 1) === 1; k++; }
+      }
+    }
+    // elegir la máscara con menor penalización
+    let mejor = null, mejorP = Infinity;
+    for(let mk = 0; mk < 8; mk++){
+      const c = m.map(r => r.slice());
+      enmascarar(c, fn, mk, n);
+      formato(c, (x, y, on) => { c[y][x] = on; }, n, mk);
+      const p = penalizacion(c, n);
+      if(p < mejorP){ mejorP = p; mejor = c; }
+    }
+    return mejor;
+  }
+  function formato(m, set, n, mascara){
+    const datos = (0 << 3) | mascara; // nivel M = 00
+    let r = datos;
+    for(let i = 0; i < 10; i++) r = (r << 1) ^ ((r >>> 9) * 0x537);
+    const b = ((datos << 10) | r) ^ 0x5412;
+    const bit = i => ((b >>> i) & 1) === 1;
+    for(let i = 0; i <= 5; i++) set(8, i, bit(i));
+    set(8, 7, bit(6)); set(8, 8, bit(7)); set(7, 8, bit(8));
+    for(let i = 9; i < 15; i++) set(14 - i, 8, bit(i));
+    for(let i = 0; i < 8; i++) set(n - 1 - i, 8, bit(i));
+    for(let i = 8; i < 15; i++) set(8, n - 15 + i, bit(i));
+    set(8, n - 8, true);
+  }
+  function enmascarar(m, fn, k, n){
+    for(let y = 0; y < n; y++) for(let x = 0; x < n; x++){
+      if(fn[y][x]) continue;
+      let inv;
+      switch(k){
+        case 0: inv = (x + y) % 2 === 0; break;
+        case 1: inv = y % 2 === 0; break;
+        case 2: inv = x % 3 === 0; break;
+        case 3: inv = (x + y) % 3 === 0; break;
+        case 4: inv = (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0; break;
+        case 5: inv = (x * y) % 2 + (x * y) % 3 === 0; break;
+        case 6: inv = ((x * y) % 2 + (x * y) % 3) % 2 === 0; break;
+        default: inv = ((x + y) % 2 + (x * y) % 3) % 2 === 0;
+      }
+      if(inv) m[y][x] = !m[y][x];
+    }
+  }
+  function penalizacion(m, n){
+    let p = 0, oscuros = 0;
+    const corridas = get => { for(let a = 0; a < n; a++){ let run = 1; for(let b = 1; b < n; b++){ if(get(a, b) === get(a, b - 1)) run++; else { if(run >= 5) p += run - 2; run = 1; } } if(run >= 5) p += run - 2; } };
+    corridas((a, b) => m[a][b]); corridas((a, b) => m[b][a]);
+    for(let y = 0; y < n - 1; y++) for(let x = 0; x < n - 1; x++){ const c = m[y][x]; if(c === m[y][x + 1] && c === m[y + 1][x] && c === m[y + 1][x + 1]) p += 3; }
+    const patron = [true, false, true, true, true, false, true];
+    const esPatron = (get, a, b) => { for(let i = 0; i < 7; i++) if(get(a, b + i) !== patron[i]) return false; return true; };
+    for(let a = 0; a < n; a++) for(let b = 0; b + 7 <= n; b++){ if(esPatron((r, c) => m[r][c], a, b)) p += 40; if(esPatron((r, c) => m[c][r], a, b)) p += 40; }
+    for(const r of m) for(const c of r) if(c) oscuros++;
+    p += Math.floor(Math.abs(oscuros * 20 - n * n * 10) / (n * n)) * 10;
+    return p;
+  }
+
+  /* SVG listo para insertar: módulos oscuros sobre fondo claro, con margen de 4 módulos */
+  function svg(texto, o){
+    o = o || {};
+    const m = codificar(texto), n = m.length, q = 4, t = n + 2 * q;
+    let d = '';
+    for(let y = 0; y < n; y++) for(let x = 0; x < n; x++) if(m[y][x]) d += 'M' + (x + q) + ' ' + (y + q) + 'h1v1h-1z';
+    const el = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    el.setAttribute('viewBox', '0 0 ' + t + ' ' + t);
+    el.setAttribute('role', 'img');
+    el.setAttribute('aria-label', o.label || 'Código QR');
+    el.setAttribute('shape-rendering', 'crispEdges');
+    const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    bg.setAttribute('width', t); bg.setAttribute('height', t); bg.setAttribute('fill', '#ffffff');
+    const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    p.setAttribute('d', d); p.setAttribute('fill', o.color || '#0b0f11');
+    el.appendChild(bg); el.appendChild(p);
+    return el;
+  }
+  return { codificar, svg };
+})();
+if(typeof module !== 'undefined') module.exports = { QR };
 
 /* =====================================================================
    Lumine Habilita · motor 3D propio (canvas 2D, sin librerías)
@@ -3534,7 +3915,7 @@ const Motion = (() => {
   }
 
   /* se llama después de cada render */
-  const PUBLICAS = new Set(['inicio', 'laboratorio', 'taller']);
+  const PUBLICAS = new Set(['inicio', 'sistema', 'laboratorio', 'taller']);
   function tras(root, nav, ruta){
     cascada(root);
     revelar(root, nav);
@@ -3637,7 +4018,7 @@ function subCol(name, key){
   const un = S.db.collection(name).onSnapshot(snap => {
     const m = {}; for(const d of snap.docs) m[d.id] = d.data();
     S.D[key] = m; S.loaded.add(key); S.rev++; scheduleRender();
-    if(key === 'personas' || key === 'duos' || key === 'expedientes') programarReconciliacion();
+    if(key === 'personas' || key === 'duos' || key === 'expedientes' || key === 'sesiones') programarReconciliacion();
   }, err => onDbError(err));
   S.unsub.push(un);
 }
@@ -3687,7 +4068,7 @@ function programarReconciliacion(){
 }
 async function reconciliarExpedientes(){
   if(RECON_CORRIENDO || S.role !== 'admin' || S.preview || S.readOnly) return;
-  if(!cargado(['personas','duos','expedientes','params'])) return;
+  if(!cargado(['personas','duos','expedientes','params','sesiones'])) return;
   RECON_CORRIENDO = true;
   try {
     const c = ctx();
@@ -4633,7 +5014,8 @@ function usoBase(){
 'use strict';
 
 const ROUTES = {
-  inicio:       { t:'Producto',        ic:'home',      roles:['*'] },
+  inicio:       { t:'Portada',         ic:'home',      roles:['*'] },
+  sistema:      { t:'El sistema',      ic:'book',      roles:['*'] },
   entrar:       { t:'Entrada',         ic:'swap',      roles:['admin'] },
   panel:        { t:'Panel',           ic:'grid',      roles:['admin'] },
   personas:     { t:'Personas',        ic:'users',     roles:['admin'] },
@@ -4684,12 +5066,12 @@ function navItems(){
   if(k.has('admin')) return ['panel','personas','validaciones','duos','indicadores','diccionario'];
   if(k.has('tecnico')) return ['ruta','modulos','laboratorio'].concat(k.has('formador') ? ['agenda'] : []).concat(['diccionario']);
   if(k.has('postulante')) return ['postular','laboratorio','diccionario'].concat(k.has('formador') ? ['agenda'] : []);
-  return ['inicio','laboratorio','taller','diccionario'];
+  return ['inicio','sistema','laboratorio','taller','diccionario'];
 }
 function moreItems(){
   const k = roleKeys();
-  if(k.has('admin')) return ['entrar','ajustes','laboratorio','taller','inicio'];
-  if(k.has('tecnico') || k.has('postulante')) return ['taller','inicio'];
+  if(k.has('admin')) return ['entrar','ajustes','laboratorio','taller','inicio','sistema'];
+  if(k.has('tecnico') || k.has('postulante')) return ['taller','inicio','sistema'];
   return [];
 }
 function go(hash){ if(location.hash === '#' + hash) render(); else location.hash = hash; }
@@ -4759,9 +5141,10 @@ window.addEventListener('hashchange', () => render(false));
 
 function vistaCargando(){
   return h('div', { class:'wrap page', 'aria-busy':'true' },
-    h('div', { class:'empty', style:'border:0;padding:80px 20px' },
-      h('span', { class:'emblem', style:'width:44px;height:44px;color:var(--spark);animation:pulse 1.8s infinite;border-radius:50%' }),
-      h('p', null, 'Cargando la plataforma…')));
+    h('p', { class:'sr', role:'status' }, 'Cargando la plataforma…'),
+    h('div', { class:'skel', 'aria-hidden':'true' }, h('span', { class:'sk t' }), h('span', { class:'sk h' }), h('span', { class:'sk p' }),
+      h('div', { class:'grid g3', style:'--g:12px' }, h('span', { class:'sk c' }), h('span', { class:'sk c' }), h('span', { class:'sk c' })),
+      h('span', { class:'sk c' })));
 }
 
 /* ---------- navegación: píldora flotante, hoja y barra inferior ---------- */
@@ -4788,7 +5171,7 @@ function renderShell(activeId){
     h('span', { class:'emblem' }), h('span', { class:'wordmark', 'aria-hidden':'true' }), h('span', { class:'brand-sub' }, 'Habilita'));
   const menuB = h('button', { type:'button', class:'btn btn-quiet icon nav-menu-btn', 'aria-label':'Menú' }, icon('menu', 's20'));
   menuB.addEventListener('click', abrirMenu);
-  const right = h('div', { class:'nav-right' }, rolChip(), menuB);
+  const right = h('div', { class:'nav-right' }, typeof botonBuscar === 'function' ? botonBuscar() : null, typeof campanaAvisos === 'function' ? campanaAvisos() : null, rolChip(), menuB);
   nav.appendChild(h('div', { class:'topnav' }, h('div', { class:'pill' }, brand, links, h('span', { class:'nav-title' }, ROUTES[cur] ? ROUTES[cur].t : ''), right)));
   // barra inferior (teléfono)
   const tb = $('#tabbar'); clear(tb);
@@ -4889,7 +5272,7 @@ const RECORRIDO = [
   { t:'Acepta y cierra la jornada', d:'Como Responsable Técnico: acepta lo de Camila, marca la base y cierra.', rol:'rt', go:'sesion-' + RIDS.sesionJT },
   { t:'Revisa el plan de Felipe', d:'Nivelación, oficio saltado y ruta completa, calculados solos.', rol:'rt', go:'persona-' + RIDS.felipe },
   { t:'Revisa el tablero de indicadores', d:'Los ocho indicadores del informe 6, con vista de tabla.', rol:'rt', go:'indicadores' },
-  { t:'Mira la ruta de un técnico', d:'Ignacio ve solo lo suyo: nivel, próximo paso, duo y revalidación.', rol:'tecnico', go:'ruta' },
+  { t:'Mira la ruta de un técnico', d:'Ignacio ve su siguiente paso, su avance, sus avisos y su credencial digital con QR.', rol:'tecnico', go:'ruta' },
   { t:'Prueba el módulo con simulador', d:'Aprende, practica con el simulador y rinde la práctica: una pregunta a la vez, alternativas mezcladas y sin el material a la vista.', rol:'tecnico', go:'modulo-N1-1' },
   { t:'Revisa los 20 controles de seguridad', d:'Qué cubre la plataforma, qué cubre claude.ai y qué queda pendiente.', rol:'rt', go:'ajustes-seguridad' }
 ];
@@ -4909,7 +5292,7 @@ function renderFooter(){
     h('div', { class:'fcols' },
       h('div', { class:'stack', style:'--g:12px' }, h('span', { class:'lockup', style:'width:150px;color:var(--ink)', role:'img', 'aria-label':'Lumine Motors' }), h('p', { class:'small muted', style:'max-width:36ch' }, 'Sistema de selección y habilitación por competencias del Técnico Instalador de Sistemas de Hibridación Vehicular.')),
       h('div', null, h('h4', null, 'Plataforma'), h('ul', null, ['inicio','diccionario'].concat(S.role === 'admin' ? ['indicadores','ajustes'] : []).map(id => h('li', null, h('a', { href:'#' + id }, ROUTES[id].t))))),
-      h('div', null, h('h4', null, 'Referencias'), h('ul', null, FUENTES.map(([t, u]) => h('li', null, h('a', { href:u, target:'_blank', rel:'noopener noreferrer' }, t.split(',')[0]))))),
+      h('div', null, h('h4', null, 'Referencias'), h('ul', null, FUENTES.slice(0, 5).map(([t, u]) => h('li', null, h('a', { href:u, target:'_blank', rel:'noopener noreferrer' }, t.split(',')[0]))), FUENTES.length > 5 ? h('li', null, h('a', { href:'#sistema' }, 'y ' + (FUENTES.length - 5) + ' fuentes más')) : null)),
       h('div', null, h('h4', null, 'Equipo'), h('ul', null, ['Diego Alarcón','Benjamín Torres','Lukas Verdugo'].map(n => h('li', null, n)), h('li', null, 'Taller Integrador II · UNAB')))),
     h('div', { class:'legal' }, h('span', null, 'Lumine Motors · Fase 3, gestión de personas · 2026'), h('span', null, S.build === 'demo' ? 'Demostración: personas y resultados ficticios' : 'Versión de operación'))))]);
 }
@@ -4991,6 +5374,12 @@ function abrirPlataforma(){
   if(S.build === 'demo' && S.demoRole === 'visitante') return go('login');
   go(homeRoute());
 }
+function ctaPrincipal(){
+  if(S.role === 'admin') return { l:'Abrir el panel', ic:'grid', fn: abrirPlataforma };
+  if(S.role === 'tecnico') return { l: S.mine.expediente ? 'Ir a mi ruta' : 'Seguir mi postulación', ic:'route', fn: () => go(homeRoute()) };
+  return { l:'Postular ahora', ic:'arrowRight', fn: probarDiagnostico };
+}
+function irA(id){ const el = document.getElementById(id); if(el) el.scrollIntoView({ behavior: Motion.quieto() ? 'auto' : 'smooth', block:'start' }); }
 function probarDiagnostico(){
   if(S.build === 'demo' && S.demoRole === 'visitante') return go('login-registro');
   if(S.role === 'admin') return go('personas');
@@ -5176,7 +5565,7 @@ function secCTA(){
     h('span', { class:'lw-eyebrow' }, 'Lumine Habilita'),
     h('h2', null, 'El técnico que Lumine necesita no se contrata. Se forma.'),
     h('p', null, 'El perfil que combina mecánica automotriz y alta tensión no existe formado en Chile. Esta plataforma lo produce adentro, midiendo primero la brecha y formando solo lo que falta.'),
-    h('div', { class:'hero-ctas' }, h('span', { 'data-mag':'0.25' }, btn('Abrir la plataforma', { kind:'owner', size:'lg', onClick: abrirPlataforma })), h('span', { 'data-mag':'0.25' }, btn('Probar el diagnóstico', { kind:'action', size:'lg', onClick: probarDiagnostico }))),
+    (() => { const c = ctaPrincipal(); return h('div', { class:'hero-ctas' }, h('span', { 'data-mag':'0.25' }, btn(c.l, { kind:'action', size:'lg', icon:c.ic, onClick: c.fn })), h('a', { class:'linkbtn', href:'#sistema' }, 'Conoce el sistema completo')); })(),
     h('span', { class:'em emblem', 'aria-hidden':'true' }))));
 }
 
@@ -5232,20 +5621,75 @@ function heroEscena(){
     ui1, ui2, ui3);
 }
 
+/* recorrido: el kit se arma en 3D mientras se baja por la página */
+const HISTORIA = [
+  { k:'El punto de partida', t:'El auto llega tal como es.', d:'Motor a combustión y tracción delantera, sin cambios. El kit se suma: no reemplaza nada del auto original.', piezas:[], foco:'combustion', vista:[-1.2, 0.3, 7.4] },
+  { k:'Eje trasero', t:'Motor eléctrico y frenado regenerativo.', d:'Asisten al auto y recuperan energía al frenar. El freno, el ABS y el control de estabilidad originales siempre mandan.', piezas:['motor','regen'], foco:'motor' },
+  { k:'Energía', t:'El banco de baterías.', d:'Se monta con elevador, sin golpes. Una batería golpeada se aísla y se vigila, aunque se vea normal.', piezas:['bateria'], foco:'bateria' },
+  { k:'Alta tensión', t:'El cableado naranja.', d:'Rutas, fijaciones y protecciones antes de conectar. Se mide la aislación con megóhmetro y se revisa con termografía al energizar.', piezas:['cables'], foco:'cables' },
+  { k:'El cerebro', t:'La unidad de control con IA.', d:'Decide cuándo asiste el motor eléctrico y corta el torque ante patinaje, falla o sobretemperatura.', piezas:['ecu'], foco:'ecu' },
+  { k:'Sabe o no sabe', t:'Cada paso se aprende y se valida.', d:'39 competencias, cuatro niveles y una validación presencial por nivel. Lo online enseña; el nivel se gana en el taller.', piezas:[], foco:null, xray:true }
+];
+function secHistoria(){
+  const stage = h('div', { class:'lab-stage hist-stage' });
+  const pasos = HISTORIA.map((p, i) => h('div', { class:'hist-paso' + (i === 0 ? ' on' : ''), dataset:{ i:String(i) } },
+    h('span', { class:'hist-n' }, String(i + 1).padStart(2, '0') + ' · ' + p.k), h('h3', { class:'hist-t' }, p.t), h('p', { class:'body ink2' }, p.d)));
+  const dots = h('div', { class:'hist-dots', 'aria-hidden':'true' }, HISTORIA.map((_, i) => h('i', { class: i === 0 ? 'on' : '' })));
+  let api = null, actual = -1;
+  const activar = i => {
+    if(i === actual || !api) return;
+    actual = i;
+    pasos.forEach((el, j) => el.classList.toggle('on', j === i));
+    Array.from(dots.children).forEach((el, j) => el.classList.toggle('on', j <= i));
+    const vis = HISTORIA.slice(0, i + 1).flatMap(x => x.piezas);
+    api.mostrar(vis);
+    HISTORIA[i].piezas.forEach((pz, k) => setTimeout(() => api.aparecer(pz), k * 300));
+    api.modo({ xray: !!HISTORIA[i].xray || i > 0 && i < 5 });
+    if(HISTORIA[i].foco){ api.enfocar(HISTORIA[i].foco); } else { api.soltar(); api.vista(-0.75, 0.32, 7.6); }
+    if(HISTORIA[i].vista) api.vista(...HISTORIA[i].vista);
+  };
+  setTimeout(() => {
+    if(!document.body.contains(stage)) return;
+    api = Lab3D.crear(stage, { auto:false, hotspots:false, interactivo:true, visibles:[], etiqueta:'Recorrido 3D: el kit Lumine se arma pieza por pieza en el eje trasero de un auto genérico' });
+    activar(0);
+    if(window.IntersectionObserver){
+      const io = new IntersectionObserver(es => { for(const e of es) if(e.isIntersecting) activar(Number(e.target.dataset.i)); }, { rootMargin: window.matchMedia && matchMedia('(max-width:860px)').matches ? '-66% 0px -24% 0px' : '-45% 0px -45% 0px' });
+      pasos.forEach(p => io.observe(p));
+    }
+  }, 0);
+  return h('section', { class:'wrap lsec hist', id:'historia' },
+    h('div', { class:'center-h', 'data-rv':'' }, eyebrow('El kit, pieza por pieza', 'cube'), h('h2', { class:'h1 xl' }, 'Baja y míralo armarse.'),
+      h('p', { class:'lead' }, 'Esto es lo que aprende a instalar un técnico de Lumine, en el mismo orden en que se hace en el taller.')),
+    h('div', { class:'hist-grid' },
+      h('div', { class:'hist-sticky' }, h('div', { class:'lab-frame' }, stage, dots)),
+      h('div', { class:'hist-pasos' }, pasos)));
+}
+
 VIEWS.inicio = function(){
+  const c = ctaPrincipal();
   const hero = h('section', { class:'wrap hero hero2' },
     h('div', { class:'hero-t', 'data-rv':'' },
-      eyebrow('Gestión de personas · Fase 3', 'bolt'),
+      eyebrow('Técnico instalador · Lumine Motors', 'bolt'),
       h('h1', { class:'mega' }, h('span', { class:'mg-l' }, 'Forma solo'), h('span', { class:'mg-l' }, 'lo que ', h('span', { class:'sp' }, 'falta.'))),
-      h('p', { class:'lead' }, 'Lumine Habilita diagnostica a cada postulante, arma su plan personal y valida en el taller las 39 competencias del técnico instalador de sistemas de hibridación. Lo online enseña. El nivel se gana en el taller.'),
+      h('p', { class:'lead' }, 'Diagnosticamos lo que ya sabes, armamos tu ruta y validamos en el taller. Lo online enseña. El nivel se gana con las manos.'),
       h('div', { class:'hero-ctas' },
-        h('span', { 'data-mag':'0.25' }, btn('Abrir la plataforma', { kind:'owner', size:'lg', onClick: abrirPlataforma })),
-        h('span', { 'data-mag':'0.25' }, btn('Probar el diagnóstico', { kind:'action', size:'lg', onClick: probarDiagnostico }))),
-      h('p', { class:'hero-alt' }, 'o ', h('a', { href:'#laboratorio' }, 'explora el kit en 3D'), ' · ', h('a', { href:'#diccionario' }, 'recorre las 39 competencias')),
-      h('div', { class:'trust' }, h('span', { class:'cap' }, 'Construido sobre referencias reales, citadas en los informes de la Fase 3'),
+        h('span', { 'data-mag':'0.25' }, btn(c.l, { kind:'action', size:'lg', icon:c.ic, onClick: c.fn })),
+        h('button', { type:'button', class:'linkbtn hero-ver', on:{ click: () => irA('historia') } }, icon('chevDown', 's16'), 'Mira cómo funciona')),
+      h('div', { class:'trust' }, h('span', { class:'cap' }, 'Construido sobre referencias reales'),
         h('div', { class:'marks' }, h('span', { class:'mk' }, 'O*NET ', h('small', null, '49-3023.00')), h('span', { class:'mk' }, 'SEC ', h('small', null, 'RIC N°17')), h('span', { class:'mk' }, 'DGUV ', h('small', null, '209-093')), h('span', { class:'mk' }, 'IMI ', h('small', null, 'TechSafe'))))),
     heroEscena());
-  return frag(hero, secMarquee(), secPlan(), secDiagnostico(), secExperiencia(), secRuta(), secAuto(), secPauta(), secRoles(), secIndicadores(), secCTA());
+  return frag(hero, secMarquee(), secHistoria(), secDiagnostico(), secPlan(), secExperiencia(), secCTA());
+};
+
+/* Conoce el sistema: el detalle que antes alargaba la portada */
+VIEWS.sistema = function(){
+  return frag(
+    h('div', { class:'wrap page', style:'padding-bottom:0' }, phead({ eyebrow:'Conoce el sistema', eic:'book', title:'Cómo funciona Lumine Habilita', lead:'Niveles, módulos del nivel 2, la pauta de validación, quién ve qué y los indicadores. Para quien quiere el detalle.',
+      actions:[ linkBtn('Volver a la portada', 'inicio', { kind:'ghost' }) ] }),
+      h('nav', { class:'filters', 'aria-label':'Secciones' }, [['ruta','Niveles'],['auto','Nivel 2'],['pauta','Validación'],['roles','Permisos'],['indicadores-prev','Indicadores']].map(([id, l]) => h('button', { type:'button', class:'chip', on:{ click: () => irA(id) } }, l)))),
+    secRuta(), secAuto(), secPauta(), secRoles(), secIndicadores(),
+    h('section', { class:'wrap lsec', 'data-rv':'' }, h('div', { class:'card' }, h('h2', { class:'h4', style:'margin-bottom:10px' }, 'Fuentes'), h('ul', { style:'list-style:none;display:flex;flex-direction:column;gap:8px' }, FUENTES.map(([t, u]) => h('li', null, h('a', { href:u, target:'_blank', rel:'noopener noreferrer', class:'small' }, t)))))),
+    secCTA());
 };
 
 /* =====================================================================
@@ -5340,39 +5784,52 @@ VIEWS.panel = function(){
   const c = ctx();
   const al = alertas(c);
   const sols = solicitudesRotacion();
-  if(sols.length) al.unshift({ s:'info', t: sols.length === 1 ? '1 solicitud de rotación por revisar' : sols.length + ' solicitudes de rotación por revisar', d: sols.map(x => x.p.nombre).join(', ') + '. Cada una explica por qué pide cambiar de duo (D13).', ref:{ tipo:'duo' } });
+  if(sols.length) al.unshift({ s:'info', t: sols.length === 1 ? '1 solicitud de rotación por revisar' : sols.length + ' solicitudes de rotación por revisar', d: sols.map(x => x.p.nombre).join(', ') + '. Cada una explica por qué pide cambiar de duo.', ref:{ tipo:'duo' } });
   const act = activos(c.personas);
   const abiertas = c.sesiones.filter(x => x.estado === 'abierta').sort((a, b) => String(a.fecha).localeCompare(String(b.fecha)));
   const post = c.personas.filter(p => p.etapa === 'postulante');
   const dAct = c.duos.filter(d => d.activo);
   const dVal = dAct.filter(d => estadoDuo(d, c.P, c.personas, S.hoy, c.params).valido).length;
   const porNivel = [0,1,2,3,4].map(n => act.filter(p => (p.nivel || 0) === n).length);
-  const bit = Object.values(S.D.bitacora).flatMap(m => Object.values(m.eventos || {})).sort((a, b) => String(b.t).localeCompare(String(a.t))).slice(0, 7);
+  const bit = Object.values(S.D.bitacora).flatMap(m => Object.values(m.eventos || {})).sort((a, b) => String(b.t).localeCompare(String(a.t))).slice(0, 6);
   resolverPerfiles(bit.map(e => e.uid));
 
-  const stats = h('div', { class:'grid g4 keep2', style:'--g:12px' },
-    h('div', { class:'card stat' }, h('span', { class:'sl' }, icon('users', 's16'), 'Técnicos activos'), h('span', { class:'sv' }, String(act.length)),
-      h('span', { class:'sd' }, porNivel.map((v, i) => (i === 0 ? 'formación ' : 'N' + i + ' ') + v).join(' · '))),
-    h('div', { class:'card stat' }, h('span', { class:'sl' }, icon('duo', 's16'), 'Duos válidos'), h('span', { class:'sv' }, String(dVal), h('small', null, 'de ' + dAct.length)), h('span', { class:'sd' }, 'con al menos un nivel 3 o 4')),
-    h('div', { class:'card stat' }, h('span', { class:'sl' }, icon('clipboard', 's16'), 'Validaciones abiertas'), h('span', { class:'sv' }, String(abiertas.length)), h('span', { class:'sd' }, abiertas.filter(x => x.fecha <= S.hoy).length + ' para hoy o atrasadas')),
-    h('div', { class:'card stat' }, h('span', { class:'sl' }, icon('userPlus', 's16'), 'Postulantes'), h('span', { class:'sv' }, String(post.length)), h('span', { class:'sd' }, post.filter(p => p.jornada && p.jornada.fecha).length + ' con diagnóstico completo')));
+  /* HOY: todo lo que pide una acción, en un solo lugar y ordenado por urgencia */
+  const rank = { crit:0, warn:1, info:2 };
+  const hoyItems = abiertas.filter(x => x.fecha && x.fecha <= S.hoy).map(sx => ({ s: sx.fecha < S.hoy ? 'warn' : 'info', t: TIPOS_SESION[sx.tipo].l + ' · ' + nombreP(sx.pid), d: sx.fecha < S.hoy ? 'Atrasada desde el ' + fechaCorta(sx.fecha) + '.' : 'Programada para hoy.', ref:{ tipo:'sesion', id:sx.id } }))
+    .concat(al.filter(a => !(a.ref && a.ref.tipo === 'sesion' && abiertas.some(x => x.id === a.ref.id && x.fecha <= S.hoy))))
+    .sort((a, b) => rank[a.s] - rank[b.s]);
+  const todo = ui('panel-todo', false);
+  const nCrit = hoyItems.filter(x => x.s === 'crit').length;
+  const hoyCard = h('section', { class:'hoy-card' + (hoyItems.length ? (nCrit ? ' crit' : '') : ' ok'), 'aria-labelledby':'hoy-t' },
+    h('div', { class:'hoy-h' },
+      h('div', { class:'stack', style:'--g:6px;min-width:0' }, h('span', { class:'next-ey' }, 'Hoy · ' + fechaLarga(S.hoy)),
+        h('h2', { class:'next-t', id:'hoy-t' }, hoyItems.length ? (hoyItems.length === 1 ? '1 cosa requiere tu atención' : hoyItems.length + ' cosas requieren tu atención') : 'Todo en orden por hoy')),
+      h('div', { class:'hoy-n', 'aria-hidden':'true' }, hoyItems.length ? h('b', { class:'num' }, String(hoyItems.length)) : icon('checkCircle', 's32'))),
+    hoyItems.length ? h('div', { class:'alerts' }, (todo ? hoyItems : hoyItems.slice(0, 5)).map(a => alertaItem(a))) : h('p', { class:'small ink2' }, 'Sin validaciones atrasadas ni alertas. Las reglas automáticas revisan duos, revalidaciones y suspensiones cada vez que cambia un dato.'),
+    hoyItems.length > 5 ? h('div', { class:'row' }, btn(todo ? 'Ver menos' : 'Ver las ' + hoyItems.length, { kind:'quiet', size:'sm', icon: todo ? 'minus' : 'plus', onClick: () => { UI['panel-todo'] = !todo; render(true); } })) : null);
 
-  const alertList = al.length ? h('div', { class:'alerts' }, al.map(a => alertaItem(a))) : emptyState('checkCircle', 'Sin alertas', 'Todas las reglas automáticas están en orden.');
-  const prox = abiertas.length ? h('div', { class:'stack', style:'--g:8px' }, abiertas.slice(0, 6).map(sx => sesionItem(sx))) : emptyState('calendar', 'Sin validaciones abiertas', null, btn('Programar validación', { kind:'ghost', size:'sm', icon:'plus', onClick: () => hojaNuevaSesion() }));
+  const stats = h('div', { class:'grid g4 keep2', style:'--g:12px' },
+    h('a', { class:'card stat link', href:'#personas' }, h('span', { class:'sl' }, icon('users', 's16'), 'Técnicos activos'), h('span', { class:'sv' }, String(act.length)),
+      h('span', { class:'sd' }, porNivel.map((v, i) => (i === 0 ? 'formación ' : 'N' + i + ' ') + v).join(' · '))),
+    h('a', { class:'card stat link', href:'#duos' }, h('span', { class:'sl' }, icon('duo', 's16'), 'Duos válidos', ayuda('Válido: tiene al menos un técnico de nivel 3 o 4 y nunca dos de nivel 1. En la primera generación trabajan con supervisión del Responsable Técnico.')), h('span', { class:'sv' }, String(dVal), h('small', null, 'de ' + dAct.length)), h('span', { class:'sd' }, 'con al menos un nivel 3 o 4')),
+    h('a', { class:'card stat link', href:'#validaciones' }, h('span', { class:'sl' }, icon('clipboard', 's16'), 'Validaciones abiertas'), h('span', { class:'sv' }, String(abiertas.length)), h('span', { class:'sd' }, abiertas.filter(x => x.fecha <= S.hoy).length + ' para hoy o atrasadas')),
+    h('a', { class:'card stat link', href:'#personas' }, h('span', { class:'sl' }, icon('userPlus', 's16'), 'Postulantes'), h('span', { class:'sv' }, String(post.length)), h('span', { class:'sd' }, post.filter(p => p.jornada && p.jornada.fecha).length + ' con diagnóstico completo')));
+
+  const semana = abiertas.filter(x => x.fecha > S.hoy && diffDays(S.hoy, x.fecha) <= 14);
+  const prox = semana.length ? h('div', { class:'stack', style:'--g:8px' }, semana.slice(0, 5).map(sx => sesionItem(sx))) : emptyState('calendar', 'Nada programado en las próximas dos semanas', null, btn('Programar validación', { kind:'ghost', size:'sm', icon:'plus', onClick: () => hojaNuevaSesion() }));
   const actividad = bit.length ? h('div', { class:'stack', style:'--g:0' }, bit.map(e => h('div', { class:'row nw', style:'gap:10px;padding:9px 0;border-bottom:1px solid var(--line);align-items:flex-start' },
     h('span', { class:'dot spark', style:'margin-top:7px' }), h('div', { class:'grow' }, h('div', { class:'small', style:'font-weight:600' }, e.a), h('div', { class:'hint' }, (e.d ? e.d + ' · ' : '') + nombreUid(e.uid) + ' · ' + fechaHora(e.t)))))) : h('p', { class:'hint' }, 'Aún no hay actividad este mes.');
 
   return page(
     phead({ eyebrow:'Panel · ' + (ROL_L[miRol()] || 'Administración'), eic:'grid', title:'Estado del taller',
-      lead: act.length + ' técnicos activos, ' + dAct.length + ' duos y ' + abiertas.length + ' validaciones abiertas. Las reglas automáticas revisan duos, revalidaciones y suspensiones cada vez que cambia un dato.',
-      actions:[ btn('Nuevo postulante', { kind:'action', icon:'userPlus', onClick: hojaNuevoPostulante }), btn('Programar validación', { kind:'owner', icon:'plus', onClick: () => hojaNuevaSesion() }) ] }),
+      actions:[ btn('Nuevo postulante', { kind:'ghost', icon:'userPlus', onClick: hojaNuevoPostulante }), btn('Programar validación', { kind:'action', icon:'plus', onClick: () => hojaNuevaSesion() }) ] }),
     avisosSalud(),
+    hoyCard,
     stats,
     h('div', { class:'grid', style:'grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px;margin-top:24px', id:'panel-cols' },
-      h('section', { class:'stack', style:'--g:12px' }, h('div', { class:'section-h', style:'margin:0' }, h('h2', { class:'h3' }, 'Alertas'), badge(al.length + (al.length === 1 ? ' activa' : ' activas'), al.some(a => a.s === 'crit') ? 'crit' : al.length ? 'warn' : 'ok')), alertList),
-      h('div', { class:'stack', style:'--g:24px' },
-        h('section', { class:'stack', style:'--g:12px' }, h('div', { class:'section-h', style:'margin:0' }, h('h2', { class:'h3' }, 'Validaciones abiertas'), h('a', { href:'#validaciones', class:'small' }, 'Ver todas')), prox),
-        h('section', { class:'card' }, h('div', { class:'card-h' }, h('h2', { class:'h4' }, 'Actividad reciente'), h('a', { href:'#ajustes-bitacora', class:'small' }, 'Bitácora')), actividad))));
+      h('section', { class:'stack', style:'--g:12px' }, h('div', { class:'section-h', style:'margin:0' }, h('h2', { class:'h3' }, 'Próximas dos semanas'), h('a', { href:'#validaciones', class:'small', on:{ click: () => { UI['val-tab'] = 'calendario'; } } }, 'Ver calendario')), prox),
+      h('section', { class:'card' }, h('div', { class:'card-h' }, h('h2', { class:'h4' }, 'Actividad reciente'), h('a', { href:'#ajustes-bitacora', class:'small' }, 'Bitácora')), actividad)));
 };
 function alertaItem(a){
   let accion = null;
@@ -5430,20 +5887,39 @@ VIEWS.personas = function(){
           h('div', { class:'hint' }, perfilL(p.perfil) + (p.etapa === 'tecnico' ? ' · ' + nivelNombre(p.nivel || 0) : '')), pasoCorto(p), estadoTags(p))))));
     listBox.appendChild(t); listBox.appendChild(cards);
   }
-  pintarLista();
+  const vista = ui('personas-vista', 'embudo');
+  if(vista === 'embudo') listBox.appendChild(embudoPersonas(ps.filter(p => (p.etapa === 'postulante' || p.etapa === 'tecnico') && (!qq || p.nombre.toLowerCase().includes(qq)))));
+  else pintarLista();
   const search = h('input', { class:'input', type:'search', placeholder:'Buscar por nombre', value:q, 'aria-label':'Buscar persona', maxlength:'60' });
   search.addEventListener('input', () => { UI['personas-q'] = search.value; });
   search.addEventListener('change', () => render(true));
   search.addEventListener('keydown', e => { if(e.key === 'Enter'){ UI['personas-q'] = search.value; search.blur(); render(true); } });
   const post = ps.filter(p => p.etapa === 'postulante' && p.jornada && p.jornada.fecha);
   return page(
-    phead({ eyebrow:'Selección y seguimiento', eic:'users', title:'Personas', lead:'Postulantes en diagnóstico, técnicos por nivel y salidas. El expediente de cada persona reúne su diagnóstico, su plan y su historial de validaciones.',
+    phead({ eyebrow:'Selección y seguimiento', eic:'users', title:'Personas', lead:'De postulante a formador. Toca a una persona para ver su expediente.',
       actions:[ btn('Comparar postulantes', { kind:'ghost', icon:'swap', disabled: post.length < 2 || null, onClick: hojaComparar }), btn('Nuevo postulante', { kind:'action', icon:'userPlus', onClick: hojaNuevoPostulante }) ] }),
     postulacionesPendientes(),
-    h('div', { class:'filters' }, filtros.map(([k, l]) => { const b = h('button', { type:'button', class:'chip', 'aria-pressed': f === k ? 'true' : 'false' }, l, h('span', { class:'n' }, String(cnt(k)))); b.addEventListener('click', () => { UI['personas-f'] = k; render(true); }); return b; }),
+    h('div', { class:'filters' }, segmented([{ v:'embudo', l:'Embudo', ic:'layers' }, { v:'lista', l:'Lista', ic:'list' }], vista, v => { UI['personas-vista'] = v; render(true); }, { label:'Vista' }),
+      vista === 'lista' ? filtros.map(([k, l]) => { const b = h('button', { type:'button', class:'chip', 'aria-pressed': f === k ? 'true' : 'false' }, l, h('span', { class:'n' }, String(cnt(k)))); b.addEventListener('click', () => { UI['personas-f'] = k; render(true); }); return b; }) : null,
       h('div', { class:'searchbox' }, icon('search'), search)),
     listBox);
 };
+/* Embudo: cada persona en la columna de su etapa, de postulante a formador */
+function embudoPersonas(ps){
+  const cols = [
+    { t:'Postulantes', d:'Diagnóstico en curso', f: p => p.etapa === 'postulante' && !(p.jornada && p.jornada.fecha) },
+    { t:'Diagnóstico listo', d:'Decidir ingreso', f: p => p.etapa === 'postulante' && p.jornada && p.jornada.fecha },
+    { t:'En formación', d:'Hacia el nivel 1', f: p => p.etapa === 'tecnico' && !(p.nivel >= 1) }
+  ].concat([1,2,3,4].map(n => ({ t:'Nivel ' + n, d: NIVEL[n].corto, f: p => p.etapa === 'tecnico' && p.nivel === n, n })));
+  return h('div', { class:'embudo', role:'list', 'aria-label':'Personas por etapa' }, cols.map(c => {
+    const xs = ps.filter(c.f);
+    return h('section', { class:'emb-col', role:'listitem', 'aria-label': c.t + ': ' + xs.length },
+      h('div', { class:'emb-h' }, h('div', null, h('b', null, c.t), h('span', { class:'hint', style:'display:block' }, c.d)), h('span', { class:'emb-n num' }, String(xs.length))),
+      h('div', { class:'emb-list' }, xs.length ? xs.map(p => h('a', { class:'emb-card', href:'#persona-' + p.id },
+        h('div', { class:'row nw', style:'gap:8px' }, avatar(p.nombre, colorDe(p)), h('b', { class:'small', style:'min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap' }, p.nombre)),
+        pasoCorto(p), p.suspendidoAT ? badge('Suspendido AT', 'crit') : null)) : h('span', { class:'hint emb-vacio' }, 'Nadie aquí')));
+  }));
+}
 function colorDe(p){ return p.uid && PROFILES[p.uid] && PROFILES[p.uid].color ? PROFILES[p.uid].color : null; }
 function pasoCorto(p){
   const x = proximoPaso(p);
@@ -5947,18 +6423,46 @@ function hojaNuevaSesion(pidFijo, tipoFijo){
 }
 
 /* ---------- VALIDACIONES ---------- */
+/* ---------- calendario mensual de validaciones ---------- */
+const TIPO_COLOR = { JT:'jt', N1:'n', N2:'n', N3:'n', N4:'n', REV:'rev' };
+function calendarioValidaciones(all){
+  const mesBase = ui('cal-mes', S.hoy.slice(0, 7));
+  const [y, m] = mesBase.split('-').map(Number);
+  const primero = new Date(y, m - 1, 1);
+  const dias = new Date(y, m, 0).getDate();
+  const offset = (primero.getDay() + 6) % 7; // lunes primero
+  const delMes = all.filter(x => x.fecha && x.fecha.slice(0, 7) === mesBase).sort((a, b) => String(a.fecha).localeCompare(String(b.fecha)));
+  const porDia = {}; for(const x of delMes) (porDia[x.fecha] = porDia[x.fecha] || []).push(x);
+  const mover = d => { const nd = new Date(y, m - 1 + d, 1); UI['cal-mes'] = nd.getFullYear() + '-' + pad2(nd.getMonth() + 1); render(true); };
+  const celdas = [];
+  for(let i = 0; i < offset; i++) celdas.push(h('div', { class:'cal-d vacio', 'aria-hidden':'true' }));
+  for(let d = 1; d <= dias; d++){
+    const f = mesBase + '-' + pad2(d), xs = porDia[f] || [];
+    celdas.push(h('div', { class:'cal-d' + (f === S.hoy ? ' hoy' : '') + (xs.length ? ' con' : ''), role:'gridcell', 'aria-label': fechaLarga(f) + (xs.length ? ': ' + xs.length + ' validaciones' : '') },
+      h('span', { class:'cal-num' }, String(d)),
+      xs.map(x => h('a', { class:'cal-ev ' + (TIPO_COLOR[x.tipo] || 'n') + (x.estado !== 'abierta' ? ' cerrada' : ''), href:'#sesion-' + x.id, title: TIPOS_SESION[x.tipo].l + ' · ' + nombreP(x.pid) }, h('span', null, x.tipo + ' · ' + nombreP(x.pid).split(' ')[0])))));
+  }
+  const mesL = MESES[m - 1].replace(/^./, c => c.toUpperCase()) + ' ' + y;
+  return h('div', { class:'stack', style:'--g:14px' },
+    h('div', { class:'row sb' }, h('h2', { class:'h3' }, mesL),
+      h('div', { class:'row', style:'gap:6px' }, btn('', { kind:'ghost', size:'sm', icon:'arrowLeft', cls:'icon', aria:'Mes anterior', onClick: () => mover(-1) }), btn('Hoy', { kind:'ghost', size:'sm', onClick: () => { UI['cal-mes'] = S.hoy.slice(0, 7); render(true); } }), btn('', { kind:'ghost', size:'sm', icon:'arrowRight', cls:'icon', aria:'Mes siguiente', onClick: () => mover(1) }))),
+    h('div', { class:'cal', role:'grid', 'aria-label':'Calendario de ' + mesL },
+      ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'].map(d => h('div', { class:'cal-dow', role:'columnheader' }, d)), celdas),
+    h('div', { class:'cmap-legend' }, h('span', null, h('i', { class:'cal-key jt' }), 'Jornada técnica'), h('span', null, h('i', { class:'cal-key n' }), 'Validación de nivel'), h('span', null, h('i', { class:'cal-key rev' }), 'Revalidación'), h('span', null, h('i', { class:'cal-key cerrada' }), 'Cerrada')),
+    delMes.length ? h('div', { class:'stack', style:'--g:8px' }, h('span', { class:'label' }, 'Este mes'), delMes.map(x => x.estado === 'abierta' ? sesionItem(x) : h('a', { class:'card link', href:'#sesion-' + x.id, style:'--pad:12px 14px' }, h('div', { class:'row sb' }, h('span', { class:'small' }, h('b', null, TIPOS_SESION[x.tipo].l), ' · ' + nombreP(x.pid) + ' · ' + fechaCorta(x.fecha)), badge(x.estado === 'anulada' ? 'Anulada' : 'Cerrada', 'line'))))) : emptyState('calendar', 'Sin validaciones este mes', null, btn('Programar validación', { kind:'ghost', size:'sm', icon:'plus', onClick: () => hojaNuevaSesion() })));
+}
 VIEWS.validaciones = function(){
   if(sinDatos(['personas','sesiones'])) return vistaCargando();
-  const tab = ui('val-tab', 'abiertas');
+  const tab = ui('val-tab', 'calendario');
   const all = sesiones();
   const ab = all.filter(x => x.estado === 'abierta').sort((a, b) => String(a.fecha).localeCompare(String(b.fecha)));
   const ce = all.filter(x => x.estado !== 'abierta');
   const lista = tab === 'abiertas' ? ab : ce;
   return page(
-    phead({ eyebrow:'Validaciones presenciales', eic:'clipboard', title:'Validaciones', lead:'Jornadas técnicas, validaciones de nivel y revalidaciones de seguridad. Cada una usa una pauta de sabe o no sabe por competencia.',
+    phead({ eyebrow:'Validaciones presenciales', eic:'clipboard', title:'Validaciones', lead:'Jornadas técnicas, niveles y revalidaciones. Sabe o no sabe, por competencia.',
       actions:[ btn('Modo evaluador externo', { kind:'ghost', icon:'shieldCheck', onClick: () => abrirKiosco() }), btn('Programar validación', { kind:'action', icon:'plus', onClick: () => hojaNuevaSesion() }) ] }),
-    tabs([{ v:'abiertas', l:'Abiertas', n: ab.length }, { v:'cerradas', l:'Cerradas y anuladas', n: ce.length }], tab, v => { UI['val-tab'] = v; render(true); }),
-    lista.length ? (tab === 'abiertas' ? h('div', { class:'grid g2', style:'--g:12px' }, lista.map(sesionItem))
+    tabs([{ v:'calendario', l:'Calendario' }, { v:'abiertas', l:'Abiertas', n: ab.length }, { v:'cerradas', l:'Cerradas y anuladas', n: ce.length }], tab, v => { UI['val-tab'] = v; render(true); }),
+    tab === 'calendario' ? calendarioValidaciones(all) : lista.length ? (tab === 'abiertas' ? h('div', { class:'grid g2', style:'--g:12px' }, lista.map(sesionItem))
       : h('div', { class:'tscroll' }, h('table', { class:'t' }, h('thead', null, h('tr', null, h('th', null, 'Validación'), h('th', null, 'Persona'), h('th', null, 'Fecha'), h('th', null, 'Resultado'))),
         h('tbody', null, lista.map(x => { const tr = h('tr', { class:'click', tabindex:'0' }, h('td', null, TIPOS_SESION[x.tipo].l + (x.intento > 1 ? ' · intento ' + x.intento : '')), h('td', null, nombreP(x.pid)), h('td', null, fechaCorta(x.fecha)),
           h('td', null, x.estado === 'anulada' ? badge('Anulada', 'line') : x.tipo === 'JT' ? badge(((x.resultado && x.resultado.demostradas) || []).length + ' demostradas', 'info') : badge(x.resultado && x.resultado.aprobado ? 'Aprobada' : 'Reprobada', x.resultado && x.resultado.aprobado ? 'ok' : 'crit')));
@@ -6238,7 +6742,7 @@ VIEWS.duos = function(){
       h('div', { class:'row sb' }, h('span', { class:'hint' }, 'Desde ' + fechaCorta(d.desde) + ' · ' + (e.puedeRotar ? 'rotación libre' : 'rotación libre desde ' + fechaCorta(e.rotacionLibre))), term));
   });
   return page(
-    phead({ eyebrow:'Organización del trabajo', eic:'duo', title:'Duos', lead:'Todo el trabajo técnico se hace en duos fijos. La teoría es individual y la validación práctica se hace en duo con nota individual (D12).',
+    phead({ eyebrow:'Organización del trabajo', eic:'duo', title:'Duos', lead:'Todo el trabajo técnico se hace en parejas fijas. La validación es en duo, con nota individual.',
       actions:[ btn('Formar duo', { kind:'action', icon:'plus', onClick: hojaFormarDuo }) ] }),
     h('div', { class:'card mist', style:'--pad:16px;margin-bottom:20px' }, h('ol', { class:'rules' },
       h('li', null, h('span', null, h('b', null, 'Todo duo lleva al menos un técnico de nivel 3 o 4. '), 'Mientras no exista nadie de nivel 3, trabajan bajo supervisión directa del Responsable Técnico.')),
@@ -6459,15 +6963,22 @@ function panelSeguridad(full){
 }
 
 /* ---------- AJUSTES ---------- */
+const AJ_GRUPOS = [
+  { v:'reglas', l:'Reglas', ic:'settings', tabs:[['parametros','Parámetros'],['trazabilidad','Decisiones y fuentes']] },
+  { v:'equipo', l:'Contenido y equipo', ic:'users', tabs:[['contenido','Contenido de módulos'],['equipo','Equipo evaluador']] },
+  { v:'sistema', l:'Sistema', ic:'database', tabs:[['seguridad','Seguridad'],['respaldo','Respaldo'],['consistencia','Consistencia'],['bitacora','Bitácora']] }
+];
 VIEWS.ajustes = function(arg){
   if(sinDatos(['params','gestion','personas'])) return vistaCargando();
-  const tabsL = [['parametros','Parámetros'],['contenido','Contenido'],['equipo','Equipo'],['seguridad','Seguridad'],['respaldo','Respaldo'],['consistencia','Consistencia'],['bitacora','Bitácora'],['trazabilidad','Trazabilidad']];
-  if(arg && tabsL.some(t => t[0] === arg)) UI['aj-tab'] = arg;
+  const todas = AJ_GRUPOS.flatMap(g => g.tabs);
+  if(arg && todas.some(t => t[0] === arg)) UI['aj-tab'] = arg;
   const tab = ui('aj-tab', 'parametros');
+  const grupo = AJ_GRUPOS.find(g => g.tabs.some(t => t[0] === tab)) || AJ_GRUPOS[0];
   const set = v => { UI['aj-tab'] = v; if(parseHash().arg) location.replace('#ajustes'); else render(true); };
   const cuerpo = { parametros: ajParametros, contenido: ajContenido, equipo: ajEquipo, seguridad: () => panelSeguridad(true), respaldo: ajRespaldo, consistencia: ajConsistencia, bitacora: ajBitacora, trazabilidad: ajTrazabilidad }[tab]();
-  return page(phead({ eyebrow:'Administración', eic:'settings', title:'Ajustes', lead:'Parámetros abiertos, contenido de los módulos, equipo evaluador, seguridad, respaldos, consistencia y trazabilidad de las decisiones.' }),
-    tabs(tabsL.map(([v, l]) => ({ v, l })), tab, set), cuerpo);
+  return page(phead({ eyebrow:'Administración', eic:'settings', title:'Ajustes' }),
+    h('div', { class:'aj-grupos', style:'margin-bottom:16px' }, segmented(AJ_GRUPOS.map(g => ({ v:g.v, l:g.l, ic:g.ic })), grupo.v, v => set(AJ_GRUPOS.find(g => g.v === v).tabs[0][0]), { label:'Grupo de ajustes' })),
+    grupo.tabs.length > 1 ? tabs(grupo.tabs.map(([v, l]) => ({ v, l })), tab, set) : null, cuerpo);
 };
 function numIn(v, o){ return inputEl(Object.assign({ type:'number', inputmode:'decimal', value: v === null || v === undefined ? '' : v, placeholder:'Sin fijar', style:'max-width:160px' }, o || {})); }
 function ajParametros(){
@@ -6698,34 +7209,204 @@ function estadoMio(e, c){
 }
 function planMio(e){ return { modulos: e.plan.modulos || [], nivelacion: e.plan.nivelacion || [] }; }
 
+/* ---------- lenguaje de taller: el técnico ve temas, no códigos ---------- */
+function temaCorto(c){ const t = C[c] ? C[c].t : String(c); return t.length > 64 ? t.slice(0, 62).replace(/[ ,;:]+[^ ]*$/, '') + '…' : t; }
+const EST_T = { skip:['Demostrada','ok'], done:['Aprobada','ok'], fail:['Repasar','crit'], lock:['Más adelante','line'], '':['Por aprender','info'] };
+function avanceNivel(e, k){ const cs = COMP.filter(x => x.n === k); return { ok: cs.filter(x => ['done','skip'].includes(estadoMio(e, x.c))).length, total: cs.length }; }
+function primeraFrase(t){ const i = String(t).indexOf('. '); return i > 0 ? t.slice(0, i + 1) : t; }
+
+/* ---------- siguiente paso: una sola acción principal ---------- */
+function siguientePaso(e){
+  const n = e.nivel || 0, sig = n < 4 ? n + 1 : null;
+  const prox = (e.proximas || [])[0];
+  if(e.etapa === 'postulante') return { k:'info', ic:'clock', ey:'Diagnóstico', t:'Siguiente: jornada técnica presencial', d:'El Responsable Técnico te avisará la fecha. Mientras, conoce el kit en el laboratorio 3D.', cta:['Abrir el laboratorio', 'laboratorio'] };
+  if(e.suspendidoAT) return { k:'crit', ic:'shieldX', ey:'Alta tensión suspendida', t:'Repasa la seguridad y revalida', d:'No bajas de nivel. Vuelves a trabajar con alta tensión cuando apruebes la revalidación de seguridad.', cta:['Repasar seguridad', 'modulo-N1-1'] };
+  if(prox){ const dd = diffDays(S.hoy, prox.fecha); return { k:'ok', ic:'calendar', ey:'Próxima validación · ' + (dd === null ? '' : relDias(dd)), t: (TIPOS_SESION[prox.tipo] || { l:prox.tipo }).l, d: fechaLarga(prox.fecha) + '. Es presencial: llega con tu práctica al día.', cta:['Repasar mis módulos', 'modulos'] }; }
+  if(e.repetir && e.repetir.length) return { k:'warn', ic:'refresh', ey:'Para tu próxima fecha', t: e.repetir.length === 1 ? 'Repasa un tema' : 'Repasa ' + e.repetir.length + ' temas', d: e.repetir.map(temaCorto).join(' · '), cta:['Repasar', 'modulos'] };
+  if(sig){
+    const lp = listoParaPresentarse(sig, planMio(e), miAv());
+    if(!lp.listo){ const mid = lp.faltan[0]; const hechos = lp.total - lp.faltan.length; return { k:'action', ic:'play', ey:'Nivel ' + sig + ' · ' + hechos + ' de ' + lp.total + ' módulos', t:'Continúa con ' + MOD[mid].nombre, d: MOD[mid].resumen, cta:['Continuar', 'modulo-' + mid], prog: lp.total ? hechos / lp.total : 0 }; }
+    return { k:'ok', ic:'check', ey:'Nivel ' + sig, t:'Ya puedes presentarte a tu validación', d:'Completaste la práctica online. Pide fecha al Responsable Técnico: ' + NIVEL[sig].valida.toLowerCase() + '.', cta:['Ver mi credencial', null], prog:1 };
+  }
+  return { k:'ok', ic:'grad', ey:'Nivel 4', t:'Eres formador', d:'Enseñas, validas a otros y firmas revisiones cruzadas.', cta: esFormador() ? ['Ver mi agenda', 'agenda'] : ['Ver mi credencial', null] };
+}
+function anillo(valor, total, etiqueta){
+  const r = 54, L = 2 * Math.PI * r, frac = total ? valor / total : 0;
+  const arco = s('circle', { class:'ring-v', cx:64, cy:64, r, 'stroke-dasharray': L.toFixed(1), 'stroke-dashoffset': L.toFixed(1) });
+  setTimeout(() => { arco.style.strokeDashoffset = (L * (1 - frac)).toFixed(1); }, 80);
+  return h('div', { class:'ring', role:'img', 'aria-label': valor + ' de ' + total + ' ' + etiqueta },
+    s('svg', { viewBox:'0 0 128 128', 'aria-hidden':'true' }, s('circle', { class:'ring-b', cx:64, cy:64, r }), arco),
+    h('div', { class:'ring-t', 'aria-hidden':'true' }, h('b', { class:'num' }, String(valor)), h('span', null, 'de ' + total)));
+}
+
 /* ---------- MI RUTA ---------- */
 VIEWS.ruta = function(){
   if(!cargado(['expediente','avance','params','solicitud'])) return vistaCargando();
   const e = miExp();
   if(!e) return page(phead({ title:'Aún no tienes expediente', lead:'Postula para empezar tu diagnóstico.' }), linkBtn('Postular', 'postular', { kind:'action', arrow:true }));
+  revisarCelebracion(e);
   const n = e.nivel || 0, sig = n < 4 ? n + 1 : null;
-  const av = miAv();
-  let paso;
-  if(e.etapa === 'postulante') paso = { s:'info', ic:'clock', t: e.plan && (e.pauta && Object.values(e.pauta).some(x => x.r === 'j')) ? 'Diagnóstico listo: espera la decisión de ingreso' : 'Siguiente: jornada técnica presencial', d:'El Responsable Técnico te avisará la fecha. Mientras, puedes repasar los módulos de nivelación sugeridos.' };
-  else if(e.suspendidoAT) paso = { s:'crit', ic:'shieldX', t:'Suspendido de alta tensión', d:'Tuviste un incidente grave. No bajas de nivel: vuelves a trabajar con alta tensión cuando apruebes la revalidación del core de seguridad.' };
-  else if(e.repetir && e.repetir.length) paso = { s:'warn', ic:'refresh', t:'Repite solo: ' + e.repetir.join(', '), d:'No repites la validación completa. Repasa esos temas y pide una nueva fecha.' };
-  else if(sig){ const lp = listoParaPresentarse(sig, planMio(e), av); paso = lp.listo ? { s:'ok', ic:'check', t:'Tienes derecho a presentarte al nivel ' + sig, d:'Completaste la práctica online. La validación es presencial: ' + NIVEL[sig].valida.toLowerCase() + '.' } : { s:'info', ic:'layers', t:'Completa tu práctica del nivel ' + sig, d:(lp.faltan.length === 1 ? 'Te falta 1 de ' : 'Te faltan ' + lp.faltan.length + ' de ') + lp.total + (lp.total === 1 ? ' módulo.' : ' módulos.') + ' La práctica online da derecho a presentarte; el nivel se gana en el taller.' }; }
-  else paso = { s:'ok', ic:'grad', t:'Eres formador', d:'Puedes enseñar, validar a otros y firmar revisiones cruzadas.' };
+  const paso = siguientePaso(e);
   const rv = e.revalidacion || { estado:'na' };
-  const mapa = h('div', { class:'cmap' }, [1,2,3,4].map(k => h('div', { class:'cmap-row' }, h('span', { class:'cmap-lv' }, 'N' + k), h('div', { class:'cmap-tiles' }, COMP.filter(x => x.n === k).map(x => { const st = estadoMio(e, x.c); const t = tile(x.c, (st || '') + ' lg'); if(st === 'done') t.appendChild(icon('check')); return t; })))));
   const hecho = COMP.filter(x => ['done','skip'].includes(estadoMio(e, x.c))).length;
+  const cta = paso.cta[1] ? linkBtn(paso.cta[0], paso.cta[1], { kind:'action', size:'lg', arrow:true }) : btn(paso.cta[0], { kind:'action', size:'lg', icon:'shieldCheck', onClick: abrirCredencial });
+  const heroPaso = h('div', { class:'next-card ' + paso.k, 'data-rv':'' },
+    h('div', { class:'row', style:'gap:10px' }, h('span', { class:'next-ic' }, icon(paso.ic, 's20')), h('span', { class:'next-ey' }, paso.ey)),
+    h('h2', { class:'next-t' }, paso.t), h('p', { class:'next-d' }, paso.d),
+    paso.prog !== undefined ? h('div', { class:'progress', role:'progressbar', 'aria-valuemin':'0', 'aria-valuemax':'100', 'aria-valuenow': String(Math.round(paso.prog * 100)), 'aria-label':'Avance de la práctica del nivel' }, h('i', { style:'width:' + Math.round(paso.prog * 100) + '%' })) : null,
+    h('div', { class:'row' }, cta));
+  const anilloCard = h('div', { class:'card ring-card', 'data-rv':'' }, anillo(hecho, COMP.length, 'competencias listas'),
+    h('div', { class:'stack', style:'--g:8px;min-width:0;flex:1' }, h('b', null, 'Competencias listas'),
+      [1,2,3,4].map(k => { const a = avanceNivel(e, k); return h('div', { class:'lvbar' + (k <= n ? ' ok' : k === sig ? ' now' : '') }, h('span', { class:'small' }, 'N' + k), h('span', { class:'progress' }, h('i', { style:'width:' + Math.round(100 * a.ok / a.total) + '%' })), h('span', { class:'xs muted num' }, a.ok + '/' + a.total)); })));
+  const credMini = h('button', { type:'button', class:'card tile-card cred-mini', on:{ click: abrirCredencial } },
+    h('span', { class:'label' }, 'Tu credencial'), e.credencial ? frag(h('span', { class:'row', style:'gap:8px' }, icon('shieldCheck', 's20'), h('b', null, 'Nivel ' + n)), h('span', { class:'hint mono' }, e.credencial)) : h('span', { class:'small muted' }, 'Se emite al validar el nivel 1.'), h('span', { class:'tile-go' }, 'Ver', icon('arrowRight', 's14')));
+  const niveles = h('div', { class:'stack', style:'--g:8px' }, [1,2,3,4].map(k => { const a = avanceNivel(e, k);
+    return h('details', { class:'disc lvl', open: k === (sig || 4) ? true : null },
+      h('summary', null, h('span', { class:'row nw', style:'gap:12px;min-width:0;flex:1' }, h('span', { class:'lvl-n' + (k <= n ? ' ok' : '') }, k <= n ? icon('check', 's14') : String(k)), h('span', { class:'stack', style:'--g:2px;min-width:0' }, h('b', { class:'small' }, NIVEL[k].nombre), h('span', { class:'hint' }, a.ok + ' de ' + a.total + ' listas'))), icon('chevDown')),
+      h('div', { class:'dbody stack', style:'--g:6px' }, COMP.filter(x => x.n === k).map(x => { const st = estadoMio(e, x.c); return h('div', { class:'crow tema' }, h('span', { class:'dot ' + (st === 'done' || st === 'skip' ? 'ok' : st === 'fail' ? 'crit' : st === 'lock' ? '' : 'spark') }), h('span', { class:'ct' }, x.t), badge(EST_T[st][0], EST_T[st][1])); }))); }));
   return page(
-    phead({ eyebrow: e.demo ? 'Expediente ficticio de demostración' : 'Tu ruta de habilitación', eic:'route', title:'Hola, ' + (e.nombre || '').split(' ')[0], lead: n ? 'Eres ' + NIVEL[n].nombre.toLowerCase() + '. ' + NIVEL[n].habilita : 'Estás en formación hacia el nivel 1. Todos entran por el nivel 1.' }),
-    h('div', { class:'card', style:'--pad:18px;margin-bottom:18px' }, trackNiveles(n, e.fechasNivel)),
-    h('div', { class:'alert ' + paso.s, style:'margin-bottom:18px' }, h('span', { class:'ai' }, icon(paso.ic, 's20')), h('div', null, h('div', { class:'at' }, paso.t), h('div', { class:'ad' }, paso.d)), sig && !e.suspendidoAT ? h('div', { class:'aa' }, linkBtn('Ir a módulos', 'modulos', { size:'sm', kind:'action' })) : null),
-    h('div', { class:'grid g3', style:'--g:14px' },
-      h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Tu duo'), e.duo ? frag(h('div', { class:'row', style:'gap:10px' }, avatar(e.duo.companero), h('div', null, h('b', null, e.duo.companero), h('div', { class:'hint' }, 'Nivel ' + e.duo.companeroNivel + ' · desde ' + fechaCorta(e.duo.desde)))), bloqueRotacion(e)) : frag(h('p', { class:'small muted' }, n >= 1 ? 'Sin duo asignado.' : 'Entras a un duo al validar el nivel 1.'), bloqueRotacion(e))),
-      h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Revalidación de seguridad'), rv.estado === 'na' ? h('p', { class:'small muted' }, 'Aplica desde el nivel 1.') : frag(h('div', { class:'h3' }, fechaCorta(rv.vence)), badge(rv.estado === 'vencida' ? 'Vencida' : rv.estado === 'pronto' ? 'Vence ' + relDias(rv.dias) : 'Vigente', rv.estado === 'vencida' ? 'crit' : rv.estado === 'pronto' ? 'warn' : 'ok'))),
-      h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Bono por avance'), (e.bono || []).length ? e.bono.map(b => h('div', { class:'row sb small' }, h('span', null, 'Nivel ' + b.n), h('b', null, b.monto === null ? 'Monto por definir' : clp(b.monto)))) : h('p', { class:'small muted' }, 'Se gana por nivel validado, nunca por nota online.'))),
-    h('section', { class:'section card' }, h('div', { class:'card-h' }, h('h2', { class:'h4' }, 'Tus 39 competencias'), h('span', { class:'hint' }, hecho + ' aprobadas o demostradas')), mapa,
-      h('div', { class:'cmap-legend', style:'margin-top:12px' }, h('span', null, h('i', { class:'tile core' }), 'Core'), h('span', null, h('i', { class:'tile oficio' }), 'Oficio'), h('span', null, h('i', { class:'tile desarrollo' }), 'Desarrollo'), h('span', null, h('i', { class:'tile oficio skip' }), 'Demostrada'), h('span', null, h('i', { class:'tile core fail' }), 'Repetir'))),
-    (e.historial || []).length ? h('section', { class:'section' }, h('h2', { class:'h3', style:'margin-bottom:12px' }, 'Tu historial'), tablaDe(['Validación','Intento','Fecha','Resultado'], e.historial.slice().reverse().map(x => [TIPOS_SESION[x.tipo] ? TIPOS_SESION[x.tipo].l : x.tipo, x.intento === 1 ? '1 · primera nota' : String(x.intento), fechaCorta(x.fecha), badge(x.aprobado ? 'Aprobada' : 'Repite ' + (x.fallidas || []).join(', '), x.aprobado ? 'ok' : 'crit')]))) : null);
+    h('header', { class:'ruta-hero' },
+      h('div', { class:'stack', style:'--g:16px;min-width:0' },
+        h('div', { class:'stack', style:'--g:8px' }, eyebrow(e.demo ? 'Expediente ficticio de demostración' : 'Tu ruta de habilitación', 'route'),
+          h('h1', { class:'h1 xl' }, 'Hola, ' + (e.nombre || '').split(' ')[0]),
+          h('div', { class:'row', style:'gap:8px' }, nivelBadge(n), n ? h('span', { class:'small ink2' }, primeraFrase(NIVEL[n].habilita)) : h('span', { class:'small ink2' }, 'Todos parten por el nivel 1.'))),
+        heroPaso),
+      anilloCard),
+    h('div', { class:'card', style:'--pad:18px;margin:18px 0' }, trackNiveles(n, e.fechasNivel)),
+    h('div', { class:'grid g4 keep2', style:'--g:12px' },
+      h('div', { class:'card stack tile-card', style:'--g:8px' }, h('span', { class:'label' }, 'Tu duo', ayuda('Todo el trabajo técnico se hace en pareja: uno ejecuta y el otro es encargado de seguridad.')), e.duo ? frag(h('div', { class:'row nw', style:'gap:10px' }, avatar(e.duo.companero), h('div', { style:'min-width:0' }, h('b', { class:'small' }, e.duo.companero), h('div', { class:'hint' }, 'Nivel ' + e.duo.companeroNivel + ' · desde ' + fechaCorta(e.duo.desde)))), bloqueRotacion(e)) : frag(h('p', { class:'small muted' }, n >= 1 ? 'Sin duo asignado.' : 'Entras a un duo al validar el nivel 1.'), bloqueRotacion(e))),
+      h('div', { class:'card stack tile-card', style:'--g:8px' }, h('span', { class:'label' }, 'Revalidación de seguridad', ayuda('Cada ' + params().revalidacionMeses + ' meses vuelves a demostrar lo esencial de seguridad. El resto de tu nivel no vence.')), rv.estado === 'na' ? h('p', { class:'small muted' }, 'Aplica desde el nivel 1.') : frag(h('b', { class:'h3' }, fechaCorta(rv.vence)), badge(rv.estado === 'vencida' ? 'Vencida' : rv.estado === 'pronto' ? 'Vence ' + relDias(rv.dias) : 'Vigente', rv.estado === 'vencida' ? 'crit' : rv.estado === 'pronto' ? 'warn' : 'ok'))),
+      credMini,
+      h('div', { class:'card stack tile-card', style:'--g:8px' }, h('span', { class:'label' }, 'Bono por avance', ayuda('Se paga por cada nivel que validas en el taller, nunca por la nota de la práctica online.')), (e.bono || []).length ? e.bono.map(b => h('div', { class:'row sb small' }, h('span', null, 'Nivel ' + b.n), h('b', null, b.monto === null ? 'Por definir' : clp(b.monto)))) : h('p', { class:'small muted' }, 'Se gana por nivel validado.'))),
+    h('section', { class:'section' }, h('div', { class:'section-h' }, h('h2', { class:'h3' }, 'Lo que vas aprendiendo'), h('span', { class:'hint' }, hecho + ' de ' + COMP.length + ' listas')), niveles),
+    (e.historial || []).length ? h('section', { class:'section' }, h('h2', { class:'h3', style:'margin-bottom:12px' }, 'Tu historial'), tablaDe(['Validación','Intento','Fecha','Resultado'], e.historial.slice().reverse().map(x => [TIPOS_SESION[x.tipo] ? TIPOS_SESION[x.tipo].l : x.tipo, x.intento === 1 ? '1 · primera nota' : String(x.intento), fechaCorta(x.fecha), badge(x.aprobado ? 'Aprobada' : 'Repasar ' + (x.fallidas || []).length + ((x.fallidas || []).length === 1 ? ' tema' : ' temas'), x.aprobado ? 'ok' : 'crit')]))) : null);
 };
+
+/* ---------- avisos del técnico (se calculan de su expediente; lo leído queda en este navegador) ---------- */
+function avisosTecnico(){
+  const e = miExp(); if(!e) return [];
+  const out = [];
+  const n = e.nivel || 0;
+  for(const p of (e.proximas || [])) out.push({ id:'val-' + p.tipo + '-' + p.fecha, ic:'calendar', k:'info', t:'Validación programada: ' + ((TIPOS_SESION[p.tipo] || {}).l || p.tipo), d: fechaLarga(p.fecha) + ' (' + relDias(diffDays(S.hoy, p.fecha)) + ').', go:'ruta' });
+  if(n >= 1 && e.fechasNivel && e.fechasNivel[n] && diffDays(e.fechasNivel[n], S.hoy) <= 30) out.push({ id:'nivel-' + n, ic:'grad', k:'ok', t:'Validaste el nivel ' + n + ': ' + NIVEL[n].nombre, d:'Tu credencial ya muestra el nivel nuevo.', cred:true });
+  if(e.rotacion && e.rotacion.fecha && diffDays(e.rotacion.fecha, S.hoy) <= 30) out.push({ id:'rot-' + e.rotacion.id + '-' + e.rotacion.estado, ic:'duo', k: e.rotacion.estado === 'aprobada' ? 'ok' : 'warn', t:'Tu solicitud de rotación fue ' + (e.rotacion.estado === 'aprobada' ? 'aprobada' : 'rechazada'), d: e.rotacion.respuesta || (e.rotacion.estado === 'aprobada' ? 'El Responsable Técnico te asignará tu nuevo duo.' : 'Sin comentario.'), go:'ruta' });
+  const rv = e.revalidacion || {};
+  if(rv.estado === 'vencida' || rv.estado === 'pronto') out.push({ id:'rev-' + rv.vence + '-' + rv.estado, ic:'shield', k: rv.estado === 'vencida' ? 'crit' : 'warn', t: rv.estado === 'vencida' ? 'Tu revalidación de seguridad venció' : 'Tu revalidación de seguridad vence ' + relDias(rv.dias), d:'Fecha: ' + fechaLarga(rv.vence) + '. Repasa los módulos de seguridad.', go:'modulo-N1-1' });
+  if(e.suspendidoAT) out.push({ id:'susp', ic:'shieldX', k:'crit', t:'Estás suspendido de alta tensión', d:'Vuelves cuando apruebes la revalidación de seguridad.', go:'ruta' });
+  if(e.repetir && e.repetir.length) out.push({ id:'rep-' + e.repetir.join('.'), ic:'refresh', k:'warn', t:'Tienes ' + (e.repetir.length === 1 ? 'un tema' : e.repetir.length + ' temas') + ' por repasar', d: e.repetir.map(temaCorto).join(' · '), go:'modulos' });
+  return out;
+}
+const AVISOS_KEY = () => 'lh-avisos-' + (S.me.id || 'anon');
+function avisosVistos(){ try { return new Set(JSON.parse(localStorage.getItem(AVISOS_KEY()) || '[]')); } catch(x){ return new Set(); } }
+function marcarAvisosVistos(ids){ try { localStorage.setItem(AVISOS_KEY(), JSON.stringify(ids.slice(-60))); } catch(x){} }
+function campanaAvisos(){
+  const k = roleKeys();
+  if(!(k.has('tecnico')) || !S.loaded.has('expediente')) return null;
+  const av = avisosTecnico(), vistos = avisosVistos();
+  const nuevos = av.filter(a => !vistos.has(a.id)).length;
+  const b = h('button', { type:'button', class:'btn btn-quiet icon bell', 'aria-label': nuevos ? 'Avisos: ' + nuevos + ' nuevos' : 'Avisos' }, icon('bell', 's20'), nuevos ? h('span', { class:'bell-n', 'aria-hidden':'true' }, String(nuevos)) : null);
+  b.addEventListener('click', () => {
+    const lista = avisosTecnico();
+    marcarAvisosVistos(lista.map(a => a.id));
+    openSheet('Avisos', close => lista.length ? h('div', { class:'stack', style:'--g:8px' }, lista.map(a => {
+      const ir = () => { close(); if(a.cred) abrirCredencial(); else go(a.go); };
+      return h('button', { type:'button', class:'alert aviso ' + a.k + (vistos.has(a.id) ? '' : ' nuevo'), on:{ click: ir } }, h('span', { class:'ai' }, icon(a.ic, 's20')), h('div', null, h('div', { class:'at' }, a.t), h('div', { class:'ad' }, a.d)), vistos.has(a.id) ? null : h('span', { class:'dot spark', 'aria-label':'Nuevo' }));
+    })) : emptyState('bell', 'Sin avisos', 'Aquí llegan tus validaciones, respuestas y vencimientos.'), { onClose: scheduleRender });
+    scheduleRender();
+  });
+  return b;
+}
+
+/* ---------- celebración al validar un nivel ---------- */
+function revisarCelebracion(e){
+  const n = e.nivel || 0;
+  if(n < 1 || !S.me.id || S.preview) return;
+  const key = 'lh-nivel-visto-' + S.me.id;
+  let visto;
+  try { if(localStorage.getItem('lh-sin-celebrar')) return; visto = localStorage.getItem(key); localStorage.setItem(key, String(n)); } catch(x){ return; }
+  const reciente = e.fechasNivel && e.fechasNivel[n] && diffDays(e.fechasNivel[n], S.hoy) <= 60;
+  if(visto === null ? reciente : Number(visto) < n) setTimeout(() => celebrarNivel(n), 450);
+}
+function celebrarNivel(n){
+  if(document.querySelector('.celebra')) return;
+  const N = NIVEL[n];
+  const prev = document.activeElement;
+  const canvas = h('canvas', { class:'confeti', 'aria-hidden':'true' });
+  let untrap = () => {};
+  const cerrar = () => { untrap(); wrap.remove(); document.body.style.overflow = ''; if(prev && prev.focus && document.contains(prev)) prev.focus(); };
+  const verCred = btn('Ver mi credencial', { kind:'action', size:'lg', icon:'shieldCheck', onClick: () => { cerrar(); abrirCredencial(); } });
+  const seguir = btn('Seguir', { kind:'ghost', size:'lg', onClick: cerrar });
+  const box = h('div', { class:'celebra-in', role:'dialog', 'aria-modal':'true', 'aria-labelledby':'cel-t' },
+    h('div', { class:'cel-badge', 'aria-hidden':'true' }, h('span', { class:'cel-ring' }), h('b', null, String(n))),
+    h('span', { class:'onb-k' }, '¡Validaste el nivel ' + n + '!'),
+    h('h2', { id:'cel-t', class:'onb-h' }, N.nombre),
+    h('p', { class:'lead' }, 'Desde hoy: ' + primeraFrase(N.habilita).replace(/^./, c => c.toLowerCase())),
+    pips(n),
+    h('div', { class:'row', style:'justify-content:center;margin-top:6px' }, seguir, verCred));
+  const wrap = h('div', { class:'celebra' }, canvas, box);
+  wrap.addEventListener('click', ev => { if(ev.target === wrap || ev.target === canvas) cerrar(); });
+  document.body.appendChild(wrap); document.body.style.overflow = 'hidden';
+  untrap = trapFocus(box, cerrar);
+  setTimeout(() => verCred.focus(), 60);
+  if(!Motion.quieto()) confeti(canvas);
+}
+function confeti(canvas){
+  const ctx = canvas.getContext('2d'), dpr = Math.min(2, window.devicePixelRatio || 1);
+  const W = canvas.width = innerWidth * dpr, H = canvas.height = innerHeight * dpr;
+  const col = ['#22B8F0', '#78d6f7', '#ffffff', '#F5B94A', '#4ADE80'];
+  const ps = Array.from({ length: 160 }, (_, i) => ({ x: W / 2 + (Math.random() - .5) * W * .2, y: H * .42, vx: (Math.random() - .5) * 18 * dpr, vy: (-Math.random() * 16 - 6) * dpr, r: (3 + Math.random() * 5) * dpr, a: Math.random() * 6, va: (Math.random() - .5) * .3, c: col[i % col.length] }));
+  const t0 = performance.now();
+  const paso = t => {
+    if(!document.body.contains(canvas)) return;
+    const k = (t - t0) / 1000;
+    ctx.clearRect(0, 0, W, H);
+    for(const p of ps){ p.vy += .45 * dpr; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.a += p.va; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.globalAlpha = Math.max(0, 1 - k / 3.6); ctx.fillStyle = p.c; ctx.fillRect(-p.r, -p.r / 2, p.r * 2, p.r); ctx.restore(); }
+    if(k < 3.6) requestAnimationFrame(paso); else ctx.clearRect(0, 0, W, H);
+  };
+  requestAnimationFrame(paso);
+}
+
+/* ---------- credencial digital con QR ---------- */
+function payloadCredencial(e){ return 'LUMINE HABILITA|' + e.credencial + '|N' + (e.nivel || 0) + '|' + String(e.nombre || '').slice(0, 40) + '|' + ((e.revalidacion || {}).vence || ''); }
+function estadoCredencial(e){ const rv = e.revalidacion || {}; return e.suspendidoAT ? ['Alta tensión suspendida','crit'] : rv.estado === 'vencida' ? ['Revalidación vencida','crit'] : ['Vigente','ok']; }
+function abrirCredencial(){
+  const e = miExp(); if(!e) return;
+  openSheet('Tu credencial', () => credencialCard(e));
+}
+function credencialCard(e){
+  const n = e.nivel || 0;
+  if(!e.credencial) return emptyState('shield', 'Aún sin credencial', 'Se emite al validar el nivel 1 en el taller.');
+  const rv = e.revalidacion || {};
+  const st = estadoCredencial(e);
+  return h('div', { class:'stack', style:'--g:14px' },
+    h('div', { class:'cred', 'data-cred': e.credencial },
+      h('div', { class:'cred-top' }, h('span', { class:'row', style:'gap:8px' }, h('span', { class:'emblem' }), h('span', { class:'wordmark', 'aria-hidden':'true' })), h('span', { class:'cred-k' }, 'Técnico instalador')),
+      h('div', { class:'cred-mid' }, h('span', { class:'cred-lv', 'aria-hidden':'true' }, String(n)), h('div', { class:'stack', style:'--g:4px;min-width:0' }, h('b', { class:'cred-n' }, e.nombre), h('span', { class:'cred-l' }, 'Nivel ' + n + ' · ' + NIVEL[n].nombre), pips(n))),
+      h('div', { class:'cred-bot' },
+        h('dl', { class:'cred-dl' }, h('dt', null, 'Estado'), h('dd', null, h('span', { class:'cred-st ' + st[1] }, st[0])), h('dt', null, 'Validado'), h('dd', null, fechaCorta((e.fechasNivel || {})[n])), h('dt', null, 'Revalida'), h('dd', null, rv.vence ? fechaCorta(rv.vence) : '—'), h('dt', null, 'Código'), h('dd', { class:'mono' }, e.credencial)),
+        h('div', { class:'cred-qr' }, QR.svg(payloadCredencial(e), { label:'Código QR de la credencial ' + e.credencial })))),
+    h('p', { class:'hint' }, 'Muéstrala en el taller. El Responsable Técnico la verifica buscando el código en la plataforma. El código cambia cada vez que validas un nivel.'),
+    S.dl ? h('div', { class:'row' }, btn('Descargar credencial', { kind:'ghost', icon:'download', onClick: ev => busy(ev.currentTarget, () => descargarCredencial(e)) })) : null);
+}
+async function descargarCredencial(e){
+  const n = e.nivel || 0, st = estadoCredencial(e), rv = e.revalidacion || {};
+  const qr = QR.svg(payloadCredencial(e));
+  qr.setAttribute('x', '440'); qr.setAttribute('y', '150'); qr.setAttribute('width', '170'); qr.setAttribute('height', '170');
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+  const txt = (x, y, t, o) => '<text x="' + x + '" y="' + y + '" ' + (o || '') + '>' + esc(t) + '</text>';
+  const data = '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" font-family="Helvetica, Arial, sans-serif">'
+    + '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d1a21"/><stop offset="1" stop-color="#070a0c"/></linearGradient></defs>'
+    + '<rect width="640" height="360" rx="22" fill="url(#g)"/><rect x="0" y="0" width="640" height="6" fill="#22B8F0"/>'
+    + txt(32, 52, 'LUMINE HABILITA', 'fill="#eef3f5" font-size="18" font-weight="700" letter-spacing="3"') + txt(608, 52, 'TÉCNICO INSTALADOR', 'fill="#8a9aa1" font-size="12" text-anchor="end" letter-spacing="2"')
+    + txt(32, 128, String(n), 'fill="#22B8F0" font-size="64" font-weight="800"') + txt(92, 108, e.nombre, 'fill="#eef3f5" font-size="24" font-weight="700"') + txt(92, 134, 'Nivel ' + n + ' · ' + NIVEL[n].nombre, 'fill="#b9c7cd" font-size="15"')
+    + txt(32, 200, 'Estado', 'fill="#8a9aa1" font-size="12"') + txt(130, 200, st[0], 'fill="' + (st[1] === 'ok' ? '#4ADE80' : '#F87171') + '" font-size="14" font-weight="700"')
+    + txt(32, 230, 'Validado', 'fill="#8a9aa1" font-size="12"') + txt(130, 230, fechaCorta((e.fechasNivel || {})[n]), 'fill="#eef3f5" font-size="14"')
+    + txt(32, 260, 'Revalida', 'fill="#8a9aa1" font-size="12"') + txt(130, 260, rv.vence ? fechaCorta(rv.vence) : '—', 'fill="#eef3f5" font-size="14"')
+    + txt(32, 290, 'Código', 'fill="#8a9aa1" font-size="12"') + txt(130, 290, e.credencial, 'fill="#eef3f5" font-size="14" font-family="monospace"')
+    + new XMLSerializer().serializeToString(qr) + '</svg>';
+  try { await S.dl.save({ filename:'credencial-lumine-' + e.credencial + '.svg', data }); toast('Credencial guardada'); }
+  catch(x){ if(x && x.code === 'declined') toast('Descarga cancelada', 'info'); else throw x; }
+}
 
 /* ---------- rotación de duo (D13): se pide por escrito al Responsable Técnico ---------- */
 function bloqueRotacion(e){
@@ -6783,15 +7464,15 @@ VIEWS.modulos = function(){
     const st = estadoModulo(m.id);
     const skipT = e ? m.cod.filter(c => (e.plan.saltadas || []).includes(c)) : [];
     const inner = h('div', { class:'modcard' },
-      h('div', { class:'mh' }, h('div', null, h('span', { class:'mono xs muted' }, m.id), h('h3', { class:'h4' }, m.nombre)),
+      h('div', { class:'mh' }, h('div', null, h('span', { class:'xs muted' }, m.nivel ? 'Nivel ' + m.nivel : 'Nivelación'), h('h3', { class:'h4' }, m.nombre)),
         locked ? badge('Bloqueado', 'line', 'lock') : st === 'aprobado' ? badge('Práctica aprobada', 'ok', 'check') : st === 'revisado' ? badge('Revisado', 'ok', 'check') : badge(st === 'iniciado' ? 'En curso' : 'Pendiente', 'info')),
       h('p', { class:'small ink2' }, m.resumen),
-      m.cod.length ? h('div', { class:'tag-row' }, m.cod.map(c => h('span', { class:'badge ' + (skipT.includes(c) ? 'demo' : 'line'), title: skipT.includes(c) ? 'Demostrada en tu jornada' : C[c].t }, c))) : null,
+      m.cod.length ? h('span', { class:'hint' }, m.cod.length + (m.cod.length === 1 ? ' tema' : ' temas') + (skipT.length ? ' · ' + skipT.length + (skipT.length === 1 ? ' ya demostrado' : ' ya demostrados') : '')) : null,
       locked ? h('span', { class:'hint' }, 'Se desbloquea al validar el nivel ' + (m.nivel - 1) + '.') : null);
     return locked ? h('div', { class:'card modcard locked' }, inner) : h('a', { class:'card link', href:'#modulo-' + m.id }, inner);
   };
   return page(
-    phead({ eyebrow:'Formación online', eic:'layers', title:'Tus módulos', lead:'Contenido corto, con casos del taller y simulador, repetible sin límite. El avance se desbloquea por nivel y el repaso queda siempre abierto (D9).' }),
+    phead({ eyebrow:'Formación online', eic:'layers', title:'Tus módulos', lead:'Cortos, con casos reales del taller. Repítelos cuantas veces quieras: el nivel se gana en el taller.' }),
     grupos.map(([lv, l]) => { const ms = MODULOS.filter(m => m.nivel === lv && plan.modulos.includes(m.id)); return ms.length ? h('section', { class:'section', style:'margin-top:22px' }, h('h2', { class:'h3', style:'margin-bottom:12px' }, l), h('div', { class:'grid g3', style:'--g:12px' }, ms.map(card))) : null; }));
 };
 
@@ -6862,7 +7543,7 @@ function practica(mid, ct){
     PRAC_ACTUAL = null;
     const rev = intento.map((x, k) => {
       const q = banco[x.qi], mia = st.resp[k] === undefined ? null : x.orden[st.resp[k]], bien = mia === q.a;
-      return h('div', { class:'prevq ' + (bien ? 'ok' : 'bad') }, h('div', { class:'row', style:'gap:8px' }, h('span', { class:'pn' }, icon(bien ? 'check' : 'x', 's14')), h('span', { class:'hint' }, 'Pregunta ' + (k + 1)), q.c ? codeTag(q.c) : null),
+      return h('div', { class:'prevq ' + (bien ? 'ok' : 'bad') }, h('div', { class:'row', style:'gap:8px' }, h('span', { class:'pn' }, icon(bien ? 'check' : 'x', 's14')), h('span', { class:'hint' }, 'Pregunta ' + (k + 1))),
         h('p', { class:'small', style:'font-weight:600' }, q.q),
         bien ? null : h('p', { class:'small' }, h('span', { class:'muted' }, 'Tu respuesta: '), mia === null ? 'sin responder' : q.o[mia]),
         h('p', { class:'small' }, h('span', { class:'muted' }, 'Correcta: '), q.o[q.a]), q.x ? h('p', { class:'hint' }, q.x) : null);
@@ -6895,7 +7576,7 @@ function practica(mid, ct){
   enviar.addEventListener('click', siguiente);
   addKids(box, [h('div', { class:'row sb' }, eyebrow('Práctica por caso', 'list'), h('span', { class:'small num muted' }, respondidas + ' de ' + n + ' respondidas')), notas,
     dots,
-    h('div', { class:'q' }, h('div', { class:'row', style:'gap:8px' }, q.c ? codeTag(q.c) : null, q.c ? critTag(C[q.c].k) : null, h('span', { class:'hint' }, 'Caso ' + (k + 1) + ' de ' + n)), h('p', { class:'h4', style:'font-weight:600' }, q.q), opts),
+    h('div', { class:'q' }, h('div', { class:'row', style:'gap:8px' }, q.c ? critTag(C[q.c].k) : null, h('span', { class:'hint' }, 'Caso ' + (k + 1) + ' de ' + n)), h('p', { class:'h4', style:'font-weight:600' }, q.q), opts),
     h('div', { class:'row sb' }, btn('Anterior', { kind:'ghost', icon:'arrowLeft', disabled: k === 0 || null, onClick: anterior }), enviar),
     h('p', { class:'hint' }, 'Atajos: 1 a 4 para elegir, Enter para avanzar. Cada intento trae preguntas y orden distintos.')]);
   return box;
@@ -6916,15 +7597,15 @@ VIEWS.modulo = function(mid){
   const vec = vecinosModulo(mid, plan, e ? (e.nivel || 0) : 0);
   const revisar = btn(est === 'nuevo' || est === 'iniciado' ? 'Marcar como revisado' : 'Revisado', { kind: est === 'nuevo' || est === 'iniciado' ? 'action' : 'ghost', icon:'check', disabled: !(est === 'nuevo' || est === 'iniciado') || null });
   revisar.addEventListener('click', () => busy(revisar, async () => { await marcarRevisado(mid); toast('Módulo marcado como revisado'); }));
-  const comps = m.cod.map(c => h('div', { class:'crow' + (sk.includes(c) ? ' skip' : '') }, codeTag(c), h('span', { class:'ct' }, C[c].t), sk.includes(c) ? badge('Ya la demostraste', 'ok') : prioTag(C[c].p)));
+  const comps = m.cod.map(c => h('div', { class:'crow tema' + (sk.includes(c) ? ' skip' : '') }, h('span', { class:'dot ' + (sk.includes(c) ? 'ok' : 'spark') }), h('span', { class:'ct' }, C[c].t), sk.includes(c) ? badge('Ya la demostraste', 'ok') : (C[c].k === 'comp' ? null : badge(CRITICIDAD[C[c].k].l, 'warn'))));
   // navegación entre módulos de la misma línea, sin volver a la lista
   const navMod = h('nav', { class:'modnav', 'aria-label':'Otros módulos' },
     vec.prev ? h('a', { class:'modnav-a prev', href:'#modulo-' + vec.prev.id }, icon('arrowLeft', 's16'), h('span', null, h('small', null, 'Anterior'), vec.prev.nombre)) : h('span'),
     vec.next ? h('a', { class:'modnav-a next', href:'#modulo-' + vec.next.id }, h('span', null, h('small', null, 'Siguiente'), vec.next.nombre), icon('arrowRight', 's16')) : h('span'));
   const pos = vec.de > 1 ? (m.nivel ? 'Nivel ' + m.nivel : 'Nivelación') + ' · módulo ' + vec.pos + ' de ' + vec.de : (m.nivel ? 'Nivel ' + m.nivel : 'Nivelación');
-  const head = phead({ back:['modulos','Módulos'], eyebrow: pos + ' · ' + mid, eic:'layers', title: m.nombre, lead: (ct && ct.resumen) || m.resumen, actions: ct && ct.practica ? null : [revisar] });
+  const head = phead({ back:['modulos','Módulos'], eyebrow: pos, eic:'layers', title: m.nombre, lead: (ct && ct.resumen) || m.resumen, actions: ct && ct.practica ? null : [revisar] });
   if(!ct || !(ct.capsulas || []).length){
-    return page(head, comps.length ? h('div', { class:'stack', style:'--g:6px;margin-bottom:22px' }, h('span', { class:'label' }, 'Competencias del módulo'), comps) : null,
+    return page(head, comps.length ? h('div', { class:'stack', style:'--g:6px;margin-bottom:22px' }, h('span', { class:'label' }, 'Lo que aprendes aquí'), comps) : null,
       h('div', { class:'stack', style:'--g:12px' }, emptyState('file', 'Contenido en preparación', 'El Responsable Técnico puede cargarlo desde Ajustes › Contenido. Mientras, repásalo con tu formador y márcalo como revisado.'), h('div', { class:'row', style:'justify-content:center' }, revisar)), navMod);
   }
   const tienePractica = !!(ct.reglas || ct.escenarios);
@@ -6950,9 +7631,9 @@ VIEWS.modulo = function(mid){
     const sig = pasos[1];
     cuerpo = h('div', { class:'stack', style:'--g:16px' },
       m.ic ? notice('info', 'lock', h('b', null, 'La biblioteca de calibraciones no se guarda en la plataforma. '), 'Este módulo enseña a cargarlas y registrarlas; lo enseña y lo valida Ingeniería de Calibración.') : null,
-      comps.length ? h('div', { class:'stack', style:'--g:6px' }, h('span', { class:'label' }, 'Competencias del módulo'), comps) : null,
+      comps.length ? h('div', { class:'stack', style:'--g:6px' }, h('span', { class:'label' }, 'Lo que aprendes aquí'), comps) : null,
       modPiezas(mid).length ? h('div', { class:'lab-link' }, h('span', { class:'ll-ic' }, icon('cube', 's20')), h('div', { class:'stack', style:'--g:6px' }, h('b', { class:'small' }, 'Míralo en el laboratorio 3D'), h('div', { class:'tag-row' }, modPiezas(mid).map(p => h('a', { class:'badge info', href:'#laboratorio-' + p.id }, p.n))))) : null,
-      notice('', 'info', (mid === 'N1-1' || mid === 'NIV-E') ? 'Contenido de la Fase 3. El contenido oficial se valida con la parte externa de seguridad (D5).' : 'Contenido base general. Se valida con la parte externa de seguridad (D5)' + (m.ic ? ' y con Ingeniería de Calibración.' : '.') + ' Lo propio del kit lo enseña tu formador en el taller.'),
+      notice('', 'info', 'Contenido de formación general' + (m.ic ? ', revisado con Ingeniería de Calibración.' : ', revisado con la parte externa de seguridad.') + ' Lo propio del kit lo enseña tu formador en el taller.'),
       h('div', { class:'grid g2', style:'--g:12px' }, ct.capsulas.filter(k => !(k.oficio && sk.includes(k.c))).map((k, i) => h('div', { class:'card capsule' }, h('span', { class:'cn' }, String(i + 1)), h('div', { class:'stack', style:'--g:8px' }, h('h3', { class:'h4' }, k.t), h('ul', null, k.puntos.map(p => h('li', { class:'small' }, p))))))),
       h('div', { class:'row sb' }, est === 'nuevo' || est === 'iniciado' ? revisar : h('span'), sig ? btn('Seguir: ' + sig[1], { kind:'action', icon:'arrowRight', onClick: () => irA(sig[0]) }) : null));
   } else if(st.paso === 'practica'){
@@ -7001,7 +7682,7 @@ VIEWS.postular = function(){
     const niv = nivelacionPorFundamentos(av.fundamentos, params().umbralFund);
     return page(phead({ eyebrow:'Postulación enviada', eic:'checkCircle', title:'Gracias, ' + String(av.postulacion.nombre || '').split(' ')[0], lead:'Tu postulación llegó al Responsable Técnico. El siguiente paso es la jornada técnica presencial.' }),
       h('div', { class:'grid g2', style:'--g:14px' },
-        h('div', { class:'card stack', style:'--g:10px', 'data-rv':'' }, h('h3', { class:'h4' }, 'Estaciones que revisarás en la jornada'), mapa.length ? h('div', { class:'stack', style:'--g:6px' }, mapa.map(c => h('div', { class:'crow' }, codeTag(c), h('span', { class:'ct' }, C[c].t), h('span')))) : h('p', { class:'small muted' }, 'Ninguna: tu ruta parte con el oficio completo.'), h('p', { class:'hint' }, 'Si demuestras una estación, esa competencia no la cursas.')),
+        h('div', { class:'card stack', style:'--g:10px', 'data-rv':'' }, h('h3', { class:'h4' }, 'Estaciones que revisarás en la jornada'), mapa.length ? h('div', { class:'stack', style:'--g:6px' }, mapa.map(c => h('div', { class:'crow tema' }, h('span', { class:'dot spark' }), h('span', { class:'ct' }, C[c].t), h('span')))) : h('p', { class:'small muted' }, 'Ninguna: tu ruta parte con el oficio completo.'), h('p', { class:'hint' }, 'Si demuestras una estación, esa competencia no la cursas.')),
         h('div', { class:'card stack', style:'--g:10px', 'data-rv':'' }, h('h3', { class:'h4' }, 'Nivelación sugerida'), av.fundamentos ? (niv.length ? h('div', { class:'tag-row' }, niv.map(a => badge(MOD[AREA_NIV[a]].nombre, 'info'))) : h('p', { class:'small' }, 'Por ahora, ninguna.')) : h('p', { class:'small muted' }, 'Sin prueba de fundamentos.'), h('p', { class:'hint' }, 'Solo suma módulos para que llegues con base. La jornada la confirma.'))),
       h('div', { class:'lab-cta', style:'margin-top:18px' }, h('div', { class:'stack', style:'--g:6px' }, eyebrow('Mientras esperas', 'cube'), h('h2', { class:'h3' }, 'Conoce el kit antes de la jornada.'), h('p', { class:'small ink2' }, 'Recorre el laboratorio 3D y prueba armar el kit en orden.')), linkBtn('Abrir el laboratorio', 'laboratorio', { kind:'action', arrow:true })));
   }
@@ -7598,6 +8279,98 @@ function loginReal(){
         h('p', { class:'small ink2' }, 'La demostración simula el inicio de sesión con cuentas de prueba para cada rol, y la creación de cuenta del postulante.'))),
     seccionProduccion());
 }
+
+/* =====================================================================
+   Lumine Habilita · búsqueda rápida (Ctrl+K o /)
+   Personas, validaciones, secciones, ajustes, módulos y competencias.
+   Administración verifica aquí el código de una credencial (LH2-…).
+   ===================================================================== */
+'use strict';
+
+function normTxt(t){ return String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+function resultadosBusqueda(q){
+  const nq = normTxt(q).trim();
+  const ok = t => !nq || normTxt(t).includes(nq);
+  const out = [];
+  const add = (grupo, t, sub, ic, fn) => out.push({ grupo, t, sub, ic, fn });
+  const cod = String(q || '').toUpperCase().replace(/\s+/g, '');
+  if(S.role === 'admin' && /^LH\d-/.test(cod)){
+    const p = personas().find(x => codigoCredencial(x) === cod);
+    if(p) add('Credencial', 'Credencial válida: ' + p.nombre, 'Nivel ' + p.nivel + ' · ' + NIVEL[p.nivel].nombre + ' · validado el ' + fechaCorta((p.fechasNivel || {})[p.nivel]) + (p.suspendidoAT ? ' · suspendido de alta tensión' : ''), p.suspendidoAT ? 'shieldX' : 'shieldCheck', () => go('persona-' + p.id));
+    else add('Credencial', 'Ningún técnico tiene hoy esa credencial', 'Puede ser de un nivel anterior, de alguien que salió o estar mal escrita.', 'shieldX', null);
+  }
+  for(const id of uniq(navItems().concat(moreItems()))) if(ROUTES[id] && ok(ROUTES[id].t)) add('Ir a', ROUTES[id].t, null, ROUTES[id].ic, () => go(id));
+  if(S.role === 'admin'){
+    if(nq){
+      for(const p of personas()) if(ok(p.nombre)) add('Personas', p.nombre, (ETAPA[p.etapa] || ['?'])[0] + (p.etapa === 'tecnico' ? ' · ' + nivelNombre(p.nivel || 0) : ''), 'user', () => go('persona-' + p.id));
+      for(const x of sesiones().filter(x => x.estado === 'abierta')) if(ok(TIPOS_SESION[x.tipo].l + ' ' + nombreP(x.pid))) add('Validaciones abiertas', TIPOS_SESION[x.tipo].l + ' · ' + nombreP(x.pid), fechaCorta(x.fecha), 'clipboard', () => go('sesion-' + x.id));
+    }
+    if(typeof AJ_GRUPOS !== 'undefined') for(const g of AJ_GRUPOS) for(const [v, l] of g.tabs) if(nq && ok(l + ' ajustes')) add('Ajustes', l, g.l, 'settings', () => go('ajustes-' + v));
+  } else if(S.role === 'tecnico' && nq){
+    for(const m of MODULOS) if(ok(m.nombre + ' ' + m.resumen)) add('Módulos', m.nombre, m.nivel ? 'Nivel ' + m.nivel : 'Nivelación', 'layers', () => go('modulo-' + m.id));
+  }
+  if(nq.length >= 3) for(const x of COMP) if(ok(x.t) || (S.role === 'admin' && ok(x.c))) add('Competencias', x.t, 'Nivel ' + x.n + ' · ' + PRIORIDAD[x.p].l, 'book', () => detalleComp(x.c));
+  return out.slice(0, 40);
+}
+let CMDK = null;
+function abrirBusqueda(){
+  if(CMDK || S.kiosk || kioscoBloqueado()) return;
+  const prev = document.activeElement;
+  const input = h('input', { class:'cmdk-in', type:'search', placeholder: S.role === 'admin' ? 'Busca una persona, una validación, un ajuste o un código LH…' : 'Busca una sección, un módulo o un tema…', 'aria-label':'Buscar', autocomplete:'off', role:'combobox', 'aria-expanded':'true', 'aria-controls':'cmdk-l' });
+  const lista = h('div', { class:'cmdk-l', id:'cmdk-l', role:'listbox', 'aria-label':'Resultados' });
+  let res = [], sel = 0;
+  const elegir = i => { const r = res[i]; if(!r || !r.fn) return; cerrar(); r.fn(); };
+  const pintar = () => {
+    res = resultadosBusqueda(input.value);
+    sel = Math.min(sel, Math.max(0, res.length - 1));
+    clear(lista);
+    if(!res.length){ lista.appendChild(h('p', { class:'hint', style:'padding:14px' }, 'Sin resultados para “' + input.value + '”.')); input.removeAttribute('aria-activedescendant'); return; }
+    let grupo = null;
+    res.forEach((r, i) => {
+      if(r.grupo !== grupo){ grupo = r.grupo; lista.appendChild(h('div', { class:'cmdk-g', role:'presentation' }, grupo)); }
+      const it = h('div', { class:'cmdk-it' + (i === sel ? ' on' : '') + (r.fn ? '' : ' muda'), id:'cmdk-' + i, role:'option', 'aria-selected': i === sel ? 'true' : 'false' },
+        h('span', { class:'cmdk-ic' }, icon(r.ic || 'arrowRight', 's16')), h('span', { class:'cmdk-t' }, h('b', null, r.t), r.sub ? h('span', { class:'hint' }, r.sub) : null), r.fn ? icon('arrowRight', 's14') : null);
+      it.addEventListener('click', () => elegir(i));
+      it.addEventListener('mousemove', () => { if(sel !== i){ sel = i; marcar(); } });
+      lista.appendChild(it);
+    });
+    marcar();
+  };
+  const marcar = () => { lista.querySelectorAll('.cmdk-it').forEach(el => { const on = el.id === 'cmdk-' + sel; el.classList.toggle('on', on); el.setAttribute('aria-selected', on ? 'true' : 'false'); }); const el = document.getElementById('cmdk-' + sel); if(el){ input.setAttribute('aria-activedescendant', el.id); el.scrollIntoView({ block:'nearest' }); } };
+  input.addEventListener('input', () => { sel = 0; pintar(); });
+  input.addEventListener('keydown', e => {
+    if(e.key === 'ArrowDown'){ e.preventDefault(); sel = Math.min(res.length - 1, sel + 1); marcar(); }
+    else if(e.key === 'ArrowUp'){ e.preventDefault(); sel = Math.max(0, sel - 1); marcar(); }
+    else if(e.key === 'Enter'){ e.preventDefault(); elegir(sel); }
+  });
+  const box = h('div', { class:'cmdk', role:'dialog', 'aria-modal':'true', 'aria-label':'Búsqueda rápida' },
+    h('div', { class:'cmdk-top' }, icon('search', 's20'), input, h('kbd', { class:'cmdk-kbd' }, 'Esc')), lista,
+    h('div', { class:'cmdk-pie hint' }, '↑ ↓ para moverte · Enter para abrir' + (S.role === 'admin' ? ' · pega un código de credencial para verificarlo' : '')));
+  const scrim = h('div', { class:'scrim' });
+  const wrap = h('div', { class:'cmdk-wrap' }, box);
+  const cerrar = () => { if(!CMDK) return; untrap(); wrap.remove(); scrim.remove(); document.body.style.overflow = ''; CMDK = null; if(prev && prev.focus && document.contains(prev)) prev.focus(); };
+  wrap.addEventListener('click', e => { if(e.target === wrap) cerrar(); });
+  scrim.addEventListener('click', cerrar);
+  document.body.appendChild(scrim); document.body.appendChild(wrap); document.body.style.overflow = 'hidden';
+  const untrap = trapFocus(box, cerrar);
+  CMDK = { cerrar };
+  pintar();
+  setTimeout(() => input.focus(), 20);
+}
+function botonBuscar(){
+  if(S.kiosk || (S.role !== 'admin' && S.role !== 'tecnico')) return null;
+  const b = h('button', { type:'button', class:'btn btn-quiet icon nav-buscar', 'aria-label':'Buscar (Ctrl+K)', title:'Buscar (Ctrl+K)' }, icon('search', 's20'));
+  b.addEventListener('click', abrirBusqueda);
+  return b;
+}
+document.addEventListener('keydown', e => {
+  const escribiendo = /^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement || {}).tagName || '') || (document.activeElement && document.activeElement.isContentEditable);
+  if(((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') || (e.key === '/' && !escribiendo && !SHEET && !document.querySelector('.dialog-wrap'))){
+    if(S.role !== 'admin' && S.role !== 'tecnico') return;
+    e.preventDefault();
+    if(CMDK) CMDK.cerrar(); else abrirBusqueda();
+  }
+});
 
 /* =====================================================================
    Lumine Habilita · arranque

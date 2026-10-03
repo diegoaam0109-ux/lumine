@@ -27,11 +27,14 @@ El orden de los archivos está en `manifest.json` (lo usan el build y las prueba
 - `logic.js` reglas puras (sin DOM): plan, evaluación, D8, D13, duos, indicadores, bonos, consistencia
 - `store.js` MemDB (replica la base de claude.ai, 25.000 documentos), MemUser, cola de escrituras
 - `seed.js` datos ficticios de la demo (`DEMO_IDS` con los identificadores fijos)
-- `ui-core.js` `h()` seguro, eventos permitidos, diálogos, hojas, avisos
+- `ui-core.js` `h()` seguro, eventos permitidos, diálogos, hojas, avisos, ayudas "?"
+- `ui-qr.js` generador de códigos QR propio (sin librerías) para la credencial digital
+- `ui-buscar.js` búsqueda rápida (Ctrl+K o /) y verificación de credenciales
 - `app-state.js` estado, suscripciones, reconciliación de expedientes, kiosco con PIN, vista previa
 - `actions.js` toda escritura: valida reglas, operaciones de varios pasos con deshacer, candados
 - `app-render.js` rutas, navegación, encierro del kiosco
 - `view-*.js` vistas
+- `styles-xp.css` experiencia v2: Mi ruta, avisos, celebración, credencial, portada con recorrido, Hoy, embudo, calendario, búsqueda, esqueletos
 
 ## Publicar la versión real
 

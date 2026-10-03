@@ -75,6 +75,12 @@ function abrirPlataforma(){
   if(S.build === 'demo' && S.demoRole === 'visitante') return go('login');
   go(homeRoute());
 }
+function ctaPrincipal(){
+  if(S.role === 'admin') return { l:'Abrir el panel', ic:'grid', fn: abrirPlataforma };
+  if(S.role === 'tecnico') return { l: S.mine.expediente ? 'Ir a mi ruta' : 'Seguir mi postulación', ic:'route', fn: () => go(homeRoute()) };
+  return { l:'Postular ahora', ic:'arrowRight', fn: probarDiagnostico };
+}
+function irA(id){ const el = document.getElementById(id); if(el) el.scrollIntoView({ behavior: Motion.quieto() ? 'auto' : 'smooth', block:'start' }); }
 function probarDiagnostico(){
   if(S.build === 'demo' && S.demoRole === 'visitante') return go('login-registro');
   if(S.role === 'admin') return go('personas');
@@ -260,7 +266,7 @@ function secCTA(){
     h('span', { class:'lw-eyebrow' }, 'Lumine Habilita'),
     h('h2', null, 'El técnico que Lumine necesita no se contrata. Se forma.'),
     h('p', null, 'El perfil que combina mecánica automotriz y alta tensión no existe formado en Chile. Esta plataforma lo produce adentro, midiendo primero la brecha y formando solo lo que falta.'),
-    h('div', { class:'hero-ctas' }, h('span', { 'data-mag':'0.25' }, btn('Abrir la plataforma', { kind:'owner', size:'lg', onClick: abrirPlataforma })), h('span', { 'data-mag':'0.25' }, btn('Probar el diagnóstico', { kind:'action', size:'lg', onClick: probarDiagnostico }))),
+    (() => { const c = ctaPrincipal(); return h('div', { class:'hero-ctas' }, h('span', { 'data-mag':'0.25' }, btn(c.l, { kind:'action', size:'lg', icon:c.ic, onClick: c.fn })), h('a', { class:'linkbtn', href:'#sistema' }, 'Conoce el sistema completo')); })(),
     h('span', { class:'em emblem', 'aria-hidden':'true' }))));
 }
 
@@ -316,18 +322,73 @@ function heroEscena(){
     ui1, ui2, ui3);
 }
 
+/* recorrido: el kit se arma en 3D mientras se baja por la página */
+const HISTORIA = [
+  { k:'El punto de partida', t:'El auto llega tal como es.', d:'Motor a combustión y tracción delantera, sin cambios. El kit se suma: no reemplaza nada del auto original.', piezas:[], foco:'combustion', vista:[-1.2, 0.3, 7.4] },
+  { k:'Eje trasero', t:'Motor eléctrico y frenado regenerativo.', d:'Asisten al auto y recuperan energía al frenar. El freno, el ABS y el control de estabilidad originales siempre mandan.', piezas:['motor','regen'], foco:'motor' },
+  { k:'Energía', t:'El banco de baterías.', d:'Se monta con elevador, sin golpes. Una batería golpeada se aísla y se vigila, aunque se vea normal.', piezas:['bateria'], foco:'bateria' },
+  { k:'Alta tensión', t:'El cableado naranja.', d:'Rutas, fijaciones y protecciones antes de conectar. Se mide la aislación con megóhmetro y se revisa con termografía al energizar.', piezas:['cables'], foco:'cables' },
+  { k:'El cerebro', t:'La unidad de control con IA.', d:'Decide cuándo asiste el motor eléctrico y corta el torque ante patinaje, falla o sobretemperatura.', piezas:['ecu'], foco:'ecu' },
+  { k:'Sabe o no sabe', t:'Cada paso se aprende y se valida.', d:'39 competencias, cuatro niveles y una validación presencial por nivel. Lo online enseña; el nivel se gana en el taller.', piezas:[], foco:null, xray:true }
+];
+function secHistoria(){
+  const stage = h('div', { class:'lab-stage hist-stage' });
+  const pasos = HISTORIA.map((p, i) => h('div', { class:'hist-paso' + (i === 0 ? ' on' : ''), dataset:{ i:String(i) } },
+    h('span', { class:'hist-n' }, String(i + 1).padStart(2, '0') + ' · ' + p.k), h('h3', { class:'hist-t' }, p.t), h('p', { class:'body ink2' }, p.d)));
+  const dots = h('div', { class:'hist-dots', 'aria-hidden':'true' }, HISTORIA.map((_, i) => h('i', { class: i === 0 ? 'on' : '' })));
+  let api = null, actual = -1;
+  const activar = i => {
+    if(i === actual || !api) return;
+    actual = i;
+    pasos.forEach((el, j) => el.classList.toggle('on', j === i));
+    Array.from(dots.children).forEach((el, j) => el.classList.toggle('on', j <= i));
+    const vis = HISTORIA.slice(0, i + 1).flatMap(x => x.piezas);
+    api.mostrar(vis);
+    HISTORIA[i].piezas.forEach((pz, k) => setTimeout(() => api.aparecer(pz), k * 300));
+    api.modo({ xray: !!HISTORIA[i].xray || i > 0 && i < 5 });
+    if(HISTORIA[i].foco){ api.enfocar(HISTORIA[i].foco); } else { api.soltar(); api.vista(-0.75, 0.32, 7.6); }
+    if(HISTORIA[i].vista) api.vista(...HISTORIA[i].vista);
+  };
+  setTimeout(() => {
+    if(!document.body.contains(stage)) return;
+    api = Lab3D.crear(stage, { auto:false, hotspots:false, interactivo:true, visibles:[], etiqueta:'Recorrido 3D: el kit Lumine se arma pieza por pieza en el eje trasero de un auto genérico' });
+    activar(0);
+    if(window.IntersectionObserver){
+      const io = new IntersectionObserver(es => { for(const e of es) if(e.isIntersecting) activar(Number(e.target.dataset.i)); }, { rootMargin: window.matchMedia && matchMedia('(max-width:860px)').matches ? '-66% 0px -24% 0px' : '-45% 0px -45% 0px' });
+      pasos.forEach(p => io.observe(p));
+    }
+  }, 0);
+  return h('section', { class:'wrap lsec hist', id:'historia' },
+    h('div', { class:'center-h', 'data-rv':'' }, eyebrow('El kit, pieza por pieza', 'cube'), h('h2', { class:'h1 xl' }, 'Baja y míralo armarse.'),
+      h('p', { class:'lead' }, 'Esto es lo que aprende a instalar un técnico de Lumine, en el mismo orden en que se hace en el taller.')),
+    h('div', { class:'hist-grid' },
+      h('div', { class:'hist-sticky' }, h('div', { class:'lab-frame' }, stage, dots)),
+      h('div', { class:'hist-pasos' }, pasos)));
+}
+
 VIEWS.inicio = function(){
+  const c = ctaPrincipal();
   const hero = h('section', { class:'wrap hero hero2' },
     h('div', { class:'hero-t', 'data-rv':'' },
-      eyebrow('Gestión de personas · Fase 3', 'bolt'),
+      eyebrow('Técnico instalador · Lumine Motors', 'bolt'),
       h('h1', { class:'mega' }, h('span', { class:'mg-l' }, 'Forma solo'), h('span', { class:'mg-l' }, 'lo que ', h('span', { class:'sp' }, 'falta.'))),
-      h('p', { class:'lead' }, 'Lumine Habilita diagnostica a cada postulante, arma su plan personal y valida en el taller las 39 competencias del técnico instalador de sistemas de hibridación. Lo online enseña. El nivel se gana en el taller.'),
+      h('p', { class:'lead' }, 'Diagnosticamos lo que ya sabes, armamos tu ruta y validamos en el taller. Lo online enseña. El nivel se gana con las manos.'),
       h('div', { class:'hero-ctas' },
-        h('span', { 'data-mag':'0.25' }, btn('Abrir la plataforma', { kind:'owner', size:'lg', onClick: abrirPlataforma })),
-        h('span', { 'data-mag':'0.25' }, btn('Probar el diagnóstico', { kind:'action', size:'lg', onClick: probarDiagnostico }))),
-      h('p', { class:'hero-alt' }, 'o ', h('a', { href:'#laboratorio' }, 'explora el kit en 3D'), ' · ', h('a', { href:'#diccionario' }, 'recorre las 39 competencias')),
-      h('div', { class:'trust' }, h('span', { class:'cap' }, 'Construido sobre referencias reales, citadas en los informes de la Fase 3'),
+        h('span', { 'data-mag':'0.25' }, btn(c.l, { kind:'action', size:'lg', icon:c.ic, onClick: c.fn })),
+        h('button', { type:'button', class:'linkbtn hero-ver', on:{ click: () => irA('historia') } }, icon('chevDown', 's16'), 'Mira cómo funciona')),
+      h('div', { class:'trust' }, h('span', { class:'cap' }, 'Construido sobre referencias reales'),
         h('div', { class:'marks' }, h('span', { class:'mk' }, 'O*NET ', h('small', null, '49-3023.00')), h('span', { class:'mk' }, 'SEC ', h('small', null, 'RIC N°17')), h('span', { class:'mk' }, 'DGUV ', h('small', null, '209-093')), h('span', { class:'mk' }, 'IMI ', h('small', null, 'TechSafe'))))),
     heroEscena());
-  return frag(hero, secMarquee(), secPlan(), secDiagnostico(), secExperiencia(), secRuta(), secAuto(), secPauta(), secRoles(), secIndicadores(), secCTA());
+  return frag(hero, secMarquee(), secHistoria(), secDiagnostico(), secPlan(), secExperiencia(), secCTA());
+};
+
+/* Conoce el sistema: el detalle que antes alargaba la portada */
+VIEWS.sistema = function(){
+  return frag(
+    h('div', { class:'wrap page', style:'padding-bottom:0' }, phead({ eyebrow:'Conoce el sistema', eic:'book', title:'Cómo funciona Lumine Habilita', lead:'Niveles, módulos del nivel 2, la pauta de validación, quién ve qué y los indicadores. Para quien quiere el detalle.',
+      actions:[ linkBtn('Volver a la portada', 'inicio', { kind:'ghost' }) ] }),
+      h('nav', { class:'filters', 'aria-label':'Secciones' }, [['ruta','Niveles'],['auto','Nivel 2'],['pauta','Validación'],['roles','Permisos'],['indicadores-prev','Indicadores']].map(([id, l]) => h('button', { type:'button', class:'chip', on:{ click: () => irA(id) } }, l)))),
+    secRuta(), secAuto(), secPauta(), secRoles(), secIndicadores(),
+    h('section', { class:'wrap lsec', 'data-rv':'' }, h('div', { class:'card' }, h('h2', { class:'h4', style:'margin-bottom:10px' }, 'Fuentes'), h('ul', { style:'list-style:none;display:flex;flex-direction:column;gap:8px' }, FUENTES.map(([t, u]) => h('li', null, h('a', { href:u, target:'_blank', rel:'noopener noreferrer', class:'small' }, t)))))),
+    secCTA());
 };

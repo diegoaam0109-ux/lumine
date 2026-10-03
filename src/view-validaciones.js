@@ -78,18 +78,46 @@ function hojaNuevaSesion(pidFijo, tipoFijo){
 }
 
 /* ---------- VALIDACIONES ---------- */
+/* ---------- calendario mensual de validaciones ---------- */
+const TIPO_COLOR = { JT:'jt', N1:'n', N2:'n', N3:'n', N4:'n', REV:'rev' };
+function calendarioValidaciones(all){
+  const mesBase = ui('cal-mes', S.hoy.slice(0, 7));
+  const [y, m] = mesBase.split('-').map(Number);
+  const primero = new Date(y, m - 1, 1);
+  const dias = new Date(y, m, 0).getDate();
+  const offset = (primero.getDay() + 6) % 7; // lunes primero
+  const delMes = all.filter(x => x.fecha && x.fecha.slice(0, 7) === mesBase).sort((a, b) => String(a.fecha).localeCompare(String(b.fecha)));
+  const porDia = {}; for(const x of delMes) (porDia[x.fecha] = porDia[x.fecha] || []).push(x);
+  const mover = d => { const nd = new Date(y, m - 1 + d, 1); UI['cal-mes'] = nd.getFullYear() + '-' + pad2(nd.getMonth() + 1); render(true); };
+  const celdas = [];
+  for(let i = 0; i < offset; i++) celdas.push(h('div', { class:'cal-d vacio', 'aria-hidden':'true' }));
+  for(let d = 1; d <= dias; d++){
+    const f = mesBase + '-' + pad2(d), xs = porDia[f] || [];
+    celdas.push(h('div', { class:'cal-d' + (f === S.hoy ? ' hoy' : '') + (xs.length ? ' con' : ''), role:'gridcell', 'aria-label': fechaLarga(f) + (xs.length ? ': ' + xs.length + ' validaciones' : '') },
+      h('span', { class:'cal-num' }, String(d)),
+      xs.map(x => h('a', { class:'cal-ev ' + (TIPO_COLOR[x.tipo] || 'n') + (x.estado !== 'abierta' ? ' cerrada' : ''), href:'#sesion-' + x.id, title: TIPOS_SESION[x.tipo].l + ' · ' + nombreP(x.pid) }, h('span', null, x.tipo + ' · ' + nombreP(x.pid).split(' ')[0])))));
+  }
+  const mesL = MESES[m - 1].replace(/^./, c => c.toUpperCase()) + ' ' + y;
+  return h('div', { class:'stack', style:'--g:14px' },
+    h('div', { class:'row sb' }, h('h2', { class:'h3' }, mesL),
+      h('div', { class:'row', style:'gap:6px' }, btn('', { kind:'ghost', size:'sm', icon:'arrowLeft', cls:'icon', aria:'Mes anterior', onClick: () => mover(-1) }), btn('Hoy', { kind:'ghost', size:'sm', onClick: () => { UI['cal-mes'] = S.hoy.slice(0, 7); render(true); } }), btn('', { kind:'ghost', size:'sm', icon:'arrowRight', cls:'icon', aria:'Mes siguiente', onClick: () => mover(1) }))),
+    h('div', { class:'cal', role:'grid', 'aria-label':'Calendario de ' + mesL },
+      ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'].map(d => h('div', { class:'cal-dow', role:'columnheader' }, d)), celdas),
+    h('div', { class:'cmap-legend' }, h('span', null, h('i', { class:'cal-key jt' }), 'Jornada técnica'), h('span', null, h('i', { class:'cal-key n' }), 'Validación de nivel'), h('span', null, h('i', { class:'cal-key rev' }), 'Revalidación'), h('span', null, h('i', { class:'cal-key cerrada' }), 'Cerrada')),
+    delMes.length ? h('div', { class:'stack', style:'--g:8px' }, h('span', { class:'label' }, 'Este mes'), delMes.map(x => x.estado === 'abierta' ? sesionItem(x) : h('a', { class:'card link', href:'#sesion-' + x.id, style:'--pad:12px 14px' }, h('div', { class:'row sb' }, h('span', { class:'small' }, h('b', null, TIPOS_SESION[x.tipo].l), ' · ' + nombreP(x.pid) + ' · ' + fechaCorta(x.fecha)), badge(x.estado === 'anulada' ? 'Anulada' : 'Cerrada', 'line'))))) : emptyState('calendar', 'Sin validaciones este mes', null, btn('Programar validación', { kind:'ghost', size:'sm', icon:'plus', onClick: () => hojaNuevaSesion() })));
+}
 VIEWS.validaciones = function(){
   if(sinDatos(['personas','sesiones'])) return vistaCargando();
-  const tab = ui('val-tab', 'abiertas');
+  const tab = ui('val-tab', 'calendario');
   const all = sesiones();
   const ab = all.filter(x => x.estado === 'abierta').sort((a, b) => String(a.fecha).localeCompare(String(b.fecha)));
   const ce = all.filter(x => x.estado !== 'abierta');
   const lista = tab === 'abiertas' ? ab : ce;
   return page(
-    phead({ eyebrow:'Validaciones presenciales', eic:'clipboard', title:'Validaciones', lead:'Jornadas técnicas, validaciones de nivel y revalidaciones de seguridad. Cada una usa una pauta de sabe o no sabe por competencia.',
+    phead({ eyebrow:'Validaciones presenciales', eic:'clipboard', title:'Validaciones', lead:'Jornadas técnicas, niveles y revalidaciones. Sabe o no sabe, por competencia.',
       actions:[ btn('Modo evaluador externo', { kind:'ghost', icon:'shieldCheck', onClick: () => abrirKiosco() }), btn('Programar validación', { kind:'action', icon:'plus', onClick: () => hojaNuevaSesion() }) ] }),
-    tabs([{ v:'abiertas', l:'Abiertas', n: ab.length }, { v:'cerradas', l:'Cerradas y anuladas', n: ce.length }], tab, v => { UI['val-tab'] = v; render(true); }),
-    lista.length ? (tab === 'abiertas' ? h('div', { class:'grid g2', style:'--g:12px' }, lista.map(sesionItem))
+    tabs([{ v:'calendario', l:'Calendario' }, { v:'abiertas', l:'Abiertas', n: ab.length }, { v:'cerradas', l:'Cerradas y anuladas', n: ce.length }], tab, v => { UI['val-tab'] = v; render(true); }),
+    tab === 'calendario' ? calendarioValidaciones(all) : lista.length ? (tab === 'abiertas' ? h('div', { class:'grid g2', style:'--g:12px' }, lista.map(sesionItem))
       : h('div', { class:'tscroll' }, h('table', { class:'t' }, h('thead', null, h('tr', null, h('th', null, 'Validación'), h('th', null, 'Persona'), h('th', null, 'Fecha'), h('th', null, 'Resultado'))),
         h('tbody', null, lista.map(x => { const tr = h('tr', { class:'click', tabindex:'0' }, h('td', null, TIPOS_SESION[x.tipo].l + (x.intento > 1 ? ' · intento ' + x.intento : '')), h('td', null, nombreP(x.pid)), h('td', null, fechaCorta(x.fecha)),
           h('td', null, x.estado === 'anulada' ? badge('Anulada', 'line') : x.tipo === 'JT' ? badge(((x.resultado && x.resultado.demostradas) || []).length + ' demostradas', 'info') : badge(x.resultado && x.resultado.aprobado ? 'Aprobada' : 'Reprobada', x.resultado && x.resultado.aprobado ? 'ok' : 'crit')));

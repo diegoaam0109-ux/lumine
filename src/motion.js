@@ -158,7 +158,7 @@ const Motion = (() => {
   }
 
   /* se llama después de cada render */
-  const PUBLICAS = new Set(['inicio', 'laboratorio', 'taller']);
+  const PUBLICAS = new Set(['inicio', 'sistema', 'laboratorio', 'taller']);
   function tras(root, nav, ruta){
     cascada(root);
     revelar(root, nav);

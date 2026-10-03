@@ -598,8 +598,23 @@ function proyectarExpediente(persona, ctx){
     duo: d ? { companero: (P[comp] || {}).nombre || '', companeroNivel: (P[comp] || {}).nivel || 0, desde: d.desde, rotacionLibre: addMonths(d.desde, rotacionMeses(params)) } : null,
     rotacion: persona.rotacion ? { id: persona.rotacion.id, estado: persona.rotacion.estado, respuesta: persona.rotacion.respuesta || '', fecha: persona.rotacion.fecha } : null,
     bono: bono(persona, params),
+    proximas: proximasValidaciones(persona.id, ctx.sesiones),
+    credencial: codigoCredencial(persona),
     demo: !!persona.demo
   };
+}
+/* Validaciones abiertas de una persona: el técnico solo ve tipo y fecha, nunca la pauta. */
+function proximasValidaciones(pid, sesiones){
+  return (sesiones || []).filter(s => s.pid === pid && s.estado === 'abierta').map(s => ({ tipo: s.tipo, fecha: s.fecha || null })).sort((a, b) => byCode(a.fecha || '', b.fecha || ''));
+}
+/* Código de la credencial digital: cambia con cada nivel validado, así una credencial vieja deja de calzar.
+   Administración lo verifica en la búsqueda rápida (Ctrl+K). */
+function codigoCredencial(persona){
+  const n = persona.nivel || 0;
+  if(persona.etapa !== 'tecnico' || n < 1) return null;
+  const f = (persona.fechasNivel || {})[n] || '';
+  const h = semillaDe('lumine-credencial:' + persona.id + ':' + n + ':' + f).toString(36).toUpperCase().padStart(7, '0');
+  return 'LH' + n + '-' + h.slice(0, 4) + '-' + h.slice(4, 7);
 }
 
 /* ---------- formato ---------- */
@@ -613,4 +628,4 @@ function numCL(n, dec){ if(n === null || n === undefined || !isFinite(n)) return
 function iniciales(nombre){ const p = String(nombre || '?').trim().split(/\s+/); return ((p[0] || '?')[0] + ((p[1] || '')[0] || '')).toUpperCase(); }
 function relDias(dias){ if(dias === null || dias === undefined) return ''; if(dias === 0) return 'hoy'; if(dias === 1) return 'mañana'; if(dias === -1) return 'ayer'; return dias > 0 ? 'en ' + dias + ' días' : 'hace ' + (-dias) + ' días'; }
 
-if(typeof module !== 'undefined') module.exports = { fechaValida, enPeriodo, rotacionMeses, separacionAnticipada, requisitoD8, motivoValido, barajar, armarIntento, contenidoModulo, vecinosModulo, calcularBonos, candidatosPorNivel, revisarConsistencia, stableJSON, isoDate, hoyISO, parseISO, addDays, addMonths, diffDays, monthsBetween, validId, nid, reqComp, mapaPreliminar, puntajeFundamentos, nivelacionPorFundamentos, nivelacionFinal, saltadas, planPersonal, evaluadorDe, itemsValidacion, preaprobadas, evaluar, exigenciaEfectiva, minimoParaQueImporte, repetir, modulosDelNivel, listoParaPresentarse, revalidacion, estadoDuo, puedeFormarDuo, puedeValidar, bono, resumenRuta, alertas, indicadores, proyectarExpediente, companero, duoActivoDe, fechaLarga, estadoDiagnostico, recibidasSinAceptar, hayNivel3, hayNivel2, puedePedirRotacion, motivoRotacionValido };
+if(typeof module !== 'undefined') module.exports = { fechaValida, enPeriodo, rotacionMeses, separacionAnticipada, requisitoD8, motivoValido, barajar, armarIntento, contenidoModulo, vecinosModulo, calcularBonos, candidatosPorNivel, revisarConsistencia, stableJSON, isoDate, hoyISO, parseISO, addDays, addMonths, diffDays, monthsBetween, validId, nid, reqComp, mapaPreliminar, puntajeFundamentos, nivelacionPorFundamentos, nivelacionFinal, saltadas, planPersonal, evaluadorDe, itemsValidacion, preaprobadas, evaluar, exigenciaEfectiva, minimoParaQueImporte, repetir, modulosDelNivel, listoParaPresentarse, revalidacion, estadoDuo, puedeFormarDuo, puedeValidar, bono, resumenRuta, alertas, indicadores, proyectarExpediente, companero, duoActivoDe, fechaLarga, estadoDiagnostico, recibidasSinAceptar, hayNivel3, hayNivel2, puedePedirRotacion, motivoRotacionValido, proximasValidaciones, codigoCredencial };

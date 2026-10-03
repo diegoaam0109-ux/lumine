@@ -37,6 +37,25 @@ eq(puedePedirRotacion(null, PARAMS_DEF, '2026-05-10').ok, false, 'D13: sin duo n
 const pRot = { id:'pr', nombre:'R', etapa:'tecnico', nivel:2, rotacion:{ id:'rot_1', estado:'rechazada', respuesta:'Todavía no', fecha:'2026-05-11', por:'u_rt' } };
 const exRot = proyectarExpediente(pRot, { params:PARAMS_DEF, duos:[{ id:'dr', a:'pr', b:'a', desde:'2026-01-10', activo:true }], P:{ pr:pRot, a:{ id:'a', nombre:'A', nivel:3 } }, hoy:'2026-05-12' });
 eq([exRot.duo.rotacionLibre, exRot.rotacion.estado, exRot.rotacion.por], ['2026-05-10', 'rechazada', undefined], 'el expediente muestra desde cuándo se rota y la respuesta, sin quién respondió');
+// --- experiencia v2: próximas validaciones, credencial y QR ---
+eq(exRot.proximas, [], 'sin sesiones en el contexto no hay próximas validaciones');
+const sesX = [{ pid:'pr', tipo:'N3', fecha:'2026-06-02', estado:'abierta', items:{ C11:{} } }, { pid:'pr', tipo:'REV', fecha:'2026-05-20', estado:'abierta' }, { pid:'pr', tipo:'N2', fecha:'2026-01-01', estado:'cerrada' }, { pid:'otro', tipo:'N1', fecha:'2026-05-15', estado:'abierta' }];
+eq(proximasValidaciones('pr', sesX), [{ tipo:'REV', fecha:'2026-05-20' }, { tipo:'N3', fecha:'2026-06-02' }], 'próximas: solo las abiertas de la persona, ordenadas, sin la pauta');
+const tecC = { id:'p1', etapa:'tecnico', nivel:2, fechasNivel:{ 1:'2026-01-01', 2:'2026-03-01' } };
+const cc = codigoCredencial(tecC);
+ok(/^LH2-[0-9A-Z]{4}-[0-9A-Z]{3}$/.test(cc), 'credencial con formato LH<nivel>-XXXX-XXX');
+eq(codigoCredencial(Object.assign({}, tecC)), cc, 'la credencial es estable');
+ok(codigoCredencial(Object.assign({}, tecC, { nivel:3, fechasNivel:{ 1:'2026-01-01', 2:'2026-03-01', 3:'2026-08-01' } })) !== cc, 'la credencial cambia al subir de nivel');
+ok(codigoCredencial(Object.assign({}, tecC, { id:'p2' })) !== cc, 'cada persona tiene su credencial');
+eq([codigoCredencial({ id:'x', etapa:'tecnico', nivel:0 }), codigoCredencial({ id:'x', etapa:'salio', nivel:3, fechasNivel:{ 3:'2026-01-01' } })], [null, null], 'sin nivel validado o fuera de la empresa no hay credencial');
+{
+  const { QR } = require(require('path').join(__dirname, '..', 'src', 'ui-qr.js'));
+  const m1 = QR.codificar('A'), m6 = QR.codificar('x'.repeat(100));
+  eq([m1.length, m6.length], [21, 41], 'QR: versión 1 (21 módulos) y versión 6 (41 módulos)');
+  ok(m1[0].slice(0, 7).every(Boolean) && m1[6].slice(0, 7).every(Boolean) && !m1[1][1] && m1[3][3], 'QR: patrón buscador en la esquina');
+  let largo = false; try { QR.codificar('x'.repeat(200)); } catch(e){ largo = true; }
+  ok(largo, 'QR: rechaza textos que no caben');
+}
 eq([motivoRotacionValido('No me gusta'), motivoRotacionValido('Quiero aprender aislación con alguien eléctrico')], [false, true], 'D13: el motivo se explica (20 caracteres o más)');
 ok(!PENDIENTES.some(x => /firma por nivel/i.test(x)), 'D18 ya no figura en pendientes');
 eq(SEGURIDAD.length, 20, '20 controles'); eq(FUNDAMENTOS.filter(q=>q.area==='electrica').length, 3, '3 preguntas eléctricas');

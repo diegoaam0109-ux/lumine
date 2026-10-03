@@ -13,9 +13,11 @@ let fails = 0, passes = 0;
 const ok = (v, m) => { if(v){ passes++; } else { fails++; console.log('FALLA:', m); } };
 const VIEWPORTS = { pc:{ width:1280, height:900 }, tablet:{ width:820, height:1180 }, telefono:{ width:390, height:844 } };
 
-async function abrir(browser, vp, scheme, f, hash){
+async function abrir(browser, vp, scheme, f, hash, opts){
   const ctx = await browser.newContext({ viewport: VIEWPORTS[vp], colorScheme: scheme });
   const pg = await ctx.newPage();
+  // la celebración de nivel tapa la pantalla una vez: se prueba aparte (bloque 6)
+  if(!(opts && opts.celebrar)) await pg.addInitScript(() => { try { localStorage.setItem('lh-sin-celebrar', '1'); } catch(e){} });
   pg.errores = [];
   pg.on('pageerror', e => pg.errores.push(String(e)));
   pg.on('console', m => { if(m.type() === 'error' && !/ERR_FAILED|fonts/.test(m.text())) pg.errores.push(m.text()); });
@@ -33,8 +35,8 @@ async function ir(pg, h){ await pg.evaluate(x => go(x), h); await pg.waitForTime
 (async () => {
   const browser = await chromium.launch();
   /* 1. Todas las vistas, por rol, en PC, tablet y teléfono, claro y oscuro */
-  const RUTAS = { rt:['panel','personas','persona-' + 'p_felipe','validaciones','sesion-s_jt_felipe','duos','indicadores','diccionario','ajustes','ajustes-contenido','ajustes-consistencia','entrar','inicio'],
-                  tecnico:['ruta','modulos','modulo-N1-1','modulo-N2-3','diccionario','laboratorio','laboratorio-bateria','taller'], formador:['agenda','ruta'], postulante:['postular','modulos','laboratorio','taller'], visitante:['inicio','login','login-registro','laboratorio','taller','diccionario'] };
+  const RUTAS = { rt:['panel','personas','sistema','persona-' + 'p_felipe','validaciones','sesion-s_jt_felipe','duos','indicadores','diccionario','ajustes','ajustes-contenido','ajustes-consistencia','entrar','inicio'],
+                  tecnico:['ruta','modulos','modulo-N1-1','modulo-N2-3','diccionario','laboratorio','laboratorio-bateria','taller'], formador:['agenda','ruta'], postulante:['postular','modulos','laboratorio','taller'], visitante:['inicio','sistema','login','login-registro','laboratorio','taller','diccionario'] };
   for(const vp of Object.keys(VIEWPORTS)) for(const scheme of ['light','dark']){
     const pg = await abrir(browser, vp, scheme);
     for(const r of Object.keys(RUTAS)){ await rol(pg, r); for(const h of RUTAS[r]){ await ir(pg, h); ok(await sinDesborde(pg), vp + '/' + scheme + ' ' + r + ' #' + h + ' sin desborde horizontal'); } }
@@ -109,14 +111,16 @@ async function ir(pg, h){ await pg.evaluate(x => go(x), h); await pg.waitForTime
       await pg.locator('[data-k="cx-C19"]').click();
       ok(await pg.locator('.rviva .rv-t.on').count() === 8, 'ruta viva: marcar experiencia suma la estación al momento');
       await pg.getByRole('button', { name:'Seguir a la prueba' }).click(); await pg.waitForTimeout(300);
-      lecturas.push(await pg.locator('#onb-q .opts').innerText());
+      let orden = '';
       const pos = [];
       const nq = await pg.evaluate(() => FUNDAMENTOS.length);
       for(let i = 0; i < nq; i++){
         ok(await pg.locator('#onb-q').count() === 1 && await pg.locator('#onb-q .opt').count() === 4, 'fundamentos: una pregunta por pantalla (' + (i + 1) + ')');
+        orden += await pg.locator('#onb-q .opts').innerText() + '|';
         pos.push(await pg.evaluate(i => [...document.querySelectorAll('#onb-q .opt span:last-child')].map(s => s.textContent).indexOf(FUNDAMENTOS[i].o[FUNDAMENTOS[i].a]), i));
         await pg.keyboard.press('1'); await pg.waitForTimeout(650);
       }
+      lecturas.push(orden);
       await pg.waitForTimeout(400);
       ok(await pg.locator('.fin-stats').count() === 1, 'postulación: pantalla de resultado');
       ok(await pg.getByRole('button', { name:'Enviar postulación' }).count() === 1, 'postulación: botón de envío en el resultado');
@@ -290,6 +294,53 @@ async function ir(pg, h){ await pg.evaluate(x => go(x), h); await pg.waitForTime
     await rol(pg, 'tecnico'); await ir(pg, 'ruta');
     ok(await pg.locator('[data-rotacion="rechazada"]').count() === 1 && (await pg.innerText('#main')).includes('lo vemos en dos meses'), vp + ' D13: el técnico ve la respuesta del RT');
     ok(!pg.errores.length, vp + ' D13 sin errores: ' + pg.errores.join(' | '));
+    await pg.context().close();
+  }
+
+  /* 6. Experiencia v2: celebración, credencial con QR, avisos, búsqueda, embudo, calendario, ajustes, portada */
+  for(const vp of ['pc', 'telefono']){
+    const pg = await abrir(browser, vp, 'dark', null, null, { celebrar:true });
+    await rol(pg, 'tecnico'); await ir(pg, 'ruta'); await pg.waitForTimeout(700);
+    ok(await pg.locator('.celebra').count() === 1, vp + ' v2: al entrar se celebra el nivel recién validado');
+    await pg.locator('.celebra').getByRole('button', { name:'Ver mi credencial' }).click(); await pg.waitForTimeout(400);
+    ok(await pg.locator('.cred .cred-qr svg path').count() === 1, vp + ' v2: la credencial muestra su QR');
+    const cod = await pg.locator('.cred').getAttribute('data-cred');
+    ok(/^LH2-[0-9A-Z]{4}-[0-9A-Z]{3}$/.test(cod || ''), vp + ' v2: código de credencial con formato LH2-XXXX-XXX');
+    await pg.keyboard.press('Escape'); await pg.waitForTimeout(200);
+    await ir(pg, 'inicio'); await ir(pg, 'ruta'); await pg.waitForTimeout(700);
+    ok(await pg.locator('.celebra').count() === 0, vp + ' v2: la celebración no se repite');
+    ok(await pg.locator('.next-card .btn').count() >= 1, vp + ' v2: Mi ruta tiene una acción principal');
+    ok(!(await pg.innerText('#main')).match(/\bC\d\d\b/), vp + ' v2: el técnico no ve códigos de competencia en Mi ruta');
+    await ir(pg, 'modulos');
+    ok(!(await pg.innerText('#main')).match(/\bC\d\d\b|N2-3|\(D\d/), vp + ' v2: Módulos sin códigos internos');
+    await pg.evaluate(() => { S.mine.expediente = Object.assign({}, S.mine.expediente, { proximas:[{ tipo:'N3', fecha: addDays(S.hoy, 2) }] }); scheduleRender(); }); await pg.waitForTimeout(400);
+    ok(await pg.locator('.bell .bell-n').count() === 1, vp + ' v2: la campana cuenta los avisos nuevos');
+    await pg.locator('.bell').click(); await pg.waitForTimeout(300);
+    ok((await pg.innerText('.sheet')).includes('Validación programada'), vp + ' v2: el aviso de la validación aparece');
+    await pg.keyboard.press('Escape'); await pg.waitForTimeout(300);
+    ok(await pg.locator('.bell .bell-n').count() === 0, vp + ' v2: abrir los avisos los marca como leídos');
+    await rol(pg, 'rt'); await ir(pg, 'panel');
+    ok(await pg.locator('.hoy-card').count() === 1, vp + ' v2: el panel abre con Hoy');
+    await pg.keyboard.press('Control+k'); await pg.waitForTimeout(200);
+    await pg.locator('.cmdk-in').fill(cod); await pg.waitForTimeout(200);
+    ok((await pg.innerText('.cmdk')).includes('Credencial válida: Ignacio'), vp + ' v2: Ctrl+K verifica la credencial');
+    await pg.locator('.cmdk-in').fill('LH2-0000-000'); await pg.waitForTimeout(150);
+    ok((await pg.innerText('.cmdk')).includes('Ningún técnico'), vp + ' v2: un código falso no se valida');
+    await pg.locator('.cmdk-in').fill('valentina'); await pg.waitForTimeout(150); await pg.keyboard.press('Enter'); await pg.waitForTimeout(400);
+    ok((await pg.evaluate(() => location.hash)) === '#persona-p_valentina', vp + ' v2: Enter abre la persona buscada');
+    await ir(pg, 'personas');
+    ok(await pg.locator('.emb-col').count() === 7, vp + ' v2: el embudo tiene siete columnas');
+    await ir(pg, 'validaciones');
+    ok(await pg.locator('.cal .cal-ev').count() >= 3, vp + ' v2: el calendario muestra las validaciones del mes');
+    await ir(pg, 'ajustes-bitacora');
+    ok(await pg.locator('.aj-grupos button[aria-pressed="true"]').innerText() === 'Sistema', vp + ' v2: Ajustes abre el grupo correcto');
+    await rol(pg, 'visitante'); await ir(pg, 'inicio');
+    ok(await pg.locator('.hero .hero-ctas .btn').count() === 1 && await pg.locator('.ctacard .btn').count() === 1, vp + ' v2: la portada tiene un solo botón principal');
+    ok(await pg.locator('.hist-paso').count() === 6, vp + ' v2: recorrido del kit en seis pasos');
+    await pg.evaluate(() => document.querySelectorAll('.hist-paso')[3].scrollIntoView({ block: 'center' })); await pg.waitForTimeout(900);
+    ok(await pg.locator('.hist-paso.on').count() === 1, vp + ' v2: al bajar se activa un paso del recorrido');
+    ok(await sinDesborde(pg), vp + ' v2: portada sin desborde');
+    ok(!pg.errores.length, vp + ' v2 sin errores: ' + pg.errores.slice(0, 3).join(' | '));
     await pg.context().close();
   }
 

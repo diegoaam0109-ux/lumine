@@ -65,15 +65,22 @@ function panelSeguridad(full){
 }
 
 /* ---------- AJUSTES ---------- */
+const AJ_GRUPOS = [
+  { v:'reglas', l:'Reglas', ic:'settings', tabs:[['parametros','Parámetros'],['trazabilidad','Decisiones y fuentes']] },
+  { v:'equipo', l:'Contenido y equipo', ic:'users', tabs:[['contenido','Contenido de módulos'],['equipo','Equipo evaluador']] },
+  { v:'sistema', l:'Sistema', ic:'database', tabs:[['seguridad','Seguridad'],['respaldo','Respaldo'],['consistencia','Consistencia'],['bitacora','Bitácora']] }
+];
 VIEWS.ajustes = function(arg){
   if(sinDatos(['params','gestion','personas'])) return vistaCargando();
-  const tabsL = [['parametros','Parámetros'],['contenido','Contenido'],['equipo','Equipo'],['seguridad','Seguridad'],['respaldo','Respaldo'],['consistencia','Consistencia'],['bitacora','Bitácora'],['trazabilidad','Trazabilidad']];
-  if(arg && tabsL.some(t => t[0] === arg)) UI['aj-tab'] = arg;
+  const todas = AJ_GRUPOS.flatMap(g => g.tabs);
+  if(arg && todas.some(t => t[0] === arg)) UI['aj-tab'] = arg;
   const tab = ui('aj-tab', 'parametros');
+  const grupo = AJ_GRUPOS.find(g => g.tabs.some(t => t[0] === tab)) || AJ_GRUPOS[0];
   const set = v => { UI['aj-tab'] = v; if(parseHash().arg) location.replace('#ajustes'); else render(true); };
   const cuerpo = { parametros: ajParametros, contenido: ajContenido, equipo: ajEquipo, seguridad: () => panelSeguridad(true), respaldo: ajRespaldo, consistencia: ajConsistencia, bitacora: ajBitacora, trazabilidad: ajTrazabilidad }[tab]();
-  return page(phead({ eyebrow:'Administración', eic:'settings', title:'Ajustes', lead:'Parámetros abiertos, contenido de los módulos, equipo evaluador, seguridad, respaldos, consistencia y trazabilidad de las decisiones.' }),
-    tabs(tabsL.map(([v, l]) => ({ v, l })), tab, set), cuerpo);
+  return page(phead({ eyebrow:'Administración', eic:'settings', title:'Ajustes' }),
+    h('div', { class:'aj-grupos', style:'margin-bottom:16px' }, segmented(AJ_GRUPOS.map(g => ({ v:g.v, l:g.l, ic:g.ic })), grupo.v, v => set(AJ_GRUPOS.find(g => g.v === v).tabs[0][0]), { label:'Grupo de ajustes' })),
+    grupo.tabs.length > 1 ? tabs(grupo.tabs.map(([v, l]) => ({ v, l })), tab, set) : null, cuerpo);
 };
 function numIn(v, o){ return inputEl(Object.assign({ type:'number', inputmode:'decimal', value: v === null || v === undefined ? '' : v, placeholder:'Sin fijar', style:'max-width:160px' }, o || {})); }
 function ajParametros(){

@@ -4,7 +4,8 @@
 'use strict';
 
 const ROUTES = {
-  inicio:       { t:'Producto',        ic:'home',      roles:['*'] },
+  inicio:       { t:'Portada',         ic:'home',      roles:['*'] },
+  sistema:      { t:'El sistema',      ic:'book',      roles:['*'] },
   entrar:       { t:'Entrada',         ic:'swap',      roles:['admin'] },
   panel:        { t:'Panel',           ic:'grid',      roles:['admin'] },
   personas:     { t:'Personas',        ic:'users',     roles:['admin'] },
@@ -55,12 +56,12 @@ function navItems(){
   if(k.has('admin')) return ['panel','personas','validaciones','duos','indicadores','diccionario'];
   if(k.has('tecnico')) return ['ruta','modulos','laboratorio'].concat(k.has('formador') ? ['agenda'] : []).concat(['diccionario']);
   if(k.has('postulante')) return ['postular','laboratorio','diccionario'].concat(k.has('formador') ? ['agenda'] : []);
-  return ['inicio','laboratorio','taller','diccionario'];
+  return ['inicio','sistema','laboratorio','taller','diccionario'];
 }
 function moreItems(){
   const k = roleKeys();
-  if(k.has('admin')) return ['entrar','ajustes','laboratorio','taller','inicio'];
-  if(k.has('tecnico') || k.has('postulante')) return ['taller','inicio'];
+  if(k.has('admin')) return ['entrar','ajustes','laboratorio','taller','inicio','sistema'];
+  if(k.has('tecnico') || k.has('postulante')) return ['taller','inicio','sistema'];
   return [];
 }
 function go(hash){ if(location.hash === '#' + hash) render(); else location.hash = hash; }
@@ -130,9 +131,10 @@ window.addEventListener('hashchange', () => render(false));
 
 function vistaCargando(){
   return h('div', { class:'wrap page', 'aria-busy':'true' },
-    h('div', { class:'empty', style:'border:0;padding:80px 20px' },
-      h('span', { class:'emblem', style:'width:44px;height:44px;color:var(--spark);animation:pulse 1.8s infinite;border-radius:50%' }),
-      h('p', null, 'Cargando la plataforma…')));
+    h('p', { class:'sr', role:'status' }, 'Cargando la plataforma…'),
+    h('div', { class:'skel', 'aria-hidden':'true' }, h('span', { class:'sk t' }), h('span', { class:'sk h' }), h('span', { class:'sk p' }),
+      h('div', { class:'grid g3', style:'--g:12px' }, h('span', { class:'sk c' }), h('span', { class:'sk c' }), h('span', { class:'sk c' })),
+      h('span', { class:'sk c' })));
 }
 
 /* ---------- navegación: píldora flotante, hoja y barra inferior ---------- */
@@ -159,7 +161,7 @@ function renderShell(activeId){
     h('span', { class:'emblem' }), h('span', { class:'wordmark', 'aria-hidden':'true' }), h('span', { class:'brand-sub' }, 'Habilita'));
   const menuB = h('button', { type:'button', class:'btn btn-quiet icon nav-menu-btn', 'aria-label':'Menú' }, icon('menu', 's20'));
   menuB.addEventListener('click', abrirMenu);
-  const right = h('div', { class:'nav-right' }, rolChip(), menuB);
+  const right = h('div', { class:'nav-right' }, typeof botonBuscar === 'function' ? botonBuscar() : null, typeof campanaAvisos === 'function' ? campanaAvisos() : null, rolChip(), menuB);
   nav.appendChild(h('div', { class:'topnav' }, h('div', { class:'pill' }, brand, links, h('span', { class:'nav-title' }, ROUTES[cur] ? ROUTES[cur].t : ''), right)));
   // barra inferior (teléfono)
   const tb = $('#tabbar'); clear(tb);
@@ -260,7 +262,7 @@ const RECORRIDO = [
   { t:'Acepta y cierra la jornada', d:'Como Responsable Técnico: acepta lo de Camila, marca la base y cierra.', rol:'rt', go:'sesion-' + RIDS.sesionJT },
   { t:'Revisa el plan de Felipe', d:'Nivelación, oficio saltado y ruta completa, calculados solos.', rol:'rt', go:'persona-' + RIDS.felipe },
   { t:'Revisa el tablero de indicadores', d:'Los ocho indicadores del informe 6, con vista de tabla.', rol:'rt', go:'indicadores' },
-  { t:'Mira la ruta de un técnico', d:'Ignacio ve solo lo suyo: nivel, próximo paso, duo y revalidación.', rol:'tecnico', go:'ruta' },
+  { t:'Mira la ruta de un técnico', d:'Ignacio ve su siguiente paso, su avance, sus avisos y su credencial digital con QR.', rol:'tecnico', go:'ruta' },
   { t:'Prueba el módulo con simulador', d:'Aprende, practica con el simulador y rinde la práctica: una pregunta a la vez, alternativas mezcladas y sin el material a la vista.', rol:'tecnico', go:'modulo-N1-1' },
   { t:'Revisa los 20 controles de seguridad', d:'Qué cubre la plataforma, qué cubre claude.ai y qué queda pendiente.', rol:'rt', go:'ajustes-seguridad' }
 ];
@@ -280,7 +282,7 @@ function renderFooter(){
     h('div', { class:'fcols' },
       h('div', { class:'stack', style:'--g:12px' }, h('span', { class:'lockup', style:'width:150px;color:var(--ink)', role:'img', 'aria-label':'Lumine Motors' }), h('p', { class:'small muted', style:'max-width:36ch' }, 'Sistema de selección y habilitación por competencias del Técnico Instalador de Sistemas de Hibridación Vehicular.')),
       h('div', null, h('h4', null, 'Plataforma'), h('ul', null, ['inicio','diccionario'].concat(S.role === 'admin' ? ['indicadores','ajustes'] : []).map(id => h('li', null, h('a', { href:'#' + id }, ROUTES[id].t))))),
-      h('div', null, h('h4', null, 'Referencias'), h('ul', null, FUENTES.map(([t, u]) => h('li', null, h('a', { href:u, target:'_blank', rel:'noopener noreferrer' }, t.split(',')[0]))))),
+      h('div', null, h('h4', null, 'Referencias'), h('ul', null, FUENTES.slice(0, 5).map(([t, u]) => h('li', null, h('a', { href:u, target:'_blank', rel:'noopener noreferrer' }, t.split(',')[0]))), FUENTES.length > 5 ? h('li', null, h('a', { href:'#sistema' }, 'y ' + (FUENTES.length - 5) + ' fuentes más')) : null)),
       h('div', null, h('h4', null, 'Equipo'), h('ul', null, ['Diego Alarcón','Benjamín Torres','Lukas Verdugo'].map(n => h('li', null, n)), h('li', null, 'Taller Integrador II · UNAB')))),
     h('div', { class:'legal' }, h('span', null, 'Lumine Motors · Fase 3, gestión de personas · 2026'), h('span', null, S.build === 'demo' ? 'Demostración: personas y resultados ficticios' : 'Versión de operación'))))]);
 }

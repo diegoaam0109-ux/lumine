@@ -7,6 +7,7 @@
 
 const SVGNS = 'http://www.w3.org/2000/svg';
 const ICONS = {
+  bell:'<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
   home:'<path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/>',
   grid:'<rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/>',
   users:'<circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9.5" r="2.5"/><path d="M16.2 14.6c2.2.2 3.8 1.8 4.3 4.4"/>',
@@ -154,6 +155,14 @@ async function busy(button, fn){
   try { return await fn(); }
   catch(e){ toast(errMsg(e), 'crit'); console.error(e); }
   finally { if(button){ button.classList.remove('busy'); button.removeAttribute('aria-busy'); button.disabled = false; } }
+}
+/* "?" que explica un término en una línea, sin párrafos fijos en la pantalla */
+function ayuda(texto){
+  const b = h('button', { type:'button', class:'ayuda', 'aria-label':'Qué significa: ' + texto }, '?');
+  const ver = () => showTip(b, h('span', null, texto));
+  b.addEventListener('mouseenter', ver); b.addEventListener('focus', ver); b.addEventListener('click', ev => { ev.preventDefault(); ev.stopPropagation(); ver(); });
+  b.addEventListener('mouseleave', hideTip); b.addEventListener('blur', hideTip);
+  return b;
 }
 function badge(text, kind, ic){ return h('span', { class:'badge' + (kind ? ' ' + kind : '') }, ic ? icon(ic) : null, text); }
 function codeTag(c){ return h('span', { class:'code' }, c); }

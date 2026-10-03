@@ -15,34 +15,204 @@ function estadoMio(e, c){
 }
 function planMio(e){ return { modulos: e.plan.modulos || [], nivelacion: e.plan.nivelacion || [] }; }
 
+/* ---------- lenguaje de taller: el técnico ve temas, no códigos ---------- */
+function temaCorto(c){ const t = C[c] ? C[c].t : String(c); return t.length > 64 ? t.slice(0, 62).replace(/[ ,;:]+[^ ]*$/, '') + '…' : t; }
+const EST_T = { skip:['Demostrada','ok'], done:['Aprobada','ok'], fail:['Repasar','crit'], lock:['Más adelante','line'], '':['Por aprender','info'] };
+function avanceNivel(e, k){ const cs = COMP.filter(x => x.n === k); return { ok: cs.filter(x => ['done','skip'].includes(estadoMio(e, x.c))).length, total: cs.length }; }
+function primeraFrase(t){ const i = String(t).indexOf('. '); return i > 0 ? t.slice(0, i + 1) : t; }
+
+/* ---------- siguiente paso: una sola acción principal ---------- */
+function siguientePaso(e){
+  const n = e.nivel || 0, sig = n < 4 ? n + 1 : null;
+  const prox = (e.proximas || [])[0];
+  if(e.etapa === 'postulante') return { k:'info', ic:'clock', ey:'Diagnóstico', t:'Siguiente: jornada técnica presencial', d:'El Responsable Técnico te avisará la fecha. Mientras, conoce el kit en el laboratorio 3D.', cta:['Abrir el laboratorio', 'laboratorio'] };
+  if(e.suspendidoAT) return { k:'crit', ic:'shieldX', ey:'Alta tensión suspendida', t:'Repasa la seguridad y revalida', d:'No bajas de nivel. Vuelves a trabajar con alta tensión cuando apruebes la revalidación de seguridad.', cta:['Repasar seguridad', 'modulo-N1-1'] };
+  if(prox){ const dd = diffDays(S.hoy, prox.fecha); return { k:'ok', ic:'calendar', ey:'Próxima validación · ' + (dd === null ? '' : relDias(dd)), t: (TIPOS_SESION[prox.tipo] || { l:prox.tipo }).l, d: fechaLarga(prox.fecha) + '. Es presencial: llega con tu práctica al día.', cta:['Repasar mis módulos', 'modulos'] }; }
+  if(e.repetir && e.repetir.length) return { k:'warn', ic:'refresh', ey:'Para tu próxima fecha', t: e.repetir.length === 1 ? 'Repasa un tema' : 'Repasa ' + e.repetir.length + ' temas', d: e.repetir.map(temaCorto).join(' · '), cta:['Repasar', 'modulos'] };
+  if(sig){
+    const lp = listoParaPresentarse(sig, planMio(e), miAv());
+    if(!lp.listo){ const mid = lp.faltan[0]; const hechos = lp.total - lp.faltan.length; return { k:'action', ic:'play', ey:'Nivel ' + sig + ' · ' + hechos + ' de ' + lp.total + ' módulos', t:'Continúa con ' + MOD[mid].nombre, d: MOD[mid].resumen, cta:['Continuar', 'modulo-' + mid], prog: lp.total ? hechos / lp.total : 0 }; }
+    return { k:'ok', ic:'check', ey:'Nivel ' + sig, t:'Ya puedes presentarte a tu validación', d:'Completaste la práctica online. Pide fecha al Responsable Técnico: ' + NIVEL[sig].valida.toLowerCase() + '.', cta:['Ver mi credencial', null], prog:1 };
+  }
+  return { k:'ok', ic:'grad', ey:'Nivel 4', t:'Eres formador', d:'Enseñas, validas a otros y firmas revisiones cruzadas.', cta: esFormador() ? ['Ver mi agenda', 'agenda'] : ['Ver mi credencial', null] };
+}
+function anillo(valor, total, etiqueta){
+  const r = 54, L = 2 * Math.PI * r, frac = total ? valor / total : 0;
+  const arco = s('circle', { class:'ring-v', cx:64, cy:64, r, 'stroke-dasharray': L.toFixed(1), 'stroke-dashoffset': L.toFixed(1) });
+  setTimeout(() => { arco.style.strokeDashoffset = (L * (1 - frac)).toFixed(1); }, 80);
+  return h('div', { class:'ring', role:'img', 'aria-label': valor + ' de ' + total + ' ' + etiqueta },
+    s('svg', { viewBox:'0 0 128 128', 'aria-hidden':'true' }, s('circle', { class:'ring-b', cx:64, cy:64, r }), arco),
+    h('div', { class:'ring-t', 'aria-hidden':'true' }, h('b', { class:'num' }, String(valor)), h('span', null, 'de ' + total)));
+}
+
 /* ---------- MI RUTA ---------- */
 VIEWS.ruta = function(){
   if(!cargado(['expediente','avance','params','solicitud'])) return vistaCargando();
   const e = miExp();
   if(!e) return page(phead({ title:'Aún no tienes expediente', lead:'Postula para empezar tu diagnóstico.' }), linkBtn('Postular', 'postular', { kind:'action', arrow:true }));
+  revisarCelebracion(e);
   const n = e.nivel || 0, sig = n < 4 ? n + 1 : null;
-  const av = miAv();
-  let paso;
-  if(e.etapa === 'postulante') paso = { s:'info', ic:'clock', t: e.plan && (e.pauta && Object.values(e.pauta).some(x => x.r === 'j')) ? 'Diagnóstico listo: espera la decisión de ingreso' : 'Siguiente: jornada técnica presencial', d:'El Responsable Técnico te avisará la fecha. Mientras, puedes repasar los módulos de nivelación sugeridos.' };
-  else if(e.suspendidoAT) paso = { s:'crit', ic:'shieldX', t:'Suspendido de alta tensión', d:'Tuviste un incidente grave. No bajas de nivel: vuelves a trabajar con alta tensión cuando apruebes la revalidación del core de seguridad.' };
-  else if(e.repetir && e.repetir.length) paso = { s:'warn', ic:'refresh', t:'Repite solo: ' + e.repetir.join(', '), d:'No repites la validación completa. Repasa esos temas y pide una nueva fecha.' };
-  else if(sig){ const lp = listoParaPresentarse(sig, planMio(e), av); paso = lp.listo ? { s:'ok', ic:'check', t:'Tienes derecho a presentarte al nivel ' + sig, d:'Completaste la práctica online. La validación es presencial: ' + NIVEL[sig].valida.toLowerCase() + '.' } : { s:'info', ic:'layers', t:'Completa tu práctica del nivel ' + sig, d:(lp.faltan.length === 1 ? 'Te falta 1 de ' : 'Te faltan ' + lp.faltan.length + ' de ') + lp.total + (lp.total === 1 ? ' módulo.' : ' módulos.') + ' La práctica online da derecho a presentarte; el nivel se gana en el taller.' }; }
-  else paso = { s:'ok', ic:'grad', t:'Eres formador', d:'Puedes enseñar, validar a otros y firmar revisiones cruzadas.' };
+  const paso = siguientePaso(e);
   const rv = e.revalidacion || { estado:'na' };
-  const mapa = h('div', { class:'cmap' }, [1,2,3,4].map(k => h('div', { class:'cmap-row' }, h('span', { class:'cmap-lv' }, 'N' + k), h('div', { class:'cmap-tiles' }, COMP.filter(x => x.n === k).map(x => { const st = estadoMio(e, x.c); const t = tile(x.c, (st || '') + ' lg'); if(st === 'done') t.appendChild(icon('check')); return t; })))));
   const hecho = COMP.filter(x => ['done','skip'].includes(estadoMio(e, x.c))).length;
+  const cta = paso.cta[1] ? linkBtn(paso.cta[0], paso.cta[1], { kind:'action', size:'lg', arrow:true }) : btn(paso.cta[0], { kind:'action', size:'lg', icon:'shieldCheck', onClick: abrirCredencial });
+  const heroPaso = h('div', { class:'next-card ' + paso.k, 'data-rv':'' },
+    h('div', { class:'row', style:'gap:10px' }, h('span', { class:'next-ic' }, icon(paso.ic, 's20')), h('span', { class:'next-ey' }, paso.ey)),
+    h('h2', { class:'next-t' }, paso.t), h('p', { class:'next-d' }, paso.d),
+    paso.prog !== undefined ? h('div', { class:'progress', role:'progressbar', 'aria-valuemin':'0', 'aria-valuemax':'100', 'aria-valuenow': String(Math.round(paso.prog * 100)), 'aria-label':'Avance de la práctica del nivel' }, h('i', { style:'width:' + Math.round(paso.prog * 100) + '%' })) : null,
+    h('div', { class:'row' }, cta));
+  const anilloCard = h('div', { class:'card ring-card', 'data-rv':'' }, anillo(hecho, COMP.length, 'competencias listas'),
+    h('div', { class:'stack', style:'--g:8px;min-width:0;flex:1' }, h('b', null, 'Competencias listas'),
+      [1,2,3,4].map(k => { const a = avanceNivel(e, k); return h('div', { class:'lvbar' + (k <= n ? ' ok' : k === sig ? ' now' : '') }, h('span', { class:'small' }, 'N' + k), h('span', { class:'progress' }, h('i', { style:'width:' + Math.round(100 * a.ok / a.total) + '%' })), h('span', { class:'xs muted num' }, a.ok + '/' + a.total)); })));
+  const credMini = h('button', { type:'button', class:'card tile-card cred-mini', on:{ click: abrirCredencial } },
+    h('span', { class:'label' }, 'Tu credencial'), e.credencial ? frag(h('span', { class:'row', style:'gap:8px' }, icon('shieldCheck', 's20'), h('b', null, 'Nivel ' + n)), h('span', { class:'hint mono' }, e.credencial)) : h('span', { class:'small muted' }, 'Se emite al validar el nivel 1.'), h('span', { class:'tile-go' }, 'Ver', icon('arrowRight', 's14')));
+  const niveles = h('div', { class:'stack', style:'--g:8px' }, [1,2,3,4].map(k => { const a = avanceNivel(e, k);
+    return h('details', { class:'disc lvl', open: k === (sig || 4) ? true : null },
+      h('summary', null, h('span', { class:'row nw', style:'gap:12px;min-width:0;flex:1' }, h('span', { class:'lvl-n' + (k <= n ? ' ok' : '') }, k <= n ? icon('check', 's14') : String(k)), h('span', { class:'stack', style:'--g:2px;min-width:0' }, h('b', { class:'small' }, NIVEL[k].nombre), h('span', { class:'hint' }, a.ok + ' de ' + a.total + ' listas'))), icon('chevDown')),
+      h('div', { class:'dbody stack', style:'--g:6px' }, COMP.filter(x => x.n === k).map(x => { const st = estadoMio(e, x.c); return h('div', { class:'crow tema' }, h('span', { class:'dot ' + (st === 'done' || st === 'skip' ? 'ok' : st === 'fail' ? 'crit' : st === 'lock' ? '' : 'spark') }), h('span', { class:'ct' }, x.t), badge(EST_T[st][0], EST_T[st][1])); }))); }));
   return page(
-    phead({ eyebrow: e.demo ? 'Expediente ficticio de demostración' : 'Tu ruta de habilitación', eic:'route', title:'Hola, ' + (e.nombre || '').split(' ')[0], lead: n ? 'Eres ' + NIVEL[n].nombre.toLowerCase() + '. ' + NIVEL[n].habilita : 'Estás en formación hacia el nivel 1. Todos entran por el nivel 1.' }),
-    h('div', { class:'card', style:'--pad:18px;margin-bottom:18px' }, trackNiveles(n, e.fechasNivel)),
-    h('div', { class:'alert ' + paso.s, style:'margin-bottom:18px' }, h('span', { class:'ai' }, icon(paso.ic, 's20')), h('div', null, h('div', { class:'at' }, paso.t), h('div', { class:'ad' }, paso.d)), sig && !e.suspendidoAT ? h('div', { class:'aa' }, linkBtn('Ir a módulos', 'modulos', { size:'sm', kind:'action' })) : null),
-    h('div', { class:'grid g3', style:'--g:14px' },
-      h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Tu duo'), e.duo ? frag(h('div', { class:'row', style:'gap:10px' }, avatar(e.duo.companero), h('div', null, h('b', null, e.duo.companero), h('div', { class:'hint' }, 'Nivel ' + e.duo.companeroNivel + ' · desde ' + fechaCorta(e.duo.desde)))), bloqueRotacion(e)) : frag(h('p', { class:'small muted' }, n >= 1 ? 'Sin duo asignado.' : 'Entras a un duo al validar el nivel 1.'), bloqueRotacion(e))),
-      h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Revalidación de seguridad'), rv.estado === 'na' ? h('p', { class:'small muted' }, 'Aplica desde el nivel 1.') : frag(h('div', { class:'h3' }, fechaCorta(rv.vence)), badge(rv.estado === 'vencida' ? 'Vencida' : rv.estado === 'pronto' ? 'Vence ' + relDias(rv.dias) : 'Vigente', rv.estado === 'vencida' ? 'crit' : rv.estado === 'pronto' ? 'warn' : 'ok'))),
-      h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Bono por avance'), (e.bono || []).length ? e.bono.map(b => h('div', { class:'row sb small' }, h('span', null, 'Nivel ' + b.n), h('b', null, b.monto === null ? 'Monto por definir' : clp(b.monto)))) : h('p', { class:'small muted' }, 'Se gana por nivel validado, nunca por nota online.'))),
-    h('section', { class:'section card' }, h('div', { class:'card-h' }, h('h2', { class:'h4' }, 'Tus 39 competencias'), h('span', { class:'hint' }, hecho + ' aprobadas o demostradas')), mapa,
-      h('div', { class:'cmap-legend', style:'margin-top:12px' }, h('span', null, h('i', { class:'tile core' }), 'Core'), h('span', null, h('i', { class:'tile oficio' }), 'Oficio'), h('span', null, h('i', { class:'tile desarrollo' }), 'Desarrollo'), h('span', null, h('i', { class:'tile oficio skip' }), 'Demostrada'), h('span', null, h('i', { class:'tile core fail' }), 'Repetir'))),
-    (e.historial || []).length ? h('section', { class:'section' }, h('h2', { class:'h3', style:'margin-bottom:12px' }, 'Tu historial'), tablaDe(['Validación','Intento','Fecha','Resultado'], e.historial.slice().reverse().map(x => [TIPOS_SESION[x.tipo] ? TIPOS_SESION[x.tipo].l : x.tipo, x.intento === 1 ? '1 · primera nota' : String(x.intento), fechaCorta(x.fecha), badge(x.aprobado ? 'Aprobada' : 'Repite ' + (x.fallidas || []).join(', '), x.aprobado ? 'ok' : 'crit')]))) : null);
+    h('header', { class:'ruta-hero' },
+      h('div', { class:'stack', style:'--g:16px;min-width:0' },
+        h('div', { class:'stack', style:'--g:8px' }, eyebrow(e.demo ? 'Expediente ficticio de demostración' : 'Tu ruta de habilitación', 'route'),
+          h('h1', { class:'h1 xl' }, 'Hola, ' + (e.nombre || '').split(' ')[0]),
+          h('div', { class:'row', style:'gap:8px' }, nivelBadge(n), n ? h('span', { class:'small ink2' }, primeraFrase(NIVEL[n].habilita)) : h('span', { class:'small ink2' }, 'Todos parten por el nivel 1.'))),
+        heroPaso),
+      anilloCard),
+    h('div', { class:'card', style:'--pad:18px;margin:18px 0' }, trackNiveles(n, e.fechasNivel)),
+    h('div', { class:'grid g4 keep2', style:'--g:12px' },
+      h('div', { class:'card stack tile-card', style:'--g:8px' }, h('span', { class:'label' }, 'Tu duo', ayuda('Todo el trabajo técnico se hace en pareja: uno ejecuta y el otro es encargado de seguridad.')), e.duo ? frag(h('div', { class:'row nw', style:'gap:10px' }, avatar(e.duo.companero), h('div', { style:'min-width:0' }, h('b', { class:'small' }, e.duo.companero), h('div', { class:'hint' }, 'Nivel ' + e.duo.companeroNivel + ' · desde ' + fechaCorta(e.duo.desde)))), bloqueRotacion(e)) : frag(h('p', { class:'small muted' }, n >= 1 ? 'Sin duo asignado.' : 'Entras a un duo al validar el nivel 1.'), bloqueRotacion(e))),
+      h('div', { class:'card stack tile-card', style:'--g:8px' }, h('span', { class:'label' }, 'Revalidación de seguridad', ayuda('Cada ' + params().revalidacionMeses + ' meses vuelves a demostrar lo esencial de seguridad. El resto de tu nivel no vence.')), rv.estado === 'na' ? h('p', { class:'small muted' }, 'Aplica desde el nivel 1.') : frag(h('b', { class:'h3' }, fechaCorta(rv.vence)), badge(rv.estado === 'vencida' ? 'Vencida' : rv.estado === 'pronto' ? 'Vence ' + relDias(rv.dias) : 'Vigente', rv.estado === 'vencida' ? 'crit' : rv.estado === 'pronto' ? 'warn' : 'ok'))),
+      credMini,
+      h('div', { class:'card stack tile-card', style:'--g:8px' }, h('span', { class:'label' }, 'Bono por avance', ayuda('Se paga por cada nivel que validas en el taller, nunca por la nota de la práctica online.')), (e.bono || []).length ? e.bono.map(b => h('div', { class:'row sb small' }, h('span', null, 'Nivel ' + b.n), h('b', null, b.monto === null ? 'Por definir' : clp(b.monto)))) : h('p', { class:'small muted' }, 'Se gana por nivel validado.'))),
+    h('section', { class:'section' }, h('div', { class:'section-h' }, h('h2', { class:'h3' }, 'Lo que vas aprendiendo'), h('span', { class:'hint' }, hecho + ' de ' + COMP.length + ' listas')), niveles),
+    (e.historial || []).length ? h('section', { class:'section' }, h('h2', { class:'h3', style:'margin-bottom:12px' }, 'Tu historial'), tablaDe(['Validación','Intento','Fecha','Resultado'], e.historial.slice().reverse().map(x => [TIPOS_SESION[x.tipo] ? TIPOS_SESION[x.tipo].l : x.tipo, x.intento === 1 ? '1 · primera nota' : String(x.intento), fechaCorta(x.fecha), badge(x.aprobado ? 'Aprobada' : 'Repasar ' + (x.fallidas || []).length + ((x.fallidas || []).length === 1 ? ' tema' : ' temas'), x.aprobado ? 'ok' : 'crit')]))) : null);
 };
+
+/* ---------- avisos del técnico (se calculan de su expediente; lo leído queda en este navegador) ---------- */
+function avisosTecnico(){
+  const e = miExp(); if(!e) return [];
+  const out = [];
+  const n = e.nivel || 0;
+  for(const p of (e.proximas || [])) out.push({ id:'val-' + p.tipo + '-' + p.fecha, ic:'calendar', k:'info', t:'Validación programada: ' + ((TIPOS_SESION[p.tipo] || {}).l || p.tipo), d: fechaLarga(p.fecha) + ' (' + relDias(diffDays(S.hoy, p.fecha)) + ').', go:'ruta' });
+  if(n >= 1 && e.fechasNivel && e.fechasNivel[n] && diffDays(e.fechasNivel[n], S.hoy) <= 30) out.push({ id:'nivel-' + n, ic:'grad', k:'ok', t:'Validaste el nivel ' + n + ': ' + NIVEL[n].nombre, d:'Tu credencial ya muestra el nivel nuevo.', cred:true });
+  if(e.rotacion && e.rotacion.fecha && diffDays(e.rotacion.fecha, S.hoy) <= 30) out.push({ id:'rot-' + e.rotacion.id + '-' + e.rotacion.estado, ic:'duo', k: e.rotacion.estado === 'aprobada' ? 'ok' : 'warn', t:'Tu solicitud de rotación fue ' + (e.rotacion.estado === 'aprobada' ? 'aprobada' : 'rechazada'), d: e.rotacion.respuesta || (e.rotacion.estado === 'aprobada' ? 'El Responsable Técnico te asignará tu nuevo duo.' : 'Sin comentario.'), go:'ruta' });
+  const rv = e.revalidacion || {};
+  if(rv.estado === 'vencida' || rv.estado === 'pronto') out.push({ id:'rev-' + rv.vence + '-' + rv.estado, ic:'shield', k: rv.estado === 'vencida' ? 'crit' : 'warn', t: rv.estado === 'vencida' ? 'Tu revalidación de seguridad venció' : 'Tu revalidación de seguridad vence ' + relDias(rv.dias), d:'Fecha: ' + fechaLarga(rv.vence) + '. Repasa los módulos de seguridad.', go:'modulo-N1-1' });
+  if(e.suspendidoAT) out.push({ id:'susp', ic:'shieldX', k:'crit', t:'Estás suspendido de alta tensión', d:'Vuelves cuando apruebes la revalidación de seguridad.', go:'ruta' });
+  if(e.repetir && e.repetir.length) out.push({ id:'rep-' + e.repetir.join('.'), ic:'refresh', k:'warn', t:'Tienes ' + (e.repetir.length === 1 ? 'un tema' : e.repetir.length + ' temas') + ' por repasar', d: e.repetir.map(temaCorto).join(' · '), go:'modulos' });
+  return out;
+}
+const AVISOS_KEY = () => 'lh-avisos-' + (S.me.id || 'anon');
+function avisosVistos(){ try { return new Set(JSON.parse(localStorage.getItem(AVISOS_KEY()) || '[]')); } catch(x){ return new Set(); } }
+function marcarAvisosVistos(ids){ try { localStorage.setItem(AVISOS_KEY(), JSON.stringify(ids.slice(-60))); } catch(x){} }
+function campanaAvisos(){
+  const k = roleKeys();
+  if(!(k.has('tecnico')) || !S.loaded.has('expediente')) return null;
+  const av = avisosTecnico(), vistos = avisosVistos();
+  const nuevos = av.filter(a => !vistos.has(a.id)).length;
+  const b = h('button', { type:'button', class:'btn btn-quiet icon bell', 'aria-label': nuevos ? 'Avisos: ' + nuevos + ' nuevos' : 'Avisos' }, icon('bell', 's20'), nuevos ? h('span', { class:'bell-n', 'aria-hidden':'true' }, String(nuevos)) : null);
+  b.addEventListener('click', () => {
+    const lista = avisosTecnico();
+    marcarAvisosVistos(lista.map(a => a.id));
+    openSheet('Avisos', close => lista.length ? h('div', { class:'stack', style:'--g:8px' }, lista.map(a => {
+      const ir = () => { close(); if(a.cred) abrirCredencial(); else go(a.go); };
+      return h('button', { type:'button', class:'alert aviso ' + a.k + (vistos.has(a.id) ? '' : ' nuevo'), on:{ click: ir } }, h('span', { class:'ai' }, icon(a.ic, 's20')), h('div', null, h('div', { class:'at' }, a.t), h('div', { class:'ad' }, a.d)), vistos.has(a.id) ? null : h('span', { class:'dot spark', 'aria-label':'Nuevo' }));
+    })) : emptyState('bell', 'Sin avisos', 'Aquí llegan tus validaciones, respuestas y vencimientos.'), { onClose: scheduleRender });
+    scheduleRender();
+  });
+  return b;
+}
+
+/* ---------- celebración al validar un nivel ---------- */
+function revisarCelebracion(e){
+  const n = e.nivel || 0;
+  if(n < 1 || !S.me.id || S.preview) return;
+  const key = 'lh-nivel-visto-' + S.me.id;
+  let visto;
+  try { if(localStorage.getItem('lh-sin-celebrar')) return; visto = localStorage.getItem(key); localStorage.setItem(key, String(n)); } catch(x){ return; }
+  const reciente = e.fechasNivel && e.fechasNivel[n] && diffDays(e.fechasNivel[n], S.hoy) <= 60;
+  if(visto === null ? reciente : Number(visto) < n) setTimeout(() => celebrarNivel(n), 450);
+}
+function celebrarNivel(n){
+  if(document.querySelector('.celebra')) return;
+  const N = NIVEL[n];
+  const prev = document.activeElement;
+  const canvas = h('canvas', { class:'confeti', 'aria-hidden':'true' });
+  let untrap = () => {};
+  const cerrar = () => { untrap(); wrap.remove(); document.body.style.overflow = ''; if(prev && prev.focus && document.contains(prev)) prev.focus(); };
+  const verCred = btn('Ver mi credencial', { kind:'action', size:'lg', icon:'shieldCheck', onClick: () => { cerrar(); abrirCredencial(); } });
+  const seguir = btn('Seguir', { kind:'ghost', size:'lg', onClick: cerrar });
+  const box = h('div', { class:'celebra-in', role:'dialog', 'aria-modal':'true', 'aria-labelledby':'cel-t' },
+    h('div', { class:'cel-badge', 'aria-hidden':'true' }, h('span', { class:'cel-ring' }), h('b', null, String(n))),
+    h('span', { class:'onb-k' }, '¡Validaste el nivel ' + n + '!'),
+    h('h2', { id:'cel-t', class:'onb-h' }, N.nombre),
+    h('p', { class:'lead' }, 'Desde hoy: ' + primeraFrase(N.habilita).replace(/^./, c => c.toLowerCase())),
+    pips(n),
+    h('div', { class:'row', style:'justify-content:center;margin-top:6px' }, seguir, verCred));
+  const wrap = h('div', { class:'celebra' }, canvas, box);
+  wrap.addEventListener('click', ev => { if(ev.target === wrap || ev.target === canvas) cerrar(); });
+  document.body.appendChild(wrap); document.body.style.overflow = 'hidden';
+  untrap = trapFocus(box, cerrar);
+  setTimeout(() => verCred.focus(), 60);
+  if(!Motion.quieto()) confeti(canvas);
+}
+function confeti(canvas){
+  const ctx = canvas.getContext('2d'), dpr = Math.min(2, window.devicePixelRatio || 1);
+  const W = canvas.width = innerWidth * dpr, H = canvas.height = innerHeight * dpr;
+  const col = ['#22B8F0', '#78d6f7', '#ffffff', '#F5B94A', '#4ADE80'];
+  const ps = Array.from({ length: 160 }, (_, i) => ({ x: W / 2 + (Math.random() - .5) * W * .2, y: H * .42, vx: (Math.random() - .5) * 18 * dpr, vy: (-Math.random() * 16 - 6) * dpr, r: (3 + Math.random() * 5) * dpr, a: Math.random() * 6, va: (Math.random() - .5) * .3, c: col[i % col.length] }));
+  const t0 = performance.now();
+  const paso = t => {
+    if(!document.body.contains(canvas)) return;
+    const k = (t - t0) / 1000;
+    ctx.clearRect(0, 0, W, H);
+    for(const p of ps){ p.vy += .45 * dpr; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.a += p.va; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.globalAlpha = Math.max(0, 1 - k / 3.6); ctx.fillStyle = p.c; ctx.fillRect(-p.r, -p.r / 2, p.r * 2, p.r); ctx.restore(); }
+    if(k < 3.6) requestAnimationFrame(paso); else ctx.clearRect(0, 0, W, H);
+  };
+  requestAnimationFrame(paso);
+}
+
+/* ---------- credencial digital con QR ---------- */
+function payloadCredencial(e){ return 'LUMINE HABILITA|' + e.credencial + '|N' + (e.nivel || 0) + '|' + String(e.nombre || '').slice(0, 40) + '|' + ((e.revalidacion || {}).vence || ''); }
+function estadoCredencial(e){ const rv = e.revalidacion || {}; return e.suspendidoAT ? ['Alta tensión suspendida','crit'] : rv.estado === 'vencida' ? ['Revalidación vencida','crit'] : ['Vigente','ok']; }
+function abrirCredencial(){
+  const e = miExp(); if(!e) return;
+  openSheet('Tu credencial', () => credencialCard(e));
+}
+function credencialCard(e){
+  const n = e.nivel || 0;
+  if(!e.credencial) return emptyState('shield', 'Aún sin credencial', 'Se emite al validar el nivel 1 en el taller.');
+  const rv = e.revalidacion || {};
+  const st = estadoCredencial(e);
+  return h('div', { class:'stack', style:'--g:14px' },
+    h('div', { class:'cred', 'data-cred': e.credencial },
+      h('div', { class:'cred-top' }, h('span', { class:'row', style:'gap:8px' }, h('span', { class:'emblem' }), h('span', { class:'wordmark', 'aria-hidden':'true' })), h('span', { class:'cred-k' }, 'Técnico instalador')),
+      h('div', { class:'cred-mid' }, h('span', { class:'cred-lv', 'aria-hidden':'true' }, String(n)), h('div', { class:'stack', style:'--g:4px;min-width:0' }, h('b', { class:'cred-n' }, e.nombre), h('span', { class:'cred-l' }, 'Nivel ' + n + ' · ' + NIVEL[n].nombre), pips(n))),
+      h('div', { class:'cred-bot' },
+        h('dl', { class:'cred-dl' }, h('dt', null, 'Estado'), h('dd', null, h('span', { class:'cred-st ' + st[1] }, st[0])), h('dt', null, 'Validado'), h('dd', null, fechaCorta((e.fechasNivel || {})[n])), h('dt', null, 'Revalida'), h('dd', null, rv.vence ? fechaCorta(rv.vence) : '—'), h('dt', null, 'Código'), h('dd', { class:'mono' }, e.credencial)),
+        h('div', { class:'cred-qr' }, QR.svg(payloadCredencial(e), { label:'Código QR de la credencial ' + e.credencial })))),
+    h('p', { class:'hint' }, 'Muéstrala en el taller. El Responsable Técnico la verifica buscando el código en la plataforma. El código cambia cada vez que validas un nivel.'),
+    S.dl ? h('div', { class:'row' }, btn('Descargar credencial', { kind:'ghost', icon:'download', onClick: ev => busy(ev.currentTarget, () => descargarCredencial(e)) })) : null);
+}
+async function descargarCredencial(e){
+  const n = e.nivel || 0, st = estadoCredencial(e), rv = e.revalidacion || {};
+  const qr = QR.svg(payloadCredencial(e));
+  qr.setAttribute('x', '440'); qr.setAttribute('y', '150'); qr.setAttribute('width', '170'); qr.setAttribute('height', '170');
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+  const txt = (x, y, t, o) => '<text x="' + x + '" y="' + y + '" ' + (o || '') + '>' + esc(t) + '</text>';
+  const data = '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" font-family="Helvetica, Arial, sans-serif">'
+    + '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d1a21"/><stop offset="1" stop-color="#070a0c"/></linearGradient></defs>'
+    + '<rect width="640" height="360" rx="22" fill="url(#g)"/><rect x="0" y="0" width="640" height="6" fill="#22B8F0"/>'
+    + txt(32, 52, 'LUMINE HABILITA', 'fill="#eef3f5" font-size="18" font-weight="700" letter-spacing="3"') + txt(608, 52, 'TÉCNICO INSTALADOR', 'fill="#8a9aa1" font-size="12" text-anchor="end" letter-spacing="2"')
+    + txt(32, 128, String(n), 'fill="#22B8F0" font-size="64" font-weight="800"') + txt(92, 108, e.nombre, 'fill="#eef3f5" font-size="24" font-weight="700"') + txt(92, 134, 'Nivel ' + n + ' · ' + NIVEL[n].nombre, 'fill="#b9c7cd" font-size="15"')
+    + txt(32, 200, 'Estado', 'fill="#8a9aa1" font-size="12"') + txt(130, 200, st[0], 'fill="' + (st[1] === 'ok' ? '#4ADE80' : '#F87171') + '" font-size="14" font-weight="700"')
+    + txt(32, 230, 'Validado', 'fill="#8a9aa1" font-size="12"') + txt(130, 230, fechaCorta((e.fechasNivel || {})[n]), 'fill="#eef3f5" font-size="14"')
+    + txt(32, 260, 'Revalida', 'fill="#8a9aa1" font-size="12"') + txt(130, 260, rv.vence ? fechaCorta(rv.vence) : '—', 'fill="#eef3f5" font-size="14"')
+    + txt(32, 290, 'Código', 'fill="#8a9aa1" font-size="12"') + txt(130, 290, e.credencial, 'fill="#eef3f5" font-size="14" font-family="monospace"')
+    + new XMLSerializer().serializeToString(qr) + '</svg>';
+  try { await S.dl.save({ filename:'credencial-lumine-' + e.credencial + '.svg', data }); toast('Credencial guardada'); }
+  catch(x){ if(x && x.code === 'declined') toast('Descarga cancelada', 'info'); else throw x; }
+}
 
 /* ---------- rotación de duo (D13): se pide por escrito al Responsable Técnico ---------- */
 function bloqueRotacion(e){
@@ -100,15 +270,15 @@ VIEWS.modulos = function(){
     const st = estadoModulo(m.id);
     const skipT = e ? m.cod.filter(c => (e.plan.saltadas || []).includes(c)) : [];
     const inner = h('div', { class:'modcard' },
-      h('div', { class:'mh' }, h('div', null, h('span', { class:'mono xs muted' }, m.id), h('h3', { class:'h4' }, m.nombre)),
+      h('div', { class:'mh' }, h('div', null, h('span', { class:'xs muted' }, m.nivel ? 'Nivel ' + m.nivel : 'Nivelación'), h('h3', { class:'h4' }, m.nombre)),
         locked ? badge('Bloqueado', 'line', 'lock') : st === 'aprobado' ? badge('Práctica aprobada', 'ok', 'check') : st === 'revisado' ? badge('Revisado', 'ok', 'check') : badge(st === 'iniciado' ? 'En curso' : 'Pendiente', 'info')),
       h('p', { class:'small ink2' }, m.resumen),
-      m.cod.length ? h('div', { class:'tag-row' }, m.cod.map(c => h('span', { class:'badge ' + (skipT.includes(c) ? 'demo' : 'line'), title: skipT.includes(c) ? 'Demostrada en tu jornada' : C[c].t }, c))) : null,
+      m.cod.length ? h('span', { class:'hint' }, m.cod.length + (m.cod.length === 1 ? ' tema' : ' temas') + (skipT.length ? ' · ' + skipT.length + (skipT.length === 1 ? ' ya demostrado' : ' ya demostrados') : '')) : null,
       locked ? h('span', { class:'hint' }, 'Se desbloquea al validar el nivel ' + (m.nivel - 1) + '.') : null);
     return locked ? h('div', { class:'card modcard locked' }, inner) : h('a', { class:'card link', href:'#modulo-' + m.id }, inner);
   };
   return page(
-    phead({ eyebrow:'Formación online', eic:'layers', title:'Tus módulos', lead:'Contenido corto, con casos del taller y simulador, repetible sin límite. El avance se desbloquea por nivel y el repaso queda siempre abierto (D9).' }),
+    phead({ eyebrow:'Formación online', eic:'layers', title:'Tus módulos', lead:'Cortos, con casos reales del taller. Repítelos cuantas veces quieras: el nivel se gana en el taller.' }),
     grupos.map(([lv, l]) => { const ms = MODULOS.filter(m => m.nivel === lv && plan.modulos.includes(m.id)); return ms.length ? h('section', { class:'section', style:'margin-top:22px' }, h('h2', { class:'h3', style:'margin-bottom:12px' }, l), h('div', { class:'grid g3', style:'--g:12px' }, ms.map(card))) : null; }));
 };
 
@@ -179,7 +349,7 @@ function practica(mid, ct){
     PRAC_ACTUAL = null;
     const rev = intento.map((x, k) => {
       const q = banco[x.qi], mia = st.resp[k] === undefined ? null : x.orden[st.resp[k]], bien = mia === q.a;
-      return h('div', { class:'prevq ' + (bien ? 'ok' : 'bad') }, h('div', { class:'row', style:'gap:8px' }, h('span', { class:'pn' }, icon(bien ? 'check' : 'x', 's14')), h('span', { class:'hint' }, 'Pregunta ' + (k + 1)), q.c ? codeTag(q.c) : null),
+      return h('div', { class:'prevq ' + (bien ? 'ok' : 'bad') }, h('div', { class:'row', style:'gap:8px' }, h('span', { class:'pn' }, icon(bien ? 'check' : 'x', 's14')), h('span', { class:'hint' }, 'Pregunta ' + (k + 1))),
         h('p', { class:'small', style:'font-weight:600' }, q.q),
         bien ? null : h('p', { class:'small' }, h('span', { class:'muted' }, 'Tu respuesta: '), mia === null ? 'sin responder' : q.o[mia]),
         h('p', { class:'small' }, h('span', { class:'muted' }, 'Correcta: '), q.o[q.a]), q.x ? h('p', { class:'hint' }, q.x) : null);
@@ -212,7 +382,7 @@ function practica(mid, ct){
   enviar.addEventListener('click', siguiente);
   addKids(box, [h('div', { class:'row sb' }, eyebrow('Práctica por caso', 'list'), h('span', { class:'small num muted' }, respondidas + ' de ' + n + ' respondidas')), notas,
     dots,
-    h('div', { class:'q' }, h('div', { class:'row', style:'gap:8px' }, q.c ? codeTag(q.c) : null, q.c ? critTag(C[q.c].k) : null, h('span', { class:'hint' }, 'Caso ' + (k + 1) + ' de ' + n)), h('p', { class:'h4', style:'font-weight:600' }, q.q), opts),
+    h('div', { class:'q' }, h('div', { class:'row', style:'gap:8px' }, q.c ? critTag(C[q.c].k) : null, h('span', { class:'hint' }, 'Caso ' + (k + 1) + ' de ' + n)), h('p', { class:'h4', style:'font-weight:600' }, q.q), opts),
     h('div', { class:'row sb' }, btn('Anterior', { kind:'ghost', icon:'arrowLeft', disabled: k === 0 || null, onClick: anterior }), enviar),
     h('p', { class:'hint' }, 'Atajos: 1 a 4 para elegir, Enter para avanzar. Cada intento trae preguntas y orden distintos.')]);
   return box;
@@ -233,15 +403,15 @@ VIEWS.modulo = function(mid){
   const vec = vecinosModulo(mid, plan, e ? (e.nivel || 0) : 0);
   const revisar = btn(est === 'nuevo' || est === 'iniciado' ? 'Marcar como revisado' : 'Revisado', { kind: est === 'nuevo' || est === 'iniciado' ? 'action' : 'ghost', icon:'check', disabled: !(est === 'nuevo' || est === 'iniciado') || null });
   revisar.addEventListener('click', () => busy(revisar, async () => { await marcarRevisado(mid); toast('Módulo marcado como revisado'); }));
-  const comps = m.cod.map(c => h('div', { class:'crow' + (sk.includes(c) ? ' skip' : '') }, codeTag(c), h('span', { class:'ct' }, C[c].t), sk.includes(c) ? badge('Ya la demostraste', 'ok') : prioTag(C[c].p)));
+  const comps = m.cod.map(c => h('div', { class:'crow tema' + (sk.includes(c) ? ' skip' : '') }, h('span', { class:'dot ' + (sk.includes(c) ? 'ok' : 'spark') }), h('span', { class:'ct' }, C[c].t), sk.includes(c) ? badge('Ya la demostraste', 'ok') : (C[c].k === 'comp' ? null : badge(CRITICIDAD[C[c].k].l, 'warn'))));
   // navegación entre módulos de la misma línea, sin volver a la lista
   const navMod = h('nav', { class:'modnav', 'aria-label':'Otros módulos' },
     vec.prev ? h('a', { class:'modnav-a prev', href:'#modulo-' + vec.prev.id }, icon('arrowLeft', 's16'), h('span', null, h('small', null, 'Anterior'), vec.prev.nombre)) : h('span'),
     vec.next ? h('a', { class:'modnav-a next', href:'#modulo-' + vec.next.id }, h('span', null, h('small', null, 'Siguiente'), vec.next.nombre), icon('arrowRight', 's16')) : h('span'));
   const pos = vec.de > 1 ? (m.nivel ? 'Nivel ' + m.nivel : 'Nivelación') + ' · módulo ' + vec.pos + ' de ' + vec.de : (m.nivel ? 'Nivel ' + m.nivel : 'Nivelación');
-  const head = phead({ back:['modulos','Módulos'], eyebrow: pos + ' · ' + mid, eic:'layers', title: m.nombre, lead: (ct && ct.resumen) || m.resumen, actions: ct && ct.practica ? null : [revisar] });
+  const head = phead({ back:['modulos','Módulos'], eyebrow: pos, eic:'layers', title: m.nombre, lead: (ct && ct.resumen) || m.resumen, actions: ct && ct.practica ? null : [revisar] });
   if(!ct || !(ct.capsulas || []).length){
-    return page(head, comps.length ? h('div', { class:'stack', style:'--g:6px;margin-bottom:22px' }, h('span', { class:'label' }, 'Competencias del módulo'), comps) : null,
+    return page(head, comps.length ? h('div', { class:'stack', style:'--g:6px;margin-bottom:22px' }, h('span', { class:'label' }, 'Lo que aprendes aquí'), comps) : null,
       h('div', { class:'stack', style:'--g:12px' }, emptyState('file', 'Contenido en preparación', 'El Responsable Técnico puede cargarlo desde Ajustes › Contenido. Mientras, repásalo con tu formador y márcalo como revisado.'), h('div', { class:'row', style:'justify-content:center' }, revisar)), navMod);
   }
   const tienePractica = !!(ct.reglas || ct.escenarios);
@@ -267,9 +437,9 @@ VIEWS.modulo = function(mid){
     const sig = pasos[1];
     cuerpo = h('div', { class:'stack', style:'--g:16px' },
       m.ic ? notice('info', 'lock', h('b', null, 'La biblioteca de calibraciones no se guarda en la plataforma. '), 'Este módulo enseña a cargarlas y registrarlas; lo enseña y lo valida Ingeniería de Calibración.') : null,
-      comps.length ? h('div', { class:'stack', style:'--g:6px' }, h('span', { class:'label' }, 'Competencias del módulo'), comps) : null,
+      comps.length ? h('div', { class:'stack', style:'--g:6px' }, h('span', { class:'label' }, 'Lo que aprendes aquí'), comps) : null,
       modPiezas(mid).length ? h('div', { class:'lab-link' }, h('span', { class:'ll-ic' }, icon('cube', 's20')), h('div', { class:'stack', style:'--g:6px' }, h('b', { class:'small' }, 'Míralo en el laboratorio 3D'), h('div', { class:'tag-row' }, modPiezas(mid).map(p => h('a', { class:'badge info', href:'#laboratorio-' + p.id }, p.n))))) : null,
-      notice('', 'info', (mid === 'N1-1' || mid === 'NIV-E') ? 'Contenido de la Fase 3. El contenido oficial se valida con la parte externa de seguridad (D5).' : 'Contenido base general. Se valida con la parte externa de seguridad (D5)' + (m.ic ? ' y con Ingeniería de Calibración.' : '.') + ' Lo propio del kit lo enseña tu formador en el taller.'),
+      notice('', 'info', 'Contenido de formación general' + (m.ic ? ', revisado con Ingeniería de Calibración.' : ', revisado con la parte externa de seguridad.') + ' Lo propio del kit lo enseña tu formador en el taller.'),
       h('div', { class:'grid g2', style:'--g:12px' }, ct.capsulas.filter(k => !(k.oficio && sk.includes(k.c))).map((k, i) => h('div', { class:'card capsule' }, h('span', { class:'cn' }, String(i + 1)), h('div', { class:'stack', style:'--g:8px' }, h('h3', { class:'h4' }, k.t), h('ul', null, k.puntos.map(p => h('li', { class:'small' }, p))))))),
       h('div', { class:'row sb' }, est === 'nuevo' || est === 'iniciado' ? revisar : h('span'), sig ? btn('Seguir: ' + sig[1], { kind:'action', icon:'arrowRight', onClick: () => irA(sig[0]) }) : null));
   } else if(st.paso === 'practica'){
@@ -318,7 +488,7 @@ VIEWS.postular = function(){
     const niv = nivelacionPorFundamentos(av.fundamentos, params().umbralFund);
     return page(phead({ eyebrow:'Postulación enviada', eic:'checkCircle', title:'Gracias, ' + String(av.postulacion.nombre || '').split(' ')[0], lead:'Tu postulación llegó al Responsable Técnico. El siguiente paso es la jornada técnica presencial.' }),
       h('div', { class:'grid g2', style:'--g:14px' },
-        h('div', { class:'card stack', style:'--g:10px', 'data-rv':'' }, h('h3', { class:'h4' }, 'Estaciones que revisarás en la jornada'), mapa.length ? h('div', { class:'stack', style:'--g:6px' }, mapa.map(c => h('div', { class:'crow' }, codeTag(c), h('span', { class:'ct' }, C[c].t), h('span')))) : h('p', { class:'small muted' }, 'Ninguna: tu ruta parte con el oficio completo.'), h('p', { class:'hint' }, 'Si demuestras una estación, esa competencia no la cursas.')),
+        h('div', { class:'card stack', style:'--g:10px', 'data-rv':'' }, h('h3', { class:'h4' }, 'Estaciones que revisarás en la jornada'), mapa.length ? h('div', { class:'stack', style:'--g:6px' }, mapa.map(c => h('div', { class:'crow tema' }, h('span', { class:'dot spark' }), h('span', { class:'ct' }, C[c].t), h('span')))) : h('p', { class:'small muted' }, 'Ninguna: tu ruta parte con el oficio completo.'), h('p', { class:'hint' }, 'Si demuestras una estación, esa competencia no la cursas.')),
         h('div', { class:'card stack', style:'--g:10px', 'data-rv':'' }, h('h3', { class:'h4' }, 'Nivelación sugerida'), av.fundamentos ? (niv.length ? h('div', { class:'tag-row' }, niv.map(a => badge(MOD[AREA_NIV[a]].nombre, 'info'))) : h('p', { class:'small' }, 'Por ahora, ninguna.')) : h('p', { class:'small muted' }, 'Sin prueba de fundamentos.'), h('p', { class:'hint' }, 'Solo suma módulos para que llegues con base. La jornada la confirma.'))),
       h('div', { class:'lab-cta', style:'margin-top:18px' }, h('div', { class:'stack', style:'--g:6px' }, eyebrow('Mientras esperas', 'cube'), h('h2', { class:'h3' }, 'Conoce el kit antes de la jornada.'), h('p', { class:'small ink2' }, 'Recorre el laboratorio 3D y prueba armar el kit en orden.')), linkBtn('Abrir el laboratorio', 'laboratorio', { kind:'action', arrow:true })));
   }

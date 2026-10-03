@@ -88,7 +88,7 @@ function subCol(name, key){
   const un = S.db.collection(name).onSnapshot(snap => {
     const m = {}; for(const d of snap.docs) m[d.id] = d.data();
     S.D[key] = m; S.loaded.add(key); S.rev++; scheduleRender();
-    if(key === 'personas' || key === 'duos' || key === 'expedientes') programarReconciliacion();
+    if(key === 'personas' || key === 'duos' || key === 'expedientes' || key === 'sesiones') programarReconciliacion();
   }, err => onDbError(err));
   S.unsub.push(un);
 }
@@ -138,7 +138,7 @@ function programarReconciliacion(){
 }
 async function reconciliarExpedientes(){
   if(RECON_CORRIENDO || S.role !== 'admin' || S.preview || S.readOnly) return;
-  if(!cargado(['personas','duos','expedientes','params'])) return;
+  if(!cargado(['personas','duos','expedientes','params','sesiones'])) return;
   RECON_CORRIENDO = true;
   try {
     const c = ctx();
