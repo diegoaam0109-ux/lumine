@@ -14,7 +14,7 @@ Integrantes: Diego Alarcón, Benjamín Torres y Lukas Verdugo.
 ## Contenido (máximo 15 minutos)
 
 16 diapositivas para exponer (unos 13 minutos, 4 por integrante) y un anexo de 9 que solo se usa si preguntan.
-El guion completo, con tiempos y preguntas probables, está en `GUION.md` y en las notas del orador del PPT.
+El guion completo, con tiempos por diapositiva, está en `GUION.md` y en las notas del orador del PPT.
 
 | Integrante | Diapositivas | Contenido |
 |---|---|---|
