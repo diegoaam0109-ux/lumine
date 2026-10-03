@@ -1,0 +1,13 @@
+{
+  "name": "lumine-habilita",
+  "private": true,
+  "description": "Selección y habilitación por competencias del técnico instalador de Lumine Motors",
+  "scripts": {
+    "build": "python3 build.py",
+    "test": "node tests/logic.test.js && node tests/store.test.js",
+    "e2e": "python3 build.py && node tests/e2e.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.47.0"
+  }
+}

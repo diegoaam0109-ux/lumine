@@ -1,0 +1,38 @@
+{
+  "css": [
+    "logo.css",
+    "styles-base.css",
+    "styles-shell.css",
+    "styles-views.css",
+    "styles-fx.css"
+  ],
+  "js": [
+    "data.js",
+    "data-contenido.js",
+    "data-gobierno.js",
+    "logic.js",
+    "store.js",
+    "seed.js",
+    "ui-core.js",
+    "engine3d.js",
+    "motion.js",
+    "app-state.js",
+    "actions.js",
+    "app-render.js",
+    "view-producto.js",
+    "view-admin.js",
+    "view-validaciones.js",
+    "view-duos-ind.js",
+    "view-dic-ajustes.js",
+    "view-tecnico.js",
+    "view-lab.js",
+    "view-login.js",
+    "app.js"
+  ],
+  "logic": [
+    "data.js",
+    "data-contenido.js",
+    "data-gobierno.js",
+    "logic.js"
+  ]
+}
