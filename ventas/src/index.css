@@ -1,0 +1,85 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./brand.css";
+
+/* Lumine Motors · sistema visual de la página comercial
+   Marca: celeste Lumine sobre grafito. Tipografías: Archivo (exhibición, ancha) y Figtree (texto).
+   Patrón y checklist: skill UI/UX Pro Max (hero dominante, una acción principal, movimiento con propósito). */
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Archivo", "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-brand: #22B8F0;
+  --color-brand-soft: #78d6f7;
+  --color-ok: #4ADE80;
+  --color-warn: #F5B94A;
+  --radius: 1rem;
+}
+
+:root {
+  --background: #06090b;
+  --foreground: #eef3f5;
+  --card: #0d1317;
+  --card-foreground: #eef3f5;
+  --muted: #141c21;
+  --muted-foreground: #9aaab1;
+  --border: rgba(186, 215, 247, 0.12);
+  --ring: rgba(34, 184, 240, 0.55);
+  --primary: #22B8F0;
+  --primary-foreground: #041016;
+  --accent: #141c21;
+  --accent-foreground: #eef3f5;
+  color-scheme: dark;
+}
+
+@layer base {
+  * { border-color: var(--border); }
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; -webkit-text-size-adjust: 100%; }
+  body { background: var(--background); color: var(--foreground); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  ::selection { background: rgba(34, 184, 240, 0.35); }
+  :focus-visible { outline: 2px solid #22B8F0; outline-offset: 3px; border-radius: 8px; }
+  button, a, [role="button"] { cursor: pointer; }
+}
+
+/* exhibición: Archivo ancho en mayúsculas, como la marca */
+.display { font-family: var(--font-display); font-stretch: 115%; font-weight: 850; text-transform: uppercase; letter-spacing: -0.03em; line-height: 0.92; }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #22B8F0; }
+
+/* ambiente: grilla de plano técnico y focos de luz */
+.ambiente { background:
+  radial-gradient(900px 500px at 70% -10%, rgba(34, 184, 240, 0.22), transparent 65%),
+  radial-gradient(700px 420px at 0% 30%, rgba(34, 184, 240, 0.08), transparent 70%),
+  linear-gradient(rgba(186, 215, 247, 0.045) 1px, transparent 1px) 0 0 / 56px 56px,
+  linear-gradient(90deg, rgba(186, 215, 247, 0.045) 1px, transparent 1px) 0 0 / 56px 56px; }
+.vidrio { background: rgba(13, 19, 23, 0.6); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); border: 1px solid rgba(186, 215, 247, 0.14); box-shadow: inset 0 1px 0 rgba(216, 236, 248, 0.08), 0 20px 50px -20px rgba(0, 0, 0, 0.7); }
+.brillo-texto { background: linear-gradient(100deg, #eef3f5 20%, #22B8F0 45%, #eef3f5 70%); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: brillo 6s ease-in-out infinite; }
+@keyframes brillo { 0%, 100% { background-position: 100% 0; } 50% { background-position: 0 0; } }
+
+/* escenario 3D */
+.lab-stage { position: relative; width: 100%; height: 100%; }
+.lab-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; cursor: grab; outline: none; }
+.lab-canvas:active { cursor: grabbing; }
+.lab-hots { position: absolute; inset: 0; pointer-events: none; }
+
+/* marcador honesto de dato comercial pendiente */
+.por-confirmar { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; border: 1px dashed rgba(245, 185, 74, 0.6); color: #F5B94A; font-size: 12px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+@keyframes marquesina { to { transform: translateX(-50%); } }
