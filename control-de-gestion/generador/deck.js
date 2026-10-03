@@ -7,6 +7,8 @@ const pptxgen = require('pptxgenjs');
 const fs = require('fs');
 const JSZip = require('jszip');
 
+const G = require('./guion.js');
+const D = {}; // una función por diapositiva; el orden lo pone guion.js
 const OUT = process.argv[2] || 'Lumine_Analisis_Estrategico_Control_de_Gestion.pptx';
 const A = f => path.join(__dirname, 'assets', f);
 
@@ -118,11 +120,15 @@ pres.defineSlideMaster({
 });
 
 // diapositiva de contenido: etiqueta (índice + sección) y titular con acento en serif
+// sección vigente (una por integrante y el anexo) y diapositiva de anexo en curso
+let SEC = null, ANEXO_ACTUAL = null;
+const abrirSeccion = t => { pres.addSection({ title: t }); SEC = t; };
 function contenido(seccion, n, etiqueta, titulo, acento, notas) {
-  const s = pres.addSlide({ masterName: 'CONTENIDO', sectionTitle: seccion });
+  const s = pres.addSlide({ masterName: 'CONTENIDO', sectionTitle: SEC });
+  if (ANEXO_ACTUAL) { n = ANEXO_ACTUAL.codigo; etiqueta = 'ANEXO · ' + etiqueta; }
   s.addText([{ text: n, options: { color: C.accent1 } }, { text: '  —— ', options: { color: C.accent5 } }, { text: etiqueta }], { placeholder: 'etiqueta' });
   s.addText([{ text: titulo + ' ' }, { text: acento, options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: 35 } }], { placeholder: 'title' });
-  if (notas) s.addNotes(notas);
+  s._notasBase = notas;
   return s;
 }
 // fila de tabla con regla fina inferior
@@ -141,9 +147,8 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
 // =====================================================================
 // 1 · PORTADA
 // =====================================================================
-{
-  pres.addSection({ title: 'Apertura' });
-  const s = pres.addSlide({ masterName: 'PORTADA', sectionTitle: 'Apertura' });
+D[1] = () => {
+  const s = pres.addSlide({ masterName: 'PORTADA', sectionTitle: SEC });
   mono(s, 'UNAB · OCTUBRE 2026', { x: 7.2, y: 0.4, w: R - 7.2, h: 0.26, align: 'right', valign: 'middle', fontSize: 9 });
   mono(s, 'DESARROLLO DE LA ESTRATEGIA · LUMINE MOTORS CHILE SPA', { x: M, y: 1.22, w: CW, h: 0.3, align: 'center', valign: 'middle', fontSize: 10 });
   s.addText([
@@ -164,48 +169,16 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
     T(s, v, { x, y: 6.5, w, h: 0.36, fontSize: 15 });
     x += w;
   });
-  s.addNotes('Presentamos el análisis estratégico de Lumine Motors Chile SpA para Control de Gestión (Teoría, ICMA901, sección 500, NRC 4118). ' +
+  s._notasBase = ('Presentamos el análisis estratégico de Lumine Motors Chile SpA para Control de Gestión (Teoría, ICMA901, sección 500, NRC 4118). ' +
     'Lumine es una empresa preoperativa que propone un kit de hibridación: suma un motor eléctrico en el eje trasero de autos a combustión de tracción delantera, sin tocar el motor original. ' +
     'El análisis aplica los marcos del documento 00 (Kovacevic y Reynoso, Francés, Hitt, Porter, Kaplan y Norton) sobre los cuatro instrumentos que completó el grupo.');
-}
-
-// =====================================================================
-// 2 · ÍNDICE
-// =====================================================================
-{
-  const s = contenido('Apertura', '00', 'ÍNDICE', 'DE LOS INSTRUMENTOS', 'a la estrategia.',
-    'El recorrido va de lo externo a lo interno y termina en la síntesis: FODA por perspectivas del CMI y la declaración de la estrategia. ' +
-    'Cada sección indica el marco teórico y el instrumento del curso del que salen los datos (02 Industria, 03 PEST, 05 Competencias Centrales, 06 Cadena de Valor).');
-  const items = [
-    ['01', 'Propósito, fuentes y escenario', 'INSTRUMENTOS 02 · 03 · 05 · 06'],
-    ['02', 'Escáner de ventajas competitivas', 'KOVACEVIC Y REYNOSO'],
-    ['03', 'Relaciones de valor con los clientes', 'KOVACEVIC Y REYNOSO'],
-    ['04', 'Redes de valor', 'KOVACEVIC Y REYNOSO'],
-    ['05', 'Discontinuidades del entorno', 'KOVACEVIC Y REYNOSO'],
-    ['06', 'Análisis externo', 'FRANCÉS · PEST (03)'],
-    ['07', 'Cinco fuerzas competitivas', 'PORTER · 02'],
-    ['08', 'Análisis interno', 'FRANCÉS · 7S'],
-    ['09', 'Recursos, competencias y cadena de valor', 'HITT · 05 · 06'],
-    ['10', 'FODA por perspectivas del CMI', 'KAPLAN Y NORTON'],
-    ['11', 'Declaración de la estrategia', 'OVA · EJES'],
-  ];
-  const colW = (CW - 0.5) / 2, rowH = 0.62, y0 = 2.62;
-  items.forEach(([n, t, f], i) => {
-    const c = i < 6 ? 0 : 1, r = i < 6 ? i : i - 6;
-    const x = M + c * (colW + 0.5), y = y0 + r * rowH;
-    regla(s, y, x, colW);
-    mono(s, n, { x, y: y + 0.1, w: 0.5, h: 0.3, valign: 'middle', fontSize: 10, color: C.accent1 });
-    T(s, t, { x: x + 0.55, y: y + 0.08, w: colW - 0.55, h: 0.3, valign: 'middle', fontSize: 16 });
-    mono(s, f, { x: x + 0.55, y: y + 0.38, w: colW - 0.55, h: 0.2, valign: 'middle', fontSize: 7.5 });
-    if (r === 5 || i === items.length - 1) regla(s, y + rowH, x, colW);
-  });
-}
+  return s;
+};
 
 // =====================================================================
 // 3 · CONTEXTO: LUMINE HOY
 // =====================================================================
-{
-  pres.addSection({ title: 'Contexto y fuentes' });
+D[3] = () => {
   const s = contenido('Contexto y fuentes', '00', 'CONTEXTO · LA EMPRESA', 'UN KIT QUE SE SUMA,', 'no reemplaza.',
     'Lumine suma un motor eléctrico en el eje trasero, un banco de baterías LFP y una unidad de control; el motor original, la transmisión y la alimentación quedan intactos. ' +
     'La empresa es preoperativa: no tiene instalaciones, personal, clientes ni flujo de caja. Por eso, al compararla con competidores en operación, todas sus áreas salen debilidad y sus fortalezas reales están en factores puntuales. ' +
@@ -247,12 +220,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
     mono(s, k, { x: hx + 0.16, y: 6.07, w: hw - 0.2, h: 0.27, valign: 'middle', fontSize: 9, color: C.text1 });
     T(s, v, { x: hx, y: 6.36, w: hw, h: 0.48, fontSize: 12.5, color: C.text2 });
   });
-}
+  return s;
+};
 
 // =====================================================================
 // 4 · 01 PROPÓSITO, FUENTES Y ESCENARIO
 // =====================================================================
-{
+D[4] = () => {
   const s = contenido('Contexto y fuentes', '01', 'PROPÓSITO, FUENTES Y ESCENARIO', 'CUATRO INSTRUMENTOS,', 'un solo escenario.',
     'El análisis se basa en los cuatro instrumentos del curso; el informe de las fases 1 y 2 se usó solo como contexto, y cuando difieren priman los instrumentos, que son más recientes. ' +
     'Industria (02): promedio ponderado de 3,49, moderadamente poco atractiva. PEST (03): 2,82 hoy y 2,99 a futuro, con 13 oportunidades, 18 neutros y 20 amenazas. ' +
@@ -293,13 +267,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
     mono(s, k, { x: ax + 0.17, y: y + 0.07, w: aw - 0.2, h: 0.24, fontSize: 8.5, color: C.text1 });
     T(s, v, { x: ax, y: y + 0.33, w: aw, h: 0.4, fontSize: 12.5, color: C.text2 });
   });
-}
+  return s;
+};
 
 // =====================================================================
 // 5 · 02 ESCÁNER: TENDENCIAS
 // =====================================================================
-{
-  pres.addSection({ title: 'Entorno externo' });
+D[5] = () => {
   const s = contenido('Entorno externo', '02', 'ESCÁNER DE VENTAJAS COMPETITIVAS · KOVACEVIC Y REYNOSO', 'SIN VENTAJA COMPETITIVA', 'efectiva, todavía.',
     'Lumine no tiene hoy ninguna ventaja competitiva efectiva. El instrumento 05 identifica una sola competencia central, el conocimiento de calibración por marca y modelo, pero la biblioteca que lo contiene está vacía y sin protección formal. ' +
     'Las tendencias favorecen el negocio: el parque se conserva, el combustible sube, la batería LFP baja y crece el cliente prioritario. En contra juegan la actividad débil y el dólar alto, que encarece el kit importado. ' +
@@ -339,12 +313,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
     mono(s, '0' + (i + 1), { x: cx + 0.25, y: cy + 2.62 + i * 0.48, w: 0.4, h: 0.48, valign: 'middle', fontSize: 9, color: C.accent1 });
     T(s, p, { x: cx + 0.65, y: cy + 2.62 + i * 0.48, w: cw - 0.9, h: 0.48, valign: 'middle', fontSize: 13, color: C.text1 });
   });
-}
+  return s;
+};
 
 // =====================================================================
 // 6 · 02 ESCÁNER: DOGMAS
 // =====================================================================
-{
+D[6] = () => {
   const s = contenido('Entorno externo', '02', 'ESCÁNER · INDUSTRIA Y DOGMAS', 'TRES DOGMAS', 'por desafiar.',
     'La industria tiene tres dogmas. Primero, que reducir la huella exige reemplazar el vehículo: desafiarlo abre el mercado de quienes conservan su auto. ' +
     'Segundo, que intervenir la propulsión es intervenir la combustión, lo que justifica limitarla a autos de pocos años: la arquitectura en el eje trasero no altera la combustión. ' +
@@ -372,12 +347,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
     { text: 'Alta en el hardware, baja en el servicio. ', options: { bold: true } },
     { text: 'El valor se traslada de la pieza a la calibración y la certificación: por eso el kit no se vende por separado.', options: { color: C.text2 } },
   ], { x: M + 2.4, y: by - 0.02, w: CW - 2.4, h: 0.6, fontSize: 14 });
-}
+  return s;
+};
 
 // =====================================================================
 // 7 · 03 CLIENTES: ATRIBUTOS
 // =====================================================================
-{
+D[7] = () => {
   const s = contenido('Entorno externo', '03', 'RELACIONES DE VALOR CON LOS CLIENTES', 'EL PRECIO DECIDE SI COMPRA;', 'la confianza, si se atreve.',
     'La necesidad central es reducir de forma permanente el gasto en combustible del vehículo que ya se tiene, sin reemplazarlo. ' +
     'Las entrevistas sugieren un orden: primero, que no se intervenga el motor (lo pidieron los tres entrevistados); segundo, confianza institucional; tercero, el precio. ' +
@@ -418,12 +394,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
     { text: 'Ambas pueden ser ciertas: ', options: { bold: true } },
     { text: 'el precio decide si compra y la confianza decide si se atreve. Validarlo exige una muestra aleatoria y cuantitativa.', options: { color: C.text2 } },
   ], { x: cx + 0.25, y: cy + 2.75, w: cw - 0.5, h: 1.2, fontSize: 13.5 });
-}
+  return s;
+};
 
 // =====================================================================
 // 8 · 03 CLIENTES: VALOR Y PRECIO
 // =====================================================================
-{
+D[8] = () => {
   const s = contenido('Entorno externo', '03', 'RELACIONES DE VALOR · ESTRATEGIA DE PRECIO', 'EL VALOR ES EL', 'combustible evitado.',
     'El valor para el cliente es el gasto en combustible que evita. Con 150 a 250 km diarios, 24 días al mes, 10 km por litro y $1.450 por litro, el gasto mensual va de $522.000 a $870.000. ' +
     'Con el ahorro que usan los instrumentos 03 y 06, hasta 20% menos bencina en ciudad, el ahorro mensual queda entre $104.400 y $174.000. Es un techo: supone el máximo de la estimación y todo el recorrido en ciudad. ' +
@@ -462,12 +439,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
     mono(s, k, { x: cx + 0.35, y, w: cw - 0.35, h: 0.22, fontSize: 9, color: col === C.text2 ? C.text1 : col });
     T(s, v, { x: cx + 0.35, y: y + 0.27, w: cw - 0.35, h: 0.62, fontSize: 13.5 });
   });
-}
+  return s;
+};
 
 // =====================================================================
 // 9 · 04 REDES DE VALOR
 // =====================================================================
-{
+D[9] = () => {
   const s = contenido('Entorno externo', '04', 'REDES DE VALOR', 'UNA RED MÁS INSTITUCIONAL', 'que comercial.',
     'Los socios que deciden si el servicio puede venderse son el regulador, las aseguradoras, las plantas de revisión técnica y la institución financiera; ninguno está formalizado (06, cuentas claves: riesgo 2). ' +
     'No se proponen alianzas hacia atrás: la cadena de proveedores es fragmentada y a la baja. Pero si la homologación es por par modelo-kit, cambiar de proveedor obliga a rehomologar cada modelo, así que conviene un acuerdo de abastecimiento de largo plazo. ' +
@@ -502,12 +480,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
     { text: 'Ninguno está formalizado. ', options: { bold: true, color: C.text1 } },
     { text: 'Elegir el primer proveedor es casi irreversible: cambiarlo obliga a rehomologar cada modelo.', options: { color: C.text2 } },
   ], { x: cx0 - 0.95, y: cyC + 2.05, w: 3.4, h: 1.25, fontSize: 12.5, align: 'center' });
-}
+  return s;
+};
 
 // =====================================================================
 // 10 · 05 DISCONTINUIDADES
 // =====================================================================
-{
+D[10] = () => {
   const s = contenido('Entorno externo', '05', 'DISCONTINUIDADES DEL ENTORNO', 'LA DISCONTINUIDAD', 'es normativa.',
     'La Ley N° 21.793 abrió una vía formal para intervenir la propulsión de vehículos en uso, y su reglamento decidirá si esa vía incluye a Lumine. Es un cambio abrupto, por evento. ' +
     'El resto del entorno cambia lento, con una excepción: el deterioro macroeconómico de 2026 (PIB recortado, desempleo de 9,5% y dólar alto), que golpea la capacidad de pago del cliente. ' +
@@ -544,12 +523,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
   regla(s, cy + 2.45, cx + 0.25, cw - 0.5);
   mono(s, 'EFECTO DE SEGUNDO ORDEN', { x: cx + 0.25, y: cy + 2.58, w: cw - 0.5, h: 0.24, fontSize: 8.5, color: C.text1 });
   T(s, 'La meta 2035 de ventas cero emisiones recae sobre autos nuevos: el parque usado sigue envejeciendo y el nicho crece.', { x: cx + 0.25, y: cy + 2.88, w: cw - 0.5, h: 1.15, fontSize: 12.5, color: C.text2 });
-}
+  return s;
+};
 
 // =====================================================================
 // 11 · 06 PEST
 // =====================================================================
-{
+D[11] = () => {
   const s = contenido('Entorno externo', '06', 'ANÁLISIS EXTERNO · PEST (03) · FRANCÉS', '20 AMENAZAS', 'contra 13 oportunidades.',
     'El resultado más claro del PEST es el conteo: 20 amenazas contra 13 oportunidades. El puntaje global lo confirma, 2,82 hoy y 2,99 a futuro, bajo el neutro de 3, pero subestima el desbalance porque la mayoría de los demás factores son neutros. ' +
     'Las oportunidades se concentran en lo tecnológico (7 de 13): ahorro documentado por ICCT y SEG, Francia legalizó la reconversión en 2020 y los componentes están estandarizados. ' +
@@ -586,12 +566,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
   T(s, '2,82', { x: R - 1.55, y: gy, w: 0.7, h: 0.55, valign: 'middle', align: 'right', fontFace: F_CON, bold: true, fontSize: 22, color: C.accent1 });
   T(s, '2,99', { x: R - 0.8, y: gy, w: 0.8, h: 0.55, valign: 'middle', align: 'right', fontFace: F_CON, bold: true, fontSize: 22, color: C.text2 });
   T(s, 'Las oportunidades se concentran en lo tecnológico; las amenazas decisivas son la regulatoria y la capacidad de pago del cliente.', { x: cx, y: gy + 0.75, w: cw, h: 1.0, fontSize: 13, color: C.text2 });
-}
+  return s;
+};
 
 // =====================================================================
 // 12 · 06 MATRIZ IMPACTO-INCERTIDUMBRE
 // =====================================================================
-{
+D[12] = () => {
   const s = contenido('Entorno externo', '06', 'ANÁLISIS EXTERNO · IMPACTO E INCERTIDUMBRE', 'CINCO FACTORES CRÍTICOS,', 'todos inciertos.',
     'El instrumento 03 clasifica los factores por impacto comercial e incertidumbre. Según Francés, cada cuadrante pide una herramienta distinta: escenarios para los factores críticos, análisis proyectivo para las tendencias y análisis de eventos para lo que se monitorea. ' +
     'Los cinco factores críticos requieren escenarios alternos: el reglamento, el reconocimiento de aseguradoras y plantas, el precio de la bencina, el tipo de cambio y el ahorro real. ' +
@@ -624,12 +605,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
   mono(s, 'BAJO', { x: gx, y: ay, w: qw, h: 0.22, fontSize: 8, align: 'center' });
   mono(s, 'ALTO', { x: gx + qw + gap, y: ay, w: qw, h: 0.22, fontSize: 8, align: 'center' });
   mono(s, 'IMPACTO COMERCIAL', { x: gx, y: ay + 0.2, w: gw, h: 0.22, fontSize: 8.5, align: 'center', color: C.text1, charSpacing: 2 });
-}
+  return s;
+};
 
 // =====================================================================
 // 13 · 06 ESCENARIOS REGULATORIOS
 // =====================================================================
-{
+D[13] = () => {
   const s = contenido('Entorno externo', '06', 'ANÁLISIS EXTERNO · ESCENARIOS REGULATORIOS', 'LA VÍA LEGAL DEPENDE', 'de la autoridad.',
     'El factor crítico de mayor impacto es el reglamento. Los escenarios salen de dos preguntas abiertas: si la hibridación aditiva cabe en la definición de transformación y si se mantiene la exclusión de vehículos con sistemas de seguridad. ' +
     'Con el borrador de 2021 como referencia, Lumine está en la rama «No» del primer nodo, que lleva a E3 o E4. Solo E1 convierte la barrera regulatoria en protección para el primero que homologa. ' +
@@ -676,12 +658,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
   });
   mono(s, 'SITUACIÓN VIGENTE (02 Y 03)', { x: M, y: yA + ah + 0.25, w: aw, h: 0.22, fontSize: 8.5, color: C.accent1 });
   T(s, 'Rama «No» del primer nodo: E3 o E4. Solo E1 convierte la barrera en protección.', { x: M, y: yA + ah + 0.52, w: aw, h: 0.85, fontSize: 12.5, color: C.text2 });
-}
+  return s;
+};
 
 // =====================================================================
 // 14 · 07 CINCO FUERZAS
 // =====================================================================
-{
+D[14] = () => {
   const s = contenido('Entorno externo', '07', 'CINCO FUERZAS COMPETITIVAS · PORTER (02)', 'LA FUERZA DOMINANTE:', 'no hacer nada.',
     'La industria es moderadamente poco atractiva: promedio ponderado de 3,49 en una escala donde 5 es la fuerza más intensa. ' +
     'La presión viene de los sustitutos (5,00), porque no hacer nada cuesta $0, y de los nuevos entrantes (3,75), porque una vez abierta la vía cualquiera con presupuesto puede homologar. La rivalidad (1,83) y los proveedores (2,67) juegan a favor. ' +
@@ -710,13 +693,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
     { text: 'Sustitutos y clientes suman 55% ', options: { bold: true } },
     { text: 'y operan por la misma causa: el cliente puede quedarse con su auto a costo $0. Las cuotas atacan la causa, la falta de liquidez.', options: { color: C.text2 } },
   ], { x: cx + 0.25, y: cy + 2.55, w: cw - 0.5, h: 1.5, fontSize: 13 });
-}
+  return s;
+};
 
 // =====================================================================
 // 15 · 08 FACTORES CRÍTICOS DE ÉXITO
 // =====================================================================
-{
-  pres.addSection({ title: 'Entorno interno' });
+D[15] = () => {
   const s = contenido('Entorno interno', '08', 'ANÁLISIS INTERNO · FACTORES CRÍTICOS DE ÉXITO · FRANCÉS', 'FORTALEZA DE DISEÑO,', 'no de ejecución.',
     'La fortaleza interna de Lumine es de diseño, no de ejecución: la arquitectura, el proceso y la planificación están bien definidos, pero ninguno se ha probado en un vehículo real. ' +
     'De los seis factores críticos de éxito, cuatro están en nivel equilibrado o débil. Los dos que alcanzan fortaleza leve, integración y estandarización, son de diseño y no se han probado. ' +
@@ -750,12 +733,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
   });
   regla(s, y0 + 0.32 + filas.length * rh);
   mono(s, 'ESCALA 1 (GRAN DEBILIDAD) A 5 (GRAN FORTALEZA) · EN RIESGO, UN NÚMERO BAJO ES RIESGO ALTO', { x: M, y: y0 + 0.4 + filas.length * rh, w: CW, h: 0.22, fontSize: 7.5 });
-}
+  return s;
+};
 
 // =====================================================================
 // 16 · 08 7S DE MCKINSEY
 // =====================================================================
-{
+D[16] = () => {
   const s = contenido('Entorno interno', '08', 'ANÁLISIS INTERNO · 7S DE MCKINSEY', 'LAS S DURAS ESTÁN DISEÑADAS;', 'las blandas, débiles.',
     'Las 7S muestran un patrón claro. Las S duras, estrategia y sistemas, están diseñadas: hay misión, visión, ocho objetivos, un CMI y un proceso de taller de cinco etapas, aunque sin operar y sin línea base. ' +
     'Las S blandas que sostienen la ejecución son las más débiles: un estilo de gestión concentrado en fundadores sin trayectoria en la industria, un perfil técnico escaso (mecánica más alta tensión con licencia SEC) y ningún esquema para retener a los técnicos. ' +
@@ -804,12 +788,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
     regla(s, y, lx, lw);
     y += 0.2;
   });
-}
+  return s;
+};
 
 // =====================================================================
 // 17 · 09 COMPETENCIAS CENTRALES (VRIO)
 // =====================================================================
-{
+D[17] = () => {
   const s = contenido('Entorno interno', '09', 'RECURSOS Y COMPETENCIAS CENTRALES · HITT (05)', 'UNA SOLA COMPETENCIA', 'central.',
     'De 15 recursos y capacidades evaluados con los cuatro criterios de Hitt, solo dos cumplen todos: la biblioteca de calibraciones (recurso) y la ingeniería de integración y calibración (capacidad). Son dos expresiones de la misma competencia central. ' +
     'Seis dan ventaja temporal, como la homologación, la autorización del taller y los técnicos con licencia SEC, y siete son igualdad competitiva o condiciones de entrada. No hay desventajas. ' +
@@ -854,12 +839,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
   });
   regla(s, y0 + 0.3 + filas.length * rh, tx, tw);
   mono(s, 'V VALIOSO · R RARO · C CARO DE IMITAR · I ÚNICO E INIMITABLE', { x: tx, y: y0 + 0.38 + filas.length * rh, w: tw, h: 0.22, fontSize: 7.5 });
-}
+  return s;
+};
 
 // =====================================================================
 // 18 · 09 CADENA DE VALOR
 // =====================================================================
-{
+D[18] = () => {
   const s = contenido('Entorno interno', '09', 'CADENA DE VALOR · PORTER (06)', 'EL COSTO Y LA EXCLUSIVIDAD', 'no coinciden.',
     'Las directrices del costo y la fuente de exclusividad no coinciden. El costo se acumula en la logística de entrada (kit importado, mercancía peligrosa Clase 9 y dólar) y en las horas de operaciones; la exclusividad nace en el desarrollo tecnológico, la calibración, y se entrega en operaciones. ' +
     'Tres eslabones son decisivos: infraestructura, porque sin autorización no opera ningún eslabón; desarrollo tecnológico, única fuente de exclusividad; y operaciones, el cuello de botella donde convergen la homologación por modelo, los plazos de internación y la escasez de técnicos. ' +
@@ -914,12 +900,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
     mono(s, k, { x: cx + 0.17, y: y + 0.08, w: cw - 0.2, h: 0.24, fontSize: 8.5, color: C.text1 });
     T(s, v, { x: cx, y: y + 0.38, w: cw, h: 0.65, fontSize: 12.5, color: C.text2 });
   });
-}
+  return s;
+};
 
 // =====================================================================
 // 19 · 09 RANKING FRENTE A COMPETIDORES
 // =====================================================================
-{
+D[19] = () => {
   const s = contenido('Entorno interno', '09', 'CAPACIDADES FRENTE A COMPETIDORES (06)', 'BRECHA CON EL LÍDER:', '−1,29 y −1,43.',
     'Frente a los competidores, Lumine obtiene 3,00 en habilidades y 2,71 en factores de riesgo. El líder, armado con el máximo de cada área entre GLP, híbridos usados y eléctricos nuevos, llega a 4,29 y 4,14: la brecha es de −1,29 y −1,43. ' +
     'Las siete áreas salen debilidad por dos razones de diseño que el instrumento declara: se compara una empresa preoperativa con actores en operación, y el líder no es un competidor real. Los puntajes de competidores son estimaciones del equipo. ' +
@@ -954,13 +941,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
     { text: 'Las fortalezas puntuales ', options: { bold: true } },
     { text: '(11 líneas con puntaje 4), no el promedio: tecnología, procesos, mercado, planificación y gestión del riesgo.', options: { color: C.text2 } },
   ], { x: cx + 0.22, y: by + 0.5, w: cw - 0.44, h: 1.35, fontSize: 13 });
-}
+  return s;
+};
 
 // =====================================================================
 // 20 · 10 FODA POR PERSPECTIVAS DEL CMI
 // =====================================================================
-{
-  pres.addSection({ title: 'Síntesis' });
+D[20] = () => {
   const s = contenido('Síntesis', '10', 'FODA POR PERSPECTIVAS DEL CMI · KAPLAN Y NORTON', 'FORTALEZAS EN PROCESOS;', 'amenazas en clientes.',
     'Ordenado por las cuatro perspectivas del Cuadro de Mando Integral, el FODA muestra dónde está el problema: las fortalezas se concentran en procesos internos, es decir, en el diseño técnico. ' +
     'Las amenazas decisivas caen en la perspectiva de clientes (capacidad de pago, desempleo y la opción de no hacer nada a costo $0) y en la habilitación regulatoria. ' +
@@ -991,12 +978,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
       T(s, t, { x: x + 0.13, y: y + 0.08, w: cw - 0.26, h: rh - 0.16, fontSize: 11, color: hot ? C.text1 : C.text2, valign: 'middle' });
     });
   });
-}
+  return s;
+};
 
 // =====================================================================
 // 21 · 10 CRUCE ESTRATÉGICO
 // =====================================================================
-{
+D[21] = () => {
   const s = contenido('Síntesis', '10', 'FODA · CRUCE ESTRATÉGICO', 'DEL FODA', 'a las acciones.',
     'Los cruces son coherentes con los instrumentos. FO: homologar primero los modelos de mayor densidad en el segmento priorizado, aprovechando que nadie ofrece hoy la hibridación certificada. ' +
     'DO: consultar al 3CV y plantear al MTT el precedente del gas licuado mientras elabora el reglamento. FA: frente al híbrido usado y a no hacer nada, vender la cuota mensual contra el ahorro mensual, no la sostenibilidad. ' +
@@ -1019,12 +1007,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
   regla(s, by);
   mono(s, 'QUINTO CRUCE · DA', { x: M, y: by + 0.12, w: 2.4, h: 0.24, fontSize: 9, color: C.accent3 });
   T(s, 'Contratar cobertura cambiaria y un acuerdo de abastecimiento de largo plazo: el dólar sube y cambiar de proveedor obliga a rehomologar.', { x: M + 2.4, y: by + 0.08, w: CW - 2.4, h: 0.55, fontSize: 13.5, color: C.text2 });
-}
+  return s;
+};
 
 // =====================================================================
 // 22 · 10 PROBLEMAS CLAVE
 // =====================================================================
-{
+D[22] = () => {
   const s = contenido('Síntesis', '10', 'PROBLEMAS CLAVE DE LA ESTRATEGIA', 'CINCO PROBLEMAS', 'que deciden el negocio.',
     'Son cinco problemas clave. Uno, la vía legal: sin un reglamento que reconozca la hibridación aditiva, no hay negocio. Dos, el reconocimiento de terceros: aseguradoras y plantas pueden bloquear la venta aun con reglamento favorable. ' +
     'Tres, la capacidad de pago: ingreso disponible bajo, desempleo de 9,5% y crédito caro; sin financiamiento no hay conversión. Cuatro, el ahorro no medido: el 20% en ciudad es una estimación no verificada en autos chilenos. ' +
@@ -1047,13 +1036,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
     T(s, t, { x: x + 0.2, y: y0 + 1.55, w: cw - 0.35, h: 0.62, fontFace: F_TIT, fontSize: 13, valign: 'bottom', lineSpacingMultiple: 0.95 });
     T(s, d, { x: x + 0.2, y: y0 + 2.3, w: cw - 0.4, h: 1.4, fontSize: 13, color: C.text2 });
   });
-}
+  return s;
+};
 
 // =====================================================================
 // 23 · 11 DECLARACIÓN DE LA ESTRATEGIA
 // =====================================================================
-{
-  pres.addSection({ title: 'Estrategia' });
+D[23] = () => {
   const s = contenido('Estrategia', '11', 'DECLARACIÓN DE LA ESTRATEGIA · OVA', 'DIFERENCIACIÓN', 'enfocada.',
     'Lumine compite con diferenciación enfocada. La diferenciación descansa en el servicio y no en el hardware; el enfoque, en un segmento definido por kilometraje y por el peso del combustible en el costo por kilómetro. ' +
     'Objetivo: ser hacia 2031 el taller de referencia en hibridación, como el primer taller autorizado del país; tiene plazo pero no una meta cuantitativa. Ventaja: la única alternativa que reduce el consumo sin reemplazar el vehículo, sin límite de antigüedad y con certificación; es potencial mientras la biblioteca no exista. ' +
@@ -1082,12 +1071,13 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
     s.addShape(S.rect, { x, y: ry + 0.11, w: 0.08, h: 0.08, fill: { color: C.accent4 }, line: { type: 'none' } });
     T(s, t, { x: x + 0.18, y: ry, w: rw - 0.25, h: 0.3, valign: 'middle', fontSize: 12.5, color: C.text2 });
   });
-}
+  return s;
+};
 
 // =====================================================================
 // 24 · 11 EJES ESTRATÉGICOS
 // =====================================================================
-{
+D[24] = () => {
   const s = contenido('Estrategia', '11', 'EJES ESTRATÉGICOS', 'TRES EJES,', 'ocho objetivos.',
     'Los ocho objetivos se agrupan en tres ejes. Habilitación formal (objetivos 1 a 3) ataca la vía legal y el reconocimiento de terceros y se mide en procesos internos y clientes. ' +
     'Acceso comercial (4 y 5) ataca la capacidad de pago del cliente y se mide en clientes y en la perspectiva financiera. Conocimiento y escala (6 a 8) ataca el ahorro no medido y la rotación técnica, en aprendizaje y crecimiento. ' +
@@ -1121,14 +1111,14 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
     { text: 'Ningún eje aborda la exposición cambiaria ', options: { bold: true } },
     { text: '(03: gran amenaza hoy). Debería incorporarse al eje 2 o al Plan Financiero.', options: { color: C.text2 } },
   ], { x: M + 2.4, y: by, w: CW - 2.6, h: bh, valign: 'middle', fontSize: 13.5 });
-}
+  return s;
+};
 
 // =====================================================================
 // 25 · CIERRE
 // =====================================================================
-{
-  pres.addSection({ title: 'Cierre' });
-  const s = pres.addSlide({ masterName: 'CIERRE', sectionTitle: 'Cierre' });
+D[25] = () => {
+  const s = pres.addSlide({ masterName: 'CIERRE', sectionTitle: SEC });
   mono(s, 'CONTROL DE GESTIÓN · ICMA901 · NRC 4118', { x: 6.2, y: 0.4, w: R - 6.2, h: 0.26, align: 'right', valign: 'middle', fontSize: 9 });
   s.addText([
     { text: '11', options: { color: C.accent1, fontFace: F_MONO, fontSize: 10, charSpacing: 1.5 } },
@@ -1143,9 +1133,44 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
   T(s, 'Diego Alarcón · Benjamín Torres · Lukas Verdugo', { x: M, y: 4.12, w: 7.5, h: 0.36, fontSize: 16 });
   mono(s, 'GRACIAS · ¿PREGUNTAS?', { x: R - 4, y: 4.12, w: 4, h: 0.36, valign: 'middle', align: 'right', fontSize: 11, color: C.accent1 });
   mono(s, '© 2026 LUMINE MOTORS · CONTROL DE GESTIÓN · TEORÍA · ICMA901 · SECCIÓN 500', { x: M, y: 6.98, w: CW, h: 0.24, valign: 'middle', fontSize: 8 });
-  s.addNotes('Cierre: como concluye el instrumento de cinco fuerzas, la prioridad no es competir con otros talleres sino lograr que el ahorro supere al precio frente a la opción de no hacer nada. ' +
+  s._notasBase = ('Cierre: como concluye el instrumento de cinco fuerzas, la prioridad no es competir con otros talleres sino lograr que el ahorro supere al precio frente a la opción de no hacer nada. ' +
     'Eso depende de tres cosas que hoy no están: la vía legal (reglamento), el reconocimiento de terceros (aseguradoras y plantas) y la medición del ahorro real. Gracias; quedamos atentos a sus preguntas.');
-}
+  return s;
+};
+
+// =====================================================================
+// ANEXO · portada del material de apoyo
+// =====================================================================
+D.anexo = (primera) => {
+  const s = contenido('', 'A', 'MATERIAL DE APOYO', 'ANEXO', 'para preguntas.');
+  T(s, 'Estas diapositivas no se presentan: si una pregunta toca uno de estos temas, se salta directo a la indicada.', { x: M, y: 2.5, w: CW, h: 0.35, fontSize: 14, color: C.text2 });
+  const colW = (CW - 0.5) / 2, rowH = 0.72, y0 = 3.15;
+  G.ANEXO.forEach((a, i) => {
+    const c = i < 4 ? 0 : 1, r = i % 4, x = M + c * (colW + 0.5), y = y0 + r * rowH;
+    regla(s, y, x, colW);
+    tag(s, a.codigo, x, y + 0.22, { w: 0.46 });
+    T(s, a.titulo, { x: x + 0.65, y, w: colW - 2.4, h: rowH, valign: 'middle', fontSize: 16 });
+    mono(s, 'DIAPOSITIVA ' + (primera + i), { x: x + colW - 1.75, y, w: 1.75, h: rowH, valign: 'middle', align: 'right', fontSize: 8.5 });
+    if (r === 3) regla(s, y + rowH, x, colW);
+  });
+  return s;
+};
+
+// ---------- orden de la exposición (guion.js) y anexo ----------
+const nota = x => `${x.quien.toUpperCase()} · ${G.segundos(x.texto)} s\n\n${x.texto}`;
+let quienAnterior = null, parte = 0;
+G.PRINCIPAL.forEach(x => {
+  if (x.quien !== quienAnterior) { abrirSeccion(`${++parte} · ${x.quien}`); quienAnterior = x.quien; }
+  D[x.d]().addNotes(nota(x));
+});
+abrirSeccion('Anexo');
+D.anexo(G.PRINCIPAL.length + 2).addNotes('ANEXO · No se presenta. Sirve para saltar a la diapositiva de apoyo cuando una pregunta lo pide.');
+G.ANEXO.forEach(a => {
+  ANEXO_ACTUAL = a;
+  const s = D[a.d]();
+  s.addNotes(`ANEXO ${a.codigo} · Solo si preguntan.\n\n${s._notasBase || ''}`);
+});
+ANEXO_ACTUAL = null;
 
 // pptxgenjs escribe la paleta de Office: se reemplaza por la de Lumine en ppt/theme/theme1.xml
 async function aplicarTema(archivo, tema) {

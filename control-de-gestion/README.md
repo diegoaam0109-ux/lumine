@@ -8,20 +8,20 @@ Integrantes: Diego Alarcón, Benjamín Torres y Lukas Verdugo.
 | `Lumine_Analisis_Estrategico_Control_de_Gestion.pdf` | Presentar desde cualquier computador: las tipografías van incrustadas y se ve igual en todos lados. |
 | `Lumine_Analisis_Estrategico_Control_de_Gestion.pptx` | Editar en PowerPoint. Cada diapositiva trae **notas del orador** con lo que hay que decir. |
 | `fuentes/` | Tipografías de la página (Archivo, Figtree, IBM Plex Mono, Instrument Serif). Instálalas antes de abrir el PPT. |
-| `generador/` | Script que arma la presentación desde cero (por si hay que cambiar datos). |
+| `GUION.md` | Guion de la exposición: qué dice cada integrante en cada diapositiva. |
+| `generador/` | Script que arma la presentación desde cero (por si hay que cambiar datos). El guion vive en `generador/guion.js`. |
 
-## Contenido (25 diapositivas)
+## Contenido (máximo 15 minutos)
 
-1. Portada · 2. Índice · 3. Lumine hoy (plano del kit)
-4. 01 Propósito, fuentes y escenario
-5–6. 02 Escáner de ventajas competitivas (tendencias y dogmas)
-7–8. 03 Relaciones de valor con los clientes (atributos y precio)
-9. 04 Redes de valor · 10. 05 Discontinuidades del entorno
-11–13. 06 Análisis externo (PEST, matriz impacto-incertidumbre, escenarios regulatorios)
-14. 07 Cinco fuerzas · 15–16. 08 Análisis interno (factores críticos y 7S)
-17–19. 09 Competencias centrales, cadena de valor y ranking frente a competidores
-20–22. 10 FODA por perspectivas del CMI, cruce estratégico y problemas clave
-23–24. 11 Declaración de la estrategia y ejes · 25. Cierre
+16 diapositivas para exponer (unos 13 minutos, 4 por integrante) y un anexo de 9 que solo se usa si preguntan.
+El guion completo, con tiempos y preguntas probables, está en `GUION.md` y en las notas del orador del PPT.
+
+| Integrante | Diapositivas | Contenido |
+|---|---|---|
+| Diego Alarcón | 1 a 5 | Portada, la empresa, instrumentos, escáner de ventajas y valor para el cliente |
+| Benjamín Torres | 6 a 10 | PEST, escenarios regulatorios, cinco fuerzas, factores críticos y competencias centrales |
+| Lukas Verdugo | 11 a 16 | Cadena de valor, FODA, cruces, declaración de la estrategia, ejes y cierre |
+| Anexo | 17 a 25 | Atributos del cliente, dogmas, redes de valor, discontinuidades, matriz impacto-incertidumbre, 7S, ranking y problemas clave |
 
 Todos los datos salen del *Análisis Estratégico* y de los instrumentos 03 (PEST), 05 (Competencias Centrales) y 06 (Cadena de Valor).
 
