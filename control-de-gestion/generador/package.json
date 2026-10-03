@@ -1,0 +1,19 @@
+{
+  "name": "lumine-control-de-gestion",
+  "private": true,
+  "description": "Generador de la presentación de Control de Gestión de Lumine Motors",
+  "scripts": {
+    "fuentes": "python3 mkfonts.py",
+    "recursos": "node assets.js",
+    "build": "node deck.js ../Lumine_Analisis_Estrategico_Control_de_Gestion.pptx"
+  },
+  "dependencies": {
+    "pptxgenjs": "^4.0.1",
+    "jszip": "^3.10.2",
+    "sharp": "^0.35.5",
+    "@fontsource-variable/archivo": "^5.3.0",
+    "@fontsource-variable/figtree": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/instrument-serif": "^5.3.0"
+  }
+}
