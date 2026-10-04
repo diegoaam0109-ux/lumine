@@ -1,0 +1,58 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+body{margin:0;background:#fff;font-family:"Liberation Sans",Arial,sans-serif;color:#1F2A44}
+.fig{width:1400px;padding:22px;box-sizing:border-box}
+.cols{display:grid;grid-template-columns:300px 40px 1fr 40px 300px;align-items:stretch}
+.col h3{margin:0 0 10px;font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:#6B7280}
+.box{border:1.5px solid #9FB0D0;background:#F3F6FA;border-radius:8px;padding:9px 11px;margin-bottom:9px;font-size:13.5px;line-height:1.35}
+.box b{display:block;font-size:14px;color:#1F2A44;margin-bottom:2px}
+.box small{color:#4B5563;font-size:12.5px}
+.box.fut{border-style:dashed;background:#fff}
+.proc{border:2px solid #2B4C9B;border-radius:10px;padding:10px 12px;background:#fff}
+.step{display:grid;grid-template-columns:28px 1fr;gap:8px;align-items:start;border-radius:7px;padding:8px 10px;margin-bottom:8px;background:#E3F3FB;font-size:13.5px;line-height:1.35}
+.step .n{width:24px;height:24px;border-radius:50%;background:#2B4C9B;color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.step b{font-size:14px}
+.step.gen{background:#EAF0FA}
+.step.val{background:#FFF4DE}
+.arrow{display:flex;align-items:center;justify-content:center;color:#2B4C9B;font-size:28px}
+.out{border:1.5px solid #0E8FC9;background:#fff}
+.hum{margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.h{border:2px solid #0E8FC9;border-radius:8px;padding:8px 10px;font-size:13px;line-height:1.35;background:#fff}
+.h b{display:block;color:#0E8FC9;font-size:13.5px;margin-bottom:2px}
+.tagh{display:inline-block;background:#0E8FC9;color:#fff;border-radius:4px;padding:0 5px;font-size:11.5px;font-weight:700;margin-right:4px}
+.legend{margin-top:10px;font-size:12px;color:#6B7280}
+</style></head><body><div class="fig">
+<div class="cols">
+ <div class="col"><h3>Entradas</h3>
+  <div class="box"><b>Formulario del prospecto</b>Tipo de uso, km diarios, horario, autopista, auto y tracción<br><small>Real, declarado · Nivel 1 (cotización)</small></div>
+  <div class="box"><b>Registro GPS de una semana</b>Velocidad y altitud a 1 Hz desde el celular, con consentimiento<br><small>Real, medido · Nivel 2 (diagnóstico)</small></div>
+  <div class="box"><b>Ficha del vehículo</b>Masa, cilindrada y tracción<br><small>Pública, con supuestos</small></div>
+  <div class="box"><b>Parámetros comerciales</b>Precio de la bencina (CNE) y precio del kit<br><small>Oficial · supuesto S7</small></div>
+  <div class="box fut"><b>Telemetría de la unidad de control</b>Energía regenerada y asistida, consumo real<br><small>Futuro · Nivel 3 (verificación posventa)</small></div>
+ </div>
+ <div class="arrow">➜</div>
+ <div class="col"><h3>Procesamiento</h3>
+  <div class="proc">
+   <div class="step"><span class="n">1</span><div><b>Control de entrada por reglas</b><br>Tracción delantera, jornadas válidas y rango del modelo. Define el estado: ok, advertencia, no conviene, no aplica, fuera de dominio o datos insuficientes.</div></div>
+   <div class="step"><span class="n">2</span><div><b>Privacidad desde el diseño</b><br>Borra 300 m al inicio y fin de cada viaje, calcula variables agregadas (detenciones, velocidad, subida por km) y elimina la ruta.</div></div>
+   <div class="step"><span class="n">3</span><div><b>Modelo predictivo (IA analítica)</b><br>Gradient boosting entrenado con el simulador físico del kit; entrega el ahorro con intervalo de predicción conforme al 80%.</div></div>
+   <div class="step"><span class="n">4</span><div><b>Motor comercial</b><br>Convierte el porcentaje en pesos al mes y plazo de recuperación con el escenario conservador; formatea todas las cifras.</div></div>
+   <div class="step gen"><span class="n">5</span><div><b>Capa generativa: Claude con prompt RAFA v3.1</b><br>Recibe solo estado, alertas y cifras ya formateadas; explica sin calcular; salida por esquema JSON.</div></div>
+   <div class="step val"><span class="n">6</span><div><b>Validador automático (9 criterios)</b><br>Cifras trazables, intervalo, sin promesas, formato, estado, plazo, regulación, supuestos y nota. Si falla, usa la plantilla de respaldo.</div></div>
+  </div>
+ </div>
+ <div class="arrow">➜</div>
+ <div class="col"><h3>Salidas</h3>
+  <div class="box out"><b>Mensaje al cliente</b>Ahorro con intervalo, pesos al mes con rango y plazo conservador, en 120 palabras o menos</div>
+  <div class="box out"><b>Panel y nota del técnico</b>Variables frente al rango del modelo, alertas y qué revisar</div>
+  <div class="box out"><b>Registro de auditoría</b>Cifra entregada, versión del modelo y del prompt, ajustes y bloqueos</div>
+  <div class="box out"><b>Línea base para verificar</b>La estimación queda guardada para compararla con la telemetría (indicador de desviación del TIG)</div>
+ </div>
+</div>
+<div class="hum">
+ <div class="h"><b><span class="tagh">H1</span>Técnico de diagnóstico</b>Antes de que el cliente vea la cifra: aprueba, ajusta hasta ±2 puntos con motivo escrito o bloquea.</div>
+ <div class="h"><b><span class="tagh">H2</span>Asesor comercial</b>Entrega la estimación. Las preguntas sobre legalidad, garantía o crédito se responden por escrito.</div>
+ <div class="h"><b><span class="tagh">H3</span>Gerencia</b>Revisa cada mes la desviación entre ahorro proyectado y real; puede suspender el estimador (umbral en la Entrega 4).</div>
+ <div class="h"><b><span class="tagh">H4</span>Ingeniería de calibración</b>Reentrena el modelo con telemetría real y actualiza el rango del modelo y los intervalos.</div>
+</div>
+<div class="legend">Integraciones: formulario web y WhatsApp, aplicación de registro GPS, precios de la CNE, CRM del taller y API de Claude. Recuadro punteado: componente que existirá después de la primera instalación.</div>
+</div></body></html>
