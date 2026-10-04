@@ -9,7 +9,10 @@ Trabajo Final de IA Aplicada al Marketing y los Negocios (UNAB, Grupo 1, NRC 415
 | `TIG_IA_Grupo01_LumineMotors_Entrega03.docx` | Informe en Word (cuerpo de 12 páginas + anexos A a I) |
 | `TIG_IA_Grupo01_LumineMotors_Entrega03.pdf` | Mismo informe en PDF |
 | `prototipo/app/index.html` | Prototipo funcional (cotización, diagnóstico y panel del técnico); se abre en cualquier navegador |
-| `figuras/` | Figuras y capturas usadas en el informe |
+| `Lumine_Informe_Tecnico_Modelo_Matematico.docx/.pdf` | Informe técnico: ecuaciones, ejemplo resuelto, estadísticos, sensibilidad y cifras clave |
+| `Lumine_Plan_MultiIA_y_Terreno.docx/.pdf` | Qué hace cada IA (ChatGPT, Gemini, DeepSeek, Grok, Canva), prompts listos y terreno sin costo |
+| `prototipo/validador_multimodelo.py` | Califica respuestas de otras IA con los mismos 9 criterios |
+| `figuras/` | Figuras y capturas usadas en los informes |
 
 ## Cómo reproducir los resultados
 

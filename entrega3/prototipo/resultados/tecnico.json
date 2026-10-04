@@ -1,0 +1,539 @@
+{
+ "ejemplo": {
+  "masa": 1300,
+  "v": 50,
+  "e_cinetica_kwh": 0.035874271262002745,
+  "e_cinetica_wh": 35.87427126200274,
+  "e_freno_ciclo_wh": 37.40981023341049,
+  "e_regen_ciclo_wh": 30.442339284261067,
+  "e_asist_ciclo_wh": 51.442285065157755,
+  "comb_base_ml": 30.396169982869637,
+  "comb_kit_ml": 22.96772837821419,
+  "delta_soc_wh": -90.40556132320465,
+  "ahorro_pct": 24.43874214692803,
+  "p_pico_frenado_kw": 29.470712448559667,
+  "p_pico_tracc_kw": 25.602371527777784
+ },
+ "balance": [
+  {
+   "perfil": "colectivo",
+   "ralenti": 10.25,
+   "fijas": 35.51,
+   "aux": 7.47,
+   "traccion": 46.76,
+   "ahorro": 19.34,
+   "regen_sobre_freno": 83.97
+  },
+  {
+   "perfil": "aplicacion",
+   "ralenti": 6.54,
+   "fijas": 32.75,
+   "aux": 8.12,
+   "traccion": 52.59,
+   "ahorro": 15.75,
+   "regen_sobre_freno": 83.32
+  },
+  {
+   "perfil": "particular",
+   "ralenti": 6.18,
+   "fijas": 33.93,
+   "aux": 7.34,
+   "traccion": 52.55,
+   "ahorro": 15.46,
+   "regen_sobre_freno": 84.1
+  }
+ ],
+ "grid_kit": {
+  "P_kw": [
+   8,
+   12,
+   15,
+   19,
+   23,
+   27,
+   31,
+   35
+  ],
+  "desacel": [
+   1.0,
+   1.5,
+   2.0,
+   2.5,
+   3.0
+  ],
+  "ahorro": [
+   [
+    12.7,
+    15.07,
+    15.95,
+    16.47,
+    16.65,
+    16.72,
+    16.74,
+    16.74
+   ],
+   [
+    13.15,
+    16.12,
+    17.49,
+    18.57,
+    19.12,
+    19.38,
+    19.49,
+    19.55
+   ],
+   [
+    13.22,
+    16.25,
+    17.71,
+    18.92,
+    19.59,
+    19.95,
+    20.14,
+    20.24
+   ],
+   [
+    13.22,
+    16.25,
+    17.71,
+    18.93,
+    19.62,
+    20.0,
+    20.21,
+    20.33
+   ],
+   [
+    13.22,
+    16.25,
+    17.72,
+    18.93,
+    19.62,
+    20.01,
+    20.22,
+    20.35
+   ]
+  ],
+  "bateria_kwh": [
+   0.25,
+   0.5,
+   1.0,
+   1.5,
+   2.0,
+   3.0
+  ],
+  "ahorro_bateria": [
+   19.58,
+   19.62,
+   19.62,
+   19.62,
+   19.62,
+   19.61
+  ],
+  "eta_motor": [
+   0.8,
+   0.85,
+   0.9,
+   0.95
+  ],
+  "ahorro_eta": [
+   15.16,
+   17.33,
+   19.62,
+   22.05
+  ]
+ },
+ "estadisticos": [
+  {
+   "perfil": "Colectivo",
+   "escenario": "conservador",
+   "n": 100,
+   "media": 15.31,
+   "de": 1.08,
+   "cv": 7.04,
+   "min": 12.47,
+   "p10": 13.97,
+   "p25": 14.7,
+   "mediana": 15.29,
+   "p75": 16.12,
+   "p90": 16.56,
+   "max": 18.21,
+   "pct_20": 0.0,
+   "pct_25": 0.0
+  },
+  {
+   "perfil": "Colectivo",
+   "escenario": "referencia",
+   "n": 100,
+   "media": 19.75,
+   "de": 1.32,
+   "cv": 6.69,
+   "min": 16.13,
+   "p10": 18.25,
+   "p25": 19.03,
+   "mediana": 19.6,
+   "p75": 20.72,
+   "p90": 21.37,
+   "max": 23.54,
+   "pct_20": 41.0,
+   "pct_25": 0.0
+  },
+  {
+   "perfil": "Colectivo",
+   "escenario": "ampliado",
+   "n": 100,
+   "media": 22.53,
+   "de": 1.51,
+   "cv": 6.71,
+   "min": 18.42,
+   "p10": 20.88,
+   "p25": 21.69,
+   "mediana": 22.3,
+   "p75": 23.62,
+   "p90": 24.4,
+   "max": 26.95,
+   "pct_20": 95.0,
+   "pct_25": 3.0
+  },
+  {
+   "perfil": "Aplicación",
+   "escenario": "conservador",
+   "n": 100,
+   "media": 12.66,
+   "de": 1.17,
+   "cv": 9.22,
+   "min": 10.42,
+   "p10": 11.31,
+   "p25": 11.8,
+   "mediana": 12.49,
+   "p75": 13.32,
+   "p90": 14.03,
+   "max": 17.26,
+   "pct_20": 0.0,
+   "pct_25": 0.0
+  },
+  {
+   "perfil": "Aplicación",
+   "escenario": "referencia",
+   "n": 100,
+   "media": 16.27,
+   "de": 1.42,
+   "cv": 8.73,
+   "min": 13.56,
+   "p10": 14.67,
+   "p25": 15.3,
+   "mediana": 16.12,
+   "p75": 17.15,
+   "p90": 17.83,
+   "max": 21.75,
+   "pct_20": 1.0,
+   "pct_25": 0.0
+  },
+  {
+   "perfil": "Aplicación",
+   "escenario": "ampliado",
+   "n": 100,
+   "media": 18.63,
+   "de": 1.61,
+   "cv": 8.63,
+   "min": 15.54,
+   "p10": 16.78,
+   "p25": 17.47,
+   "mediana": 18.58,
+   "p75": 19.64,
+   "p90": 20.49,
+   "max": 24.74,
+   "pct_20": 18.0,
+   "pct_25": 0.0
+  },
+  {
+   "perfil": "Particular",
+   "escenario": "conservador",
+   "n": 100,
+   "media": 11.92,
+   "de": 1.08,
+   "cv": 9.05,
+   "min": 9.47,
+   "p10": 10.47,
+   "p25": 11.29,
+   "mediana": 11.91,
+   "p75": 12.67,
+   "p90": 13.15,
+   "max": 15.52,
+   "pct_20": 0.0,
+   "pct_25": 0.0
+  },
+  {
+   "perfil": "Particular",
+   "escenario": "referencia",
+   "n": 100,
+   "media": 15.25,
+   "de": 1.33,
+   "cv": 8.74,
+   "min": 12.07,
+   "p10": 13.65,
+   "p25": 14.26,
+   "mediana": 15.35,
+   "p75": 16.23,
+   "p90": 16.81,
+   "max": 19.59,
+   "pct_20": 0.0,
+   "pct_25": 0.0
+  },
+  {
+   "perfil": "Particular",
+   "escenario": "ampliado",
+   "n": 100,
+   "media": 17.44,
+   "de": 1.53,
+   "cv": 8.76,
+   "min": 13.77,
+   "p10": 15.49,
+   "p25": 16.29,
+   "mediana": 17.65,
+   "p75": 18.42,
+   "p90": 19.21,
+   "max": 22.28,
+   "pct_20": 3.0,
+   "pct_25": 0.0
+  },
+  {
+   "perfil": "Chicago real (jornadas)",
+   "escenario": "referencia",
+   "n": 45,
+   "media": 13.59,
+   "de": 5.88,
+   "cv": 43.27,
+   "min": 1.23,
+   "p10": 7.24,
+   "p25": 9.86,
+   "mediana": 12.56,
+   "p75": 18.3,
+   "p90": 21.55,
+   "max": 26.51,
+   "pct_20": 24.44,
+   "pct_25": 2.22
+  }
+ ],
+ "variables_perfil": {
+  "aplicacion": {
+   "km_dia": [
+    185.88,
+    183.9
+   ],
+   "vel_media": [
+    30.42,
+    30.04
+   ],
+   "vel_mov_media": [
+    33.54,
+    33.18
+   ],
+   "detenciones_km": [
+    1.56,
+    1.53
+   ],
+   "pct_detenido": [
+    9.44,
+    9.45
+   ],
+   "acel_pos_media": [
+    0.58,
+    0.58
+   ],
+   "pct_sobre_60": [
+    16.48,
+    15.87
+   ],
+   "energia_cinetica_km": [
+    0.18,
+    0.18
+   ],
+   "desnivel_pos_km": [
+    4.26,
+    3.24
+   ],
+   "kml_base": [
+    14.25,
+    14.14
+   ],
+   "pct_energia_frenos": [
+    48.17,
+    48.21
+   ]
+  },
+  "colectivo": {
+   "km_dia": [
+    211.02,
+    209.59
+   ],
+   "vel_media": [
+    23.18,
+    22.94
+   ],
+   "vel_mov_media": [
+    27.11,
+    26.85
+   ],
+   "detenciones_km": [
+    2.64,
+    2.62
+   ],
+   "pct_detenido": [
+    14.56,
+    14.59
+   ],
+   "acel_pos_media": [
+    0.64,
+    0.64
+   ],
+   "pct_sobre_60": [
+    8.57,
+    8.02
+   ],
+   "energia_cinetica_km": [
+    0.22,
+    0.22
+   ],
+   "desnivel_pos_km": [
+    5.34,
+    4.44
+   ],
+   "kml_base": [
+    12.54,
+    12.39
+   ],
+   "pct_energia_frenos": [
+    62.02,
+    62.7
+   ]
+  },
+  "particular": {
+   "km_dia": [
+    86.73,
+    86.04
+   ],
+   "vel_media": [
+    33.15,
+    32.57
+   ],
+   "vel_mov_media": [
+    36.11,
+    35.6
+   ],
+   "detenciones_km": [
+    1.35,
+    1.31
+   ],
+   "pct_detenido": [
+    8.39,
+    8.34
+   ],
+   "acel_pos_media": [
+    0.57,
+    0.58
+   ],
+   "pct_sobre_60": [
+    19.7,
+    18.8
+   ],
+   "energia_cinetica_km": [
+    0.17,
+    0.17
+   ],
+   "desnivel_pos_km": [
+    5.0,
+    3.77
+   ],
+   "kml_base": [
+    15.06,
+    15.04
+   ],
+   "pct_energia_frenos": [
+    44.02,
+    44.5
+   ]
+  }
+ },
+ "spearman": {
+  "pct_sobre_60": -0.747,
+  "vel_media": -0.734,
+  "vel_mov_media": -0.711,
+  "kml_base": -0.405,
+  "desnivel_pos_km": 0.245,
+  "km_dia": 0.495,
+  "pct_detenido": 0.686,
+  "detenciones_km": 0.747,
+  "acel_pos_media": 0.791,
+  "pct_energia_frenos": 0.887,
+  "energia_cinetica_km": 0.899
+ },
+ "zona": {
+  "aplicacion|intermedio": 16.23,
+  "aplicacion|piedemonte": 17.5,
+  "aplicacion|plano": 15.83,
+  "colectivo|intermedio": 19.77,
+  "colectivo|piedemonte": 20.68,
+  "colectivo|plano": 19.26,
+  "particular|intermedio": 14.91,
+  "particular|piedemonte": 15.92,
+  "particular|plano": 15.09
+ },
+ "equilibrio": {
+  "colectivo": {
+   "ahorro_ref": 19.6,
+   "ahorro_cons": 13.93,
+   "km_24": 198.9,
+   "km_36": 132.6,
+   "km_48": 99.45
+  },
+  "aplicacion": {
+   "ahorro_ref": 16.12,
+   "ahorro_cons": 11.22,
+   "km_24": 246.95,
+   "km_36": 164.63,
+   "km_48": 123.47
+  },
+  "particular": {
+   "ahorro_ref": 15.35,
+   "ahorro_cons": 10.62,
+   "km_24": 313.07,
+   "km_36": 208.71,
+   "km_48": 156.54
+  }
+ },
+ "tornado": {
+  "base": 22.09373448379511,
+  "filas": [
+   [
+    "Ahorro ±1,4 pp (intervalo)",
+    20.515610592095456,
+    23.934879024111368
+   ],
+   [
+    "Precio de la bencina ±15%",
+    19.21194302938705,
+    25.992628804464832
+   ],
+   [
+    "Días por semana 7 / 5",
+    18.937486700395805,
+    26.51248138055413
+   ],
+   [
+    "Precio del kit ±20%",
+    17.674987587036085,
+    26.51248138055413
+   ],
+   [
+    "Rendimiento 8 / 12 km/L",
+    17.674987587036085,
+    26.51248138055413
+   ],
+   [
+    "Km por día ±20%",
+    18.411445403162592,
+    27.617168104743882
+   ]
+  ]
+ }
+}

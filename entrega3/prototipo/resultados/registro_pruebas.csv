@@ -1,8 +1,8 @@
 version,caso,tipo,AC1,AC2,AC3,AC4,palabras,AC5,AC6,AC7,AC8,AC9,aprobado,fallos,cifras_no_trazables
-v1,N1,normal,False,False,True,False,110,True,True,True,True,True,False,"AC1,AC2,AC4",2000000.0
+v1,N1,normal,False,False,True,False,109,True,True,True,True,True,False,"AC1,AC2,AC4",1900000.0
 v1,N2,normal,False,False,True,False,105,True,True,True,True,True,False,"AC1,AC2,AC4",1600000.0
 v1,N3,normal,True,False,True,True,103,True,True,True,False,True,False,"AC2,AC8",
-v1,N4,normal,False,False,True,False,86,True,True,True,True,True,False,"AC1,AC2,AC4",1950000.0
+v1,N4,normal,False,False,True,False,86,True,True,True,True,True,False,"AC1,AC2,AC4",1850000.0
 v1,A1,ambiguo,True,False,True,True,74,False,True,True,True,True,False,"AC2,AC5",
 v1,A2,ambiguo,True,False,True,True,94,False,True,True,True,True,False,"AC2,AC5",
 v1,A3,ambiguo,False,False,True,True,82,True,True,True,True,True,False,"AC1,AC2","25.0,25.0"

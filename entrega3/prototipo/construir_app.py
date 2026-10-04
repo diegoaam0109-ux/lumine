@@ -36,11 +36,22 @@ for cid, txt in V31.items():
         continue  # las respuestas a notas no se muestran sin la nota
     generadas.append({"id": cid, "estado": s["estado"], "cifras": s.get("cifras_formateadas"),
                       "mensaje": json.loads(txt)["mensaje_cliente"]})
-logo = base64.b64encode(open("/home/user/lumine/entrega3/figuras/logo_lumine.png", "rb").read()).decode()
-datos = {"modelo": modelo, "muestras": muestras, "generadas": generadas}
+comp = pd.read_csv(os.path.join(AQUI, "resultados", "comparacion_modelos.csv"), index_col=0)
+nombres = {"M0 Cifra genérica TIG (25%)": "Cifra genérica 25%", "M0b Cifra ICCT eje trasero (15,5%)": "Cifra ICCT 15,5%",
+           "M2 Nivel 2 lineal, 2 variables (Entrega 2)": "Lineal de la Entrega 2", "M0c Promedio por perfil": "Promedio por perfil",
+           "M1 Nivel 1 cotización (GBM, declarados)": "Cotización (nivel 1)", "M3 Nivel 2 diagnóstico (GBM, registro GPS)": "Diagnóstico (nivel 2)"}
+errores = [{"nombre": v, "mae": round(float(comp.loc[k, "MAE"]), 2), "sel": k.startswith("M3") or k.startswith("M1")} for k, v in nombres.items()]
+perfiles = []
+for p, n in [("colectivo", "Colectivo"), ("aplicacion", "Aplicación"), ("particular", "Particular")]:
+    g = t[t.perfil == p]
+    q = lambda c: [round(float(g[c].quantile(x)), 1) for x in (0.1, 0.5, 0.9)]
+    perfiles.append({"nombre": n, "ref": q("y_base"), "opt": q("y_optimista")})
+masks = json.load(open(os.path.join(AQUI, "app", "logo_masks.json")))
+datos = {"modelo": modelo, "muestras": muestras, "generadas": generadas, "errores": errores, "perfiles": perfiles}
 html = open(os.path.join(AQUI, "app", "plantilla.html"), encoding="utf-8").read()
 html = html.replace("/*__DATA__*/", json.dumps(datos, ensure_ascii=False, separators=(",", ":")))
-html = html.replace("__LOGO__", "data:image/png;base64," + logo)
+html = (html.replace("__EMBLEM__", masks["logo-emblem"]).replace("__WMACC__", masks["logo-wm-acc"])
+        .replace("__WM__", masks["logo-wm"]).replace("__RATIO__", masks["ratio"]))
 open(os.path.join(AQUI, "app", "index.html"), "w", encoding="utf-8").write(html)
 # CSV de ejemplo: tres jornadas del registro del conductor de aplicación
 filas = []

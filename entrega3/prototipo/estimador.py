@@ -14,10 +14,12 @@ import numpy as np
 AQUI = os.path.dirname(os.path.abspath(__file__))
 
 # Parámetros comerciales (todos con fuente o marcados como supuesto)
-PRECIO_BENCINA = 1541          # $/l, bencina 93 en la RM tras el alza de marzo de 2026 (BioBioChile, 2026a)
+PRECIO_BENCINA = 1459          # $/l, bencina 93, promedio RM al 30-09-2026 (preciocombustible.cl), igual que el sitio comercial
 PRECIO_KIT = 2_521_000         # $ neto, supuesto S7 heredado de la Entrega 1 (Plan Financiero pendiente)
 REND_DEFECTO = 10.0            # km/l urbano, supuesto S3 del TIG
-DIAS_MES = {"colectivo": 26, "aplicacion": 24, "particular": 22}
+DIAS_SEMANA = {"colectivo": 6, "aplicacion": 6, "particular": 5}
+SEMANAS_MES = 4.33             # misma conversión que la calculadora del sitio comercial
+DIAS_MES = {k: v * SEMANAS_MES for k, v in DIAS_SEMANA.items()}
 PLAZO_MAX_CONVIENE = 48        # meses; sobre esto el técnico desaconseja (vida útil supuesta de la batería)
 
 
@@ -105,7 +107,7 @@ def estimar(datos, modelo=None):
         "ahorro_mensual_intervalo": [round(ahorro_mes_lo, -3), round(ahorro_mes_hi, -3)],
         "plazo_recuperacion_conservador_meses": None if np.isinf(plazo_cons) else round(plazo_cons),
         "supuestos": {"precio_bencina": PRECIO_BENCINA, "precio_kit_supuesto": PRECIO_KIT,
-                      "rendimiento_kml": rend, "dias_mes": DIAS_MES[perfil]},
+                      "rendimiento_kml": rend, "dias_semana": DIAS_SEMANA[perfil]},
         "cifras_formateadas": {
             "ahorro": pct(centro), "intervalo": f"{pct(lo)} a {pct(hi)}",
             "ahorro_conservador": pct(cons),

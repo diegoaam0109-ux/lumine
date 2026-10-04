@@ -1,220 +1,441 @@
 <title>Estimador Lumine</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<meta name="description" content="Estimador de ahorro de combustible del kit Lumine: cotización, diagnóstico con registro GPS y supervisión del técnico.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
 <style>
-/* Layout: barra de marca + pestañas por nivel del estimador; formulario a la izquierda, resultado a la derecha; una columna en teléfono. */
-:root {
-  --bg: #f4f7f9;
-  --surface: #ffffff;
-  --ink: #111a24;
-  --muted: #566372;
-  --line: #d7dee5;
-  --accent: #0a8fc7;
-  --accent-ink: #ffffff;
-  --accent-soft: #e2f3fa;
-  --band: #9fd8ef;
-  --ok: #1d7f4e;
-  --ok-soft: #e1f3e9;
-  --warn: #9a6200;
-  --warn-soft: #fbefd8;
-  --bad: #b3261e;
-  --bad-soft: #fbe3e1;
-  --logo-filter: none;
-  --font-display: "Barlow Semi Condensed", "Arial Narrow", Arial, sans-serif;
-  --font-body: "Barlow", "Segoe UI", Arial, sans-serif;
-  --r: 10px;
+/* Sistema Lumine (sitio comercial y Habilita): oscuro primero, cian eléctrico, Archivo + Figtree + IBM Plex Mono + Instrument Serif.
+   Layout: barra superior, portada técnica, herramienta en rejilla de dos paneles separados por líneas, método y precisión abajo. */
+:root{
+  color-scheme: dark;
+  --bg:#020304; --surface:#0a0d0f; --well:#101417; --control:#1a1e22;
+  --fg:#ececec; --muted:#8b9598; --dim:#4b5154; --line:#1f2427; --line-2:#2e3438;
+  --accent:#22b8f0; --accent-text:#22b8f0; --accent-ink:#020304; --accent-soft:rgba(34,184,240,.10);
+  --ok:#4ade80; --ok-bg:rgba(74,222,128,.10); --warn:#f5b94a; --warn-bg:rgba(245,185,74,.10); --crit:#f87171; --crit-bg:rgba(248,113,113,.10);
+  --glow:#22b8f047; --grid:#bad7f70a; --band:rgba(34,184,240,.38);
+  --logo-ink:#ececec;
+  --font-display:"Archivo","Figtree",ui-sans-serif,system-ui,sans-serif;
+  --font-sans:"Figtree",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --font-serif:"Instrument Serif","Times New Roman",serif;
+  --max:1440px; --gutter:clamp(16px,3.5vw,40px);
+  --logo-emblem:url("__EMBLEM__"); --logo-wm:url("__WM__"); --logo-wm-acc:url("__WMACC__");
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0c1218; --surface: #141d26; --ink: #e8eef3; --muted: #9aa8b5; --line: #26333f;
-    --accent: #31b4ea; --accent-ink: #06121a; --accent-soft: #10303f; --band: #1f6f92;
-    --ok: #5cc98f; --ok-soft: #12301f; --warn: #e8b04d; --warn-soft: #33270f; --bad: #f08a82; --bad-soft: #3a1714;
-    --logo-filter: invert(1) hue-rotate(180deg); color-scheme: dark;
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    color-scheme: light;
+    --bg:#f5f5f7; --surface:#ffffff; --well:#ebecef; --control:#e3e5e8;
+    --fg:#1d1d1f; --muted:#5f6368; --dim:#a1a5aa; --line:#dcdde1; --line-2:#c8cace;
+    --accent:#22b8f0; --accent-text:#0a6f9e; --accent-ink:#020304; --accent-soft:rgba(34,184,240,.12);
+    --ok:#157a46; --ok-bg:#e3f4ea; --warn:#9a5b06; --warn-bg:#fbf0dc; --crit:#b91c1c; --crit-bg:#fbe8e8;
+    --glow:#22b8f02e; --grid:#1d1d1f0b; --band:rgba(34,184,240,.45); --logo-ink:#1d1d1f;
   }
 }
-:root[data-theme="dark"] {
-  --bg: #0c1218; --surface: #141d26; --ink: #e8eef3; --muted: #9aa8b5; --line: #26333f;
-  --accent: #31b4ea; --accent-ink: #06121a; --accent-soft: #10303f; --band: #1f6f92;
-  --ok: #5cc98f; --ok-soft: #12301f; --warn: #e8b04d; --warn-soft: #33270f; --bad: #f08a82; --bad-soft: #3a1714;
-  --logo-filter: invert(1) hue-rotate(180deg); color-scheme: dark;
+:root[data-theme="light"]{
+  color-scheme: light;
+  --bg:#f5f5f7; --surface:#ffffff; --well:#ebecef; --control:#e3e5e8;
+  --fg:#1d1d1f; --muted:#5f6368; --dim:#a1a5aa; --line:#dcdde1; --line-2:#c8cace;
+  --accent:#22b8f0; --accent-text:#0a6f9e; --accent-ink:#020304; --accent-soft:rgba(34,184,240,.12);
+  --ok:#157a46; --ok-bg:#e3f4ea; --warn:#9a5b06; --warn-bg:#fbf0dc; --crit:#b91c1c; --crit-bg:#fbe8e8;
+  --glow:#22b8f02e; --grid:#1d1d1f0b; --band:rgba(34,184,240,.45); --logo-ink:#1d1d1f;
 }
-* { box-sizing: border-box; }
-[hidden] { display: none !important; }
-body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5; }
-.wrap { max-width: 1120px; margin: 0 auto; padding-inline: 16px; padding-block: 0 40px; }
-header.bar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding-block: 18px 14px; border-bottom: 1px solid var(--line); }
-.brand { display: flex; align-items: center; gap: 12px; }
-.brand img { height: 44px; width: auto; filter: var(--logo-filter); }
-.brand h1 { font-family: var(--font-display); font-weight: 700; font-size: 1.45rem; letter-spacing: .01em; margin: 0; line-height: 1.1; text-wrap: balance; }
-.brand p { margin: 0; color: var(--muted); font-size: .85rem; }
-nav.tabs { display: flex; gap: 4px; margin-left: auto; flex-wrap: wrap; }
-nav.tabs button { font: 600 .92rem var(--font-display); letter-spacing: .03em; text-transform: uppercase; border: 1px solid var(--line); background: var(--surface); color: var(--muted); padding: 8px 14px; border-radius: 999px; cursor: pointer; }
-nav.tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-nav.tabs button:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 20px; margin-top: 20px; }
-@media (max-width: 860px) { .grid { grid-template-columns: minmax(0, 1fr); } }
-.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; min-width: 0; }
-.panel h2 { font: 600 1.05rem var(--font-display); text-transform: uppercase; letter-spacing: .05em; margin: 0 0 4px; }
-.panel .sub { color: var(--muted); font-size: .88rem; margin: 0 0 14px; }
-.field { display: grid; gap: 4px; margin-bottom: 12px; }
-.field label { font-weight: 600; font-size: .88rem; }
-.field small { color: var(--muted); font-size: .8rem; }
-select, input[type="number"], input[type="text"], textarea { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%; }
-.seg { display: flex; flex-wrap: wrap; gap: 6px; }
-.seg label { border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; cursor: pointer; font-weight: 500; font-size: .9rem; background: var(--bg); }
-.seg input { position: absolute; opacity: 0; pointer-events: none; }
-.seg input:checked + span { color: var(--accent); }
-.seg label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
-.btn { font: 600 .95rem var(--font-display); letter-spacing: .04em; text-transform: uppercase; border: 0; border-radius: 8px; padding: 10px 16px; cursor: pointer; background: var(--accent); color: var(--accent-ink); }
-.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
-.btn.bad { background: var(--bad); color: var(--surface); }
-.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.samples { display: grid; gap: 8px; }
-.sample { display: grid; gap: 2px; text-align: left; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; background: var(--bg); cursor: pointer; font: inherit; color: var(--ink); }
-.sample[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
-.sample b { font-family: var(--font-display); font-size: 1rem; }
-.sample .top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-.sample .d { color: var(--muted); font-size: .84rem; }
-.tag { font: 600 .72rem var(--font-display); letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); align-self: start; }
-.result-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px; }
-.state { font: 600 .78rem var(--font-display); letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
-.state.ok { background: var(--ok-soft); color: var(--ok); }
-.state.warn { background: var(--warn-soft); color: var(--warn); }
-.state.bad { background: var(--bad-soft); color: var(--bad); }
-.big { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin: 6px 0 2px; }
-.big .num { font: 700 3.4rem/1 var(--font-display); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
-.big .rng { color: var(--muted); font-size: 1rem; }
-.gauge { width: 100%; height: auto; display: block; margin: 8px 0 4px; }
-.kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 14px 0; }
-@media (max-width: 520px) { .kpis { grid-template-columns: minmax(0, 1fr); } }
-.kpi { border-top: 2px solid var(--ink); padding-top: 8px; min-width: 0; }
-.kpi .l { font: 600 .74rem var(--font-display); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.kpi .v { font: 600 1.45rem var(--font-display); font-variant-numeric: tabular-nums; }
-.kpi .s { color: var(--muted); font-size: .82rem; }
-.explain { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px; }
-.explain p { margin: 0 0 8px; max-width: 65ch; }
-.explain p:last-child { margin-bottom: 0; }
-.explain .src { font-size: .78rem; color: var(--muted); margin-top: 8px; }
-.alerts { display: grid; gap: 6px; margin: 10px 0 0; padding: 0; list-style: none; }
-.alerts li { background: var(--warn-soft); color: var(--warn); border-radius: 6px; padding: 6px 10px; font-size: .86rem; }
-.foot { color: var(--muted); font-size: .8rem; margin-top: 14px; max-width: 80ch; }
-table { border-collapse: collapse; width: 100%; font-size: .86rem; font-variant-numeric: tabular-nums; }
-.tbl { overflow-x: auto; }
-th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
-th { font: 600 .74rem var(--font-display); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
-td.in { color: var(--ok); } td.out { color: var(--bad); font-weight: 600; }
-.trace { width: 100%; height: auto; display: block; }
-.log { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 6px; font-size: .86rem; }
-.log li { border-left: 3px solid var(--accent); padding: 4px 10px; background: var(--bg); }
-.note { font-size: .84rem; color: var(--muted); }
-.drop { border: 1px dashed var(--line); border-radius: 8px; padding: 10px; font-size: .86rem; color: var(--muted); }
-@media (prefers-reduced-motion: no-preference) { .big .num { transition: color .2s; } }
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--accent-text)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+p{margin:0}
+h1,h2,h3{margin:0}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter)}
+.t-titulo{font-family:var(--font-display);text-transform:uppercase;letter-spacing:-.025em;font-weight:800;font-stretch:112%;line-height:.95;text-wrap:balance}
+.t-serif{font-family:var(--font-serif);text-transform:none;letter-spacing:-.01em;font-style:italic;font-weight:400;font-stretch:100%;color:var(--accent-text)}
+.t-label{font-family:var(--font-mono);letter-spacing:.14em;text-transform:uppercase;font-size:11.5px;font-weight:400;line-height:1.4}
+.t-label-sm{font-family:var(--font-mono);letter-spacing:.16em;text-transform:uppercase;font-size:10.5px;font-weight:400}
+.t-num{font-family:var(--font-display);font-variant-numeric:tabular-nums;letter-spacing:-.01em;font-weight:600;font-stretch:75%}
+.t-mono-xl{font-family:var(--font-display);text-transform:uppercase;letter-spacing:-.01em;font-weight:700;font-stretch:68%;line-height:.84;font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)} .dim{color:var(--dim)}
+.rejilla{background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:64px 64px}
+.foco{background:radial-gradient(60% 55% at 50% 30%,var(--glow),transparent 70%)}
+.parpadeo{animation:parpadeo 2.4s ease-in-out infinite}
+@keyframes parpadeo{0%,100%{opacity:1}50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.parpadeo{animation:none}html{scroll-behavior:auto}}
+
+/* marca */
+.brand{display:inline-flex;align-items:center;gap:10px;color:var(--logo-ink);text-decoration:none}
+.emblem{width:26px;height:26px;background:currentColor;-webkit-mask:var(--logo-emblem) center/contain no-repeat;mask:var(--logo-emblem) center/contain no-repeat;flex:none}
+.wordmark{position:relative;height:15px;aspect-ratio:__RATIO__;flex:none}
+.wordmark::before,.wordmark::after{content:"";position:absolute;inset:0}
+.wordmark::before{background:currentColor;-webkit-mask:var(--logo-wm) center/contain no-repeat;mask:var(--logo-wm) center/contain no-repeat}
+.wordmark::after{background:var(--accent);-webkit-mask:var(--logo-wm-acc) center/contain no-repeat;mask:var(--logo-wm-acc) center/contain no-repeat}
+.brand-sub{padding-left:10px;border-left:1px solid var(--line-2);color:var(--muted)}
+
+/* barra superior */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:color-mix(in srgb,var(--bg) 82%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:10px 16px;min-height:60px;flex-wrap:wrap;padding-block:8px}
+.nav{display:flex;gap:4px;margin-inline:auto;flex-wrap:wrap}
+.nav button,.nav a{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px;border:1px solid var(--line);background:var(--surface);color:var(--fg);text-decoration:none;border-radius:999px}
+.nav .n{color:var(--dim)}
+.nav button[aria-current="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.nav button[aria-current="true"] .n{color:var(--accent-text)}
+.right{display:flex;align-items:center;gap:8px}
+.tema{width:44px;height:28px;border-radius:999px;border:1px solid var(--line-2);background:var(--control);position:relative}
+.tema::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--fg);transition:transform .2s}
+:root[data-theme="light"] .tema::after{transform:translateX(16px)}
+.cta{display:inline-flex;align-items:center;gap:10px;height:40px;padding:0 16px;background:var(--accent);color:var(--accent-ink);text-decoration:none;border:0}
+.cta:hover{filter:brightness(1.08)}
+.cta.fantasma{background:transparent;color:var(--fg);border:1px solid var(--line-2)}
+@media (max-width:860px){.nav{order:3;width:100%;margin:0}.nav button,.nav a{flex:1 1 auto;justify-content:center}}
+
+/* portada */
+.hero{position:relative;border-bottom:1px solid var(--line);overflow:hidden}
+.hero .wrap{position:relative;padding-block:28px 0}
+.meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted)}
+.meta i{display:inline-block;width:6px;height:6px;background:var(--accent);margin-right:8px;vertical-align:1px}
+.hero h1{font-size:clamp(44px,8.6vw,132px);margin-top:28px}
+.hero .bajada{max-width:62ch;margin-top:20px;color:var(--muted);font-size:clamp(15px,1.3vw,17px)}
+.hero .bajada b{color:var(--fg);font-weight:600}
+.cifras{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:36px;border-top:1px solid var(--line)}
+.cifra{padding:18px 18px 22px;border-right:1px solid var(--line);min-width:0;position:relative}
+.cifra:last-child{border-right:0}
+.cifra::before{content:"";position:absolute;inset:0 auto auto 0;height:3px;width:100%;background:var(--accent);transform-origin:left;transform:scaleX(.18)}
+.cifra .v{font-size:clamp(40px,5vw,68px);line-height:.9;margin:10px 0 6px}
+.cifra .d{color:var(--muted);font-size:13.5px;max-width:28ch}
+@media (max-width:860px){.cifras{grid-template-columns:repeat(2,minmax(0,1fr))}.cifra:nth-child(2){border-right:0}.cifra:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+
+/* secciones */
+section.sec{border-bottom:1px solid var(--line);padding-block:clamp(48px,7vw,96px)}
+.sec-h{display:grid;gap:14px;margin-bottom:28px;max-width:980px}
+.sec-h .lab{display:flex;align-items:center;gap:12px;color:var(--muted)}
+.sec-h .lab .n{color:var(--accent-text)}
+.sec-h .lab hr{width:40px;border:0;border-top:1px solid var(--line-2);margin:0}
+.sec-h h2{font-size:clamp(34px,5.2vw,72px)}
+.sec-h p{color:var(--muted);max-width:66ch}
+.sec-h p b{color:var(--fg);font-weight:600}
+
+/* modos */
+.modos{display:inline-flex;border:1px solid var(--line-2);margin-bottom:16px;flex-wrap:wrap}
+.modos button{height:42px;padding:0 16px;border:0;border-right:1px solid var(--line-2);background:transparent;color:var(--muted)}
+.modos button:last-child{border-right:0}
+.modos button[aria-selected="true"]{background:var(--fg);color:var(--bg)}
+
+/* herramienta */
+.tool{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.15fr);border:1px solid var(--line)}
+@media (max-width:980px){.tool{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--surface);padding:clamp(18px,2.6vw,36px);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:22px;min-width:0}
+@media (max-width:980px){.panel{border-right:0;border-bottom:1px solid var(--line)}}
+fieldset{border:0;border-top:1px solid var(--line);margin:0;padding:18px 0 0;min-width:0}
+fieldset:first-of-type{border-top:0;padding-top:0}
+legend{display:flex;gap:12px;align-items:center;color:var(--muted);padding:0;margin-bottom:12px}
+legend .n{color:var(--dim)}
+.segbtn{display:grid;grid-template-columns:repeat(var(--cols,3),minmax(0,1fr));gap:4px}
+.segbtn button{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 12px;border:1px solid var(--line-2);background:transparent;color:var(--fg);text-align:left;min-width:0}
+.segbtn button small{color:var(--muted)}
+.segbtn button:hover{border-color:var(--fg)}
+.segbtn button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.segbtn button[aria-pressed="true"] .t-label{color:var(--accent-text)}
+.campo{display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--line-2)}
+.campo:focus-within{border-color:var(--accent)}
+.campo label{flex:none;color:var(--muted)}
+.campo input{width:100%;height:52px;background:transparent;border:0;outline:none;text-align:right;font-size:34px;color:var(--fg)}
+.campo .u{flex:none;color:var(--muted)}
+input[type=range]{width:100%;accent-color:var(--accent);margin-top:10px}
+.ayuda{font-size:12.5px;color:var(--dim);margin-top:6px}
+.fila2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:520px){.fila2{grid-template-columns:1fr}}
+
+/* lectura */
+.well{position:relative;background:var(--well);min-width:0;display:flex;flex-direction:column}
+.well .bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px clamp(18px,2.6vw,36px);border-bottom:1px solid var(--line);position:relative;flex-wrap:wrap}
+.well .bar .live{display:flex;align-items:center;gap:8px;color:var(--muted)}
+.well .bar .live i{width:6px;height:6px;background:var(--accent);display:inline-block}
+.well .body{position:relative;padding:clamp(18px,2.6vw,36px);display:flex;flex-direction:column;gap:20px}
+.estado{padding:4px 10px;border:1px solid currentColor}
+.estado.ok{color:var(--ok);background:var(--ok-bg)} .estado.warn{color:var(--warn);background:var(--warn-bg)} .estado.bad{color:var(--crit);background:var(--crit-bg)}
+.lectura{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px 18px}
+.lectura .big{font-size:clamp(88px,11vw,168px);color:var(--fg)}
+.lectura .big .pct{font-size:.5em;color:var(--muted);margin-left:4px}
+.lectura .que{display:grid;gap:6px;padding-bottom:10px}
+.lectura .que .t-serif{font-size:clamp(24px,2.4vw,32px);line-height:1}
+.gauge{width:100%;height:auto;display:block}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.kpi{padding:14px 14px 16px 0;min-width:0}
+.kpi+.kpi{padding-left:14px;border-left:1px solid var(--line)}
+.kpi .v{font-size:clamp(28px,2.8vw,40px);line-height:1;margin:8px 0 4px}
+.kpi .s{color:var(--muted);font-size:12.5px}
+@media (max-width:560px){.kpis{grid-template-columns:minmax(0,1fr)}.kpi+.kpi{padding-left:0;border-left:0;border-top:1px solid var(--line)}}
+.versus{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.versus>div{background:var(--surface);padding:12px 14px}
+.versus .v{font-size:24px;line-height:1.1;margin-top:6px}
+.versus .s{color:var(--muted);font-size:12.5px;margin-top:4px}
+.explica{border-left:2px solid var(--accent);padding:4px 0 4px 16px;display:grid;gap:8px}
+.explica p{max-width:64ch}
+.explica .src{color:var(--dim)}
+.alertas{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.alertas li{padding:8px 12px;background:var(--warn-bg);color:var(--warn);font-size:13.5px}
+.sin{display:grid;gap:10px;padding:8px 0}
+.sin .t-titulo{font-size:clamp(28px,3.4vw,44px)}
+
+/* diagnóstico */
+.muestras{display:grid;gap:6px}
+.muestra{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line-2);background:transparent;color:var(--fg);text-align:left}
+.muestra:hover{border-color:var(--fg)}
+.muestra[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.muestra .ix{color:var(--dim)} .muestra[aria-pressed="true"] .ix{color:var(--accent-text)}
+.muestra b{font-weight:600}
+.muestra small{display:block;color:var(--muted)}
+.carga{display:grid;gap:8px;border:1px dashed var(--line-2);padding:14px}
+.carga input{color:var(--muted);max-width:100%;font-size:13px}
+.carga input::file-selector-button{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;height:34px;padding:0 14px;margin-right:12px;border:1px solid var(--line-2);background:var(--control);color:var(--fg);cursor:pointer}
+.carga input::file-selector-button:hover{border-color:var(--fg)}
+.traza{width:100%;height:auto;display:block;border:1px solid var(--line);background:var(--well)}
+
+/* técnico */
+.tbl{overflow-x:auto;border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--muted);background:var(--well)}
+td.in{color:var(--ok)} td.out{color:var(--crit);font-weight:600}
+.acciones{display:flex;flex-wrap:wrap;gap:8px}
+.btn{height:40px;padding:0 16px;border:1px solid var(--line-2);background:transparent;color:var(--fg)}
+.btn.primario{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.peligro{border-color:var(--crit);color:var(--crit)}
+.log{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.log li{padding:6px 10px;border-left:2px solid var(--accent);background:var(--well);font-size:13px}
+.txt{width:100%;height:42px;background:var(--bg);border:1px solid var(--line-2);padding:0 12px;color:var(--fg)}
+
+/* método */
+.pasos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line)}
+.paso{padding:22px 20px 26px;border-right:1px solid var(--line);position:relative;min-width:0;display:flex;flex-direction:column;gap:12px}
+.paso:last-child{border-right:0}
+.paso::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:var(--accent);transform-origin:left;transform:scaleX(calc(var(--k)/4))}
+.paso .big{font-size:84px;line-height:.8;color:var(--fg)}
+.paso h3{font-family:var(--font-display);font-weight:700;font-stretch:100%;font-size:18px;text-transform:uppercase;letter-spacing:-.005em}
+.paso p{color:var(--muted);font-size:14px}
+.formula{font-family:var(--font-mono);font-size:12.5px;line-height:1.5;color:var(--fg);background:var(--well);border:1px solid var(--line);padding:8px 10px;overflow-wrap:anywhere}
+.paso .dato{margin-top:auto;color:var(--accent-text)}
+@media (max-width:1060px){.pasos{grid-template-columns:repeat(2,minmax(0,1fr))}.paso:nth-child(2){border-right:0}.paso:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+@media (max-width:560px){.pasos{grid-template-columns:minmax(0,1fr)}.paso{border-right:0;border-bottom:1px solid var(--line)}.paso:last-child{border-bottom:0}}
+
+/* precisión */
+.dos{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;border:1px solid var(--line)}
+.dos>div{padding:clamp(18px,2.6vw,32px);min-width:0}
+.dos>div+div{border-left:1px solid var(--line)}
+@media (max-width:980px){.dos{grid-template-columns:minmax(0,1fr)}.dos>div+div{border-left:0;border-top:1px solid var(--line)}}
+.barras{display:grid;gap:12px;margin-top:16px}
+.barra{display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr) 62px;align-items:center;gap:12px;font-size:13.5px}
+.barra .rail{height:12px;background:var(--control);position:relative}
+.barra .rail i{position:absolute;inset:0 auto 0 0;background:var(--dim)}
+.barra.sel .rail i{background:var(--accent)}
+.barra .val{text-align:right;font-variant-numeric:tabular-nums}
+.barra.sel{color:var(--fg)} .barra:not(.sel){color:var(--muted)}
+@media (max-width:520px){.barra{grid-template-columns:minmax(0,1fr) 58px}.barra .rail{grid-column:1/-1;grid-row:2}}
+.rangos{display:grid;gap:18px;margin-top:16px}
+.rango .fila{display:flex;justify-content:space-between;gap:10px;font-size:13.5px}
+.rango svg{width:100%;height:auto;display:block;margin-top:6px}
+
+/* pie */
+footer{padding-block:40px 56px;color:var(--muted);font-size:13px}
+footer .wrap{display:grid;gap:14px}
+footer .cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+@media (max-width:860px){footer .cols{grid-template-columns:minmax(0,1fr)}}
+footer b{color:var(--fg);font-weight:600}
 </style>
 
-<div class="wrap">
-  <header class="bar">
-    <div class="brand">
-      <img src="__LOGO__" alt="Lumine Motors">
-      <div>
-        <h1>Estimador de ahorro</h1>
-        <p>Prototipo mínimo · Entrega 3 · datos sintéticos y secundarios</p>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="Lumine Motors, estimador"><span class="emblem"></span><span class="wordmark"></span><span class="brand-sub t-label-sm">Estimador</span></a>
+    <nav class="nav" aria-label="Secciones">
+      <button type="button" class="t-label-sm" data-modo="n1" id="nav-n1"><span class="n">01</span>Cotización</button>
+      <button type="button" class="t-label-sm" data-modo="n2" id="nav-n2"><span class="n">02</span>Diagnóstico</button>
+      <button type="button" class="t-label-sm" data-modo="tec" id="nav-tec"><span class="n">03</span>Técnico</button>
+      <a class="t-label-sm" href="#metodo"><span class="n">04</span>Método</a>
+    </nav>
+    <div class="right">
+      <button type="button" class="tema" id="tema" aria-label="Cambiar entre tema claro y oscuro"></button>
+      <a class="cta t-label-sm" href="https://claude.ai/artifact/XGpgpuDtxJvtiAjbRDwJ2o" target="_blank" rel="noopener">Sitio Lumine ↗</a>
+    </div>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="hero rejilla">
+    <div class="foco" style="position:absolute;inset:0" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="meta t-label-sm"><span><i></i>Lumine Motors · Estimador de ahorro</span><span>LM-EST · v3.1 · IA predictiva + generativa</span></div>
+      <h1 class="t-titulo">Cuánto ahorras <span class="t-serif">tú.</span></h1>
+      <p class="bajada">El sitio te da una referencia de <b>20% menos combustible</b>. Aquí calculamos tu caso con tu forma de manejar, te mostramos el margen de error y un técnico revisa la cifra antes de que la veas.</p>
+      <div class="cifras">
+        <div class="cifra"><span class="t-label-sm muted">Error medio</span><div class="v t-num">0,95<span class="muted" style="font-size:.45em"> pp</span></div><p class="d">en 90 conductores que el modelo nunca vio; la cifra genérica erra por 7,9.</p></div>
+        <div class="cifra"><span class="t-label-sm muted">Cobertura</span><div class="v t-num">82<span class="muted" style="font-size:.45em">%</span></div><p class="d">de los casos cae dentro del rango que mostramos, con meta de 80%.</p></div>
+        <div class="cifra"><span class="t-label-sm muted">Jornadas</span><div class="v t-num">3.045</div><p class="d">simuladas segundo a segundo: 3.000 calibradas con Santiago y 45 reales.</p></div>
+        <div class="cifra"><span class="t-label-sm muted">Pruebas</span><div class="v t-num">12/12</div><p class="d">casos normales, ambiguos y críticos aprobados por el texto de la IA.</p></div>
       </div>
     </div>
-    <nav class="tabs" role="tablist" aria-label="Nivel del estimador">
-      <button role="tab" id="tab-n1" aria-selected="false" data-tab="n1">Cotización</button>
-      <button role="tab" id="tab-n2" aria-selected="true" data-tab="n2">Diagnóstico</button>
-      <button role="tab" id="tab-tec" aria-selected="false" data-tab="tec">Técnico</button>
-    </nav>
-  </header>
+  </section>
 
-  <div class="grid">
-    <!-- Columna de entrada -->
-    <section class="panel" id="in-n1" hidden>
-      <h2>Nivel 1 · Cotización</h2>
-      <p class="sub">Datos que declara el conductor en el formulario. Toma menos de tres minutos.</p>
-      <div class="field"><label>Tipo de uso</label>
-        <div class="seg" id="n1-perfil">
-          <label><input type="radio" name="perfil" value="colectivo" id="p-col" checked><span>Colectivo</span></label>
-          <label><input type="radio" name="perfil" value="aplicacion" id="p-app"><span>Aplicación</span></label>
-          <label><input type="radio" name="perfil" value="particular" id="p-par"><span>Particular</span></label>
-        </div></div>
-      <div class="field"><label for="n1-km">Kilómetros por día</label>
-        <input type="number" id="n1-km" min="5" max="500" step="10" value="200"><small>Lo que recorres un día normal de trabajo.</small></div>
-      <div class="field"><label for="n1-horario">¿Cuándo manejas más?</label>
-        <select id="n1-horario"><option value="2" selected>Sobre todo en hora punta</option><option value="1">Mezcla de punta y valle</option><option value="0">Sobre todo fuera de punta</option></select></div>
-      <div class="field"><label for="n1-autopista">¿Cuánto usas autopista?</label>
-        <select id="n1-autopista"><option value="0" selected>Casi nunca</option><option value="1">A veces</option><option value="2">Frecuentemente</option></select></div>
-      <div class="field"><label for="n1-auto">Tu auto</label>
-        <select id="n1-auto"><option value="c">Sedán compacto (1,2 a 1,4 L)</option><option value="m" selected>Sedán mediano (1,5 a 1,6 L)</option><option value="g">Sedán grande (1,8 a 2,0 L)</option></select></div>
-      <div class="field"><label for="n1-traccion">Tracción</label>
-        <select id="n1-traccion"><option value="delantera" selected>Delantera</option><option value="trasera">Trasera</option><option value="4x4">4x4</option></select></div>
-      <div class="row"><button class="btn" id="n1-go">Estimar ahorro</button></div>
-    </section>
-
-    <section class="panel" id="in-n2">
-      <h2>Nivel 2 · Diagnóstico</h2>
-      <p class="sub">Una semana de registro GPS a 1 Hz. Se guardan solo variables agregadas; la ruta se borra.</p>
-      <div class="samples" id="samples"></div>
-      <div class="field" style="margin-top:12px"><label for="csv">O carga tu propio registro (CSV)</label>
-        <input type="file" id="csv" accept=".csv,text/csv">
-        <small>Columnas: <code>velocidad_kmh</code> por segundo y, si existen, <code>pendiente_pct</code> y <code>dia</code>.</small></div>
-      <div class="field" id="csv-auto-f" hidden><label for="csv-auto">Tu auto</label>
-        <select id="csv-auto"><option value="c">Sedán compacto (1,2 a 1,4 L)</option><option value="m" selected>Sedán mediano (1,5 a 1,6 L)</option><option value="g">Sedán grande (1,8 a 2,0 L)</option></select></div>
-      <figure style="margin:12px 0 0">
-        <svg class="trace" id="trace" viewBox="0 0 400 110" role="img" aria-label="Velocidad durante la primera hora de una jornada"></svg>
-        <figcaption class="note" id="trace-cap">Velocidad en la primera hora de una jornada del registro.</figcaption>
-      </figure>
-    </section>
-
-    <section class="panel" id="in-tec" hidden>
-      <h2>Panel del técnico</h2>
-      <p class="sub">Supervisión humana: el técnico valida, ajusta dentro de ±2 puntos o bloquea antes de que el cliente vea la cifra.</p>
-      <div class="tbl"><table id="tec-vars"><thead><tr><th>Variable</th><th>Valor</th><th>Rango del modelo</th></tr></thead><tbody></tbody></table></div>
-      <div class="field" style="margin-top:12px"><label for="tec-ajuste">Ajuste del técnico (puntos porcentuales)</label>
-        <input type="number" id="tec-ajuste" min="-2" max="2" step="0.1" value="0"><small>Límite ±2 pp. Todo ajuste exige motivo y queda registrado.</small></div>
-      <div class="field"><label for="tec-motivo">Motivo</label><input type="text" id="tec-motivo" placeholder="Ej.: auto con aire acondicionado de uso permanente"></div>
-      <div class="row">
-        <button class="btn" id="tec-ok">Aprobar</button>
-        <button class="btn ghost" id="tec-adj">Aplicar ajuste</button>
-        <button class="btn bad" id="tec-block">Bloquear</button>
+  <section class="sec" id="herramienta">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="lab t-label"><span class="n">01</span><hr><span>Estimación</span></div>
+        <h2 class="t-titulo">Tu ahorro, <span class="t-serif">en vivo.</span></h2>
+        <p>Tres niveles con la misma lógica. <b>Cotización</b> usa lo que declaras; <b>diagnóstico</b> usa una semana de tu conducción real; el <b>técnico</b> aprueba, ajusta o bloquea la cifra. Todo corre en tu navegador: nada se guarda ni se envía.</p>
       </div>
-      <p class="note" id="tec-msg" role="status"></p>
-      <ul class="log" id="tec-log"></ul>
-    </section>
-
-    <!-- Columna de resultado -->
-    <section class="panel" id="out" aria-live="polite">
-      <div class="result-head">
-        <h2 id="out-title">Estimación personalizada</h2>
-        <span class="state ok" id="out-state">OK</span>
+      <div class="modos" role="tablist" aria-label="Nivel del estimador">
+        <button type="button" role="tab" class="t-label-sm" id="tab-n1" data-modo="n1" aria-selected="false">Nivel 1 · Cotización</button>
+        <button type="button" role="tab" class="t-label-sm" id="tab-n2" data-modo="n2" aria-selected="true">Nivel 2 · Diagnóstico</button>
+        <button type="button" role="tab" class="t-label-sm" id="tab-tec" data-modo="tec" aria-selected="false">Técnico</button>
       </div>
-      <div id="out-body"></div>
-      <p class="foot">Ahorro simulado con el kit de referencia (motor trasero de 23 kW, batería de 1,5 kWh), modelo de gradient boosting e intervalo de predicción al 80%. Bencina 93 a $1.541/l (RM, marzo de 2026). Precio del kit: supuesto de $2.521.000 neto. Toda cifra se verificará con la telemetría de la unidad de control después de instalar (Ley N° 19.496, art. 28).</p>
-    </section>
+      <div class="tool">
+        <!-- Nivel 1 -->
+        <div class="panel" id="in-n1" hidden>
+          <fieldset><legend class="t-label"><span class="n">01</span>Tipo de uso</legend>
+            <div class="segbtn" id="n1-perfil">
+              <button type="button" data-v="colectivo" aria-pressed="true"><span class="t-label">Colectivo</span><small>Paradas todo el día</small></button>
+              <button type="button" data-v="aplicacion" aria-pressed="false"><span class="t-label">Aplicación</span><small>Ciudad y autopista</small></button>
+              <button type="button" data-v="particular" aria-pressed="false"><span class="t-label">Particular</span><small>Traslados diarios</small></button>
+            </div></fieldset>
+          <fieldset><legend class="t-label"><span class="n">02</span>Cuánto manejas</legend>
+            <div class="campo"><label for="n1-km" class="t-label-sm">Km al día</label><input id="n1-km" class="t-num" type="number" inputmode="numeric" min="5" max="400" step="5" value="200"><span class="u t-label-sm">km</span></div>
+            <input type="range" id="n1-km-r" min="5" max="400" step="5" value="200" aria-label="Km al día">
+            <div class="fila2" style="margin-top:14px">
+              <div><div class="campo"><label for="n1-dias" class="t-label-sm">Días por semana</label><input id="n1-dias" class="t-num" type="number" min="1" max="7" step="1" value="6"><span class="u t-label-sm">días</span></div></div>
+              <div><div class="campo"><label for="n1-rend" class="t-label-sm">Rendimiento</label><input id="n1-rend" class="t-num" type="number" min="5" max="25" step="0.5" value="10"><span class="u t-label-sm">km/L</span></div><p class="ayuda">Lo que rinde hoy tu auto en ciudad.</p></div>
+            </div></fieldset>
+          <fieldset><legend class="t-label"><span class="n">03</span>Cómo manejas</legend>
+            <p class="t-label-sm muted" style="margin-bottom:8px">Horario principal</p>
+            <div class="segbtn" id="n1-horario">
+              <button type="button" data-v="2" aria-pressed="true"><span class="t-label">Punta</span></button>
+              <button type="button" data-v="1" aria-pressed="false"><span class="t-label">Mixto</span></button>
+              <button type="button" data-v="0" aria-pressed="false"><span class="t-label">Valle</span></button>
+            </div>
+            <p class="t-label-sm muted" style="margin:14px 0 8px">Autopista</p>
+            <div class="segbtn" id="n1-autopista">
+              <button type="button" data-v="0" aria-pressed="true"><span class="t-label">Casi nunca</span></button>
+              <button type="button" data-v="1" aria-pressed="false"><span class="t-label">A veces</span></button>
+              <button type="button" data-v="2" aria-pressed="false"><span class="t-label">Seguido</span></button>
+            </div></fieldset>
+          <fieldset><legend class="t-label"><span class="n">04</span>Tu auto</legend>
+            <div class="segbtn" id="n1-auto">
+              <button type="button" data-v="c" aria-pressed="false"><span class="t-label">Compacto</span><small>1,2 a 1,4 L</small></button>
+              <button type="button" data-v="m" aria-pressed="true"><span class="t-label">Mediano</span><small>1,5 a 1,6 L</small></button>
+              <button type="button" data-v="g" aria-pressed="false"><span class="t-label">Grande</span><small>1,8 a 2,0 L</small></button>
+            </div>
+            <p class="t-label-sm muted" style="margin:14px 0 8px">Tracción</p>
+            <div class="segbtn" id="n1-traccion">
+              <button type="button" data-v="delantera" aria-pressed="true"><span class="t-label">Delantera</span></button>
+              <button type="button" data-v="trasera" aria-pressed="false"><span class="t-label">Trasera</span></button>
+              <button type="button" data-v="4x4" aria-pressed="false"><span class="t-label">4x4</span></button>
+            </div></fieldset>
+        </div>
+
+        <!-- Nivel 2 -->
+        <div class="panel" id="in-n2">
+          <fieldset><legend class="t-label"><span class="n">01</span>Registro de una semana</legend>
+            <div class="muestras" id="muestras"></div></fieldset>
+          <fieldset><legend class="t-label"><span class="n">02</span>O carga el tuyo</legend>
+            <div class="carga"><label for="csv" class="t-label-sm">Archivo CSV a 1 Hz</label><input type="file" id="csv" accept=".csv,text/csv">
+              <p class="ayuda">Columnas: <span class="t-label-sm">velocidad_kmh</span> y, si existen, <span class="t-label-sm">pendiente_pct</span> y <span class="t-label-sm">dia</span>. Sirve un registro tomado como pasajero.</p></div>
+            <div id="csv-auto-f" hidden style="margin-top:14px"><p class="t-label-sm muted" style="margin-bottom:8px">Tu auto</p>
+              <div class="segbtn" id="csv-auto">
+                <button type="button" data-v="c" aria-pressed="false"><span class="t-label">Compacto</span></button>
+                <button type="button" data-v="m" aria-pressed="true"><span class="t-label">Mediano</span></button>
+                <button type="button" data-v="g" aria-pressed="false"><span class="t-label">Grande</span></button>
+              </div></div></fieldset>
+          <fieldset><legend class="t-label"><span class="n">03</span>Primera hora del registro</legend>
+            <svg class="traza" id="traza" viewBox="0 0 400 120" role="img" aria-label="Velocidad durante la primera hora del registro"></svg>
+            <p class="ayuda" id="traza-cap">Velocidad en km/h, segundo a segundo.</p></fieldset>
+        </div>
+
+        <!-- Técnico -->
+        <div class="panel" id="in-tec" hidden>
+          <fieldset><legend class="t-label"><span class="n">01</span>Variables frente al rango del modelo</legend>
+            <div class="tbl"><table id="tec-vars"><thead><tr><th class="t-label-sm">Variable</th><th class="t-label-sm">Valor</th><th class="t-label-sm">Rango</th></tr></thead><tbody></tbody></table></div></fieldset>
+          <fieldset><legend class="t-label"><span class="n">02</span>Decisión del técnico</legend>
+            <div class="fila2">
+              <div><div class="campo"><label for="tec-ajuste" class="t-label-sm">Ajuste</label><input id="tec-ajuste" class="t-num" type="number" min="-2" max="2" step="0.1" value="0"><span class="u t-label-sm">pp</span></div><p class="ayuda">Límite de ±2 puntos.</p></div>
+              <div><label for="tec-motivo" class="t-label-sm muted">Motivo</label><input id="tec-motivo" class="txt" type="text" placeholder="Ej.: aire acondicionado permanente" style="margin-top:8px"></div>
+            </div>
+            <div class="acciones" style="margin-top:16px">
+              <button type="button" class="btn primario t-label-sm" id="tec-ok">Aprobar</button>
+              <button type="button" class="btn t-label-sm" id="tec-adj">Aplicar ajuste</button>
+              <button type="button" class="btn peligro t-label-sm" id="tec-block">Bloquear</button>
+            </div>
+            <p class="ayuda" id="tec-msg" role="status" style="margin-top:10px"></p>
+            <ul class="log" id="tec-log"></ul></fieldset>
+        </div>
+
+        <!-- Lectura -->
+        <div class="well grano" aria-live="polite">
+          <div class="foco" style="position:absolute;inset:0;opacity:.7" aria-hidden="true"></div>
+          <div class="bar"><span class="live t-label-sm"><i class="parpadeo"></i>Lectura en vivo</span><span class="estado t-label-sm ok" id="estado">Listo para el cliente</span></div>
+          <div class="body" id="lectura"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="metodo">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="lab t-label"><span class="n">02</span><hr><span>Método</span></div>
+        <h2 class="t-titulo">Cómo llega <span class="t-serif">a tu cifra.</span></h2>
+        <p>Cada pieza hace lo que hace mejor. La física calcula, el modelo aprende de la física, la estadística pone el margen y la IA generativa solo explica, sin inventar números.</p>
+      </div>
+      <div class="pasos">
+        <div class="paso" style="--k:1"><span class="t-label-sm muted">Paso 1 / 4</span><span class="big t-mono-xl">01</span><h3>Simulador físico</h3><p>Resuelve cada segundo de manejo: cuánto se frena, cuánto recupera el motor trasero y cuánta bencina deja de quemar el motor original.</p><div class="formula">P = (m·a + m·g·Crr + ½ρ·CdA·v² + m·g·i)·v</div><span class="t-label-sm dato">Error de 3,4% frente a FASTSim (NREL)</span></div>
+        <div class="paso" style="--k:2"><span class="t-label-sm muted">Paso 2 / 4</span><span class="big t-mono-xl">02</span><h3>Modelo predictivo</h3><p>Un gradient boosting aprende de 300 conductores qué predice el ahorro: detenciones, tiempo detenido, pendiente, kilómetros y auto.</p><div class="formula">ŷ = f₀ + η·Σ árbolₖ(x)</div><span class="t-label-sm dato">R² = 0,80 · error de 0,95 pp</span></div>
+        <div class="paso" style="--k:3"><span class="t-label-sm muted">Paso 3 / 4</span><span class="big t-mono-xl">03</span><h3>Intervalo conforme</h3><p>El rango se calcula con los errores reales del modelo en datos que no vio, sin suponer una distribución.</p><div class="formula">[ŷ − q₀,₈ ; ŷ + q₀,₈]</div><span class="t-label-sm dato">Cobertura de 82% con meta de 80%</span></div>
+        <div class="paso" style="--k:4"><span class="t-label-sm muted">Paso 4 / 4</span><span class="big t-mono-xl">04</span><h3>Explicación y técnico</h3><p>Claude redacta con cifras ya calculadas y un validador revisa nueve criterios. El técnico aprueba, ajusta ±2 puntos o bloquea.</p><div class="formula">pesos/mes = km·días·4,33 / rend · precio · ahorro</div><span class="t-label-sm dato">12 de 12 casos de prueba aprobados</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="precision">
+    <div class="wrap">
+      <div class="sec-h">
+        <div class="lab t-label"><span class="n">03</span><hr><span>Precisión</span></div>
+        <h2 class="t-titulo">Por qué no <span class="t-serif">una cifra fija.</span></h2>
+        <p>El ahorro cambia con el uso. En colectivos de Santiago la mediana es <b>19,6%</b>, muy cerca del 20% del sitio; en aplicación y particulares es menor. Por eso el estimador personaliza y el sitio solo orienta.</p>
+      </div>
+      <div class="dos">
+        <div><span class="t-label muted">Error medio por método · puntos porcentuales</span><div class="barras" id="barras"></div><p class="ayuda" style="margin-top:14px">Conjunto de prueba de 90 conductores sintéticos de Santiago, separado antes de entrenar.</p></div>
+        <div><span class="t-label muted">Ahorro por perfil · kit de referencia y ampliado</span><div class="rangos" id="rangos"></div><p class="ayuda" style="margin-top:14px">Cada barra va del percentil 10 al 90 de los conductores y el punto marca la mediana. Celeste: kit de referencia (23 kW, 1,5 kWh). Gris: kit ampliado (30 kW, 2 kWh).</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="brand"><span class="emblem"></span><span class="wordmark"></span></div>
+    <div class="cols">
+      <p><b>Supuestos.</b> Bencina 93 a $1.459/L (promedio RM al 30 de septiembre de 2026, preciocombustible.cl), días por semana × 4,33 y precio del kit de $2.521.000 neto, este último aún sin confirmar. El plazo de recuperación usa el escenario conservador.</p>
+      <p><b>Datos.</b> Conductores sintéticos calibrados con el TomTom Traffic Index 2025 para Santiago y jornadas reales del inventario de viajes de Chicago (NREL). Ninguna cifra es una medición del kit; se verificará con la telemetría después de instalar.</p>
+      <p><b>Prototipo académico.</b> Trabajo Final de IA Aplicada al Marketing y los Negocios, UNAB, Grupo 1. La calculadora del sitio comercial es la versión simple de este estimador (nivel 0, con 20% fijo).</p>
+    </div>
   </div>
-</div>
+</footer>
 
 <script>
 const DATA = /*__DATA__*/;
 const M = DATA.modelo;
-const DIAS = { colectivo: 26, aplicacion: 24, particular: 22 };
 const CARGA = { colectivo: 190, aplicacion: 150, particular: 110 };
+const DIAS_DEF = { colectivo: 6, aplicacion: 6, particular: 5 };
 const AUTOS = { c: { masa: 1050, cil: 1.31 }, m: { masa: 1175, cil: 1.6 }, g: { masa: 1300, cil: 1.89 } };
-const PRECIO_L = 1541, PRECIO_KIT = 2521000, REND = 10, PLAZO_MAX = 48;
+const PRECIO_L = 1459, PRECIO_KIT = 2521000, PLAZO_MAX = 48, SEMANAS = 4.33, SITIO = 20;
 const NOMBRES = { detenciones_km: "Detenciones por km", vel_mov_media: "Velocidad en movimiento (km/h)", vel_media: "Velocidad media (km/h)",
   pct_detenido: "Tiempo detenido (%)", acel_pos_media: "Aceleración media (m/s²)", pct_sobre_60: "Tiempo sobre 60 km/h (%)",
-  energia_cinetica_km: "Energía cinética (kJ/kg por km)", desnivel_pos_km: "Subida acumulada (m/km)", km_dia: "Km por día", masa_kg: "Masa con carga (kg)", cilindrada_l: "Cilindrada (L)" };
+  energia_cinetica_km: "Energía cinética (kJ/kg·km)", desnivel_pos_km: "Subida acumulada (m/km)", km_dia: "Km por día", masa_kg: "Masa con carga (kg)", cilindrada_l: "Cilindrada (L)" };
+let actual = null, entrada = null, ajuste = 0, modo = "n2";
 
-let estadoActual = null, ultimaEntrada = null, ajusteTec = 0;
+const $ = id => document.getElementById(id);
+const pct = v => v.toFixed(1).replace(".", ",") + "%";
+const clp = v => "$" + (Math.round(v / 1000) * 1000).toLocaleString("es-CL");
+const num = (v, d = 2) => (+v).toLocaleString("es-CL", { maximumFractionDigits: d });
 
-function gbm(m, x) {
-  let s = m.init;
-  for (const a of m.arboles) { let n = 0; while (a.l[n] !== -1) n = x[a.f[n]] <= a.t[n] ? a.l[n] : a.r[n]; s += m.lr * a.v[n]; }
-  return s;
-}
-const fmtPct = v => v.toFixed(1).replace(".", ",") + "%";
-function clp(v) { return "$" + (Math.round(v / 1000) * 1000).toLocaleString("es-CL"); }
+function gbm(m, x) { let s = m.init; for (const a of m.arboles) { let n = 0; while (a.l[n] !== -1) n = x[a.f[n]] <= a.t[n] ? a.l[n] : a.r[n]; s += m.lr * a.v[n]; } return s; }
 
 function estimar(d) {
   const alertas = [];
@@ -223,24 +444,20 @@ function estimar(d) {
   if (d.nivel === 2) {
     m = M.nivel2;
     if ((d.jornadas_validas ?? 5) < 3) return { estado: "datos_insuficientes", motivo: "El registro tiene menos de tres jornadas válidas.", alertas: ["Registro incompleto: se necesitan al menos tres jornadas válidas."], d };
-    const fuera = m.vars.filter(v => { const [lo, hi] = M.dominio[v]; const mg = 0.1 * (hi - lo); return d[v] < lo - mg || d[v] > hi + mg; });
-    if (fuera.length) return { estado: "fuera_de_dominio", motivo: "La forma de conducir registrada está fuera del rango con que se entrenó el modelo.", alertas: fuera.map(v => "fuera de rango: " + NOMBRES[v]), d };
+    const fuera = m.vars.filter(v => { const [lo, hi] = M.dominio[v]; const mg = .1 * (hi - lo); return d[v] < lo - mg || d[v] > hi + mg; });
+    if (fuera.length) return { estado: "fuera_de_dominio", motivo: "La forma de conducir registrada está fuera del rango con que se entrenó el modelo.", alertas: fuera.map(v => "Fuera de rango: " + NOMBRES[v].toLowerCase()), d };
     x = m.vars.map(v => d[v]); q = m.q80; km = d.km_dia;
-    if ((d.jornadas_validas ?? 5) < 5) { q *= 1.5; alertas.push("Registro parcial: el intervalo se amplió 50%."); }
-    if (d.km_declarado && Math.abs(d.km_declarado - d.km_dia) / d.km_dia > 0.4) alertas.push("El kilometraje declarado no coincide con el registrado.");
-  } else {
-    m = M.nivel1; x = m.vars.map(v => d[v] ?? 0); q = m.q80; km = d.km_declarado;
-  }
-  const centro = gbm(m, x) + ajusteTec;
-  const lo = centro - q, hi = centro + q, cons = lo * M.razon_escenarios.conservador;
-  const gasto = km * DIAS[d.perfil] / REND * PRECIO_L;
-  const r = { estado: "ok", alertas, d, centro, lo, hi, cons, gasto,
-    mes: gasto * centro / 100, mesLo: gasto * lo / 100, mesHi: gasto * hi / 100, mesCons: gasto * cons / 100 };
+    if ((d.jornadas_validas ?? 5) < 5) { q *= 1.5; alertas.push("Registro parcial: el rango se amplió 50%."); }
+  } else { m = M.nivel1; x = m.vars.map(v => d[v] ?? 0); q = m.q80; km = d.km_declarado; }
+  const centro = gbm(m, x) + ajuste, lo = centro - q, hi = centro + q, cons = lo * M.razon_escenarios.conservador;
+  const dias = d.dias_semana ?? DIAS_DEF[d.perfil], rend = d.rend ?? 10;
+  const gasto = km * dias * SEMANAS / rend * PRECIO_L;
+  const r = { estado: "ok", alertas, d, centro, lo, hi, cons, gasto, km, mes: gasto * centro / 100, mesLo: gasto * lo / 100, mesHi: gasto * hi / 100, mesCons: gasto * cons / 100 };
   r.plazo = r.mesCons > 0 ? PRECIO_KIT / r.mesCons : Infinity;
-  if (r.plazo > PLAZO_MAX) { r.estado = "no_conviene"; r.alertas.push("Con el escenario conservador, el kit tarda más de 48 meses en pagarse."); }
+  if (r.plazo > PLAZO_MAX) { r.estado = "no_conviene"; alertas.push("Con el escenario conservador, el kit tarda más de 48 meses en pagarse."); }
   else if (alertas.length) r.estado = "ok_con_advertencia";
-  r.cifras = { ahorro: fmtPct(centro), intervalo: fmtPct(lo) + " a " + fmtPct(hi), ahorro_mensual: clp(r.mes),
-    ahorro_mensual_intervalo: clp(r.mesLo) + " a " + clp(r.mesHi), plazo_conservador: r.plazo > PLAZO_MAX ? "más de 48 meses" : Math.round(r.plazo) + " meses" };
+  r.cifras = { ahorro: pct(centro), intervalo: pct(lo) + " a " + pct(hi), ahorro_mensual: clp(r.mes), ahorro_mensual_intervalo: clp(r.mesLo) + " a " + clp(r.mesHi),
+    plazo_conservador: r.plazo > PLAZO_MAX ? "más de 48 meses" : Math.round(r.plazo) + " meses" };
   return r;
 }
 
@@ -252,160 +469,166 @@ function plantilla(r) {
   p.push("La cifra se verificará con los datos reales del kit después de instalarlo.");
   return p;
 }
-
 function explicacion(r) {
-  if (ajusteTec === 0 && r.cifras) {
-    for (const g of DATA.generadas) {
-      const c = g.cifras;
-      if (c && c.ahorro === r.cifras.ahorro && c.intervalo === r.cifras.intervalo && c.plazo_conservador === r.cifras.plazo_conservador && g.estado === r.estado)
-        return { parrafos: g.mensaje.split("\n\n"), src: `Texto generado por Claude con el prompt RAFA v3.1 (caso ${g.id} de la batería de prueba) y aprobado por el validador automático.` };
-    }
+  if (ajuste === 0 && r.cifras) for (const g of DATA.generadas) {
+    const c = g.cifras;
+    if (c && c.ahorro === r.cifras.ahorro && c.intervalo === r.cifras.intervalo && c.ahorro_mensual === r.cifras.ahorro_mensual && c.plazo_conservador === r.cifras.plazo_conservador && g.estado === r.estado)
+      return { p: g.mensaje.split("\n\n"), src: `Texto de Claude con el prompt RAFA v3.1 (caso ${g.id} de la batería de prueba), aprobado por el validador.` };
   }
-  return { parrafos: plantilla(r), src: "Plantilla de respaldo: se usa cuando no hay conexión con la API o cuando el texto generado no pasa el validador." };
+  return { p: plantilla(r), src: "Plantilla de respaldo: se usa sin conexión a la API o si el texto generado no pasa el validador." };
 }
 
 function gauge(r) {
-  const W = 400, x0 = 14, x1 = W - 14, vmax = 30, X = v => x0 + (x1 - x0) * Math.max(0, Math.min(vmax, v)) / vmax;
-  let s = `<svg class="gauge" viewBox="0 0 ${W} 74" role="img" aria-label="Intervalo de ahorro estimado frente a cifras de referencia">`;
-  s += `<line x1="${x0}" y1="34" x2="${x1}" y2="34" stroke="var(--line)" stroke-width="10" stroke-linecap="round"/>`;
-  s += `<rect x="${X(r.lo)}" y="29" width="${X(r.hi) - X(r.lo)}" height="10" rx="5" fill="var(--band)"/>`;
-  s += `<line x1="${X(r.centro)}" y1="22" x2="${X(r.centro)}" y2="46" stroke="var(--ink)" stroke-width="3"/>`;
-  for (const t of [0, 5, 10, 15, 20, 25, 30]) s += `<text x="${X(t)}" y="64" font-size="10" text-anchor="middle" fill="var(--muted)" font-family="Barlow, Arial, sans-serif">${t}%</text>`;
-  const ref = [[15.5, "ICCT WLTC 15,5%"], [25, "Cifra genérica 25%"]];
-  for (const [v, t] of ref) s += `<line x1="${X(v)}" y1="18" x2="${X(v)}" y2="50" stroke="var(--muted)" stroke-dasharray="2 3"/><text x="${X(v)}" y="12" font-size="10" text-anchor="middle" fill="var(--muted)" font-family="Barlow, Arial, sans-serif">${t}</text>`;
+  const W = 600, x0 = 16, x1 = W - 16, vmax = 30, X = v => x0 + (x1 - x0) * Math.max(0, Math.min(vmax, v)) / vmax, F = "IBM Plex Mono, monospace";
+  let s = `<svg class="gauge" viewBox="0 0 ${W} 92" role="img" aria-label="Rango de ahorro estimado frente a las cifras de referencia">`;
+  for (let t = 0; t <= 30; t += 1) { const big = t % 5 === 0; s += `<line x1="${X(t)}" x2="${X(t)}" y1="${big ? 52 : 56}" y2="60" stroke="var(--line-2)"/>`; if (big) s += `<text x="${X(t)}" y="76" font-size="10" text-anchor="middle" fill="var(--muted)" font-family="${F}">${t}%</text>`; }
+  s += `<rect x="${x0}" y="36" width="${x1 - x0}" height="10" fill="var(--control)"/>`;
+  s += `<rect x="${X(r.lo)}" y="36" width="${Math.max(2, X(r.hi) - X(r.lo))}" height="10" fill="var(--band)"/>`;
+  s += `<rect x="${X(r.centro) - 1.5}" y="28" width="3" height="26" fill="var(--accent)"/>`;
+  const refs = [[15.5, "ICCT 15,5"], [SITIO, "Sitio 20"], [25, "Genérica 25"]];
+  for (const [v, t] of refs) s += `<line x1="${X(v)}" x2="${X(v)}" y1="18" y2="50" stroke="var(--muted)" stroke-dasharray="2 3"/><text x="${X(v)}" y="12" font-size="9.5" text-anchor="middle" fill="var(--muted)" font-family="${F}" letter-spacing="1">${t.toUpperCase()}</text>`;
   return s + "</svg>";
 }
 
 function estadoChip(e) {
-  const map = { ok: ["ok", "Listo para el cliente"], ok_con_advertencia: ["warn", "Con advertencia"], no_conviene: ["warn", "No conviene"],
-    no_aplica: ["bad", "No aplica"], fuera_de_dominio: ["bad", "Fuera de dominio"], datos_insuficientes: ["bad", "Datos insuficientes"] };
-  const [cls, txt] = map[e]; const el = document.getElementById("out-state"); el.className = "state " + cls; el.textContent = txt;
+  const map = { ok: ["ok", "Listo para el cliente"], ok_con_advertencia: ["warn", "Con advertencia"], no_conviene: ["warn", "No conviene"], no_aplica: ["bad", "No aplica"], fuera_de_dominio: ["bad", "Fuera de dominio"], datos_insuficientes: ["bad", "Datos insuficientes"] };
+  const [c, t] = map[e]; const el = $("estado"); el.className = "estado t-label-sm " + c; el.textContent = t;
 }
 
 function render(r) {
-  estadoActual = r; estadoChip(r.estado);
-  const body = document.getElementById("out-body");
-  const ex = explicacion(r);
-  let h = "";
+  actual = r; estadoChip(r.estado);
+  const ex = explicacion(r); let h = "";
   if (r.cifras) {
-    h += `<div class="big"><span class="num">${r.cifras.ahorro}</span><span class="rng">menos combustible · rango probable ${r.cifras.intervalo}</span></div>`;
+    const sitio = r.gasto * SITIO / 100;
+    h += `<div class="lectura"><span class="big t-mono-xl">${r.centro.toFixed(1).replace(".", ",")}<span class="pct">%</span></span><div class="que"><span class="t-serif">menos combustible</span><span class="t-label-sm muted">Rango 80% · ${r.cifras.intervalo}</span></div></div>`;
     h += gauge(r);
-    h += `<div class="kpis">
-      <div class="kpi"><div class="l">Ahorro al mes</div><div class="v">${r.cifras.ahorro_mensual}</div><div class="s">${r.cifras.ahorro_mensual_intervalo}</div></div>
-      <div class="kpi"><div class="l">Recuperación conservadora</div><div class="v">${r.cifras.plazo_conservador}</div><div class="s">ahorro conservador ${fmtPct(r.cons)}</div></div>
-      <div class="kpi"><div class="l">Gasto actual estimado</div><div class="v">${clp(r.gasto)}</div><div class="s">${Math.round(r.d.nivel === 2 ? r.d.km_dia : r.d.km_declarado)} km/día · ${DIAS[r.d.perfil]} días/mes</div></div>
-    </div>`;
+    h += `<div class="kpis"><div class="kpi"><span class="t-label-sm muted">Ahorro al mes</span><div class="v t-num">${r.cifras.ahorro_mensual}</div><div class="s">${r.cifras.ahorro_mensual_intervalo}</div></div>
+      <div class="kpi"><span class="t-label-sm muted">Recuperación</span><div class="v t-num">${r.cifras.plazo_conservador}</div><div class="s">escenario conservador, ${pct(r.cons)}</div></div>
+      <div class="kpi"><span class="t-label-sm muted">Gasto actual</span><div class="v t-num">${clp(r.gasto)}</div><div class="s">${Math.round(r.km)} km/día · ${r.d.dias_semana ?? DIAS_DEF[r.d.perfil]} días/sem</div></div></div>`;
+    h += `<div class="versus"><div><span class="t-label-sm muted">Referencia del sitio · 20% fijo</span><div class="v t-num">${clp(sitio)}<span class="muted" style="font-size:.6em"> /mes</span></div><div class="s">Igual para todos, sin rango.</div></div>
+      <div><span class="t-label-sm" style="color:var(--accent-text)">Tu estimación · ${r.cifras.ahorro}</span><div class="v t-num">${r.cifras.ahorro_mensual}<span class="muted" style="font-size:.6em"> /mes</span></div><div class="s">${r.mes >= sitio ? "Sobre" : "Bajo"} la referencia por ${clp(Math.abs(r.mes - sitio))} al mes.</div></div></div>`;
   } else {
-    h += `<p class="sub" style="margin-top:8px">${r.motivo}</p>`;
+    h += `<div class="sin"><span class="t-label-sm muted">Sin estimación</span><p class="t-titulo">Este caso lo revisa <span class="t-serif">un técnico.</span></p></div>`;
   }
-  h += `<div class="explain">${ex.parrafos.map(p => `<p>${p}</p>`).join("")}<div class="src">${ex.src}</div></div>`;
-  if (r.alertas.length) h += `<ul class="alerts">${r.alertas.map(a => `<li>${a}</li>`).join("")}</ul>`;
-  body.innerHTML = h;
-  renderTec(r);
+  h += `<div class="explica">${ex.p.map(p => `<p>${p}</p>`).join("")}<span class="t-label-sm src">${ex.src}</span></div>`;
+  if (r.alertas.length) h += `<ul class="alertas">${r.alertas.map(a => `<li>${a}</li>`).join("")}</ul>`;
+  $("lectura").innerHTML = h; renderTec(r);
 }
 
 function renderTec(r) {
   const tb = document.querySelector("#tec-vars tbody");
   if (r.d.nivel !== 2) { tb.innerHTML = `<tr><td colspan="3">Cotización con datos declarados: sin variables de registro.</td></tr>`; return; }
-  tb.innerHTML = M.nivel2.vars.map(v => { const [lo, hi] = M.dominio[v]; const val = r.d[v]; const mg = .1 * (hi - lo); const ok = val >= lo - mg && val <= hi + mg;
-    return `<tr><td>${NOMBRES[v]}</td><td class="${ok ? "in" : "out"}">${(+val).toLocaleString("es-CL", { maximumFractionDigits: 2 })}</td><td>${lo.toLocaleString("es-CL", { maximumFractionDigits: 2 })} a ${hi.toLocaleString("es-CL", { maximumFractionDigits: 2 })}</td></tr>`; }).join("");
+  tb.innerHTML = M.nivel2.vars.map(v => { const [lo, hi] = M.dominio[v], val = r.d[v], mg = .1 * (hi - lo), ok = val >= lo - mg && val <= hi + mg;
+    return `<tr><td>${NOMBRES[v]}</td><td class="${ok ? "in" : "out"}">${num(val)}</td><td>${num(lo)} a ${num(hi)}</td></tr>`; }).join("");
 }
 
-function trace(kmh, cap) {
-  const svg = document.getElementById("trace"); if (!kmh || !kmh.length) { svg.innerHTML = ""; return; }
-  const n = kmh.length, W = 400, H = 110, top = 8, bot = 92, vmax = 100;
-  const X = i => 28 + (W - 36) * i / (n - 1), Y = v => bot - (bot - top) * Math.min(v, vmax) / vmax;
-  let d = ""; const paso = Math.max(1, Math.floor(n / 600));
-  for (let i = 0; i < n; i += paso) d += (i ? "L" : "M") + X(i).toFixed(1) + " " + Y(kmh[i]).toFixed(1);
-  let g = "";
-  for (const v of [0, 50, 100]) g += `<line x1="28" x2="${W - 8}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="22" y="${Y(v) + 3}" font-size="9" text-anchor="end" fill="var(--muted)" font-family="Barlow, Arial, sans-serif">${v}</text>`;
-  g += `<text x="28" y="106" font-size="9" fill="var(--muted)" font-family="Barlow, Arial, sans-serif">0 min</text><text x="${W - 8}" y="106" font-size="9" text-anchor="end" fill="var(--muted)" font-family="Barlow, Arial, sans-serif">${Math.round(n / 60)} min · km/h</text>`;
-  svg.innerHTML = g + `<path d="${d}" fill="none" stroke="var(--accent)" stroke-width="1.2"/>`;
-  document.getElementById("trace-cap").textContent = cap;
+function traza(kmh, cap) {
+  const svg = $("traza"); if (!kmh || !kmh.length) { svg.innerHTML = ""; return; }
+  const n = kmh.length, W = 400, top = 10, bot = 98, vmax = 100, X = i => 30 + (W - 40) * i / (n - 1), Y = v => bot - (bot - top) * Math.min(v, vmax) / vmax, F = "IBM Plex Mono, monospace";
+  let g = ""; for (const v of [0, 50, 100]) g += `<line x1="30" x2="${W - 10}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="24" y="${Y(v) + 3}" font-size="8.5" text-anchor="end" fill="var(--muted)" font-family="${F}">${v}</text>`;
+  g += `<text x="30" y="114" font-size="8.5" fill="var(--muted)" font-family="${F}">0 MIN</text><text x="${W - 10}" y="114" font-size="8.5" text-anchor="end" fill="var(--muted)" font-family="${F}">${Math.round(n / 60)} MIN · KM/H</text>`;
+  let d = "", paso = Math.max(1, Math.floor(n / 700)); for (let i = 0; i < n; i += paso) d += (i ? "L" : "M") + X(i).toFixed(1) + " " + Y(kmh[i]).toFixed(1);
+  svg.innerHTML = g + `<path d="${d}" fill="none" stroke="var(--accent)" stroke-width="1.1"/>`; $("traza-cap").textContent = cap;
 }
 
-// ----- Nivel 1
+// ----- selección por botones
+function seg(id, cb) { const el = $(id); el.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { el.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); cb && cb(b.dataset.v); })); }
+const val = id => $(id).querySelector('button[aria-pressed="true"]').dataset.v;
+
+// ----- nivel 1
 function leerN1() {
-  const perfil = document.querySelector('input[name="perfil"]:checked').value;
-  const a = AUTOS[document.getElementById("n1-auto").value];
-  return { nivel: 1, perfil, km_declarado: +document.getElementById("n1-km").value, horario_ord: +document.getElementById("n1-horario").value,
-    autopista_ord: +document.getElementById("n1-autopista").value, perfil_colectivo: +(perfil === "colectivo"), perfil_aplicacion: +(perfil === "aplicacion"),
-    perfil_particular: +(perfil === "particular"), masa_kg: a.masa + 75 + CARGA[perfil], cilindrada_l: a.cil, traccion: document.getElementById("n1-traccion").value };
+  const perfil = val("n1-perfil"), a = AUTOS[val("n1-auto")];
+  return { nivel: 1, perfil, km_declarado: Math.max(5, +$("n1-km").value || 0), horario_ord: +val("n1-horario"), autopista_ord: +val("n1-autopista"),
+    perfil_colectivo: +(perfil === "colectivo"), perfil_aplicacion: +(perfil === "aplicacion"), perfil_particular: +(perfil === "particular"),
+    masa_kg: a.masa + 75 + CARGA[perfil], cilindrada_l: a.cil, traccion: val("n1-traccion"), dias_semana: Math.min(7, Math.max(1, +$("n1-dias").value || 1)), rend: Math.max(5, +$("n1-rend").value || 10) };
 }
-document.getElementById("n1-go").addEventListener("click", () => { ajusteTec = 0; ultimaEntrada = leerN1(); render(estimar(ultimaEntrada)); });
+const n1 = () => { ajuste = 0; entrada = leerN1(); render(estimar(entrada)); };
+["n1-perfil", "n1-horario", "n1-autopista", "n1-auto", "n1-traccion"].forEach(id => seg(id, v => { if (id === "n1-perfil") $("n1-dias").value = DIAS_DEF[v]; n1(); }));
+$("n1-km").addEventListener("input", e => { $("n1-km-r").value = e.target.value; n1(); });
+$("n1-km-r").addEventListener("input", e => { $("n1-km").value = e.target.value; n1(); });
+["n1-dias", "n1-rend"].forEach(id => $(id).addEventListener("input", n1));
 
-// ----- Nivel 2
-const cont = document.getElementById("samples");
+// ----- nivel 2
 DATA.muestras.forEach((s, i) => {
-  const b = document.createElement("button"); b.className = "sample"; b.type = "button"; b.id = "m" + i; b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
-  b.innerHTML = `<span class="top"><b>${s.nombre}</b><span class="tag">Ejemplo</span></span><span class="d">${s.desc}</span>`;
-  b.addEventListener("click", () => { document.querySelectorAll(".sample").forEach(x => x.setAttribute("aria-pressed", "false")); b.setAttribute("aria-pressed", "true");
-    document.getElementById("csv-auto-f").hidden = true; usarMuestra(i); });
-  cont.appendChild(b);
+  const b = document.createElement("button"); b.className = "muestra"; b.type = "button"; b.id = "m" + i; b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+  b.innerHTML = `<span class="ix t-label-sm">0${i + 1}</span><span><b>${s.nombre}</b><small>${s.desc}</small></span><span class="t-label-sm dim">Ejemplo</span>`;
+  b.addEventListener("click", () => { document.querySelectorAll(".muestra").forEach(x => x.setAttribute("aria-pressed", "false")); b.setAttribute("aria-pressed", "true"); $("csv-auto-f").hidden = true; muestra(i); });
+  $("muestras").appendChild(b);
 });
-function usarMuestra(i) { const s = DATA.muestras[i]; ajusteTec = 0; ultimaEntrada = { ...s.vars, nivel: 2, perfil: s.perfil, jornadas_validas: 5 };
-  trace(s.traza, "Velocidad en la primera hora de una jornada de este registro (sintético, calibrado a Santiago)."); render(estimar(ultimaEntrada)); }
+function muestra(i) { const s = DATA.muestras[i]; ajuste = 0; entrada = { ...s.vars, nivel: 2, perfil: s.perfil, jornadas_validas: 5 };
+  traza(s.traza, "Primera hora de una jornada de este registro (sintético, calibrado a Santiago)."); render(estimar(entrada)); }
 
 function variablesDia(v, p) {
-  const n = v.length; let km = 0, parado = 0, inicios = 0, mov = 0, sumMov = 0, sobre60 = 0, ke = 0, acc = 0, nacc = 0, subida = 0;
-  for (let i = 0; i < n; i++) {
-    const ms = v[i] / 3.6; km += ms / 1000; const st = ms < 0.3; if (st) parado++; else { mov++; sumMov += v[i]; }
-    if (i > 0 && st && v[i - 1] / 3.6 >= 0.3) inicios++;
-    if (v[i] > 60) sobre60++;
-    if (i > 0) { const prev = v[i - 1] / 3.6, a = ms - prev; const dv2 = (ms * ms - prev * prev) / 2; if (dv2 > 0) ke += dv2; if (a > 0.1) { acc += a; nacc++; } }
-    if (p && p[i] > 0) subida += p[i] / 100 * ms;
-  }
-  return { km_dia: km, detenciones_km: inicios / km, vel_mov_media: mov ? sumMov / mov : 0, vel_media: km / (n / 3600), pct_detenido: 100 * parado / n,
+  const n = v.length; let km = 0, parado = 0, paradas = 0, mov = 0, sumMov = 0, sobre60 = 0, ke = 0, acc = 0, nacc = 0, subida = 0;
+  for (let i = 0; i < n; i++) { const ms = v[i] / 3.6; km += ms / 1000; const st = ms < .3; if (st) parado++; else { mov++; sumMov += v[i]; }
+    if (i > 0 && st && v[i - 1] / 3.6 >= .3) paradas++; if (v[i] > 60) sobre60++;
+    if (i > 0) { const prev = v[i - 1] / 3.6, a = ms - prev, dv2 = (ms * ms - prev * prev) / 2; if (dv2 > 0) ke += dv2; if (a > .1) { acc += a; nacc++; } }
+    if (p && p[i] > 0) subida += p[i] / 100 * ms; }
+  return { km_dia: km, detenciones_km: paradas / km, vel_mov_media: mov ? sumMov / mov : 0, vel_media: km / (n / 3600), pct_detenido: 100 * parado / n,
     acel_pos_media: nacc ? acc / nacc : 0, pct_sobre_60: 100 * sobre60 / n, energia_cinetica_km: ke / km / 1000, desnivel_pos_km: subida / km };
 }
-document.getElementById("csv").addEventListener("change", ev => {
-  const f = ev.target.files[0]; if (!f) return;
-  const rd = new FileReader();
+let csvVars = null, csvTraza = null;
+function usarCsv() { const a = AUTOS[val("csv-auto")]; ajuste = 0; entrada = { ...csvVars.prom, masa_kg: a.masa + 75 + CARGA.aplicacion, cilindrada_l: a.cil, nivel: 2, perfil: "aplicacion", jornadas_validas: csvVars.n };
+  traza(csvTraza, `Primera hora de tu registro · ${csvVars.n} jornada(s) válida(s) de 10 km o más.`); render(estimar(entrada)); }
+seg("csv-auto", () => csvVars && usarCsv());
+$("csv").addEventListener("change", ev => {
+  const f = ev.target.files[0]; if (!f) return; const rd = new FileReader();
   rd.onload = () => {
-    const filas = rd.result.trim().split(/\r?\n/); const cab = filas[0].toLowerCase().split(/[;,]/).map(s => s.trim());
+    const filas = rd.result.trim().split(/\r?\n/), cab = filas[0].toLowerCase().split(/[;,]/).map(s => s.trim());
     const iv = cab.findIndex(c => c.includes("velocidad")), ip = cab.findIndex(c => c.includes("pendiente")), id = cab.findIndex(c => c === "dia");
-    if (iv < 0) { document.getElementById("out-body").innerHTML = `<p class="sub">No encontramos la columna <code>velocidad_kmh</code>. Revisa el encabezado del archivo.</p>`; return; }
-    const dias = {};
-    for (const fila of filas.slice(1)) { const c = fila.split(/[;,]/); const k = id >= 0 ? c[id] : "1"; (dias[k] ||= { v: [], p: [] }); dias[k].v.push(+c[iv] || 0); if (ip >= 0) dias[k].p.push(+c[ip] || 0); }
-    const vars = Object.values(dias).map(d => variablesDia(d.v, ip >= 0 ? d.p : null)).filter(x => x.km_dia >= 10);
-    const a = AUTOS[document.getElementById("csv-auto").value];
-    const prom = {}; for (const k of Object.keys(NOMBRES)) prom[k] = vars.length ? vars.reduce((s, x) => s + (x[k] ?? 0), 0) / vars.length : 0;
-    document.getElementById("csv-auto-f").hidden = false;
-    document.querySelectorAll(".sample").forEach(x => x.setAttribute("aria-pressed", "false"));
-    ajusteTec = 0;
-    ultimaEntrada = { ...prom, masa_kg: a.masa + 75 + CARGA.aplicacion, cilindrada_l: a.cil, nivel: 2, perfil: "aplicacion", jornadas_validas: vars.length };
-    const primera = Object.values(dias)[0].v.slice(0, 3600);
-    trace(primera, `Primera hora de tu registro (${vars.length} jornada(s) válida(s) de 10 km o más).`);
-    render(estimar(ultimaEntrada));
+    if (iv < 0) { $("lectura").innerHTML = `<p class="muted">No encontramos la columna velocidad_kmh. Revisa el encabezado del archivo.</p>`; return; }
+    const dias = {}; for (const fila of filas.slice(1)) { const c = fila.split(/[;,]/), k = id >= 0 ? c[id] : "1"; (dias[k] ||= { v: [], p: [] }); dias[k].v.push(+c[iv] || 0); if (ip >= 0) dias[k].p.push(+c[ip] || 0); }
+    const vs = Object.values(dias).map(d => variablesDia(d.v, ip >= 0 ? d.p : null)).filter(x => x.km_dia >= 10);
+    const prom = {}; for (const k of Object.keys(NOMBRES)) prom[k] = vs.length ? vs.reduce((s, x) => s + (x[k] ?? 0), 0) / vs.length : 0;
+    csvVars = { prom, n: vs.length }; csvTraza = Object.values(dias)[0].v.slice(0, 3600);
+    $("csv-auto-f").hidden = false; document.querySelectorAll(".muestra").forEach(x => x.setAttribute("aria-pressed", "false")); usarCsv();
   };
   rd.readAsText(f);
 });
 
-// ----- Técnico
-const logTec = (t) => { const li = document.createElement("li"); li.textContent = new Date().toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit" }) + " · " + t; document.getElementById("tec-log").prepend(li); };
-document.getElementById("tec-ok").addEventListener("click", () => { if (!estadoActual) return; document.getElementById("tec-msg").textContent = "Estimación aprobada: el cliente ya puede verla.";
-  logTec(`Aprobada (${estadoActual.cifras ? estadoActual.cifras.ahorro : estadoActual.estado}).`); });
-document.getElementById("tec-adj").addEventListener("click", () => {
-  const v = +document.getElementById("tec-ajuste").value, mot = document.getElementById("tec-motivo").value.trim();
-  const msg = document.getElementById("tec-msg");
-  if (Math.abs(v) > 2) { msg.textContent = "El ajuste supera el límite de ±2 puntos. Si el caso lo requiere, bloquéalo y escala a ingeniería."; return; }
-  if (!mot) { msg.textContent = "Escribe el motivo del ajuste antes de aplicarlo."; return; }
-  if (!ultimaEntrada) return; ajusteTec = v; const r = estimar(ultimaEntrada); render(r);
-  msg.textContent = `Ajuste de ${v.toFixed(1).replace(".", ",")} pp aplicado. El texto pasa a la plantilla de respaldo.`; logTec(`Ajuste ${v.toFixed(1).replace(".", ",")} pp · ${mot}`);
-});
-document.getElementById("tec-block").addEventListener("click", () => { const mot = document.getElementById("tec-motivo").value.trim() || "sin motivo escrito";
-  document.getElementById("tec-msg").textContent = "Estimación bloqueada: el cliente no recibirá cifras hasta una nueva revisión."; logTec(`Bloqueada · ${mot}`); });
+// ----- técnico
+const log = t => { const li = document.createElement("li"); li.textContent = new Date().toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit" }) + " · " + t; $("tec-log").prepend(li); };
+$("tec-ok").addEventListener("click", () => { if (!actual) return; $("tec-msg").textContent = "Estimación aprobada: el cliente ya puede verla."; log(`Aprobada (${actual.cifras ? actual.cifras.ahorro : actual.estado}).`); });
+$("tec-adj").addEventListener("click", () => { const v = +$("tec-ajuste").value, mot = $("tec-motivo").value.trim();
+  if (Math.abs(v) > 2) { $("tec-msg").textContent = "El ajuste supera ±2 puntos. Si el caso lo requiere, bloquéalo y escala a ingeniería."; return; }
+  if (!mot) { $("tec-msg").textContent = "Escribe el motivo del ajuste antes de aplicarlo."; return; }
+  if (!entrada) return; ajuste = v; render(estimar(entrada));
+  $("tec-msg").textContent = `Ajuste de ${v.toFixed(1).replace(".", ",")} pp aplicado; el texto pasa a la plantilla de respaldo.`; log(`Ajuste ${v.toFixed(1).replace(".", ",")} pp · ${mot}`); });
+$("tec-block").addEventListener("click", () => { const mot = $("tec-motivo").value.trim() || "sin motivo escrito"; $("tec-msg").textContent = "Estimación bloqueada: el cliente no recibirá cifras hasta una nueva revisión."; log(`Bloqueada · ${mot}`); });
 
-// ----- Pestañas
-function tab(t) {
-  document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === t)));
-  document.getElementById("in-n1").hidden = t !== "n1"; document.getElementById("in-n2").hidden = t !== "n2"; document.getElementById("in-tec").hidden = t !== "tec";
-  try { localStorage.setItem("lumine-tab", t); } catch (e) {}
-  if (t === "n1") { ajusteTec = 0; ultimaEntrada = leerN1(); render(estimar(ultimaEntrada)); }
-  if (t === "n2" && (!ultimaEntrada || ultimaEntrada.nivel !== 2)) usarMuestra(0);
+// ----- modos
+function irModo(t, desplazar) {
+  modo = t;
+  document.querySelectorAll(".modos button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.modo === t)));
+  document.querySelectorAll(".nav button").forEach(b => b.setAttribute("aria-current", String(b.dataset.modo === t)));
+  $("in-n1").hidden = t !== "n1"; $("in-n2").hidden = t !== "n2"; $("in-tec").hidden = t !== "tec";
+  if (t === "n1") n1();
+  if (t === "n2" && (!entrada || entrada.nivel !== 2)) muestra(0);
+  if (desplazar) $("herramienta").scrollIntoView();
 }
-document.querySelectorAll("nav.tabs button").forEach(b => b.addEventListener("click", () => tab(b.dataset.tab)));
-const inicial = (location.hash || "").replace("#", "");
-usarMuestra(0);
-if (["n1", "n2", "tec"].includes(inicial)) tab(inicial);
+document.querySelectorAll(".modos button").forEach(b => b.addEventListener("click", () => irModo(b.dataset.modo)));
+document.querySelectorAll(".nav button").forEach(b => b.addEventListener("click", () => irModo(b.dataset.modo, true)));
+
+// ----- tema
+const raiz = document.documentElement;
+function tema(t) { raiz.dataset.theme = t; try { localStorage.setItem("lumine-estimador-tema", t); } catch (e) {} }
+try { const t = localStorage.getItem("lumine-estimador-tema"); if (t === "light" || t === "dark") raiz.dataset.theme = t; } catch (e) {}
+$("tema").addEventListener("click", () => { const oscuro = raiz.dataset.theme ? raiz.dataset.theme === "dark" : !matchMedia("(prefers-color-scheme: light)").matches; tema(oscuro ? "light" : "dark"); });
+
+// ----- precisión (datos del informe)
+(function () {
+  const mx = Math.max(...DATA.errores.map(e => e.mae));
+  $("barras").innerHTML = DATA.errores.map(e => `<div class="barra${e.sel ? " sel" : ""}"><span>${e.nombre}</span><span class="rail"><i style="width:${100 * e.mae / mx}%"></i></span><span class="val t-num">${e.mae.toFixed(2).replace(".", ",")}</span></div>`).join("");
+  const X = v => 10 + 380 * (v - 8) / 20;
+  $("rangos").innerHTML = DATA.perfiles.map(p => {
+    let s = `<svg viewBox="0 0 400 46" role="img" aria-label="Ahorro de ${p.nombre}">`;
+    for (const t of [10, 15, 20, 25]) s += `<line x1="${X(t)}" x2="${X(t)}" y1="0" y2="34" stroke="var(--line)"/><text x="${X(t)}" y="44" font-size="9" text-anchor="middle" fill="var(--muted)" font-family="IBM Plex Mono, monospace">${t}%</text>`;
+    s += `<rect x="${X(p.ref[0])}" y="6" width="${X(p.ref[2]) - X(p.ref[0])}" height="8" fill="var(--band)"/><circle cx="${X(p.ref[1])}" cy="10" r="4" fill="var(--accent)"/>`;
+    s += `<rect x="${X(p.opt[0])}" y="20" width="${X(p.opt[2]) - X(p.opt[0])}" height="8" fill="var(--control)"/><circle cx="${X(p.opt[1])}" cy="24" r="4" fill="var(--fg)"/></svg>`;
+    return `<div class="rango"><div class="fila"><b>${p.nombre}</b><span class="t-label-sm muted">Ref. ${pct(p.ref[1])} · ampliado ${pct(p.opt[1])}</span></div>${s}</div>`;
+  }).join("");
+})();
+
+muestra(0);
+const h = (location.hash || "").replace("#", ""); if (["n1", "n2", "tec"].includes(h)) irModo(h);
 </script>

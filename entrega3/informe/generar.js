@@ -127,9 +127,9 @@ add(H1("1. La Entrega 2 corregida"),
     ["Unidad de análisis", "“Un cliente”", "El conductor: su semana 1 de registro predice el ahorro de su semana 2"],
     ["Kit (supuestos S1 y S2)", "Sin parámetros", "Kit de referencia de 23 kW, la potencia del motor trasero de 31 CV del Dacia Hybrid-G (Álvarez, 2026), y batería de 1,5 kWh; escenarios conservador y optimista"],
     ["Condiciones de Santiago", "Ciclos estándar y jornadas de Chicago; detenciones con estacionamientos", "Perfiles calibrados con el TomTom Traffic Index, paradas de colectivo y pendientes del piedemonte (TomTom, 2026; Romero & Vásquez, 2005); detenciones de más de 180 s excluidas"],
-    ["OE1 (datos reales)", "15 jornadas de 5 conductores en la Entrega 3", "No cumplido; se reprograma a la Entrega 4 con protocolo y consentimiento"],
+    ["OE1 (datos reales)", "15 jornadas de 5 conductores en la Entrega 3", "No cumplido; se rediseña sin costo (12 viajes registrados como pasajeros) y pasa a la Entrega 4"],
     ["OE2 (modelo)", "R² ≥ 0,80 y error ≤ 3 pp", "Se mantiene y se agrega la cobertura del intervalo al 80% como criterio"],
-    ["Plazo de recuperación", "12 a 14 meses (Alarcón et al., 2026b), luego supuesto", "21 a 26 meses conservadores para colectivos y aplicaciones con el precio supuesto S7"],
+    ["Plazo de recuperación", "12 a 14 meses (Alarcón et al., 2026b), luego supuesto", "22 a 25 meses conservadores para colectivos y aplicaciones con el precio supuesto S7"],
     ["Literatura", "Sin fuentes sobre incertidumbre ni IA generativa aplicada", "Predicción conforme, alucinaciones, instrucciones con ejemplos y recuperación de documentos"],
   ], [2000, 3200, 4160], { titulo: "Correcciones incorporadas respecto de la Entrega 2", boldFirst: true }),
   P("El problema y la pregunta principal se mantienen, ahora acotados a autos de tracción delantera de la Región Metropolitana y a un kit definido; H1 y H2 se contrastan en el capítulo 8."),
@@ -137,14 +137,14 @@ add(H1("1. La Entrega 2 corregida"),
 
 // ---------------- 2
 add(H1("2. Propuesta de valor"),
-  P("La propuesta cabe en una frase: decirle a cada conductor cuánto ahorraría él y no cuánto ahorra el mejor caso. Fijémonos en un colectivero que recorre 213 km diarios. Gasta cerca de $852.000 al mes en bencina, con 26 días de trabajo, 10 km/l (supuesto S3) y $1.541 por litro (BioBioChile, 2026); la cifra genérica de 25% le prometería $213.000 mensuales, mientras que el estimador le proyecta $167.000, con un rango de $155.000 a $179.000. La diferencia, $46.000 al mes, es la promesa que la empresa no podría sostener ante el cliente ni ante el SERNAC (Ley N° 19.496, art. 28). Para un conductor de aplicación de 227 km diarios, la sobrepromesa llega a $73.000."),
+  P("La propuesta cabe en una frase: decirle a cada conductor cuánto ahorraría él y no cuánto ahorra el mejor caso. Fijémonos en un colectivero que recorre 213 km diarios. Gasta cerca de $806.000 al mes en bencina, con 6 días por semana, 10 km/l (supuesto S3) y $1.459 por litro (Preciocombustible.cl, 2026); la cifra genérica de 25% le prometería $201.000 mensuales, mientras que el estimador le proyecta $158.000, con un rango de $146.000 a $169.000. La diferencia, $44.000 al mes, es la promesa que la empresa no podría sostener ante el cliente ni ante el SERNAC (Ley N° 19.496, art. 28). Para un conductor de aplicación de 227 km diarios, la sobrepromesa llega a $74.000. El sitio comercial de Lumine ya usa una referencia de 20% con la misma fórmula de gasto (km × días por semana × 4,33 ÷ rendimiento × precio): esa calculadora es el nivel 0 del estimador, una orientación que coincide con la mediana de los colectivos (19,6%) pero sobreestima en 3 a 5 puntos a conductores de aplicación y particulares, por lo que debe derivar al estimador antes de cualquier compromiso."),
   tabla(["Usuario", "Tarea que mejora", "Hoy", "Con el estimador", "Resultado comercial esperado"], [
     ["Conductor prospecto", "Decidir si agenda el diagnóstico y si instala", "Cifra genérica de “hasta 25%”", "Su ahorro con intervalo, en pesos al mes y con plazo conservador, en menos de tres minutos", "Más confianza e intención de agendar (H3, se mide en la Entrega 4)"],
     ["Asesor comercial", "Cotizar y responder dudas", "Fórmula fija y respuestas caso a caso", "Misma cifra para el mismo caso, explicada en lenguaje simple", "Menos tiempo por cotización y mensajes consistentes"],
     ["Técnico de diagnóstico", "Validar o desaconsejar", "Experiencia personal", "Variables del registro, rango del modelo y alertas", "Menos instalaciones que no se pagan y menos reclamos"],
     ["Gerencia y financiera", "Aprobar el crédito y vigilar la promesa", "Sin línea base", "Estimación guardada como línea base verificable", "Cuotas sostenibles e indicador de desviación del TIG con base"],
   ], [1450, 1700, 1500, 2410, 2300], { titulo: "Propuesta de valor por usuario", boldFirst: true }),
-  P("La Tabla 2 resume qué gana cada usuario. El valor para el marketing está en la personalización, la categoría de IA analítica de Huang y Rust (2021), que Kumar et al. (2019) describen como la capacidad de adaptar la oferta a cada cliente con sus propios datos. La salida está pensada para el sesgo que documentan Larrick y Soll (2008): el cliente razona mal en kilómetros por litro, así que la cifra se expresa en pesos al mes y en meses para recuperar la inversión. El estimador también protege ingresos cuando dice que no. Un particular que recorre 25 km diarios ahorraría $13.000 al mes y el kit tardaría más de 48 meses en pagarse; el sistema lo desaconseja, y esa venta perdida evita un reclamo y una mala recomendación. A nivel de cartera, el modelo confirma con datos la prioridad que el TIG dio a los colectivos (Alarcón et al., 2026a): su ahorro mediano es 19,6%, frente a 16,1% en conductores de aplicación y 15,3% en particulares (capítulo 6)."),
+  P("La Tabla 2 resume qué gana cada usuario. El valor para el marketing está en la personalización, la categoría de IA analítica de Huang y Rust (2021), que Kumar et al. (2019) describen como la capacidad de adaptar la oferta a cada cliente con sus propios datos. La salida está pensada para el sesgo que documentan Larrick y Soll (2008): el cliente razona mal en kilómetros por litro, así que la cifra se expresa en pesos al mes y en meses para recuperar la inversión. El estimador también protege ingresos cuando dice que no. Un particular que recorre 25 km diarios ahorraría $12.000 al mes y el kit tardaría más de 48 meses en pagarse; el sistema lo desaconseja, y esa venta perdida evita un reclamo y una mala recomendación. A nivel de cartera, el modelo confirma con datos la prioridad que el TIG dio a los colectivos (Alarcón et al., 2026a): su ahorro mediano es 19,6%, frente a 16,1% en conductores de aplicación y 15,3% en particulares (capítulo 6)."),
 );
 
 // ---------------- 3
@@ -206,8 +206,8 @@ add(H1("6. Prototipo mínimo"),
     "Elaboración propia. Conjunto de prueba de 90 conductores sintéticos (30 por perfil), separado antes de entrenar. Las barras verticales de b) son los intervalos de predicción conformes al 80%."),
   H2("6.4. Interfaz del prototipo"),
   P("La interfaz es una página web que corre el modelo completo en el navegador, sin servidor (Figura 5). Tiene tres vistas: **cotización**, con el formulario del nivel 1; **diagnóstico**, que carga uno de tres registros de ejemplo o un archivo CSV propio; y **técnico**, con las variables frente al rango del modelo y los botones para aprobar, ajustar o bloquear. El resultado muestra el ahorro con su intervalo sobre una escala que incluye las dos cifras de referencia del problema, el 15,5% del ICCT y el 25% genérico, para que el cliente vea dónde cae su caso."),
-  figura("Prototipo funcional: vista de diagnóstico de un colectivo", "app_diagnostico.png", 470,
-    "Captura del prototipo (Anexo F). Registro sintético de un colectivo de 213 km diarios; el texto lo generó Claude con el prompt v3.1 y lo aprobó el validador. La vista del técnico y la cotización están en el Anexo F."),
+  figura("Prototipo funcional: vista de diagnóstico de un colectivo", "app_diagnostico.png", 380,
+    "Captura del prototipo, con la identidad visual del sitio comercial y de Lumine Habilita (Anexo F). Registro sintético de un colectivo de 213 km diarios; el texto lo generó Claude con el prompt v3.1 y lo aprobó el validador. Debajo de la lectura, el prototipo compara la estimación con la referencia de 20% del sitio."),
 );
 
 // ---------------- 7
@@ -271,14 +271,14 @@ add(H1("9. Limitaciones"),
     ["Propiedad intelectual", "Datos de NREL bajo licencia Apache 2.0; textos generados por IA", "Atribución de fuentes, revisión humana de todo texto y modelo y calibraciones como activos de Lumine"],
     ["Juicio humano", "Legalidad, garantía, crédito y casos que el modelo no conoce", "Técnico y gerencia deciden; el reglamento de la Ley N° 21.793 sigue en consulta (Subsecretaría de Transportes, 2026)"],
   ], [1800, 3600, 3960], { titulo: "Limitaciones del prototipo y resguardos", boldFirst: true }),
-  P("El límite de fondo es que el prototipo prueba que el estimador es coherente con la física, no que el kit ahorre lo que el simulador dice; esa brecha solo la cierra la telemetría, y por eso cada estimación queda como línea base. Ante la evidencia inescrutable y las responsabilidades difusas que advierten Mittelstadt et al. (2016), el diseño responde con cifras trazables, un responsable humano por decisión y un registro auditable."),
+  P("El prototipo prueba que el estimador es coherente con la física, no que el kit ahorre lo que el simulador dice; esa brecha la cierra la telemetría. Ante la evidencia inescrutable y las responsabilidades difusas que advierten Mittelstadt et al. (2016), el diseño responde con cifras trazables, un responsable humano por decisión y un registro auditable."),
 );
 
 // ---------------- 10
 add(H1("10. Conclusiones y próximos pasos"),
   P("La Entrega 3 responde las dos subpreguntas que le correspondían. **SP1:** el ahorro alcanzable con el kit de referencia varía sobre todo entre perfiles de uso (19,6% en colectivos, 16,1% en conductores de aplicación y 15,3% en particulares) y menos dentro de cada perfil, aunque los datos reales sugieren más diversidad de la que capturan los perfiles sintéticos. **SP2:** con una semana de registro, once variables predicen el ahorro con un error medio de 0,95 puntos, mientras la cifra genérica erra por casi 8."),
   recuadro("**Hallazgo comercial.** Para colectivos de Santiago, el kit rinde entre 18% y 21% en ocho de cada diez casos con la especificación de referencia (23 kW, 1,5 kWh) y entre 21% y 24% con la especificación ampliada (30 kW, 2 kWh). Con esta última, la promesa “20% a 25% en colectivos” es defendible, siempre que cada cliente vea su propio intervalo y que la cifra se confirme con datos de campo. Para conductores de aplicación y particulares, la promesa honesta es menor: 15% a 19%."),
-  P("La Entrega 4 tiene tres tareas que se desprenden de este prototipo: levantar jornadas reales de conductores de Santiago con el protocolo del Anexo G para recalibrar el modelo y sus intervalos (OE1); medir con un experimento si la estimación personalizada genera más confianza e intención de agendar que la cifra genérica (OE4 y H3); y fijar el umbral de desviación que obligaría a suspender el estimador, junto con la revisión de equidad entre perfiles (OE5)."),
+  P("Para la Entrega 4 quedan tres tareas: 12 viajes reales registrados como pasajeros, sin costo, para validar los perfiles (OE1, Anexo G); una encuesta en línea de dos versiones para medir confianza e intención (OE4 y H3); y el umbral de desviación que suspendería el estimador (OE5)."),
 );
 
 // ================================================================== REFERENCIAS
@@ -289,8 +289,7 @@ const REFS = [
   "Álvarez, R. (2026, 13 de febrero). Dacia Bigster Hybrid-G 150 4x4 en off-road. *Coches.net*. https://www.coches.net/noticias/dacia-bigster-hybrid-g-150-4x4-eje-trasero-electrico-off-road",
   "Angelopoulos, A. N., & Bates, S. (2023). Conformal prediction: A gentle introduction. *Foundations and Trends in Machine Learning, 16*(4), 494–591. https://doi.org/10.1561/2200000101",
   "Anthropic. (2026). *Pricing* [Precios de la API de Claude]. https://www.anthropic.com/pricing",
-  "BioBioChile. (2026, 26 de marzo). *Se concreta histórica alza de combustibles: revisa aquí el precio de gasolinas y diésel*.",
-  "Brown, T. B., et al. (2020). Language models are few-shot learners. *Advances in Neural Information Processing Systems, 33*, 1877–1901.",
+    "Brown, T. B., et al. (2020). Language models are few-shot learners. *Advances in Neural Information Processing Systems, 33*, 1877–1901.",
   "Daugherty, P. R., & Wilson, H. J. (2018). *Human + machine: Reimagining work in the age of AI*. Harvard Business Review Press.",
   "Dietvorst, B. J., Simmons, J. P., & Massey, C. (2018). Overcoming algorithm aversion: People will use imperfect algorithms if they can (even slightly) modify them. *Management Science, 64*(3), 1155–1170. https://doi.org/10.1287/mnsc.2016.2643",
   "Dornoff, J., German, J., Deo, A., & Dimaratos, A. (2022). *Mild-hybrid vehicles: A near term technology trend for CO₂ emissions reduction* [White paper]. International Council on Clean Transportation. https://theicct.org/wp-content/uploads/2022/07/mild-hybrid-emissions-jul22.pdf",
@@ -308,6 +307,7 @@ const REFS = [
   "National Renewable Energy Laboratory [NREL]. (s.f.). *2007 Chicago Regional Household Travel Inventory* [Conjunto de datos]. Transportation Secure Data Center. https://www.nrel.gov/transportation/secure-transportation-data/tsdc-chicago-household-travel-inventory",
   "National Renewable Energy Laboratory [NREL]. (2026). *FASTSim: Future Automotive Systems Technology Simulator* (rama fastsim-2, versión 2.1.5) [Software y ciclos de conducción]. GitHub. https://github.com/NREL/fastsim",
   "Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M., & Duchesnay, É. (2011). Scikit-learn: Machine learning in Python. *Journal of Machine Learning Research, 12*, 2825–2830.",
+  "Preciocombustible.cl. (2026). *Precio bencina en Metropolitana de Santiago hoy* [Promedio regional de la bencina de 93 octanos, consultado el 30 de septiembre de 2026]. https://preciocombustible.cl/region/metropolitana/",
   "Romero, H., & Vásquez, A. (2005). Evaluación ambiental del proceso de urbanización de las cuencas del piedemonte andino de Santiago de Chile. *EURE (Santiago), 31*(94), 97–117. https://doi.org/10.4067/S0250-71612005009400006",
   "SAE International. (2010). *Recommended practice for measuring the exhaust emissions and fuel economy of hybrid-electric vehicles, including plug-in hybrid vehicles* (SAE J1711_201006). https://doi.org/10.4271/J1711_201006",
   "Subsecretaría de Transportes. (2026). *Reglamento que establece requisitos para la transformación de vehículos propulsados por motor de combustión interna a propulsión eléctrica* [Versión a consulta pública]. Ministerio de Transportes y Telecomunicaciones.",
@@ -342,14 +342,9 @@ const reg = (() => {
   for (const f of filas) { (porCaso[f[ic]] ||= {})[f[iv]] = f[ia] === "True" ? "✓" : f[ifa]; }
   return ["N1", "N2", "N3", "N4", "A1", "A2", "A3", "A4", "C1", "C2", "C3", "C4"].map(c => [c, porCaso[c].v1, porCaso[c].v2, porCaso[c].v3, porCaso[c]["v3.1"]]);
 })();
-const salidas = (() => { const t = fs.readFileSync(path.join(PRO, "pruebas", "salidas.py"), "utf8"); return t; })();
-function salida(version, caso) {
-  // extrae el texto de salidas.py para mostrar ejemplos
-  const bloque = salidas.split(`${version} = {`)[1];
-  const m = bloque.split(`"${caso}": """`)[1];
-  return m.split('""",')[0];
-}
-const msg = s => { try { return JSON.parse(s.replace(/^```json\s*/, "").replace(/\s*```$/, "")).mensaje_cliente.replace(/\\n/g, "\n"); } catch (e) { return s; } };
+const SAL = JSON.parse(fs.readFileSync(path.join(PRO, "pruebas", "salidas.json"), "utf8"));
+const salida = (version, caso) => SAL[version][caso];
+const msg = s => { try { return JSON.parse(s.replace(/^```json\s*/, "").replace(/\s*```$/, "")).mensaje_cliente; } catch (e) { return s; } };
 ax(anexo("B", "Registro de pruebas de la capa generativa"),
   P("El validador (validador.py) aplicó los nueve criterios a las 48 salidas. La Tabla B1 muestra, por caso y versión, los criterios que fallaron. Las salidas se obtuvieron con Claude (Anthropic) aplicando cada versión del prompt; en v3.1 se re-ejecutaron el caso que falló en v3 (C3), los dos casos con advertencia afectados por la nueva regla (A1 y A4) y N2 como control, y los ocho restantes conservan la salida de v3, porque el cambio no altera su contenido. Como las salidas de un modelo generativo varían entre ejecuciones, la batería debe repetirse ante cualquier cambio de modelo o de prompt; el registro completo está en resultados/registro_pruebas.csv."),
   tabla(["Caso", "v1", "v2", "v3", "v3.1"], reg, [1300, 2015, 2015, 2015, 2015], { titulo: "Criterios fallados por caso y versión", boldFirst: true, center: true,
@@ -431,14 +426,13 @@ ax(anexo("F", "Evidencia del prototipo"),
 
 // G
 ax(anexo("G", "Protocolo de levantamiento de datos en Santiago"),
-  P("Este protocolo reemplaza el OE1 de la Entrega 3 y se ejecutará en la Entrega 4."),
+  P("El protocolo original suponía acceso a autos y adaptadores OBD. Como ninguno de los tres integrantes tiene auto ni presupuesto, se rediseñó para que cueste cero pesos y use solo celulares y trayectos que el grupo ya hace. Reemplaza el OE1 y se ejecuta en la Entrega 4."),
   ...bullets([
-    "**Participantes.** Al menos 5 conductores (meta de 10) contactados por medio de los entrevistados del TIG y de gremios de colectiveros, con al menos dos colectiveros y dos conductores de aplicación.",
-    "**Consentimiento.** Documento escrito que explica qué se registra, para qué, cuánto tiempo se guarda y cómo retirarse; consentimiento específico para la geolocalización, como exige la Ley N° 21.719.",
-    "**Registro.** Aplicación gratuita de registro GPS a 1 Hz con exportación a CSV o GPX durante cinco jornadas de trabajo; si el auto lo permite, un adaptador OBD-II para medir el flujo de combustible.",
-    "**Validez.** Jornadas de al menos 10 km y menos de 5% de datos perdidos; se descartan tramos a pie o en otro vehículo (velocidad máxima bajo 20 km/h durante más de 10 minutos).",
-    "**Privacidad.** Recorte automático de los primeros y últimos 300 m de cada viaje, cálculo de variables agregadas en el equipo del proyecto y borrado de las trazas crudas en 30 días.",
-    "**Uso.** Comparar las variables reales con los perfiles sintéticos, recalibrar el intervalo del modelo y, si hay OBD, contrastar el consumo base simulado con el medido.",
+    "**Registro como pasajero.** Cada integrante registra con su celular los viajes que ya hace en colectivo, auto de aplicación o auto de un familiar, con la aplicación gratuita phyphox (RWTH Aachen, experimento “Ubicación GPS”, exporta CSV) o GPS Logger en Android. Meta: 12 viajes de al menos 5 km, cuatro por integrante y al menos seis en colectivo. El conductor no participa del registro: solo se mide la velocidad del vehículo en que viaja el estudiante.",
+    "**Costo.** Cero si se registran los trayectos habituales a la universidad; a lo sumo el valor de dos o tres pasajes de colectivo por integrante.",
+    "**Consentimiento y privacidad.** El estudiante registra su propio trayecto; no se registran datos del conductor ni de otros pasajeros. Antes de analizar se recortan 300 m al inicio y al final y se guardan solo las variables agregadas.",
+    "**Uso de los datos.** No se entrena el modelo con 12 viajes: se comparan sus variables (detenciones por km, velocidad, tiempo detenido) con las de los microviajes sintéticos para validar los perfiles, y se calcula el ahorro simulado de cada viaje real. El prototipo ya acepta estos archivos en la pestaña de diagnóstico.",
+    "**Encuesta de la Entrega 4 (OE4).** Formulario en línea con dos versiones al azar (cifra genérica frente a estimación con intervalo), difundido por WhatsApp e Instagram en grupos de colectiveros, conductores de aplicación, familiares y compañeros con auto; más una visita de dos horas a un terminal de colectivos con un código QR. Meta realista de 40 respuestas, declarando que la muestra no es aleatoria.",
   ]),
 );
 
@@ -447,7 +441,8 @@ ax(anexo("H", "Registro de uso de inteligencia artificial"),
   tabla(["Etapa", "Herramienta", "Tarea", "Verificación del equipo"], [
     ["Entrega 3", "Claude (Anthropic), con Claude Code", "Programación del simulador, el modelo, el validador y la interfaz; análisis; figuras; redacción del informe", "El código se ejecutó y es reproducible; cada cifra del informe proviene de los archivos de resultados; las referencias nuevas se revisaron contra su fuente"],
     ["Entrega 3", "Claude (Anthropic)", "Capa generativa del prototipo: salidas de las cuatro versiones del prompt en los 12 casos", "Validador automático con nueve criterios y revisión del equipo de cada falla"],
-    ["Entrega 3", "Búsqueda web", "Cifras de tránsito de Santiago (TomTom) y altitud de la ciudad", "Contraste con la fuente original citada"],
+    ["Entrega 3", "Búsqueda web", "Cifras de tránsito de Santiago (TomTom), altitud de la ciudad y precio de la bencina", "Contraste con la fuente original citada"],
+    ["Plan (Entregas 3 a 5)", "ChatGPT, Gemini, DeepSeek, Grok y Canva", "Auditoría cruzada del código y de las fórmulas, batería RAFA en otros modelos, ataque a las instrucciones y material visual", "Documento aparte “Plan multi-IA”: cada salida se registra y se califica con el mismo validador"],
   ], [1200, 2000, 3080, 3080], { titulo: "Herramientas de IA utilizadas en la Entrega 3", boldFirst: true,
     nota: "Elaboración propia. El registro de las entregas anteriores está en el Anexo D de la Entrega 2. Ninguna respuesta de IA se usó como evidencia: las cifras provienen del simulador, de los datos citados o de cálculos reproducibles." }),
 );
@@ -460,7 +455,7 @@ ax(anexo("I", "Registro de supuestos actualizado"),
     ["S3. Rendimiento urbano de 10 km/l para pesos y plazo", "Se mantiene; el simulador da 12,5 km/l en colectivos sin aire acondicionado ni desgaste", "Registros OBD en la Entrega 4"],
     ["S4. Una semana representa el año", "Incorporado: la semana 1 predice la semana 2", "Comparar semanas reales de un mismo conductor; Entrega 4"],
     ["S5. El ahorro simulado aproxima el real", "Crítico; sin cambios", "Primera instalación con telemetría"],
-    ["S7. Precio del kit de $2.521.000 neto", "Se usa para el plazo, marcado como supuesto", "Plan Financiero del TIG; Entrega 5"],
+    ["S7. Precio del kit de $2.521.000 neto", "Se usa para el plazo, marcado como supuesto; bencina a $1.459/L y días por semana × 4,33, igual que el sitio comercial", "Plan Financiero del TIG; Entrega 5"],
     ["S9. Vigencia de la Ley N° 21.719", "Diseño ya ajustado a su estándar", "Diario Oficial; Entrega 4"],
     ["S10. Perfiles sintéticos representan Santiago", "Nuevo; calibrados solo en velocidades medias", "Datos de campo del Anexo G"],
     ["S11. Pendientes de las rutas", "Nuevo; tres zonas de relieve", "Altitud del registro GPS real"],
