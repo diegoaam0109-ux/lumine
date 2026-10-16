@@ -11,6 +11,22 @@ Equipo: Diego Alarcón, Benjamín Torres y Lukas Verdugo · UNAB.
 | `.claude/skills/` | Skills que Claude carga solo: `ui-ux-pro-max` (diseño de interfaces) y `lumine-marca` (sistema visual de Lumine). |
 | `CLAUDE.md` | Contexto del proyecto para Claude: quién es quién, decisiones, preferencias y pendientes. |
 
+### Para empezar una sesión de Claude
+
+Abre una sesión nueva en claude.ai/code con este repositorio (rama `main`) y pega como primer mensaje:
+
+```
+Hola. Soy parte del equipo de Lumine Motors y voy a seguir el trabajo que hizo Diego con Claude en este repositorio.
+Antes de hacer cualquier cosa, carga el contexto completo:
+1. Lee CLAUDE.md entero: ahí están las reglas del equipo, las decisiones tomadas y los pendientes. Síguelas.
+2. Lee README.md, CAMBIOS.md, ventas/README.md, control-de-gestion/README.md y control-de-gestion/GUION.md.
+3. Revisa las skills de .claude/skills/ (lumine-marca y ui-ux-pro-max) y úsalas en todo lo que tenga diseño o la marca.
+4. Mira git log para ver en qué quedó cada parte.
+Cuando termines, respóndeme en español con un resumen corto: qué es cada parte del repositorio (Habilita, página
+comercial y presentación), qué decisiones ya están tomadas, qué preguntas siguen abiertas y qué me recomiendas hacer
+ahora. No cambies nada hasta que te diga qué quiero hacer.
+```
+
 ## Lumine Habilita
 
 Selección y habilitación por competencias del Técnico Instalador de Lumine Motors.
