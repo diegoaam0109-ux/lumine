@@ -23,9 +23,32 @@ Antes de hacer cualquier cosa, carga el contexto completo:
 2. Lee README.md, CAMBIOS.md, ventas/README.md, control-de-gestion/README.md y control-de-gestion/GUION.md.
 3. Revisa las skills de .claude/skills/ (lumine-marca y ui-ux-pro-max) y úsalas en todo lo que tenga diseño o la marca.
 4. Mira git log para ver en qué quedó cada parte.
-Cuando termines, respóndeme en español con un resumen corto: qué es cada parte del repositorio (Habilita, página
-comercial y presentación), qué decisiones ya están tomadas, qué preguntas siguen abiertas y qué me recomiendas hacer
+Cuando termines, respóndeme en español con un resumen corto: qué es cada parte del repositorio (Habilita, página comercial,
+presentación y entregas 3 y 4), qué decisiones ya están tomadas, qué preguntas siguen abiertas y qué me recomiendas hacer
 ahora. No cambies nada hasta que te diga qué quiero hacer.
+```
+
+### Para trabajar desde tu computador (Claude instalado)
+
+Si tu Claude corre en tu computador y no tiene Git, pega esto primero; después usa el prompt de arriba:
+
+```
+Quiero dejar este computador listo para trabajar en el repositorio de Lumine con commit y push. Ve paso a paso y
+avísame antes de cada instalación:
+1. Detecta el sistema operativo.
+2. Instala Git y GitHub CLI (gh). Windows: winget install --id Git.Git -e y winget install --id GitHub.cli -e.
+   macOS: brew install git gh (o xcode-select --install para Git). Linux: el gestor de paquetes.
+3. Configura mi nombre y correo de Git (pregúntamelos).
+4. Inicia sesión en GitHub con gh auth login (por el navegador) y luego gh auth setup-git.
+   Confirma con gh repo view diegoaam0109-ux/lumine --json viewerPermission que tengo permiso WRITE o ADMIN;
+   si no, avísame: tengo que aceptar la invitación de colaborador que me mandó Diego.
+5. Clona https://github.com/diegoaam0109-ux/lumine en una carpeta de trabajo nueva. Si hiciste cambios en la copia
+   bajada como .zip, pásalos al clon y muéstramelos antes de guardar nada; después borra la copia del .zip.
+6. Instala Node.js 20 o superior y Python 3 si faltan. Solo si voy a regenerar la presentación: LibreOffice con
+   Impress y las fuentes de control-de-gestion/fuentes.
+7. Comprueba que todo funciona: git status y npm test en la raíz del clon.
+8. Vuelve a leer CLAUDE.md y sigue sus reglas. Trabaja siempre en una rama propia y pregúntame antes de pasar algo a main.
+Al final dime en una lista corta qué quedó instalado y si algo falló.
 ```
 
 ## Lumine Habilita
