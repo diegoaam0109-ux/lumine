@@ -1,0 +1,98 @@
+# Lumine Motors · contexto para Claude
+
+Lee esto antes de trabajar. Resume lo que el equipo le fue enseñando a Claude en las sesiones anteriores:
+la app de capacitación y la página comercial (chat "A") y la presentación de Control de Gestión.
+
+## Quiénes y qué
+
+- **Lumine Motors Chile SpA**: kit de hibridación aditiva para autos a combustión de **tracción delantera**. Suma un motor
+  eléctrico en el **eje trasero**, un banco de baterías **LFP** y una unidad de control; el motor original, la transmisión
+  y la alimentación quedan intactos. El freno, el ABS y el control de estabilidad originales siempre mandan sobre el kit.
+- La empresa es **preoperativa**: sin taller, personal, clientes ni flujo de caja. No hay estados financieros (el Plan
+  Financiero no existe aún).
+- Equipo: **Diego Alarcón** (dueño de esta cuenta y del repositorio), **Benjamín Torres** y **Lukas Verdugo**. UNAB.
+- Segmento: alto kilometraje, prioridad a colectiveros y conductores de aplicación; luego taxi básico y particular de
+  trayecto largo. La página comercial vende a **particulares y flotas, nunca a talleres**.
+- Ahorro: "hasta 20% menos bencina en ciudad" es una **estimación de ingeniería, no medida en autos chilenos**. Dilo así.
+- Marco legal: Ley N° 21.793 publicada (14-01-2026) **sin reglamento**; la única referencia es el borrador del MTT de 2021.
+
+## Cómo trabajar con el equipo
+
+- Escribe siempre en **español** (Chile), directo y sin relleno.
+- **Nunca inventes datos.** Lo que no existe se muestra como **«Por confirmar»** (precio, % de ahorro, garantía, tiempo de
+  instalación, WhatsApp, correo: todos `null` en `ventas/src/lib/datos.ts`). Lo mismo con normas o cifras sin fuente.
+- Tienes autorización amplia para mejorar diseño y experiencia ("te autorizo a hacer todo, mándate"), pero las decisiones
+  de negocio abiertas (abajo) se preguntan.
+- **Al terminar un bloque de trabajo**: actualiza los artefactos publicados **y** entrega el código base actualizado
+  (zip con `git archive`). Lo pidieron explícitamente.
+- Haz commit y push en la rama de la sesión. **No abras pull requests** salvo que lo pidan.
+- El listón visual es alto: si algo se ve básico, de baja calidad o en "blanco nativo", lo rechazan. Crea los recursos
+  visuales que hagan falta en alta resolución; verifica con capturas en PC y teléfono, modo oscuro y claro.
+- **El repositorio es público.** No subas secretos, claves ni documentos internos del curso sin preguntar.
+
+## Mapa del repositorio
+
+| Ruta | Qué es | Cómo se trabaja |
+|---|---|---|
+| `src/`, `build.py`, `manifest.json`, `dist/`, `tests/` | **Lumine Habilita**: app de capacitación y habilitación del técnico instalador (JS sin dependencias). | `python3 build.py`; `npm test`; `npm run e2e`. Detalle en `README.md` y decisiones en `CAMBIOS.md`. |
+| `ventas/` | **Página comercial** (Vite + React 19 + TS + Tailwind 4 + framer-motion + Radix, estructura shadcn hecha a mano). | `npm run typecheck`, `npm run build:artefacto` (un HTML en `dist-artefacto/`), `npm run e2e`. Ver `ventas/README.md`. |
+| `control-de-gestion/` | **Presentación del curso** Control de Gestión (Teoría, ICMA901, Sección 500, NRC 4118): PPT, PDF, `GUION.md`, `fuentes/`. | `generador/`: `deck.js` (pptxgenjs) + `guion.js` (fuente única del guion y las notas) + `render.sh`. |
+| `.claude/skills/ui-ux-pro-max/` | Skill de diseño de interfaces (MIT). | `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<consulta>" --design-system` |
+| `.claude/skills/lumine-marca/` | Skill con el sistema visual de Lumine (colores, tipografías, motivos, recursos). | Úsala para cualquier pieza nueva con la marca. |
+
+Otra rama, sin unir aquí: `claude/quirky-darwin-326nn0` (Entrega 3 y 4: estimador de ahorro con IA, informe técnico y
+revisión multi-IA).
+
+## Artefactos publicados (cuenta de Diego)
+
+| Qué | Link | Se publica desde |
+|---|---|---|
+| Página comercial | https://claude.ai/artifact/XGpgpuDtxJvtiAjbRDwJ2o | `ventas/dist-artefacto/index.html` |
+| Lumine Habilita (demo) | https://claude.ai/artifact/JpdUMVYztFtjQYkcAehELb | `dist/lumine-habilita-demo.html` |
+| Lumine Habilita (real) | https://claude.ai/artifact/KrYbLr84sVrfJoRT2wvhP9 | `dist/lumine-habilita.html` (capacidades `db` con `DB_RULES`, `user` con `profile`, `downloads`) |
+| Guion de la presentación | https://claude.ai/code/artifact/e0db2f29-05e7-42d1-b4a7-9cfcb5d1741b | documento editable |
+
+Para republicar en el mismo link hay que publicar el mismo archivo desde una sesión con permiso de edición sobre el
+artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la versión real.
+
+## Decisiones ya tomadas
+
+**Lumine Habilita** (detalle en `CAMBIOS.md`):
+- 39 competencias, 35 tareas, 17 reglas, 8 indicadores, 4 tipos de usuario; 4 niveles (aprendiz a formador).
+- D18: el nivel 3 firma su propio trabajo; el nivel 4 firma revisiones cruzadas; lo legal es solo del Responsable Técnico (D17).
+- D13: rotación de duos voluntaria, cada 4 meses como mínimo, por solicitud escrita al Responsable Técnico.
+- Dos técnicos de nivel 1 nunca forman duo (salvo el arranque, bajo el Responsable Técnico).
+- Revalidación del core de seguridad cada 24 meses; período autónomo del nivel 3: 90 días; 392 h si se cursa todo.
+
+**Página comercial**:
+- Oscuro por defecto, con interruptor claro/oscuro visible; estilo cinematográfico (referencias Lamborghini, Ferrari, AWE y Apple)
+  combinado con la marca.
+- Verificador de compatibilidad **guiado y sin IA**. Calculadora con **20% de ahorro** y precios de combustible del día
+  (RM: 93, 95, 97 y diésel; revisar en preciocombustible.cl antes de publicar).
+- El recorrido 3D que se arma al bajar debe dejar el texto **legible en todo momento** (en PC y teléfono).
+
+**Presentación de Control de Gestión**:
+- Máximo 15 minutos: 16 diapositivas + 9 de anexo para preguntas. Los tres hablan lo mismo (~500 palabras, ~4 min c/u):
+  Diego 1–5, Benjamín 6–10, Lukas 11–16. Para cambiar textos, edita `generador/guion.js` y regenera.
+- Fuente de los datos: informe *Análisis Estratégico* e instrumentos 02 (Industria), 03 (PEST), 05 (Competencias) y 06
+  (Cadena de valor). Cifras clave: cinco fuerzas 3,49; PEST 2,82 hoy y 2,99 a futuro (20 amenazas, 13 oportunidades,
+  18 neutros); 2 ventajas sostenibles de 15; cadena de valor 3,00 / 2,71 con brecha −1,29 / −1,43 frente al líder.
+  Estrategia: diferenciación enfocada.
+
+## Pendientes y preguntas abiertas
+
+- Datos comerciales reales (precio, % de ahorro, garantía, tiempo de instalación, contacto): en proceso; no inventarlos.
+- ¿Agregar un tutor con IA dentro de los módulos de Habilita? Sin respuesta.
+- ¿Exigir 12 meses en nivel 2 antes de validar el nivel 3 (DGUV)? No implementar sin confirmación.
+- Licencia SEC del instalador: según el D.S. 92 sería clase C hasta 50 kW o B sobre eso; falta confirmarlo con la SEC.
+- Guion: decidir si la frase "Dos observaciones críticas…" (diapositiva 14) se deja, se reformula o se quita.
+
+## Trampas técnicas conocidas
+
+- El visor de artefactos inyecta CSS sin capa en `body` (fondo claro y fuente del sistema). Los estilos base de la página
+  van **fuera de `@layer`** y con `!important` (ver `ventas/src/index.css`); si no, la página sale en "blanco nativo".
+- La red de las sesiones en la nube bloquea `ui.shadcn.com`, `preciocombustible.cl`, `latercera.com` y la descarga de Google
+  Fonts. GitHub y npm sí funcionan (las tipografías se sacan de `@fontsource` en npm).
+- Para convertir el PPT a PDF hay que instalar `libreoffice-impress` y las fuentes de `control-de-gestion/fuentes/`.
+  `render.sh` exporta con configuración regional es-CL para que los decimales salgan con coma.
+- Playwright usa el Chromium de `/opt/pw-browsers`; no ejecutes `playwright install`.
