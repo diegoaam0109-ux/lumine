@@ -1,0 +1,260 @@
+{
+ "robustez_10_semillas": {
+  "M0c Promedio por perfil": {
+   "MAE_mean": 1.084,
+   "MAE_std": 0.105,
+   "R2_mean": 0.656,
+   "R2_std": 0.071,
+   "cobertura_80_mean": 81.0,
+   "cobertura_80_std": 6.958,
+   "ancho_intervalo_mean": 3.316,
+   "ancho_intervalo_std": 0.155
+  },
+  "M1 Nivel 1 cotización (GBM, declarados)": {
+   "MAE_mean": 1.12,
+   "MAE_std": 0.091,
+   "R2_mean": 0.636,
+   "R2_std": 0.06,
+   "cobertura_80_mean": 79.556,
+   "cobertura_80_std": 5.837,
+   "ancho_intervalo_mean": 3.508,
+   "ancho_intervalo_std": 0.239
+  },
+  "M2 Lineal 2 variables (Entrega 2)": {
+   "MAE_mean": 1.241,
+   "MAE_std": 0.115,
+   "R2_mean": 0.541,
+   "R2_std": 0.068,
+   "cobertura_80_mean": 81.333,
+   "cobertura_80_std": 5.1,
+   "ancho_intervalo_mean": 4.022,
+   "ancho_intervalo_std": 0.157
+  },
+  "L11 Lineal 11 variables GPS": {
+   "MAE_mean": 0.775,
+   "MAE_std": 0.083,
+   "R2_mean": 0.825,
+   "R2_std": 0.031,
+   "cobertura_80_mean": 81.0,
+   "cobertura_80_std": 6.758,
+   "ancho_intervalo_mean": 2.616,
+   "ancho_intervalo_std": 0.138
+  },
+  "R11 Ridge 11 variables GPS": {
+   "MAE_mean": 0.774,
+   "MAE_std": 0.082,
+   "R2_mean": 0.826,
+   "R2_std": 0.031,
+   "cobertura_80_mean": 81.0,
+   "cobertura_80_std": 6.676,
+   "ancho_intervalo_mean": 2.609,
+   "ancho_intervalo_std": 0.138
+  },
+  "M3 Nivel 2 diagnóstico (GBM, GPS)": {
+   "MAE_mean": 0.894,
+   "MAE_std": 0.076,
+   "R2_mean": 0.775,
+   "R2_std": 0.028,
+   "cobertura_80_mean": 83.0,
+   "cobertura_80_std": 4.773,
+   "ancho_intervalo_mean": 2.958,
+   "ancho_intervalo_std": 0.138
+  },
+  "Ref. Simulación directa semana 1": {
+   "MAE_mean": 0.794,
+   "MAE_std": 0.054,
+   "R2_mean": 0.819,
+   "R2_std": 0.028,
+   "cobertura_80_mean": null,
+   "cobertura_80_std": null,
+   "ancho_intervalo_mean": null,
+   "ancho_intervalo_std": null
+  }
+ },
+ "m3_supera_lineal11_en": 0,
+ "importancia": [
+  {
+   "variable": "energia_cinetica_km",
+   "importancia_media": 0.2253,
+   "de_entre_particiones": 0.0682
+  },
+  {
+   "variable": "cilindrada_l",
+   "importancia_media": 0.1362,
+   "de_entre_particiones": 0.0292
+  },
+  {
+   "variable": "desnivel_pos_km",
+   "importancia_media": 0.0969,
+   "de_entre_particiones": 0.0309
+  },
+  {
+   "variable": "acel_pos_media",
+   "importancia_media": 0.0957,
+   "de_entre_particiones": 0.0397
+  },
+  {
+   "variable": "pct_detenido",
+   "importancia_media": 0.0928,
+   "de_entre_particiones": 0.045
+  },
+  {
+   "variable": "km_dia",
+   "importancia_media": 0.0623,
+   "de_entre_particiones": 0.0196
+  },
+  {
+   "variable": "masa_kg",
+   "importancia_media": 0.0327,
+   "de_entre_particiones": 0.0154
+  },
+  {
+   "variable": "pct_sobre_60",
+   "importancia_media": 0.0129,
+   "de_entre_particiones": 0.0176
+  },
+  {
+   "variable": "vel_mov_media",
+   "importancia_media": -0.0006,
+   "de_entre_particiones": 0.0043
+  },
+  {
+   "variable": "detenciones_km",
+   "importancia_media": -0.0015,
+   "de_entre_particiones": 0.005
+  },
+  {
+   "variable": "vel_media",
+   "importancia_media": -0.0032,
+   "de_entre_particiones": 0.0022
+  }
+ ],
+ "curva_aprendizaje_mae": {
+  "48": 2.032986449585105,
+  "96": 0.9846990736226531,
+  "144": 0.9038771948187134,
+  "192": 0.8755872847230272,
+  "240": 0.9003500685672489
+ },
+ "mae_segun_arboles": {
+  "50": 0.8964376547609911,
+  "100": 0.8799751732434029,
+  "150": 0.8812131618428258,
+  "200": 0.8825761587413938,
+  "250": 0.8889006691819116,
+  "300": 0.8936023004609737
+ },
+ "externa": {
+  "a) Por jornada, KFold por fila (como E3)": {
+   "MAE": 2.012,
+   "R2": 0.781,
+   "error_max": 8.472,
+   "pct_error_mayor_3pp": 20.0,
+   "cobertura_80": 33.333,
+   "ancho_intervalo": 2.067,
+   "n_prueba": 45.0,
+   "MAE_de": null
+  },
+  "a) Por jornada, GroupKFold por conductor": {
+   "MAE": 2.012,
+   "R2": 0.781,
+   "error_max": 8.472,
+   "pct_error_mayor_3pp": 20.0,
+   "cobertura_80": 35.556,
+   "ancho_intervalo": 2.181,
+   "n_prueba": 45.0,
+   "MAE_de": null
+  },
+  "b) Por conductor/vehículo (misma unidad)": {
+   "MAE": 2.651,
+   "R2": 0.566,
+   "error_max": 10.644,
+   "pct_error_mayor_3pp": 23.81,
+   "cobertura_80": 4.762,
+   "ancho_intervalo": 1.329,
+   "n_prueba": 21.0,
+   "MAE_de": null
+  },
+  "c) Solo sintéticas": {
+   "MAE": 2.097,
+   "R2": null,
+   "error_max": null,
+   "pct_error_mayor_3pp": null,
+   "cobertura_80": 36.134,
+   "ancho_intervalo": null,
+   "n_prueba": null,
+   "MAE_de": 0.616
+  },
+  "c) Solo CMAP (2/3)": {
+   "MAE": 1.601,
+   "R2": null,
+   "error_max": null,
+   "pct_error_mayor_3pp": null,
+   "cobertura_80": 81.079,
+   "ancho_intervalo": null,
+   "n_prueba": null,
+   "MAE_de": 0.494
+  },
+  "c) Reajuste ×20, calibración E3": {
+   "MAE": 1.284,
+   "R2": null,
+   "error_max": null,
+   "pct_error_mayor_3pp": null,
+   "cobertura_80": 74.413,
+   "ancho_intervalo": null,
+   "n_prueba": null,
+   "MAE_de": 0.385
+  },
+  "c) Reajuste ×20, calibración ponderada por vehículo": {
+   "MAE": 1.284,
+   "R2": null,
+   "error_max": null,
+   "pct_error_mayor_3pp": null,
+   "cobertura_80": 77.82,
+   "ancho_intervalo": null,
+   "n_prueba": null,
+   "MAE_de": 0.385
+  },
+  "c) Cifra genérica 25%": {
+   "MAE": 11.44,
+   "R2": null,
+   "error_max": null,
+   "pct_error_mayor_3pp": null,
+   "cobertura_80": null,
+   "ancho_intervalo": null,
+   "n_prueba": null,
+   "MAE_de": 2.802
+  }
+ },
+ "transferencia_b": {
+  "M3 entrenado en A, probado en B": {
+   "MAE": 0.871,
+   "R2": 0.739,
+   "error_max": 3.24,
+   "pct_error_mayor_3pp": 1.667,
+   "cobertura_80": 80.833,
+   "ancho_intervalo": 2.818
+  },
+  "Ref. Simulación directa semana 1 en B": {
+   "MAE": 0.815,
+   "R2": 0.72,
+   "error_max": 4.29,
+   "pct_error_mayor_3pp": 2.5,
+   "cobertura_80": null,
+   "ancho_intervalo": null
+  },
+  "L11 entrenado en A, probado en B": {
+   "MAE": 0.814,
+   "R2": 0.745,
+   "error_max": 4.102,
+   "pct_error_mayor_3pp": 1.667,
+   "cobertura_80": 80.833,
+   "ancho_intervalo": 2.559
+  }
+ },
+ "ahorro_medio_poblaciones": {
+  "A": 17.087481478387186,
+  "B": 17.483547659548776
+ },
+ "degradacion_mae_b_pct": -2.499360004338136
+}

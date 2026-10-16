@@ -39,9 +39,8 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | `control-de-gestion/` | **Presentación del curso** Control de Gestión (Teoría, ICMA901, Sección 500, NRC 4118): PPT, PDF, `GUION.md`, `fuentes/`. | `generador/`: `deck.js` (pptxgenjs) + `guion.js` (fuente única del guion y las notas) + `render.sh`. |
 | `.claude/skills/ui-ux-pro-max/` | Skill de diseño de interfaces (MIT). | `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<consulta>" --design-system` |
 | `.claude/skills/lumine-marca/` | Skill con el sistema visual de Lumine (colores, tipografías, motivos, recursos). | Úsala para cualquier pieza nueva con la marca. |
+| `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada** (UNAB, Grupo 1, NRC 4153): estimador de ahorro con IA, prototipo, informe técnico del modelo matemático y revisión cruzada con varias IA. | Pasos para reproducir en `entrega3/README.md`; resultados de la Entrega 4 en `entrega4/Resultados_mejoras_modelo_E4.md`. |
 
-Otra rama, sin unir aquí: `claude/quirky-darwin-326nn0` (Entrega 3 y 4: estimador de ahorro con IA, informe técnico y
-revisión multi-IA).
 
 ## Artefactos publicados (cuenta de Diego)
 
