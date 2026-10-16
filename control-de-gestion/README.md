@@ -23,11 +23,11 @@ El guion completo, con tiempos por diapositiva, está en `GUION.md` y en las not
 | Lukas Verdugo | 11 a 16 | Cadena de valor, FODA, cruces, declaración de la estrategia, ejes y cierre |
 | Anexo | 17 a 25 | Atributos del cliente, dogmas, redes de valor, discontinuidades, matriz impacto-incertidumbre, 7S, ranking y problemas clave |
 
-Todos los datos salen del *Análisis Estratégico* y de los instrumentos 03 (PEST), 05 (Competencias Centrales) y 06 (Cadena de Valor).
+Todos los datos salen del informe *Análisis Estratégico*, que resume los instrumentos 02 (Industria), 03 (PEST), 05 (Competencias Centrales) y 06 (Cadena de Valor), y de los archivos de los instrumentos 03, 05 y 06.
 
 ## Diseño
 
-Mismo sistema visual que la página comercial (`ventas/` en la rama de la página): escenario negro, un solo acento celeste `#22B8F0`,
+Mismo sistema visual que la página comercial (`ventas/`, ver la skill `lumine-marca`): escenario negro, un solo acento celeste `#22B8F0`,
 titulares anchos en mayúsculas con acento en serif itálica, etiquetas mono de instrumento, esquinas de visor y números condensados.
 El logo y el plano del kit son los vectores de la página.
 
