@@ -70,6 +70,9 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - Verificador de compatibilidad **guiado y sin IA**. Calculadora con **20% de ahorro** y precios de combustible del día
   (RM: 93, 95, 97 y diésel; revisar en preciocombustible.cl antes de publicar).
 - El recorrido 3D que se arma al bajar debe dejar el texto **legible en todo momento** (en PC y teléfono).
+- Rediseño con fotos (propuesta de ChatGPT integrada al código): portada con el auto en rayos X, explorador del kit pieza por pieza
+  (después del recorrido 3D, que se mantiene), fotos en Para quién, Ahorro, Proceso y Confianza, y ayuda comercial sin IA.
+  Las fotos son conceptuales y la página lo dice.
 
 **Presentación de Control de Gestión**:
 - Máximo 15 minutos: 16 diapositivas + 9 de anexo para preguntas. Los tres hablan lo mismo (~500 palabras, ~4 min c/u):

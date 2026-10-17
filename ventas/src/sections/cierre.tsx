@@ -1,9 +1,10 @@
 import * as React from 'react'
 import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll } from 'framer-motion'
-import { CheckCircle2, Loader2, Mail, MessageCircle } from 'lucide-react'
+import { CheckCircle2, Loader2, Mail, MessageCircle, MessageCircleQuestion, X } from 'lucide-react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
-import { Aparecer, Encabezado, Etiqueta, Flecha, Logo, PorConfirmar, irA } from '@/components/comunes'
+import { Aparecer, Encabezado, Etiqueta, Flecha, Imagen, Logo, PorConfirmar, irA } from '@/components/comunes'
+import { FOTOS } from '@/lib/fotos'
 import { Palabra } from '@/components/logo-vectorial'
 import { DATOS, HECHOS } from '@/lib/datos'
 import { cn } from '@/lib/utils'
@@ -21,6 +22,17 @@ export function Proceso() {
     <section id="proceso" className="relative scroll-mt-20 border-t border-line bg-bg py-24 md:py-36" aria-labelledby="pr-t">
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
         <Encabezado n="05" etiqueta="El proceso" id="pr-t" titulo={<>De tu auto de siempre<br />a <span className="t-serif normal-case text-accent-text">tu auto híbrido.</span></>} />
+        <Aparecer className="escena-oscura mb-10 grid overflow-hidden border border-line bg-surface md:mb-14 lg:grid-cols-[1.5fr_1fr]">
+          <div className="relative aspect-[16/9] overflow-hidden lg:aspect-auto lg:min-h-[320px]">
+            <Imagen foto={FOTOS.taller} className="absolute inset-0" />
+          </div>
+          <div className="flex flex-col justify-center gap-4 border-line p-6 max-lg:border-t md:p-10 lg:border-l">
+            <span className="t-label-sm text-accent-text">Un recorrido · cuatro etapas</span>
+            <p className="t-titulo text-[clamp(24px,2.6vw,38px)] text-fg">De la evaluación a la postventa.</p>
+            <p className="text-[15px] leading-relaxed text-muted">Revisión, instalación y seguimiento en una secuencia clara, con controles antes de cualquier entrega.</p>
+            <span className="text-xs text-dim">Imagen conceptual del servicio.</span>
+          </div>
+        </Aparecer>
       </div>
       <ol className="mx-auto grid max-w-[1440px] border-y border-line sm:grid-cols-2 lg:grid-cols-4">
         {ETAPAS.map((e, i) => (
@@ -63,26 +75,33 @@ export function Confianza() {
             ))}
           </ul>
         </div>
-        <div className="relative flex justify-center [perspective:1400px]">
+        <div className="relative flex flex-col items-center [perspective:1400px] lg:block lg:pb-44">
           <div className="foco absolute -inset-20" aria-hidden="true" />
+          <Aparecer className="escena-oscura visor relative w-full overflow-hidden border border-line-2 bg-bg lg:w-[90%]">
+            <i className="esq a" /><i className="esq b" /><i className="esq c" /><i className="esq d" />
+            <Imagen foto={FOTOS.seguridad} className="aspect-[4/3]" />
+            <span className="t-label-sm absolute left-0 top-0 flex items-center gap-2 bg-bg/75 px-3 py-2 text-fg backdrop-blur-sm"><i className="size-1.5 bg-accent" aria-hidden="true" />Equipo dieléctrico</span>
+          </Aparecer>
+          <div className="relative z-10 -mt-12 w-[92%] max-w-[400px] self-end lg:absolute lg:bottom-0 lg:right-0 lg:mt-0 lg:w-[360px]">
           <motion.div initial={quieto ? false : { rotateY: -22, rotateX: 10, opacity: 0, y: 40 }} whileInView={{ rotateY: -9, rotateX: 4, opacity: 1, y: 0 }} whileHover={quieto ? undefined : { rotateY: 0, rotateX: 0, scale: 1.02 }} viewport={{ once: true }} transition={{ type: 'spring', stiffness: 70, damping: 16 }}
-            className="visor relative w-full max-w-[440px] border border-line-2 bg-[#05080a] p-7 text-[#ececec] shadow-[0_60px_120px_-40px_rgba(0,0,0,0.9)]"
+            className="visor w-full border border-line-2 bg-[#05080a] p-5 text-[#ececec] sm:p-7 shadow-[0_60px_120px_-40px_rgba(0,0,0,0.9)]"
             role="img" aria-label="Ejemplo de credencial de un técnico certificado Lumine">
             <i className="esq a" /><i className="esq b" /><i className="esq c" /><i className="esq d" />
             <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,#22B8F0,transparent)]" />
-            <div className="flex items-center justify-between"><Logo className="text-[#ececec]" /><span className="t-label-sm text-[#8b9598]">Técnico instalador</span></div>
+            <div className="flex items-center justify-between"><Logo className="text-[#ececec]" /><span className="t-label-sm text-[#8b9598] max-sm:hidden">Técnico instalador</span></div>
             <div className="mt-8 flex items-end gap-5">
               <span className="t-mono-xl text-[120px] text-[#22B8F0]">3</span>
               <div className="pb-2"><b className="t-titulo text-2xl">Técnico de ejemplo</b><p className="t-label mt-1 text-[#8b9598]">Nivel 3 · Autónomo</p>
                 <div className="mt-3 flex gap-1">{[1, 2, 3, 4].map(n => <i key={n} className={cn('h-1 w-7', n < 3 ? 'bg-[#ececec]' : n === 3 ? 'bg-[#22B8F0]' : 'bg-[#2e3438]')} />)}</div></div>
             </div>
             <div className="mt-8 grid grid-cols-[1fr_92px] items-end gap-5 border-t border-[#1f2427] pt-5">
-              <dl className="t-label-sm grid grid-cols-[auto_1fr] gap-x-4 gap-y-2"><dt className="text-[#8b9598]">Estado</dt><dd className="text-[#4ADE80]">Vigente</dd><dt className="text-[#8b9598]">Seguridad</dt><dd>Revalidada</dd><dt className="text-[#8b9598]">Código</dt><dd>LH3-····-···</dd></dl>
+              <dl className="t-label-sm grid grid-cols-[auto_1fr] gap-x-4 gap-y-2"><dt className="text-[#8b9598]">Estado</dt><dd className="text-[#4ADE80]">Vigente</dd><dt className="text-[#8b9598]">Seguridad</dt><dd>Revalidada</dd><dt className="text-[#8b9598]">Código</dt><dd className="whitespace-nowrap">LH3-····-···</dd></dl>
               <div className="grid aspect-square grid-cols-7 gap-[3px] bg-[#ececec] p-2" aria-hidden="true">
                 {Array.from({ length: 49 }, (_, k) => { const x = k % 7, y = Math.floor(k / 7); const f = (x < 2 && y < 2) || (x > 4 && y < 2) || (x < 2 && y > 4); return <i key={k} className={cn(f || (x * 3 + y * 5) % 4 === 0 ? 'bg-[#05080a]' : 'bg-transparent')} /> })}
               </div>
             </div>
           </motion.div>
+          </div>
         </div>
       </div>
     </section>
@@ -238,14 +257,92 @@ export function Pie() {
   )
 }
 
-/* barra fija en teléfono con la acción principal */
+/* barra fija en teléfono con la acción principal (y la ayuda, para no tapar contenido con un botón flotante) */
 export function BarraMovil() {
   const { scrollYProgress } = useScroll()
   const [ver, setVer] = React.useState(false)
   useMotionValueEvent(scrollYProgress, 'change', v => setVer(v > 0.06 && v < 0.9))
   return (
-    <motion.div initial={false} animate={{ opacity: ver ? 1 : 0, y: ver ? 0 : 20 }} transition={{ duration: 0.25 }} className={cn('fixed inset-x-3 bottom-3 z-40 sm:hidden', !ver && 'pointer-events-none')} aria-hidden={!ver || undefined}>
-      <Button size="lg" className="w-full shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)]" onClick={() => irA('agendar')} tabIndex={ver ? 0 : -1}>Agendar diagnóstico <Flecha /></Button>
+    <motion.div initial={false} animate={{ opacity: ver ? 1 : 0, y: ver ? 0 : 20 }} transition={{ duration: 0.25 }} className={cn('fixed inset-x-3 bottom-3 z-40 flex gap-2 sm:hidden', !ver && 'pointer-events-none')} aria-hidden={!ver || undefined}>
+      <Button size="lg" variant="borde" className="shrink-0 bg-bg px-4 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)]" aria-label="Abrir ayuda" onClick={() => window.dispatchEvent(new Event('lumine:ayuda'))} tabIndex={ver ? 0 : -1}><MessageCircleQuestion className="size-5" /></Button>
+      <Button size="lg" className="flex-1 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)]" onClick={() => irA('agendar')} tabIndex={ver ? 0 : -1}>Agendar diagnóstico <Flecha /></Button>
     </motion.div>
+  )
+}
+
+/* ---------- Ayuda: respuestas cortas y honestas, sin IA (las mismas reglas que el resto de la página) ---------- */
+const TEMAS: { k: string; r: React.ReactNode; ir: [string, string] }[] = [
+  { k: '¿Mi auto sirve?', r: <>{HECHOS.elegibilidad} Parte con el verificador y lo confirmamos en el diagnóstico.</>, ir: ['compatibilidad', 'Ir al verificador'] },
+  { k: '¿Cuánto ahorro?', r: <>{DATOS.ahorroPct ? `Estimamos hasta ${DATOS.ahorroPct}% menos combustible en ciudad.` : 'El ahorro está por confirmar.'} Es una estimación de ingeniería, no una garantía: después la telemetría mide tu ahorro real.</>, ir: ['ahorro', 'Calcular mi ahorro'] },
+  { k: '¿Cuánto cuesta?', r: <>Depende del modelo y de la configuración. {DATOS.precio ? `Desde $${DATOS.precio.desde.toLocaleString('es-CL')}.` : <>Precio: <PorConfirmar que="Precio" /></>} El diagnóstico te deja el valor exacto.</>, ir: ['agendar', 'Agendar diagnóstico'] },
+  { k: '¿Es seguro?', r: <>{HECHOS.sistemasOriginales} {HECHOS.capaSeguridad} Lo instala un duo de técnicos certificados.</>, ir: ['confianza', 'Ver cómo trabajamos'] },
+  { k: '¿Es legal?', r: <>La instalación pasa por pruebas previas a la certificación y el informe técnico lo firma nuestro Responsable Técnico. El reglamento chileno para estos kits está en elaboración.</>, ir: ['preguntas', 'Leer las preguntas'] },
+  { k: 'Tengo una flota', r: <>Planificamos la instalación por etapas para no detener tu operación y medimos con telemetría el ahorro real de cada vehículo.</>, ir: ['para-quien', 'Ver flotas'] },
+]
+export function Ayuda() {
+  const [abierta, setAbierta] = React.useState(false)
+  const [tema, setTema] = React.useState<number | null>(null)
+  const [visible, setVisible] = React.useState(false)
+  const panel = React.useRef<HTMLDivElement>(null)
+  const boton = React.useRef<HTMLButtonElement>(null)
+  /* el botón aparece después de la portada y se esconde donde ya hay una conversación (verificador) o la agenda */
+  React.useEffect(() => {
+    const medir = () => {
+      const tapa = ['compatibilidad', 'agendar'].some(id => { const r = document.getElementById(id)?.getBoundingClientRect(); return r ? r.top < window.innerHeight * 0.85 && r.bottom > window.innerHeight * 0.15 : false })
+      setVisible(window.scrollY > window.innerHeight * 0.8 && !tapa)
+    }
+    medir(); window.addEventListener('scroll', medir, { passive: true }); window.addEventListener('resize', medir)
+    const abrir = () => setAbierta(true)
+    window.addEventListener('lumine:ayuda', abrir)
+    return () => { window.removeEventListener('scroll', medir); window.removeEventListener('resize', medir); window.removeEventListener('lumine:ayuda', abrir) }
+  }, [])
+  React.useEffect(() => {
+    if (!abierta) return
+    panel.current?.querySelector<HTMLElement>('button')?.focus()
+    const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') { setAbierta(false); boton.current?.focus() } }
+    window.addEventListener('keydown', esc); return () => window.removeEventListener('keydown', esc)
+  }, [abierta])
+  const ir = (id: string) => { setAbierta(false); irA(id) }
+  return (
+    <>
+      <AnimatePresence>
+        {visible && !abierta ? (
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 16 }} transition={{ duration: 0.25 }} className="fixed bottom-6 right-6 z-40 max-sm:hidden">
+            <Button ref={boton} size="icon" onClick={() => setAbierta(true)} className="group/ay size-14 rounded-full shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)]" aria-haspopup="dialog" aria-label="¿Dudas? Te ayudamos" title="¿Dudas? Te ayudamos"><MessageCircleQuestion className="size-6" /></Button>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+      <AnimatePresence>
+        {abierta ? (
+          <motion.div ref={panel} role="dialog" aria-modal="false" aria-labelledby="ay-t" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 24 }} transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-x-3 bottom-3 z-50 sm:inset-x-auto sm:bottom-6 sm:right-6 sm:w-[400px]">
+           <div className="visor flex max-h-[min(78svh,620px)] flex-col border border-line-2 bg-surface shadow-[0_40px_80px_-20px_rgba(0,0,0,0.7)]">
+            <i className="esq a" /><i className="esq b" /><i className="esq c" /><i className="esq d" />
+            <div className="flex items-center justify-between border-b border-line px-5 py-3">
+              <span id="ay-t" className="t-label-sm flex items-center gap-2 text-fg"><i className="parpadeo size-1.5 bg-accent" />Ayuda Lumine</span>
+              <button type="button" onClick={() => { setAbierta(false); boton.current?.focus() }} aria-label="Cerrar ayuda" className="grid size-8 place-items-center text-muted hover:text-fg"><X className="size-4" /></button>
+            </div>
+            <div className="flex flex-col gap-4 overflow-y-auto p-5">
+              <p className="text-[15px] leading-relaxed text-muted">Respuestas cortas sobre lo que más nos preguntan. Para tu caso exacto, el diagnóstico.</p>
+              <div className="flex flex-wrap gap-2">
+                {TEMAS.map((t, i) => (
+                  <button key={t.k} type="button" aria-pressed={tema === i} onClick={() => setTema(i)}
+                    className={cn('t-label border px-3 py-2 transition-colors', tema === i ? 'border-accent bg-accent text-accent-ink' : 'border-line-2 text-fg hover:border-fg')}>{t.k}</button>
+                ))}
+              </div>
+              <div aria-live="polite">
+                {tema !== null ? (
+                  <motion.div key={tema} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-3 border-l-2 border-accent bg-well px-4 py-3">
+                    <p className="text-[15px] leading-relaxed text-fg">{TEMAS[tema].r}</p>
+                    <button type="button" onClick={() => ir(TEMAS[tema].ir[0])} className="t-label inline-flex items-center gap-1 self-start text-accent-text hover:underline">{TEMAS[tema].ir[1]} ↗</button>
+                  </motion.div>
+                ) : null}
+              </div>
+            </div>
+           </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </>
   )
 }

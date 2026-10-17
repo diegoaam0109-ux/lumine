@@ -76,6 +76,16 @@
   --scrim: rgba(245, 245, 247, 0.8);
   color-scheme: light;
 }
+:root[data-tema="claro"] .escena-oscura {
+  /* escenas fotográficas: quedan oscuras también en modo claro */
+  --bg: #020304; --surface: #0a0d0f; --well: #101417; --control: #1a1e22;
+  --fg: #ececec; --muted: #a3acaf; --dim: #5b6164; --line: #1f2427; --line-2: #2e3438;
+  --accent-text: #22B8F0; --glow: rgba(34, 184, 240, 0.28); --grid: rgba(186, 215, 247, 0.04);
+  color: var(--fg);
+  color-scheme: dark;
+}
+/* en modo claro la barra de navegación siempre lleva fondo: arriba hay una foto oscura */
+:root[data-tema="claro"] .nav-sitio { background: rgba(245, 245, 247, 0.86); border-bottom-color: var(--line); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
 html, html body {
   margin: 0 !important;
   padding: 0 !important;

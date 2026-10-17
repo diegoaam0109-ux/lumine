@@ -3,7 +3,8 @@ import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion, use
 import { ArrowUp, CheckCircle2, CircleHelp, RotateCcw, XCircle } from 'lucide-react'
 import { PromptButton, PromptInput, PromptInputAction, PromptInputActions, PromptInputTextarea } from '@/components/ui/ai-prompt-box'
 import { Button } from '@/components/ui/button'
-import { Aparecer, Encabezado, Flecha, irA } from '@/components/comunes'
+import { Aparecer, Encabezado, Flecha, Imagen, irA } from '@/components/comunes'
+import { FOTOS } from '@/lib/fotos'
 import { COMBUSTIBLES, DATOS, clp } from '@/lib/datos'
 import { cn } from '@/lib/utils'
 
@@ -72,6 +73,17 @@ export function Calculadora() {
     <section id="ahorro" className="relative scroll-mt-20 border-t border-line bg-bg py-24 md:py-36" aria-labelledby="ah-t">
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
         <Encabezado n="03" etiqueta="Ahorro" id="ah-t" titulo={<>Calcula lo que <span className="t-serif normal-case text-accent-text">dejas de gastar.</span></>} bajada={<>Con tus datos y el precio de hoy. Estimamos un <b className="font-semibold text-fg">{Math.round(AHORRO * 100)}% menos de combustible</b> con el kit; el cálculo es solo tuyo, no se guarda ni se envía.</>} />
+        <Aparecer className="escena-oscura mb-6 grid overflow-hidden border border-line bg-surface md:grid-cols-[1.2fr_1fr]">
+          <div className="relative aspect-[16/7] overflow-hidden md:aspect-auto md:min-h-[200px]">
+            <Imagen foto={FOTOS.bencinera} className="absolute inset-0 object-[60%_55%]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-surface/80 to-transparent md:bg-gradient-to-l md:from-surface md:via-surface/10" aria-hidden="true" />
+          </div>
+          <div className="flex flex-col justify-center gap-3 p-6 md:p-8">
+            <span className="t-label-sm text-accent-text">Tu ruta · tu consumo</span>
+            <p className="t-titulo text-[clamp(22px,2.2vw,32px)] text-fg">Lo importante es cuánto gastas por kilómetro.</p>
+            <p className="text-[15px] leading-relaxed text-muted">Prueba distintos recorridos y revisa los supuestos. La calculadora entrega una estimación, no un ahorro garantizado.</p>
+          </div>
+        </Aparecer>
         <div className="grid border border-line lg:grid-cols-[0.95fr_1.15fr]">
           {/* entrada */}
           <Aparecer className="flex flex-col gap-6 border-line bg-surface p-5 max-lg:border-b md:p-10 lg:border-r">

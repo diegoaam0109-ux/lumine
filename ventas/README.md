@@ -33,7 +33,12 @@ La calculadora muestra el gasto actual y cuánto vale cada 10 % de ahorro; el ra
 - `src/components/comunes.tsx` logo, marcador «Por confirmar», apariciones con framer-motion y el auto 3D.
 - `src/lib/lab3d.js` motor 3D propio de Lumine (canvas, sin librerías), traído de Lumine Habilita.
 - `src/lib/datos.ts` datos comerciales y hechos documentados en la Fase 3.
-- `src/sections/` portada, para quién, cómo funciona, calculadora, verificador, proceso, confianza, preguntas y agenda.
+- `src/sections/` portada, para quién, cómo funciona (recorrido 3D), explorador del kit, calculadora, verificador, proceso, confianza, preguntas, agenda y ayuda.
+- `src/assets/fotos/` + `src/lib/fotos.ts` imágenes conceptuales de Lumine (webp) con su texto alternativo. Las escenas con foto llevan la clase `escena-oscura`: quedan oscuras también en modo claro.
+
+## Ayuda comercial
+
+Botón de ayuda con respuestas cortas por tema (compatibilidad, ahorro, precio, seguridad, legal, flotas), **sin IA**: usa los mismos `DATOS` y `HECHOS`, así que nunca inventa un precio. En PC es un botón redondo que se esconde en el verificador y en la agenda; en teléfono va dentro de la barra inferior para no tapar contenido.
 
 ## Verificador de compatibilidad
 

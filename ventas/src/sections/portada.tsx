@@ -2,7 +2,8 @@ import * as React from 'react'
 import { AnimatePresence, animate, motion, useInView, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Aparecer, Escena3D, Etiqueta, Flecha, InterruptorTema, Logo, irA } from '@/components/comunes'
+import { Aparecer, Etiqueta, Flecha, InterruptorTema, Logo, irA } from '@/components/comunes'
+import { FOTOS } from '@/lib/fotos'
 import { cn } from '@/lib/utils'
 import { PIEZAS_PLANO, Plano } from '@/components/plano'
 
@@ -17,7 +18,7 @@ export function Nav() {
   React.useEffect(() => { document.body.style.overflow = abierto ? 'hidden' : ''; return () => { document.body.style.overflow = '' } }, [abierto])
   const ir = (id: string) => { setAbierto(false); setTimeout(() => irA(id), abierto ? 250 : 0) }
   return (
-    <header className={cn('fixed inset-x-0 top-0 z-50 transition-all duration-500', solido && !abierto ? 'border-b border-line bg-bg/80 backdrop-blur-xl' : 'border-b border-transparent')}>
+    <header className={cn('nav-sitio fixed inset-x-0 top-0 z-50 transition-all duration-500', solido && !abierto ? 'border-b border-line bg-bg/80 backdrop-blur-xl' : 'border-b border-transparent')}>
       <nav aria-label="Principal" className="mx-auto flex h-[72px] max-w-[1440px] items-center gap-4 px-5 md:px-10">
         <button type="button" onClick={() => { setAbierto(false); window.scrollTo({ top: 0, behavior: 'smooth' }) }} aria-label="Lumine Motors, volver arriba" className="shrink-0"><Logo /></button>
         <div className="mx-auto hidden items-center gap-2 lg:flex">
@@ -56,59 +57,54 @@ export function Nav() {
   )
 }
 
-/* ---------- portada: el auto frente a una palabra monumental ---------- */
-const LECTURAS = [
-  { k: 'Motor original', v: 'Intacto', c: 'left-5 bottom-[7%] md:left-10' },
-  { k: 'Freno · ABS', v: 'Originales mandan', c: 'right-5 top-[30%] text-right md:right-10' },
-  { k: 'Eje trasero', v: 'Asistencia eléctrica', c: 'right-5 bottom-[7%] text-right md:right-10' },
-]
+/* ---------- portada: el auto en rayos X y la palabra monumental ---------- */
+const LECTURAS = ['Motor original intacto', 'Asistencia eléctrica trasera', 'Freno y ABS originales mandan']
 export function Hero() {
   const quieto = useReducedMotion()
   const ref = React.useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
-  const yPalabra = useTransform(scrollYProgress, [0, 1], [0, 220])
-  const yAuto = useTransform(scrollYProgress, [0, 1], [0, -60])
-  const escala = useTransform(scrollYProgress, [0, 1], [1, 1.12])
+  const escala = useTransform(scrollYProgress, [0, 1], [1.04, 1.16])
+  const yFoto = useTransform(scrollYProgress, [0, 1], [0, 80])
+  const yTexto = useTransform(scrollYProgress, [0, 1], [0, 120])
   const ocultar = useTransform(scrollYProgress, [0, 0.7], [1, 0])
   return (
-    <section ref={ref} className="grano relative flex min-h-[100svh] flex-col overflow-hidden bg-bg pt-[72px]" aria-labelledby="hero-t">
-      <div className="rejilla absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,#000_30%,transparent_75%)]" aria-hidden="true" />
-      <div className="foco absolute inset-0" aria-hidden="true" />
+    <section ref={ref} className="escena-oscura grano relative flex min-h-[100svh] flex-col overflow-hidden bg-bg pt-[72px]" aria-labelledby="hero-t">
+      {/* foto: banda superior en teléfono, fondo completo desde tablet */}
+      <div className="relative h-[46svh] min-h-[300px] overflow-hidden md:absolute md:inset-0 md:h-auto">
+        <motion.img src={FOTOS.portada.src} alt={FOTOS.portada.alt} decoding="async" fetchPriority="high"
+          initial={quieto ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
+          style={quieto ? undefined : { scale: escala, y: yFoto }}
+          className="absolute inset-0 h-full w-full object-cover object-[64%_50%] md:object-[70%_55%] lg:left-[18%] lg:w-[82%]" />
+        {/* velos para que el texto se lea siempre */}
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-bg via-bg/70 to-transparent" aria-hidden="true" />
+        <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-bg/90 to-transparent" aria-hidden="true" />
+        <div className="absolute inset-0 hidden bg-[linear-gradient(90deg,var(--bg)_0%,color-mix(in_srgb,var(--bg)_88%,transparent)_26%,color-mix(in_srgb,var(--bg)_30%,transparent)_48%,transparent_66%)] md:block" aria-hidden="true" />
+      </div>
+      <div className="rejilla pointer-events-none absolute inset-0 opacity-60 [mask-image:radial-gradient(ellipse_at_30%_50%,#000_20%,transparent_70%)]" aria-hidden="true" />
       {/* encabezado del escenario */}
-      <div className="relative z-20 mx-auto flex w-full max-w-[1440px] items-start justify-between px-5 pt-6 md:px-10">
+      <div className="absolute inset-x-0 top-[72px] z-20 mx-auto flex w-full max-w-[1440px] items-start justify-between px-5 pt-6 md:px-10">
         <Etiqueta punto>Kit de hibridación · Chile</Etiqueta>
         <span className="t-label hidden text-muted sm:block">LM—001 / Particulares y flotas</span>
       </div>
-      {/* palabra monumental + auto */}
-      <div className="relative flex flex-1 flex-col items-center justify-center">
-        <h1 id="hero-t" className="relative z-0 flex w-full flex-col items-center text-center">
-          <motion.span initial={quieto ? false : { opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.1 }} className="t-titulo text-[clamp(26px,4.2vw,64px)]">
+      {/* titular */}
+      <motion.div style={quieto ? undefined : { y: yTexto }} className="relative z-20 mx-auto flex w-full max-w-[1440px] flex-1 flex-col justify-end px-5 pb-8 max-md:-mt-16 md:justify-center md:px-10 md:pb-0">
+        <h1 id="hero-t" className="flex flex-col items-start">
+          <motion.span initial={quieto ? false : { opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.1 }} className="t-titulo text-[clamp(26px,3.6vw,56px)]">
             Tu auto, <span className="t-serif text-[1.15em] normal-case text-accent-text">ahora</span>
           </motion.span>
-          <motion.span style={quieto ? undefined : { y: yPalabra }} className="block overflow-hidden px-2">
+          <span className="block overflow-hidden">
             <motion.span initial={quieto ? false : { y: '100%' }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="t-mono-xl block bg-[linear-gradient(180deg,var(--fg)_35%,color-mix(in_srgb,var(--fg)_10%,transparent)_92%)] bg-clip-text pt-[0.1em] text-[clamp(110px,27vw,430px)] text-transparent">
+              className="t-mono-xl block bg-[linear-gradient(180deg,var(--fg)_40%,color-mix(in_srgb,var(--fg)_45%,transparent)_100%)] bg-clip-text pt-[0.08em] text-[clamp(104px,15vw,260px)] text-transparent">
               Híbrido
             </motion.span>
-          </motion.span>
+          </span>
         </h1>
-        <motion.div style={quieto ? undefined : { y: yAuto, scale: escala }} className="absolute inset-x-0 bottom-[2%] top-[22%] z-10 md:top-[18%]">
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.6, delay: 0.5 }} className="absolute inset-0">
-            <Escena3D className="absolute inset-0" etiqueta="Auto genérico en 3D con el kit Lumine en el eje trasero, en vista de rayos X" opciones={{ auto: true, xray: true }} alListo={a => a.vista(-0.95, 0.24, 6.3)} />
-          </motion.div>
-        </motion.div>
-        {/* lecturas de instrumento */}
-        <motion.div style={quieto ? undefined : { opacity: ocultar }} className="pointer-events-none absolute inset-0 z-20 max-sm:hidden" aria-hidden="true">
-          {LECTURAS.map((l, i) => (
-            <motion.div key={l.k} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 + i * 0.2, duration: 0.8 }} className={cn('absolute flex flex-col gap-1', l.c)}>
-              <span className="t-label-sm text-muted">{l.k}</span>
-              <span className="t-label flex items-center gap-2 text-fg"><i className="parpadeo size-1.5 bg-accent" />{l.v}</span>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
+        <motion.ul initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1, duration: 0.8 }} className="mt-6 flex max-w-[560px] flex-wrap gap-x-6 gap-y-2" aria-label="Lo que no cambia en tu auto">
+          {LECTURAS.map(l => <li key={l} className="t-label-sm flex items-center gap-2 text-fg"><i className="parpadeo size-1.5 bg-accent" aria-hidden="true" />{l}</li>)}
+        </motion.ul>
+      </motion.div>
       {/* pie del escenario */}
-      <motion.div style={quieto ? undefined : { opacity: ocultar }} className="relative z-30 mx-auto grid w-full max-w-[1440px] gap-6 border-t border-line px-5 py-6 md:grid-cols-[1fr_auto] md:items-end md:px-10 md:py-8">
+      <motion.div style={quieto ? undefined : { opacity: ocultar }} className="relative z-30 mx-auto grid w-full max-w-[1440px] gap-6 border-t border-line bg-bg/40 px-5 py-6 backdrop-blur-sm md:grid-cols-[1fr_auto] md:items-end md:px-10 md:py-8">
         <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9, duration: 0.8 }} className="max-w-xl text-base leading-relaxed text-muted md:text-lg">
           Sumamos un motor eléctrico en el eje trasero de tu auto. Tu motor original queda intacto y una unidad de control con IA decide cuándo asistir.
         </motion.p>

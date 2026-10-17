@@ -1,14 +1,15 @@
 import * as React from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { Aparecer, Encabezado, Escena3D, Etiqueta, PorConfirmar } from '@/components/comunes'
+import { Aparecer, Encabezado, Escena3D, Etiqueta, Imagen, PorConfirmar } from '@/components/comunes'
 import type { Lab3DApi } from '@/lib/lab3d'
 import { DATOS } from '@/lib/datos'
+import { FOTOS, type Foto } from '@/lib/fotos'
 import { cn } from '@/lib/utils'
 
 /* ---------- Para quién: dos paneles enfrentados, particulares y flotas ---------- */
 const PERFILES = [
   {
-    k: 'A', l: 'Particulares',
+    k: 'A', l: 'Particulares', foto: FOTOS.particulares, pie: 'Conductores · uso intensivo',
     titulo: <>Gasta menos en bencina <span className="t-serif normal-case text-accent-text">sin cambiar de auto.</span></>,
     puntos: [
       { t: 'Menos combustible', d: 'El motor eléctrico asiste cuando más consume el auto: al partir y al acelerar.', dato: DATOS.ahorroPct ? `${DATOS.ahorroPct}% menos` : null, que: 'Ahorro esperado' },
@@ -18,7 +19,7 @@ const PERFILES = [
     ],
   },
   {
-    k: 'B', l: 'Flotas',
+    k: 'B', l: 'Flotas', foto: FOTOS.flotas, pie: 'Flotas · control operacional',
     titulo: <>Baja el costo por kilómetro <span className="t-serif normal-case text-accent-text">de toda tu flota.</span></>,
     puntos: [
       { t: 'Ahorro que se multiplica', d: 'Los autos que más kilómetros hacen son los que más ganan con la asistencia eléctrica.' },
@@ -43,7 +44,11 @@ export function ParaQuien() {
               <Etiqueta n={'0' + (pi + 1)}>{P.l}</Etiqueta>
             </Aparecer>
             <h3 id={'pq-' + P.k} className="t-titulo relative mt-8 max-w-[16ch] text-[clamp(30px,3.6vw,54px)]">{P.titulo}</h3>
-            <ul className="relative mt-12 flex flex-col">
+            <figure className="escena-oscura relative mt-10 overflow-hidden border border-line bg-bg">
+              <Imagen foto={P.foto} className="aspect-[3/2] transition-transform duration-[1.2s] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.03]" />
+              <figcaption className="t-label-sm absolute bottom-0 left-0 flex items-center gap-2 bg-bg/70 px-3 py-2 text-fg backdrop-blur-sm"><i className="size-1.5 bg-accent" aria-hidden="true" />{P.pie}</figcaption>
+            </figure>
+            <ul className="relative mt-10 flex flex-col">
               {P.puntos.map((x, i) => (
                 <motion.li key={x.t} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-8% 0px' }} transition={{ delay: i * 0.07, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                   className="grid grid-cols-[44px_1fr] gap-4 border-t border-line py-5 md:grid-cols-[56px_1fr_auto]">
@@ -154,6 +159,69 @@ export function ComoFunciona() {
           </div>
         </div>
       </div>
+    </section>
+  )
+}
+
+/* ---------- Explorador: las piezas del kit en imágenes, una por pestaña ---------- */
+const PIEZAS: { k: string; t: string; d: string; foto: Foto; ajuste: 'cubrir' | 'contener' }[] = [
+  { k: 'Kit completo', t: 'La tecnología se suma.', d: 'Asistencia eléctrica en el eje trasero, banco de baterías bajo el piso y unidad de control. El motor original sigue adelante, como siempre.', foto: FOTOS.kit, ajuste: 'cubrir' },
+  { k: 'Motor trasero', t: 'Tracción eléctrica atrás.', d: 'Un motor eléctrico compacto en el eje trasero. Asiste al partir y al acelerar, y recupera energía cada vez que frenas. No reemplaza al motor delantero.', foto: FOTOS.motor, ajuste: 'contener' },
+  { k: 'Banco de baterías', t: 'Energía bajo el piso.', d: 'Un banco plano de baterías LFP entre ambos ejes. Guarda la energía del frenado; su integración final depende del modelo evaluado en el diagnóstico.', foto: FOTOS.baterias, ajuste: 'contener' },
+  { k: 'Unidad de control', t: 'La coordinación del sistema.', d: 'Decide cuándo asistir y corta el torque ante patinaje, falla o sobretemperatura. El freno y el ABS originales siempre mandan.', foto: FOTOS.control, ajuste: 'contener' },
+]
+export function Explorador() {
+  const [i, setI] = React.useState(0)
+  const P = PIEZAS[i]
+  const mover = (e: React.KeyboardEvent) => {
+    const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0
+    if (!d) return
+    e.preventDefault()
+    const n = (i + d + PIEZAS.length) % PIEZAS.length
+    setI(n); document.getElementById('pz-tab-' + n)?.focus()
+  }
+  return (
+    <section id="kit" className="relative scroll-mt-20 bg-bg pb-24 md:pb-36" aria-labelledby="kit-t">
+     <div className="mx-auto max-w-[1440px] px-5 md:px-10">
+      <div className="mb-10 grid gap-6 md:grid-cols-[220px_1fr] md:gap-12">
+        <Aparecer><Etiqueta n="01·b">En detalle</Etiqueta></Aparecer>
+        <Aparecer i={1}><h2 id="kit-t" className="t-titulo text-[clamp(32px,4.4vw,64px)]">Conoce el kit <span className="t-serif normal-case text-accent-text">pieza por pieza.</span></h2></Aparecer>
+      </div>
+      <Aparecer className="escena-oscura visor border border-line bg-bg">
+        <i className="esq a" /><i className="esq b" /><i className="esq c" /><i className="esq d" />
+        <div className="flex items-center justify-between gap-4 border-b border-line px-4 py-2.5 md:px-6">
+          <span className="t-label-sm flex items-center gap-2 text-muted"><i className="parpadeo size-1.5 bg-accent" />Explorador de componentes</span>
+          <span className="t-label-sm text-dim max-sm:hidden">Reconversión híbrida aditiva · vista conceptual</span>
+        </div>
+        <div className="grid lg:grid-cols-[1.45fr_1fr]">
+          <div className="relative aspect-[16/10] overflow-hidden border-line bg-black max-lg:border-b lg:border-r" id="pz-panel" role="tabpanel" aria-labelledby={'pz-tab-' + i}>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div key={i} initial={{ opacity: 0, scale: 1.03 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} className="absolute inset-0">
+                <Imagen foto={P.foto} className={cn('h-full w-full', P.ajuste === 'contener' ? 'object-contain' : 'object-cover')} />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+          <div className="flex flex-col justify-center gap-5 p-6 md:p-10">
+            <span className="t-label-sm text-accent-text">{String(i + 1).padStart(2, '0')} / 04 · {P.k}</span>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} className="flex flex-col gap-4">
+                <p className="t-titulo text-[clamp(26px,2.6vw,38px)] text-fg">{P.t}</p>
+                <p className="max-w-md text-[16px] leading-relaxed text-muted">{P.d}</p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+        <div role="tablist" aria-label="Piezas del kit" className="grid grid-cols-2 border-t border-line sm:grid-cols-4" onKeyDown={mover}>
+          {PIEZAS.map((x, k) => (
+            <button key={x.k} id={'pz-tab-' + k} type="button" role="tab" aria-selected={i === k} aria-controls="pz-panel" tabIndex={i === k ? 0 : -1} onClick={() => setI(k)}
+              className={cn('t-label flex min-h-14 flex-col items-center justify-center gap-1 border-line px-3 py-3 text-center transition-colors', k % 2 === 0 && 'border-r', k < 2 && 'max-sm:border-b', k === 1 && 'sm:border-r', k === 2 && 'sm:border-r', i === k ? 'bg-accent text-accent-ink' : 'text-muted hover:bg-surface hover:text-fg')}>
+              <span className="t-label-sm opacity-70">0{k + 1}</span>{x.k}
+            </button>
+          ))}
+        </div>
+      </Aparecer>
+      <p className="mt-4 text-xs leading-relaxed text-dim">Las imágenes son visualizaciones conceptuales. La configuración definitiva de cada instalación se define para tu modelo en el diagnóstico.</p>
+     </div>
     </section>
   )
 }

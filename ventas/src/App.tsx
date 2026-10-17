@@ -1,8 +1,8 @@
 import { MotionConfig } from 'framer-motion'
 import { Cifras, Franja, Hero, Manifiesto, Nav } from '@/sections/portada'
-import { ComoFunciona, ParaQuien } from '@/sections/venta'
+import { ComoFunciona, Explorador, ParaQuien } from '@/sections/venta'
 import { Calculadora, Compatibilidad } from '@/sections/herramientas'
-import { Agendar, BarraMovil, Confianza, Pie, Preguntas, Proceso } from '@/sections/cierre'
+import { Agendar, Ayuda, BarraMovil, Confianza, Pie, Preguntas, Proceso } from '@/sections/cierre'
 
 /* Página comercial de Lumine Motors (particulares y flotas) */
 export default function App() {
@@ -14,6 +14,7 @@ export default function App() {
         <Hero />
         <Manifiesto />
         <ComoFunciona />
+        <Explorador />
         <Franja />
         <ParaQuien />
         <Cifras />
@@ -26,6 +27,7 @@ export default function App() {
       </main>
       <Pie />
       <BarraMovil />
+      <Ayuda />
     </MotionConfig>
   )
 }

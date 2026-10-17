@@ -60,6 +60,11 @@ export function Encabezado({ n, etiqueta, titulo, bajada, id, centro, apilado }:
   )
 }
 
+/** Foto conceptual de Lumine: carga diferida y recorte con object-cover */
+export function Imagen({ foto, className, prioridad }: { foto: { src: string; alt: string }; className?: string; prioridad?: boolean }) {
+  return <img src={foto.src} alt={foto.alt} loading={prioridad ? 'eager' : 'lazy'} decoding="async" className={cn('block h-full w-full object-cover', className)} />
+}
+
 /** Flecha que se desplaza al pasar el cursor */
 export function Flecha() { return <ArrowUpRight className="size-4 transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" aria-hidden="true" /> }
 

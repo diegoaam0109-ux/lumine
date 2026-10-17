@@ -15,7 +15,7 @@ const chk = (v, m) => { if (v) ok++; else { mal++; console.log('FALLA:', m) } }
     await pg.route(/fonts\.(googleapis|gstatic)\.com/, r => r.abort())
     await pg.goto(URL); await pg.waitForTimeout(1500)
     chk(await pg.locator('h1').innerText().then(t => /HÍBRIDO/i.test(t)), vp + ': titular de la portada')
-    chk(await pg.locator('canvas').count() >= 2, vp + ': escenas 3D montadas')
+    chk(await pg.locator('#como-funciona canvas').count() >= 1, vp + ': recorrido 3D montado')
     // tema: oscuro por defecto aunque el visor fuerce fondo claro en body; el interruptor cambia y recuerda
     await pg.addStyleTag({ content: 'body{background:#faf9f5;color:#141413}' })
     const fondo = () => pg.evaluate(() => getComputedStyle(document.body).backgroundColor)
@@ -24,7 +24,7 @@ const chk = (v, m) => { if (v) ok++; else { mal++; console.log('FALLA:', m) } }
     chk(await fondo() === 'rgb(245, 245, 247)' && await pg.evaluate(() => localStorage.getItem('lumine-tema')) === 'claro', vp + ': el interruptor pasa a claro y lo recuerda')
     await pg.getByRole('button', { name: 'Cambiar a modo oscuro' }).click(); await pg.waitForTimeout(600)
     chk(await fondo() === 'rgb(2, 3, 4)', vp + ': vuelve a oscuro')
-    for (const id of ['para-quien', 'como-funciona', 'ahorro', 'compatibilidad', 'proceso', 'confianza', 'preguntas', 'agendar']) {
+    for (const id of ['para-quien', 'como-funciona', 'kit', 'ahorro', 'compatibilidad', 'proceso', 'confianza', 'preguntas', 'agendar']) {
       await pg.evaluate(x => document.getElementById(x).scrollIntoView(), id); await pg.waitForTimeout(400)
       chk(await pg.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), vp + ': sin desborde en #' + id)
     }
@@ -42,7 +42,7 @@ const chk = (v, m) => { if (v) ok++; else { mal++; console.log('FALLA:', m) } }
       const [ini, fin] = await pg.evaluate(() => { const e = document.getElementById('como-funciona'); const t = e.getBoundingClientRect().top + scrollY; return [t, t + e.offsetHeight - innerHeight] })
       let malas = 0; const vistos = new Set()
       for (let y = ini; y <= fin; y += 120) {
-        await pg.evaluate(y => scrollTo(0, y), y); await pg.waitForTimeout(500)
+        await pg.evaluate(y => scrollTo({ top: y, behavior: 'instant' }), y); await pg.waitForTimeout(500)
         const r = await pg.evaluate(() => {
           const st = document.querySelector('#como-funciona .sticky').getBoundingClientRect()
           if (st.top > 125) return null
@@ -80,6 +80,29 @@ const chk = (v, m) => { if (v) ok++; else { mal++; console.log('FALLA:', m) } }
     await pg.evaluate(() => document.getElementById('preguntas').scrollIntoView()); await pg.waitForTimeout(600)
     await pg.getByRole('button', { name: '¿Pierdo los frenos o el ABS de mi auto?' }).click(); await pg.waitForTimeout(500)
     chk((await pg.innerText('#preguntas')).includes('siempre mandan'), vp + ': el acordeón abre la respuesta')
+    // fotos: todas cargan, con texto alternativo
+    {
+      const fotos = await pg.evaluate(async () => { const im = [...document.querySelectorAll('main img')]; im.forEach(i => { i.loading = 'eager' }); await Promise.all(im.map(i => i.decode().catch(() => null))); return im.map(i => ({ ok: i.naturalWidth > 0, alt: i.alt.length > 10 })) })
+      chk(fotos.length >= 7 && fotos.every(f => f.ok && f.alt), vp + ': las ' + fotos.length + ' fotos cargan y tienen texto alternativo')
+    }
+    // explorador de componentes
+    await pg.evaluate(() => document.getElementById('pz-panel').scrollIntoView({ block: 'center' })); await pg.waitForTimeout(600)
+    await pg.getByRole('tab', { name: /Banco de baterías/ }).click(); await pg.waitForTimeout(700)
+    chk(/Energía bajo el piso/i.test(await pg.innerText('#kit')), vp + ': el explorador cambia de pieza')
+    // ayuda: se abre, responde sin inventar el precio y lleva a la sección
+    await pg.evaluate(() => scrollTo(0, document.getElementById('proceso').getBoundingClientRect().top + scrollY)); await pg.waitForTimeout(800)
+    await pg.getByRole('button', { name: /Te ayudamos|Abrir ayuda/ }).first().click(); await pg.waitForTimeout(600)
+    const ayuda = pg.getByRole('dialog', { name: 'Ayuda Lumine' })
+    chk(await ayuda.isVisible(), vp + ': la ayuda se abre')
+    await ayuda.getByRole('button', { name: '¿Cuánto cuesta?' }).click(); await pg.waitForTimeout(400)
+    chk(/Por confirmar/i.test(await ayuda.innerText()), vp + ': la ayuda no inventa el precio')
+    await pg.keyboard.press('Escape'); await pg.waitForTimeout(400)
+    chk(!(await ayuda.isVisible()), vp + ': Escape cierra la ayuda')
+    // la portada sigue legible en modo claro (foto oscura, texto claro)
+    await pg.evaluate(() => { document.documentElement.dataset.tema = 'claro'; scrollTo(0, 0) }); await pg.waitForTimeout(500)
+    chk(await pg.evaluate(() => getComputedStyle(document.querySelector('h1 .t-titulo')).color) === 'rgb(236, 236, 236)', vp + ': el titular se lee en modo claro')
+    await pg.evaluate(() => { document.documentElement.dataset.tema = 'oscuro' })
+    chk(new RegExp('© ' + new Date().getFullYear()).test(await pg.innerText('footer')), vp + ': el pie muestra el año actual')
     chk(!errs.length, vp + ': sin errores de página ' + errs.join(' | '))
     await pg.context().close()
   }
