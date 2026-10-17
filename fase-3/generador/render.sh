@@ -5,7 +5,7 @@
 # Funciona en Linux y en Git Bash para Windows.
 set -e
 cd "$(dirname "$0")"
-NOMBRE=Lumine_Fase_3_Plan_de_Marketing_Operaciones_y_RRHH
+NOMBRE=Grupo_01_LumineMotors_Fase3
 node deck.js "../$NOMBRE.pptx"
 node guion-md.js > ../GUION.md
 SOFFICE=$(command -v soffice || echo "/c/Program Files/LibreOffice/program/soffice.exe")

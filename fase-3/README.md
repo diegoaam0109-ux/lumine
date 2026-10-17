@@ -5,8 +5,8 @@ Integrantes: Diego Alarcón, Benjamín Torres y Lukas Verdugo.
 
 | Archivo | Para qué |
 |---|---|
-| `Lumine_Fase_3_Plan_de_Marketing_Operaciones_y_RRHH.pdf` | Presentar desde cualquier computador: las tipografías van incrustadas. |
-| `Lumine_Fase_3_Plan_de_Marketing_Operaciones_y_RRHH.pptx` | Editar en PowerPoint. Cada diapositiva trae **notas del orador** con lo que hay que decir. |
+| `Grupo_01_LumineMotors_Fase3.pdf` | Presentar desde cualquier computador: las tipografías van incrustadas. |
+| `Grupo_01_LumineMotors_Fase3.pptx` | Editar en PowerPoint. Cada diapositiva trae **notas del orador** con lo que hay que decir. |
 | `GUION.md` | Guion de la exposición: qué dice cada integrante, con tiempos por diapositiva y el traspaso. |
 | `fuentes/` | Tipografías (Archivo, Figtree, IBM Plex Mono, Instrument Serif). Instálalas antes de abrir el PPT. |
 | `generador/` | Script que arma la presentación. El guion vive en `generador/guion.js` y llega a las notas y a `GUION.md`. |
@@ -16,15 +16,23 @@ presentación salen de ese informe; lo que el informe deja pendiente se muestra 
 
 ## Contenido (máximo 10 minutos)
 
-16 diapositivas para exponer (unos 9 minutos y medio, poco más de 3 por integrante) y un anexo de 10 que solo se usa si preguntan.
+15 diapositivas para exponer (unos 9 minutos y medio, poco más de 3 por integrante) y un anexo de 10 que solo se usa si preguntan.
 La diapositiva índice del anexo tiene un enlace a cada tema, y cada diapositiva del anexo tiene un enlace de vuelta al índice.
 
 | Integrante | Diapositivas | Contenido |
 |---|---|---|
 | Diego Alarcón | 1 a 5 | Portada, objetivos, segmentación, investigación de mercado y matriz de Ansoff |
 | Benjamín Torres | 6 a 10 | Posicionamiento, mix (producto y precio), demanda y pronóstico, presupuesto de marketing, estructura y dotación |
-| Lukas Verdugo | 11 a 16 | Política y presupuesto de RR.HH., flujo operacional, Carta Gantt, presupuesto de operaciones, conclusiones y cierre |
-| Anexo | 17 a 27 | Índice; hipótesis, dudas del cliente, mezcla de marketing, cobros a la red, mercado y adopción, perfiles de cargo, rentas y bonos, jornada de instalación, inversión y gasto, sensibilidad |
+| Lukas Verdugo | 11 a 15 | Política y presupuesto de RR.HH., flujo operacional, Carta Gantt, presupuesto de operaciones y conclusiones |
+| Anexo | 16 a 26 | Índice; hipótesis, dudas del cliente, mezcla de marketing, cobros a la red, mercado y adopción, perfiles de cargo, rentas y bonos, jornada de instalación, inversión y gasto, sensibilidad |
+
+## Estándar del profesor
+
+Sigue la guía de presentación de las Fases 1 y 2 de Integrador II (profesor Roberto Brito), que sirve de referencia mientras no
+haya una para la Fase 3: portada con el nombre del proyecto y una frase de 15 a 20 palabras que explica qué hace, una idea por
+diapositiva, **fuente al pie de cada diapositiva**, supuestos y estimaciones marcados en ámbar («Pronóstico», «Precio de
+referencia», «Ahorro simulado», «Supuesto»), siglas explicadas la primera vez, conclusiones con los supuestos críticos como
+preguntas, 16:9, entrega en PDF y nombre de archivo `Grupo_01_LumineMotors_Fase3`. La guía y el ejemplo no se suben al repositorio.
 
 ## Diseño
 

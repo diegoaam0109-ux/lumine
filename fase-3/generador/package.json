@@ -3,7 +3,7 @@
   "private": true,
   "description": "Generador de la presentación de la Fase 3 (Capítulo III) de Lumine Motors",
   "scripts": {
-    "build": "node deck.js ../Lumine_Fase_3_Plan_de_Marketing_Operaciones_y_RRHH.pptx",
+    "build": "node deck.js ../Grupo_01_LumineMotors_Fase3.pptx",
     "guion": "node guion-md.js > ../GUION.md"
   },
   "dependencies": {

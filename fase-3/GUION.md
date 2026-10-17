@@ -2,13 +2,13 @@
 
 Integrador II: Taller de Empresas · ICMA 1001 · Grupo 1 · Profesor Roberto Brito. Capítulo III: Plan de Marketing, Operaciones y Recursos Humanos.
 
-Máximo 10 minutos: 16 diapositivas, unos 9:24 a 130 palabras por minuto (1222 palabras). Cada integrante habla lo mismo, poco más de tres minutos. El anexo (10 diapositivas) no se expone: se usa solo si preguntan.
+Máximo 10 minutos: 15 diapositivas, unos 9:28 a 130 palabras por minuto (1230 palabras). Cada integrante habla lo mismo, poco más de tres minutos. El anexo (10 diapositivas) no se expone: se usa solo si preguntan.
 
 | Parte | Integrante | Diapositivas | Palabras | Tiempo |
 |---|---|---|---|---|
 | 1 | Diego Alarcón | 1 a 5 | 403 | 3:06 |
 | 2 | Benjamín Torres | 6 a 10 | 411 | 3:10 |
-| 3 | Lukas Verdugo | 11 a 16 | 408 | 3:08 |
+| 3 | Lukas Verdugo | 11 a 15 | 416 | 3:12 |
 
 ## Parte 1 · Diego Alarcón · diapositivas 1 a 5
 
@@ -58,9 +58,9 @@ El presupuesto de marketing se arma por objetivo y tarea, no como un porcentaje 
 
 Para atender esa demanda, la estructura es funcional y sin mandos intermedios: cinco áreas que responden a la Gerencia General. La estructura no cambia con el crecimiento; cambia cuántas personas hay en cada cargo, y nadie se contrata antes de que la carga lo justifique. Ingeniería de Calibración depende de la Gerencia y no del taller, porque la biblioteca sostiene la ventaja. Así el equipo pasa de 13 personas al cierre del primer año a 56 al quinto, y casi dos de cada tres son técnicos. Lukas sigue con las personas y las operaciones.
 
-## Parte 3 · Lukas Verdugo · diapositivas 11 a 16
+## Parte 3 · Lukas Verdugo · diapositivas 11 a 15
 
-Unos 3:08 (408 palabras). Cierra la exposición y abre las preguntas.
+Unos 3:12 (416 palabras). Cierra la exposición y abre las preguntas.
 
 ### 11 · Técnicos formados en casa, costo a la mitad · 35 s
 
@@ -78,13 +78,9 @@ La Carta Gantt apunta a abrir en enero de 2027. En los tres meses previos se hom
 
 Cada local con seis puestos requiere 81 millones de inversión, casi la mitad en el dinamómetro, y el kit explica más del 90% del gasto operacional. Con los tres presupuestos, la línea propia pierde 130 millones en el lanzamiento y gana desde el segundo año, hasta un margen de 7,7%. La red rinde cerca de 10%. El riesgo mayor es el dólar: un alza de 10% casi borra el resultado propio del quinto año.
 
-### 15 · Un mismo gatillo · 40 s
+### 15 · Tres conclusiones y dos preguntas · 45 s
 
-Para cerrar: los tres planes comparten un gatillo. Cuando la demanda supera el 80% de la capacidad, se suma un dúo, se contrata a una persona o se abre un taller. El primer año prueba el producto con 299 instalaciones; el segundo y el tercero suman la red y el segundo taller; el cuarto y el quinto escalan a tres talleres, 42 certificados y 56 personas. Quedan tres condiciones abiertas: el reglamento, el ahorro real y los precios que mida la encuesta.
-
-### 16 · Cierre · 5 s
-
-Muchas gracias. Quedamos atentos a sus preguntas.
+Para cerrar, tres conclusiones. Primero, la oportunidad existe: desde el primer año hay más demanda que capacidad. Segundo, hay espacio competitivo: somos la única alternativa que ahorra sin cambiar de auto, y la red vende la calibración mientras sigue siendo exclusiva. Tercero, los tres planes se mueven con un mismo gatillo, la demanda sobre el 80% de la capacidad, y cada línea gana desde el segundo año. Quedan dos preguntas: si el reglamento admitirá el kit y desde cuándo, y si el ahorro medido y la encuesta confirman los precios. Muchas gracias; quedamos atentos a sus preguntas.
 
 ## Anexo · solo si preguntan
 

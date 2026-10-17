@@ -66,12 +66,12 @@ const PRINCIPAL = [
     'Cada local con seis puestos requiere 81 millones de inversión, casi la mitad en el dinamómetro, y el kit explica más del 90% del gasto operacional. ' +
     'Con los tres presupuestos, la línea propia pierde 130 millones en el lanzamiento y gana desde el segundo año, hasta un margen de 7,7%. La red rinde cerca de 10%. ' +
     'El riesgo mayor es el dólar: un alza de 10% casi borra el resultado propio del quinto año.' },
-  { d: 'conclusiones', quien: LUKAS, titulo: 'Un mismo gatillo', texto:
-    'Para cerrar: los tres planes comparten un gatillo. Cuando la demanda supera el 80% de la capacidad, se suma un dúo, se contrata a una persona o se abre un taller. ' +
-    'El primer año prueba el producto con 299 instalaciones; el segundo y el tercero suman la red y el segundo taller; el cuarto y el quinto escalan a tres talleres, 42 certificados y 56 personas. ' +
-    'Quedan tres condiciones abiertas: el reglamento, el ahorro real y los precios que mida la encuesta.' },
-  { d: 'cierre', quien: LUKAS, titulo: 'Cierre', texto:
-    'Muchas gracias. Quedamos atentos a sus preguntas.' },
+  { d: 'conclusiones', quien: LUKAS, titulo: 'Tres conclusiones y dos preguntas', texto:
+    'Para cerrar, tres conclusiones. Primero, la oportunidad existe: desde el primer año hay más demanda que capacidad. ' +
+    'Segundo, hay espacio competitivo: somos la única alternativa que ahorra sin cambiar de auto, y la red vende la calibración mientras sigue siendo exclusiva. ' +
+    'Tercero, los tres planes se mueven con un mismo gatillo, la demanda sobre el 80% de la capacidad, y cada línea gana desde el segundo año. ' +
+    'Quedan dos preguntas: si el reglamento admitirá el kit y desde cuándo, y si el ahorro medido y la encuesta confirman los precios. ' +
+    'Muchas gracias; quedamos atentos a sus preguntas.' },
 ];
 
 // Diapositivas de apoyo: no se exponen; se muestran solo si una pregunta las pide.

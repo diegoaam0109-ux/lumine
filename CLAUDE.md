@@ -80,8 +80,10 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   Estrategia: diferenciación enfocada.
 
 **Presentación de la Fase 3**:
-- Máximo 10 minutos: 16 diapositivas + anexo de 10 con índice enlazado. Diego 1–5 (objetivos a Ansoff), Benjamín 6–10
-  (posicionamiento a estructura), Lukas 11–16 (RR.HH., operaciones y conclusiones); ~410 palabras c/u.
+- Máximo 10 minutos: 15 diapositivas + anexo de 10 con índice enlazado. Diego 1–5 (objetivos a Ansoff), Benjamín 6–10
+  (posicionamiento a estructura), Lukas 11–15 (RR.HH., operaciones y conclusiones); ~410 palabras c/u.
+- Estándar: la guía del profesor Brito para las Fases 1 y 2 (fuente al pie de cada lámina, supuestos marcados, siglas
+  explicadas, conclusiones con preguntas pendientes, PDF 16:9, archivo `Grupo_01_LumineMotors_Fase3`).
 - Datos solo del informe de la Fase 3 (10-10-2026): pronóstico 299 → 2.851 instalaciones propias, red de 42 talleres y 7.773
   kits al año 5, Esencial $4.290.000 y Plus $4.990.000 con IVA (referencia), dotación 13 → 56. La meta de cotizaciones del
   primer año sigue «Por confirmar».
