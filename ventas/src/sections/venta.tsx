@@ -194,10 +194,12 @@ export function Explorador() {
           <span className="t-label-sm text-dim max-sm:hidden">Reconversión híbrida aditiva · vista conceptual</span>
         </div>
         <div className="grid lg:grid-cols-[1.45fr_1fr]">
-          <div className="relative aspect-[16/10] overflow-hidden border-line bg-black max-lg:border-b lg:border-r" id="pz-panel" role="tabpanel" aria-labelledby={'pz-tab-' + i}>
+          <div className="relative aspect-[16/9] overflow-hidden border-line bg-black max-lg:border-b lg:border-r" id="pz-panel" role="tabpanel" aria-labelledby={'pz-tab-' + i}>
             <AnimatePresence mode="wait" initial={false}>
               <motion.div key={i} initial={{ opacity: 0, scale: 1.03 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} className="absolute inset-0">
-                <Imagen foto={P.foto} className={cn('h-full w-full', P.ajuste === 'contener' ? 'object-contain' : 'object-cover')} />
+                <Imagen foto={P.foto} className={P.ajuste === 'contener'
+                  ? 'mx-auto aspect-square h-full w-auto max-w-full object-contain [mask-image:radial-gradient(closest-side,#000_72%,transparent)]'
+                  : 'h-full w-full object-contain'} />
               </motion.div>
             </AnimatePresence>
           </div>
