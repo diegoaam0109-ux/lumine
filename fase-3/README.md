@@ -81,6 +81,10 @@ npm install
 ./render.sh            # PPTX, PDF y GUION.md en la carpeta de arriba, e imágenes de revisión en r/
 ```
 
+El PPTX trae las nueve tipografías **incrustadas** (`ppt/fonts/`), así se ve con la letra de la marca aunque el
+computador no las tenga instaladas. Si PowerPoint mostrara Calibri o Arial, instala las de `fuentes/` (doble clic › Instalar)
+y vuelve a abrirlo. El PDF siempre trae las fuentes.
+
 `render.sh` funciona en Linux y en Git Bash para Windows. Necesita Node, LibreOffice con Impress, `pdftoppm` (Poppler) y las
 fuentes de `fuentes/` instaladas; exporta con configuración regional es-CL para que los decimales salgan con coma. En Windows,
 si las fuentes se acaban de instalar y el PDF sale con otra tipografía, cierra sesión y vuelve a entrar antes de exportar.

@@ -122,5 +122,8 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - Para convertir el PPT a PDF hay que instalar `libreoffice-impress` y las fuentes de `control-de-gestion/fuentes/`.
   `render.sh` exporta con configuración regional es-CL para que los decimales salgan con coma.
 - Playwright usa el Chromium de `/opt/pw-browsers`; no ejecutes `playwright install`.
+- El PPTX de la Fase 3 incrusta sus nueve tipografías (EOT en `ppt/fonts/`, función `incrustarFuentes` de `deck.js`);
+  sin eso, PowerPoint sin las fuentes instaladas muestra Calibri y «no se parece al estilo». LibreOffice 24.2 no lee fuentes
+  incrustadas en PPTX, así que el render de prueba necesita las fuentes instaladas.
 - En Windows, las fuentes instaladas para el usuario no llegan a LibreOffice hasta cerrar sesión: si `pdffonts` muestra
   Arial o DejaVu en vez de Archivo, Figtree, IBM Plex Mono e Instrument Serif, el PDF salió con fuentes de reemplazo.

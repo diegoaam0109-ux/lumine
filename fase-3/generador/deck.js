@@ -1205,8 +1205,90 @@ async function aplicarTema(archivo, tema) {
   fs.writeFileSync(archivo, await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' }));
 }
 
+// ---------- tipografías incrustadas ----------
+// Sin esto, PowerPoint reemplaza las fuentes de la marca por Calibri o Arial en cualquier computador que no las tenga
+// instaladas. Se incrustan como PowerPoint (ppt/fonts/*.fntdata en formato EOT sin comprimir, que lee T2Embed).
+// Las nueve son OFL con fsType 0, es decir, se permite incrustarlas.
+const FUENTES_PPTX = [
+  [F_TIT, { regular: 'ArchivoSemiExpanded-ExtraBold.ttf' }],
+  [F_CON, { regular: 'ArchivoCondensed-Regular.ttf', bold: 'ArchivoCondensed-Bold.ttf' }],
+  [F_BODY, { regular: 'Figtree-Regular.ttf', bold: 'Figtree-Bold.ttf' }],
+  [F_MONO, { regular: 'IBMPlexMono-Regular.ttf', bold: 'IBMPlexMono-Bold.ttf' }],
+  [F_SER, { regular: 'InstrumentSerif-Regular.ttf', italic: 'InstrumentSerif-Italic.ttf' }],
+];
+function ttfAEot(ttf) {
+  const tablas = {};
+  for (let i = 0, n = ttf.readUInt16BE(4); i < n; i++) {
+    const r = 12 + 16 * i;
+    tablas[ttf.toString('latin1', r, r + 4)] = ttf.readUInt32BE(r + 8);
+  }
+  const os2 = tablas['OS/2'], head = tablas.head, name = tablas.name;
+  const nombre = id => { // registro Windows, Unicode, inglés (EE. UU.); EOT lo pide en UTF-16LE
+    const cuenta = ttf.readUInt16BE(name + 2), base = name + ttf.readUInt16BE(name + 4);
+    for (let i = 0; i < cuenta; i++) {
+      const r = name + 6 + 12 * i;
+      if (ttf.readUInt16BE(r) === 3 && ttf.readUInt16BE(r + 2) === 1 && ttf.readUInt16BE(r + 4) === 0x409 && ttf.readUInt16BE(r + 6) === id) {
+        const b = Buffer.from(ttf.subarray(base + ttf.readUInt16BE(r + 10), base + ttf.readUInt16BE(r + 10) + ttf.readUInt16BE(r + 8)));
+        return b.swap16();
+      }
+    }
+    throw new Error('La fuente no tiene el nombre ' + id);
+  };
+  const familia = nombre(1);
+  const cadenas = [familia, nombre(2), nombre(5), nombre(4)];
+  const fijo = Buffer.alloc(82);
+  fijo.writeUInt32LE(ttf.length, 4);
+  fijo.writeUInt32LE(0x00020001, 8);                       // versión 2.1, sin compresión ni XOR
+  ttf.copy(fijo, 16, os2 + 32, os2 + 42);                   // PANOSE
+  fijo.writeUInt8(1, 26);                                   // DEFAULT_CHARSET
+  fijo.writeUInt8(ttf.readUInt16BE(os2 + 62) & 1, 27);     // itálica
+  fijo.writeUInt32LE(ttf.readUInt16BE(os2 + 4), 28);       // peso
+  fijo.writeUInt16LE(ttf.readUInt16BE(os2 + 8), 32);       // fsType
+  fijo.writeUInt16LE(0x504C, 34);                           // número mágico
+  for (let i = 0; i < 4; i++) fijo.writeUInt32LE(ttf.readUInt32BE(os2 + 42 + 4 * i), 36 + 4 * i);
+  for (let i = 0; i < 2; i++) fijo.writeUInt32LE(ttf.readUInt32BE(os2 + 78 + 4 * i), 52 + 4 * i);
+  fijo.writeUInt32LE(ttf.readUInt32BE(head + 8), 60);      // checkSumAdjustment
+  const partes = [fijo];
+  cadenas.forEach(c => { const t = Buffer.alloc(4); t.writeUInt16LE(c.length, 2); partes.push(t, c); });
+  partes.push(Buffer.alloc(4));                             // Padding5 y RootString vacío
+  partes.push(ttf);
+  const eot = Buffer.concat(partes);
+  eot.writeUInt32LE(eot.length, 0);
+  return { eot, familia: familia.toString('utf16le') };
+}
+async function incrustarFuentes(archivo) {
+  const zip = await JSZip.loadAsync(fs.readFileSync(archivo));
+  const dir = path.join(__dirname, '..', 'fuentes');
+  let rels = await zip.file('ppt/_rels/presentation.xml.rels').async('string');
+  let n = 0, lista = '';
+  FUENTES_PPTX.forEach(([typeface, estilos]) => {
+    lista += `<p:embeddedFont><p:font typeface="${typeface}" charset="0"/>`;
+    ['regular', 'bold', 'italic', 'boldItalic'].filter(k => estilos[k]).forEach(k => {
+      const { eot, familia } = ttfAEot(fs.readFileSync(path.join(dir, estilos[k])));
+      if (familia !== typeface) throw new Error(`${estilos[k]} se llama «${familia}», no «${typeface}»`);
+      n++;
+      zip.file(`ppt/fonts/font${n}.fntdata`, eot);
+      rels = rels.replace('</Relationships>', `<Relationship Id="rIdFuente${n}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/font" Target="fonts/font${n}.fntdata"/></Relationships>`);
+      lista += `<p:${k} r:id="rIdFuente${n}"/>`;
+    });
+    lista += '</p:embeddedFont>';
+  });
+  zip.file('ppt/_rels/presentation.xml.rels', rels);
+  let pr = await zip.file('ppt/presentation.xml').async('string');
+  if (!/<p:notesSz[^>]*\/>/.test(pr)) throw new Error('No se encontró p:notesSz en presentation.xml');
+  pr = pr.replace(/<p:presentation\b/, '<p:presentation embedTrueTypeFonts="1"')
+    .replace(/(<p:notesSz[^>]*\/>)/, `$1<p:embeddedFontLst>${lista}</p:embeddedFontLst>`);
+  zip.file('ppt/presentation.xml', pr);
+  let tipos = await zip.file('[Content_Types].xml').async('string');
+  if (!tipos.includes('Extension="fntdata"')) tipos = tipos.replace('<Default ', '<Default Extension="fntdata" ContentType="application/x-fontdata"/><Default ');
+  zip.file('[Content_Types].xml', tipos);
+  fs.writeFileSync(archivo, await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' }));
+  return n;
+}
+
 (async () => {
   await pres.writeFile({ fileName: OUT });
   await aplicarTema(OUT, THEME);
+  console.log('tipografías incrustadas:', await incrustarFuentes(OUT));
   console.log('listo', OUT, '·', G.PRINCIPAL.length, 'diapositivas +', G.ANEXO.length + 1, 'de anexo');
 })();
