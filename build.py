@@ -7,7 +7,8 @@ El orden de los archivos vive en manifest.json, que también usan las pruebas.
 import json, pathlib
 R = pathlib.Path(__file__).parent
 src = R / 'src'
-MAN = json.loads((R / 'manifest.json').read_text())
+UTF8 = 'utf-8'  # explícito: en Windows Python lee y escribe en cp1252 por defecto
+MAN = json.loads((R / 'manifest.json').read_text(encoding=UTF8))
 
 def build(mode, out, title):
     js = [f for f in MAN['js'] if f != 'seed.js' or mode == 'demo']
@@ -15,11 +16,11 @@ def build(mode, out, title):
              '<meta name="description" content="Selección y habilitación por competencias del técnico instalador de Lumine Motors.">',
              '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
              '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">',
-             '<style>\n' + '\n'.join((src/f).read_text() for f in MAN['css']) + '\n</style>',
-             (src/'markup.html').read_text(),
-             '<script>\n"use strict";\nconst BUILD = ' + repr(mode) + ';\n' + '\n'.join((src/f).read_text() for f in js) + '\n</script>']
+             '<style>\n' + '\n'.join((src/f).read_text(encoding=UTF8) for f in MAN['css']) + '\n</style>',
+             (src/'markup.html').read_text(encoding=UTF8),
+             '<script>\n"use strict";\nconst BUILD = ' + repr(mode) + ';\n' + '\n'.join((src/f).read_text(encoding=UTF8) for f in js) + '\n</script>']
     (R/'dist').mkdir(exist_ok=True)
-    (R/'dist'/out).write_text('\n'.join(parts))
+    (R/'dist'/out).write_text('\n'.join(parts), encoding=UTF8, newline='\n')
     print(out, round((R/'dist'/out).stat().st_size/1024), 'KB')
 
 if __name__ == '__main__':
