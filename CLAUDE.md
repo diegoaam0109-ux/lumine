@@ -50,6 +50,8 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | Lumine Habilita (demo) | https://claude.ai/artifact/JpdUMVYztFtjQYkcAehELb | `dist/lumine-habilita-demo.html` |
 | Lumine Habilita (real) | https://claude.ai/artifact/KrYbLr84sVrfJoRT2wvhP9 | `dist/lumine-habilita.html` (capacidades `db` con `DB_RULES`, `user` con `profile`, `downloads`) |
 | Guion de la presentación | https://claude.ai/code/artifact/e0db2f29-05e7-42d1-b4a7-9cfcb5d1741b | documento editable |
+| Estimador de ahorro (prototipo E3, LM-EST v3.1) | https://claude.ai/artifact/82sohbXt5ctMKPTXnYzwYx | `entrega3/prototipo/app/index.html` (lo arma `construir_app.py`) |
+| Documento en Claude Docs | https://claude.ai/artifact/TjjPEZUvxSV6jx6mubNEJP | documento editable; contenido «Por confirmar» (solo lo abre quien tenga acceso de Diego) |
 
 Para republicar en el mismo link hay que publicar el mismo archivo desde una sesión con permiso de edición sobre el
 artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la versión real.
