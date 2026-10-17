@@ -40,6 +40,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | `.claude/skills/ui-ux-pro-max/` | Skill de diseño de interfaces (MIT). | `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<consulta>" --design-system` |
 | `.claude/skills/lumine-marca/` | Skill con el sistema visual de Lumine (colores, tipografías, motivos, recursos). | Úsala para cualquier pieza nueva con la marca. |
 | `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada** (UNAB, Grupo 1, NRC 4153): estimador de ahorro con IA, prototipo, informe técnico del modelo matemático y revisión cruzada con varias IA. | Pasos para reproducir en `entrega3/README.md`; resultados de la Entrega 4 en `entrega4/Resultados_mejoras_modelo_E4.md`. |
+| `fase-3/` | **Presentación de la Fase 3** de Integrador II: Taller de Empresas (ICMA 1001, Grupo 1, profesor Roberto Brito): Capítulo III, Plan de Marketing, Operaciones y RR.HH. | Generador propio copiado del de Control de Gestión: `generador/deck.js` + `guion.js` + `render.sh` (también en Git Bash para Windows). El informe .docx no se sube. |
 
 
 ## Artefactos publicados (cuenta de Diego)
@@ -78,6 +79,14 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   18 neutros); 2 ventajas sostenibles de 15; cadena de valor 3,00 / 2,71 con brecha −1,29 / −1,43 frente al líder.
   Estrategia: diferenciación enfocada.
 
+**Presentación de la Fase 3**:
+- Máximo 10 minutos: 16 diapositivas + anexo de 10 con índice enlazado. Diego 1–5 (objetivos a Ansoff), Benjamín 6–10
+  (posicionamiento a estructura), Lukas 11–16 (RR.HH., operaciones y conclusiones); ~410 palabras c/u.
+- Datos solo del informe de la Fase 3 (10-10-2026): pronóstico 299 → 2.851 instalaciones propias, red de 42 talleres y 7.773
+  kits al año 5, Esencial $4.290.000 y Plus $4.990.000 con IVA (referencia), dotación 13 → 56. La meta de cotizaciones del
+  primer año sigue «Por confirmar».
+- No se nombra a las personas entrevistadas (el repositorio es público).
+
 ## Pendientes y preguntas abiertas
 
 - Datos comerciales reales (precio, % de ahorro, garantía, tiempo de instalación, contacto): en proceso; no inventarlos.
@@ -95,3 +104,5 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - Para convertir el PPT a PDF hay que instalar `libreoffice-impress` y las fuentes de `control-de-gestion/fuentes/`.
   `render.sh` exporta con configuración regional es-CL para que los decimales salgan con coma.
 - Playwright usa el Chromium de `/opt/pw-browsers`; no ejecutes `playwright install`.
+- En Windows, las fuentes instaladas para el usuario no llegan a LibreOffice hasta cerrar sesión: si `pdffonts` muestra
+  Arial o DejaVu en vez de Archivo, Figtree, IBM Plex Mono e Instrument Serif, el PDF salió con fuentes de reemplazo.
