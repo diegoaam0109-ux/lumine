@@ -2,13 +2,13 @@
 
 Integrador II: Taller de Empresas · ICMA 1001 · Grupo 1 · Profesor Roberto Brito. Capítulo III: Plan de Marketing, Operaciones y Recursos Humanos.
 
-Máximo 10 minutos: 15 diapositivas, unos 9:36 a 130 palabras por minuto (1248 palabras). Cada integrante habla lo mismo, poco más de tres minutos. El anexo (10 diapositivas) no se expone: se usa solo si preguntan.
+Máximo 10 minutos: 19 diapositivas, unos 9:36 a 130 palabras por minuto (1248 palabras). Cada integrante habla lo mismo, poco más de tres minutos. El anexo (11 diapositivas) no se expone: se usa solo si preguntan.
 
 | Parte | Integrante | Diapositivas | Palabras | Tiempo |
 |---|---|---|---|---|
 | 1 | Diego Alarcón | 1 a 5 | 421 | 3:14 |
-| 2 | Benjamín Torres | 6 a 10 | 411 | 3:10 |
-| 3 | Lukas Verdugo | 11 a 15 | 416 | 3:12 |
+| 2 | Benjamín Torres | 6 a 11 | 411 | 3:10 |
+| 3 | Lukas Verdugo | 12 a 19 | 416 | 3:12 |
 
 ## Parte 1 · Diego Alarcón · diapositivas 1 a 5
 
@@ -34,7 +34,7 @@ Nada de esto se le ha preguntado aún a un conductor, así que la investigación
 
 En la matriz de Ansoff, Lumine entra por desarrollo de producto: el mercado existe, porque los conductores ya buscan gastar menos, pero la hibridación aditiva no tiene oferta en Chile. En el año 2 viene la penetración y, antes de lo habitual, la diversificación relacionada: vender patrones de calibración, kits y certificación a otros talleres, porque la exclusividad de la calibración se agota con el tiempo. En el año 3 llega el desarrollo de mercado. Y nuestra ventaja competitiva, sostenible en el tiempo, es la biblioteca de calibraciones por modelo: crece con cada instalación y es lo más difícil de copiar. Le paso la palabra a Benjamín.
 
-## Parte 2 · Benjamín Torres · diapositivas 6 a 10
+## Parte 2 · Benjamín Torres · diapositivas 6 a 11
 
 Unos 3:10 (411 palabras). Termina pasándole la palabra a Lukas.
 
@@ -54,31 +54,47 @@ El segmento laboral de la Región Metropolitana suma 162.780 vehículos. Con el 
 
 El presupuesto de marketing se arma por objetivo y tarea, no como un porcentaje de ventas que aún no existen. El primer año invierte 80,9 millones de pesos, el 6,8% de los ingresos propios, porque concentra el lanzamiento y 25 clientes piloto con 50% de descuento a cambio de su caso medido. Desde el segundo año baja a 2,3% de los ingresos, y desde el tercero la partida mayor son las comisiones, que siguen a las instalaciones. En cinco años, el marketing suma 575 millones.
 
-### 10 · Crece el número, no la estructura · 45 s
+### 10 · Crece el número, no la estructura · 30 s
 
-Para atender esa demanda, la estructura es funcional y sin mandos intermedios: cinco áreas que responden a la Gerencia General. La estructura no cambia con el crecimiento; cambia cuántas personas hay en cada cargo, y nadie se contrata antes de que la carga lo justifique. Ingeniería de Calibración depende de la Gerencia y no del taller, porque la biblioteca sostiene la ventaja. Así el equipo pasa de 13 personas al cierre del primer año a 56 al quinto, y casi dos de cada tres son técnicos. Lukas sigue con las personas y las operaciones.
+Para atender esa demanda, la estructura es funcional y sin mandos intermedios: cinco áreas que responden a la Gerencia General. La estructura no cambia con el crecimiento; cambia cuántas personas hay en cada cargo, y nadie se contrata antes de que la carga lo justifique. Ingeniería de Calibración depende de la Gerencia y no del taller, porque la biblioteca sostiene la ventaja.
 
-## Parte 3 · Lukas Verdugo · diapositivas 11 a 15
+### 11 · De 13 a 56 personas · 15 s
+
+Así el equipo pasa de 13 personas al cierre del primer año a 56 al quinto, y casi dos de cada tres son técnicos. Lukas sigue con las personas y las operaciones.
+
+## Parte 3 · Lukas Verdugo · diapositivas 12 a 19
 
 Unos 3:12 (416 palabras). Cierra la exposición y abre las preguntas.
 
-### 11 · Técnicos formados en casa, costo a la mitad · 35 s
+### 12 · Técnicos formados en casa · 20 s
 
-Gracias, Benjamín. El oficio escasea en Chile, así que los técnicos se forman en casa con Lumine Habilita: 39 competencias, cuatro niveles y 392 horas. Con formación intensiva, un técnico nuevo llega al nivel 4 en unos ocho meses. La nómina sube de 152 a 755 millones en cinco años, pero el costo por instalación cae a la mitad, de 508 mil pesos a 253 mil en el cuarto año, porque los cargos fijos se reparten en más autos.
+Gracias, Benjamín. El oficio escasea en Chile, así que los técnicos se forman en casa con Lumine Habilita: 39 competencias, cuatro niveles y 392 horas. Con formación intensiva, un técnico nuevo llega al nivel 4 en unos ocho meses.
 
-### 12 · El cliente decide · 35 s
+### 13 · Costo por instalación a la mitad · 20 s
 
-El flujo sigue a un vehículo desde la cotización hasta el fin de vida de la batería, en cinco etapas. Una regla lo atraviesa: el negocio mide y recomienda, pero la decisión de instalar es siempre del cliente. Solo se detiene por razones técnicas. La instalación toma una jornada de 8,4 horas con cuatro puntos de control, y el límite de capacidad son las horas de los dúos: un dinamómetro por local alcanza incluso para seis dúos.
+La nómina sube de 152 a 755 millones en cinco años, pero el costo por instalación cae a la mitad, de 508 mil pesos a 253 mil en el cuarto año, porque los cargos fijos se reparten en más autos.
 
-### 13 · Abrir en enero de 2027 · 40 s
+### 14 · El cliente decide · 20 s
+
+El flujo sigue a un vehículo desde la cotización hasta el fin de vida de la batería, en cinco etapas. Una regla lo atraviesa: el negocio mide y recomienda, pero la decisión de instalar es siempre del cliente. Solo se detiene por razones técnicas.
+
+### 15 · Una jornada, cuatro controles · 15 s
+
+La instalación toma una jornada de 8,4 horas con cuatro puntos de control, y el límite de capacidad son las horas de los dúos: un dinamómetro por local alcanza incluso para seis dúos.
+
+### 16 · Cronograma: abrir en enero de 2027 · 40 s
 
 La Carta Gantt apunta a abrir en enero de 2027. En los tres meses previos se homologa el primer modelo y se forma el primer dúo. Pero el eslabón crítico es externo: el reglamento de la Ley 21.793 sigue pendiente, y sin él no hay certificado ni venta legal. Los dúos entran según la demanda, del segundo en el mes 6 al sexto en el mes 20; el segundo taller abre en el mes 25, el tercero en el 49, y la red crece de 3 a 42 talleres.
 
-### 14 · Ganancia desde el año 2 · 35 s
+### 17 · Ganancia desde el año 2 · 25 s
 
-Cada local con seis puestos requiere 81 millones de inversión, casi la mitad en el dinamómetro, y el kit explica más del 90% del gasto operacional. Con los tres presupuestos, la línea propia pierde 130 millones en el lanzamiento y gana desde el segundo año, hasta un margen de 7,7%. La red rinde cerca de 10%. El riesgo mayor es el dólar: un alza de 10% casi borra el resultado propio del quinto año.
+Cada local con seis puestos requiere 81 millones de inversión, casi la mitad en el dinamómetro, y el kit explica más del 90% del gasto operacional. Con los tres presupuestos, la línea propia pierde 130 millones en el lanzamiento y gana desde el segundo año, hasta un margen de 7,7%. La red rinde cerca de 10%.
 
-### 15 · Tres conclusiones y dos preguntas · 45 s
+### 18 · El riesgo es el dólar · 10 s
+
+El riesgo mayor es el dólar: un alza de 10% casi borra el resultado propio del quinto año.
+
+### 19 · Tres conclusiones y dos preguntas · 45 s
 
 Para cerrar, tres conclusiones. Primero, la oportunidad existe: desde el primer año hay más demanda que capacidad. Segundo, hay espacio competitivo: somos la única alternativa que ahorra sin cambiar de auto, y la red vende la calibración mientras sigue siendo exclusiva. Tercero, los tres planes se mueven con un mismo gatillo, la demanda sobre el 80% de la capacidad, y cada línea gana desde el segundo año. Quedan dos preguntas: si el reglamento admitirá el kit y desde cuándo, y si el ahorro medido y la encuesta confirman los precios. Muchas gracias; quedamos atentos a sus preguntas.
 
@@ -96,3 +112,4 @@ La diapositiva índice tiene un enlace a cada tema: se hace clic en el tema y se
 - **A8 · Jornada de instalación.** Los siete bloques de la jornada de 8,4 horas y sus cuatro puntos de control (Anexo N° 8).
 - **A9 · Inversión y gasto operacional.** Inversión en equipamiento por año (Tabla N° 18) y gasto operacional de la línea propia (Tabla N° 19).
 - **A10 · Sensibilidad del resultado.** Resultado de la línea propia al quinto año con dólar, proporción de Plus y precio (Tabla N° 21).
+- **A11 · Carta Gantt detallada.** La Carta Gantt completa (Figura N° 5): preparación, entrada de cada dúo, calibración de modelos, preapertura y apertura de los talleres 2 y 3, y crecimiento de la red.

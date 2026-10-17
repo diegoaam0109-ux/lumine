@@ -16,15 +16,35 @@ presentación salen de ese informe; lo que el informe deja pendiente se muestra 
 
 ## Contenido (máximo 10 minutos)
 
-15 diapositivas para exponer (unos 9 minutos y medio, poco más de 3 por integrante) y un anexo de 10 que solo se usa si preguntan.
+19 diapositivas para exponer (unos 9 minutos y medio, poco más de 3 por integrante) y un anexo de 11 que solo se usa si preguntan.
 La diapositiva índice del anexo tiene un enlace a cada tema, y cada diapositiva del anexo tiene un enlace de vuelta al índice.
 
 | Integrante | Diapositivas | Contenido |
 |---|---|---|
 | Diego Alarcón | 1 a 5 | Portada, objetivos, segmentación, investigación de mercado y matriz de Ansoff |
-| Benjamín Torres | 6 a 10 | Posicionamiento, mix (producto y precio), demanda y pronóstico, presupuesto de marketing, estructura y dotación |
-| Lukas Verdugo | 11 a 15 | Política y presupuesto de RR.HH., flujo operacional, Carta Gantt, presupuesto de operaciones y conclusiones |
-| Anexo | 16 a 26 | Índice; hipótesis, dudas del cliente, mezcla de marketing, cobros a la red, mercado y adopción, perfiles de cargo, rentas y bonos, jornada de instalación, inversión y gasto, sensibilidad |
+| Benjamín Torres | 6 a 11 | Posicionamiento, producto y precio, demanda y pronóstico, presupuesto de marketing, estructura y dotación |
+| Lukas Verdugo | 12 a 19 | Lumine Habilita, nómina, flujo operacional, puntos de control, cronograma, resultados, sensibilidad al dólar y conclusiones |
+| Anexo | 20 a 31 | Índice; hipótesis, dudas del cliente, mezcla de marketing, cobros a la red, mercado y adopción, perfiles de cargo, rentas y bonos, jornada de instalación, inversión y gasto, sensibilidad, Carta Gantt completa |
+
+## Legibilidad
+
+La presentación se diseñó para leerse desde el fondo de una sala universitaria. La escala tipográfica está en `TX`
+(`generador/deck.js`) y vale para todas las láminas:
+
+| Elemento | Tamaño |
+|---|---|
+| Titulares (acento en serif) | 34 pt (40 pt) |
+| Subtítulos y frases de cierre | 22–24 pt |
+| Cuerpo | 20–22 pt |
+| Etiquetas de gráficos y cajas | 16 pt o más |
+| Cifras destacadas | 30–48 pt |
+| Marcas de estado | 14 pt |
+| Curso, fuente al pie y numeración | 11–12 pt |
+
+Si un contenido no cabe con esos tamaños, se divide la lámina o se lleva al anexo; nunca se achica la letra.
+Las marcas separan hechos de supuestos: **ESTIMACIÓN** (borde con raya), **SUPUESTO** o **REFERENCIA** (puntos),
+**POR CONFIRMAR** o **PENDIENTE** (línea continua) y **REALIZADA** (verde). El detalle del rediseño, lo que se movió de lugar y
+las inconsistencias que hay que revisar con el informe están en `REDISENO_LEGIBILIDAD.md`.
 
 ## Estándar del profesor
 

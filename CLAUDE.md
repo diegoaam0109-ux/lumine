@@ -80,8 +80,14 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   Estrategia: diferenciación enfocada.
 
 **Presentación de la Fase 3**:
-- Máximo 10 minutos: 15 diapositivas + anexo de 10 con índice enlazado. Diego 1–5 (objetivos a Ansoff), Benjamín 6–10
-  (posicionamiento a estructura), Lukas 11–15 (RR.HH., operaciones y conclusiones); ~410 palabras c/u.
+- Máximo 10 minutos: 19 diapositivas + anexo de 11 con índice enlazado. Diego 1–5 (objetivos a Ansoff), Benjamín 6–11
+  (posicionamiento a dotación), Lukas 12–19 (Habilita, operaciones y conclusiones); ~415 palabras c/u (1.248 en total).
+- Rediseño de legibilidad (17-10-2026): escala fija en `TX` de `generador/deck.js` (titulares 34/40 pt, cuerpo 20–24, etiquetas
+  de gráficos 16 o más, cifras 30–48, marcas de estado 14, institucional 11–12). Si algo no cabe, se divide la lámina; nunca se
+  achica la letra. Estructura y dotación, Habilita y nómina, flujo y controles, resultados y dólar van en láminas separadas;
+  la Carta Gantt completa pasó al anexo (A11) y la exposición usa un cronograma ejecutivo. Marcas: ESTIMACIÓN (raya),
+  SUPUESTO o REFERENCIA (puntos), POR CONFIRMAR o PENDIENTE (línea), REALIZADA (verde). Inconsistencias detectadas para
+  revisar con el informe: `fase-3/REDISENO_LEGIBILIDAD.md`.
 - Estándar: la guía del profesor Brito para las Fases 1 y 2 (fuente al pie de cada lámina, supuestos marcados, siglas
   explicadas, conclusiones con preguntas pendientes, PDF 16:9, archivo `Grupo_01_LumineMotors_Fase3`).
 - Datos solo del informe de la Fase 3 (10-10-2026): pronóstico 299 → 2.851 instalaciones propias, red de 42 talleres y 7.773
