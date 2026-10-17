@@ -50,7 +50,7 @@ const GRAFITO = '1A1E22'; // superficie grafito de controles y segunda serie neu
 
 // Escala tipográfica (pt). Es la regla de toda la presentación.
 const TX = {
-  tit: TIPO === 'C' ? 32 : 34, acento: TIPO === 'A' ? 40 : 32,  // titulares (el acento serif es más angosto que una sans ancha)
+  tit: 34, acento: TIPO === 'A' ? 40 : 34,  // titulares (el acento serif es más angosto que una sans ancha)
   sub: 24,                   // subtítulos y frases de cierre de una lámina
   cuerpo: 20, cuerpoL: 22,   // texto
   etq: 16,                   // etiquetas de gráficos y de cajas (mínimo)
@@ -116,11 +116,11 @@ function tag(s, n, x, y, o = {}) {
 //   est = estimación o pronóstico (raya) · sup = supuesto o referencia (puntos) · pen = pendiente (línea continua)
 //   ok = hecho o realizado (verde) · no = lo que la marca no promete (rojo)
 const MARCA = {
-  est: { color: C.accent3, dash: 'dash' },
-  sup: { color: C.accent3, dash: 'sysDot' },
-  pen: { color: C.accent3, dash: 'solid' },
-  ok: { color: C.accent2, dash: 'dash' },
-  no: { color: C.accent4, dash: 'dash' },
+  est: { color: C.text2, dash: 'dash' },
+  sup: { color: C.text2, dash: 'sysDot' },
+  pen: { color: C.text2, dash: 'solid' },
+  ok: { color: C.accent1, dash: 'dash' },
+  no: { color: C.text1, dash: 'dash' },
 };
 const anchoMarca = (t, size = TX.marca) => 0.32 + t.length * (size * 0.6 + 1) / 72;
 function marca(s, tipo, text, x, y, o = {}) {
@@ -162,10 +162,10 @@ const logo = { image: { path: A('logo.png'), x: M, y: 0.42, w: LOGO_W, h: LOGO_H
 // Fondos con imagen: se componen con componer.py desde integrador-2/identidad (degradado horneado).
 pres.defineSlideMaster({
   title: 'PORTADA',
-  background: { path: A('portada-rayos.jpg') },
+  background: { path: A('portada-premium.jpg') },
   objects: [
     logo,
-    { placeholder: { options: { name: 'title', type: 'title', x: M, y: 1.5, w: 9.6, h: 1.95, fontFace: F_TIT, fontSize: 60, color: C.text1, align: 'left', valign: 'top', margin: 0, lineSpacingMultiple: 0.86 }, text: '' } },
+    { placeholder: { options: { name: 'title', type: 'title', x: M, y: 1.42, w: 11.0, h: 1.62, fontFace: F_TIT, fontSize: 58, color: C.text1, align: 'left', valign: 'top', margin: 0, lineSpacingMultiple: 0.9 }, text: '' } },
   ],
 });
 pres.defineSlideMaster({
@@ -266,28 +266,33 @@ const AÑOS = ['Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'];
 D.portada = () => {
   const s = pres.addSlide({ masterName: 'PORTADA', sectionTitle: SEC });
   mono(s, 'UNAB · OCTUBRE 2026', { x: 7.2, y: 0.4, w: R - 7.2, h: 0.26, align: 'right', valign: 'middle', fontSize: 12 });
-  T(s, 'Fase 3 · Capítulo III: Plan de Marketing, Operaciones y Recursos Humanos', { x: M, y: 0.95, w: CW, h: 0.42, valign: 'middle', fontSize: TX.sub, color: C.text2 });
+  mono(s, [{ text: 'FASE 3 · CAPÍTULO III', options: { color: C.accent1 } }, { text: '  ·  PLAN DE MARKETING, OPERACIONES Y RECURSOS HUMANOS', options: { color: C.text2 } }], { x: M, y: 1.0, w: CW, h: 0.32, fontSize: 14, valign: 'middle' });
   s.addText([
-    { text: 'LUMINE MOTORS', options: { breakLine: true, fontSize: TIPO === 'C' ? 46 : 60 } },
-    { text: 'reconversión híbrida.', options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: TIPO === 'A' ? 70 : TIPO === 'C' ? 44 : 50 } },
+    { text: 'LUMINE MOTORS', options: { breakLine: true } },
+    { text: 'tu mismo auto, ahora híbrido.', options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: 36 } },
   ], { placeholder: 'title' });
-  // frase explicativa (guía: tipo de solución y necesidad, 15 a 20 palabras)
-  T(s, 'Kit que hibrida autos a combustión de tracción delantera para gastar menos bencina sin cambiar de auto.', { x: M, y: 3.62, w: 4.55, h: 1.6, fontSize: TX.cuerpoL, color: C.text1 });
-  mono(s, 'ILUSTRACIÓN DEL KIT', { x: R - 3.0, y: 0.7, w: 3.0, h: 0.26, align: 'right', fontSize: TX.inst });
-  linea(s, M, 5.95, CW, 0, C.accent5);
-  const filas = [
-    [['UNIVERSIDAD', 'Universidad Andrés Bello · Facultad de Economía y Negocios · Ingeniería Comercial', CW]],
-    [['CURSO', 'Integrador II: Taller de Empresas · ICMA 1001', 4.6], ['GRUPO', '1', 0.7], ['PROFESOR', 'Roberto Brito', 1.75], ['INTEGRANTES', 'Diego Alarcón · Benjamín Torres · Lukas Verdugo', CW - 7.05]],
-  ];
-  filas.forEach((cols, f) => {
-    let x = M;
-    const y = 6.0 + f * 0.66;
-    cols.forEach(([k, v, w]) => {
-      mono(s, k, { x, y, w, h: 0.24, fontSize: TX.inst });
-      T(s, v, { x, y: y + 0.24, w: w - 0.15, h: 0.34, fontSize: 16 });
-      x += w;
-    });
+  // frase explicativa que pide la guía del curso (tipo de solución y necesidad)
+  T(s, 'Kit que hibrida autos a combustión de tracción delantera para gastar menos bencina sin cambiar de auto.', { x: M, y: 3.42, w: 3.55, h: 1.5, fontSize: 18, color: C.text1, lineSpacingMultiple: 1.05 });
+  // datos del curso: jerarquía secundaria, sobre el negro de la esquina inferior izquierda
+  const iy = 5.42;
+  linea(s, M, iy, 1.2, 0, C.accent1, 1.25);
+  T(s, [
+    { text: 'Integrador II · ICMA 1001 · Grupo 1', options: { breakLine: true, bold: true, color: C.text1 } },
+    { text: 'Universidad Andrés Bello · Facultad de Economía y Negocios · Ingeniería Comercial', options: { breakLine: true } },
+    { text: 'Profesor: Roberto Brito', options: { breakLine: true } },
+    { text: 'Diego Alarcón · Benjamín Torres · Lukas Verdugo' },
+  ], { x: M, y: iy + 0.16, w: 3.75, h: 1.55, fontSize: 12, color: C.text2, lineSpacingMultiple: 1.12 });
+  // anotación de ingeniería: qué se conserva y qué suma el kit (coordenadas del auto en portada-premium.jpg)
+  const by = 6.74;
+  const puntos = [[5.48, 4.97, 'MOTOR ORIGINAL', 'intacto'], [7.58, 5.58, 'BATERÍA', 'bajo el piso'], [10.18, 5.51, 'TRACCIÓN ELÉCTRICA', 'eje trasero']];
+  linea(s, puntos[0][0], by, puntos[2][0] - puntos[0][0], 0, C.text2, 0.75);
+  puntos.forEach(([x, y, k, v]) => {
+    linea(s, x, y + 0.07, 0, by - y - 0.07, C.text2, 0.75, { line: { color: C.text2, width: 0.75, dashType: 'sysDot' } });
+    s.addShape(S.ellipse, { x: x - 0.06, y: y - 0.06, w: 0.12, h: 0.12, fill: { color: C.accent1 }, line: { color: C.text1, width: 0.75 } });
+    s.addShape(S.rect, { x: x - 0.035, y: by - 0.035, w: 0.07, h: 0.07, fill: { color: C.text1 }, line: { type: 'none' } });
+    T(s, [{ text: k, options: { breakLine: true, fontFace: F_MONO, charSpacing: 1, color: C.text1 } }, { text: v, options: { color: C.text2 } }], { x: x - 1.1, y: by + 0.1, w: 2.2, h: 0.5, align: 'center', fontSize: 12 });
   });
+  mono(s, 'ILUSTRACIÓN DEL KIT', { x: R - 3.0, y: 0.7, w: 3.0, h: 0.26, align: 'right', fontSize: TX.inst });
   return s;
 };
 
@@ -401,33 +406,56 @@ D.investigacion = () => {
 // =====================================================================
 D.ansoff = () => {
   const s = contenido('PLAN DE MARKETING · MATRIZ DE ANSOFF', 'UN PRODUCTO NUEVO', 'en un mercado que ya existe.');
-  const gx = M + 0.62, gw = 7.75, gapX = 0.42, gapY = 0.38, qw = (gw - gapX) / 2, gy = 3.06, qh = 1.68;
-  mono(s, 'PRODUCTO EXISTENTE', { x: gx, y: Y0, w: qw, h: 0.32, align: 'center', color: C.text1 });
-  mono(s, 'PRODUCTO NUEVO', { x: gx + qw + gapX, y: Y0, w: qw, h: 0.32, align: 'center', color: C.text1 });
-  [['MERCADO\nEXISTENTE', gy], ['MERCADO\nNUEVO', gy + qh + gapY]].forEach(([t, y]) => {
-    T(s, t, { x: M + 0.31 - qh / 2, y: y + qh / 2 - 0.3, w: qh, h: 0.6, rotate: 270, fontFace: F_MONO, fontSize: TX.etq, color: C.text1, charSpacing: 1, align: 'center', valign: 'middle' });
+  // matriz sin cajas: cruz de ejes fina, cuatro cuadrantes y la ruta de crecimiento dibujada en celeste
+  const ax = M + 0.55, gx = ax + 0.15, gw = 7.55, qw = gw / 2, hy = Y0 + 0.4, gy = hy + 0.06, qh = 1.86;
+  mono(s, 'PRODUCTO EXISTENTE', { x: gx, y: Y0, w: qw, h: 0.32, align: 'center', color: C.text2 });
+  mono(s, 'PRODUCTO NUEVO', { x: gx + qw, y: Y0, w: qw, h: 0.32, align: 'center', color: C.text1 });
+  [['MERCADO EXISTENTE', gy], ['MERCADO NUEVO', gy + qh]].forEach(([t, y]) => {
+    T(s, t, { x: M + 0.27 - qh / 2, y: y + qh / 2 - 0.2, w: qh, h: 0.4, rotate: 270, fontFace: F_MONO, fontSize: TX.etq, color: C.text2, charSpacing: 1, align: 'center', valign: 'middle' });
   });
-  [[0, 0, 'Penetración', 'AÑO 2', 'Más clientes, mismo mercado', 'normal'], [1, 0, 'Desarrollo de producto', 'AÑO 1 · ENTRADA', 'Sin oferta en Chile', 'hot'], [0, 1, 'Desarrollo de mercado', 'AÑO 3', 'Flotas y regiones', 'normal'], [1, 1, 'Diversificación', 'DESDE EL AÑO 2', 'Calibración y kits para talleres', 'futuro']].forEach(([c, r, t, a, d, st]) => {
-    const x = gx + c * (qw + gapX), y = gy + r * (qh + gapY);
-    if (st === 'hot') cajaHot(s, x, y, qw, qh);
-    else if (st === 'futuro') caja(s, x, y, qw, qh, { fill: { color: HOT }, line: { color: C.accent1, width: 1, dashType: 'dash' } });
-    else caja(s, x, y, qw, qh);
-    mono(s, a, { x: x + 0.22, y: y + 0.16, w: qw - 0.44, h: 0.3, color: C.accent1 });
-    const dos = t.length > 18; // «Desarrollo de producto» y «de mercado» van en dos líneas
-    T(s, t, { x: x + 0.22, y: y + 0.48, w: qw - 0.4, h: dos ? 0.7 : 0.38, fontSize: TX.cuerpoL, bold: true, lineSpacingMultiple: 0.95 });
-    T(s, d, { x: x + 0.22, y: y + (dos ? 1.2 : 0.92), w: qw - 0.4, h: dos ? 0.42 : 0.66, fontSize: TX.cuerpo, color: st === 'normal' ? C.text2 : C.text1 });
+  // cuadrante de entrada: resplandor localizado, superficie apenas teñida y esquinas de visor
+  const ex = gx + qw, ey = gy;
+  s.addImage({ path: A('brillo.png'), x: ex - 1.0, y: ey - 0.8, w: qw + 2.0, h: qh + 1.6, altText: '' });
+  s.addShape(S.rect, { x: ex, y: ey, w: qw, h: qh, fill: { color: HOT, transparency: 15 }, line: { type: 'none' } });
+  visor(s, ex + 0.06, ey + 0.06, qw - 0.12, qh - 0.12);
+  // diversificación adelantada: borde punteado
+  s.addShape(S.rect, { x: gx + qw + 0.06, y: gy + qh + 0.06, w: qw - 0.12, h: qh - 0.12, fill: { color: C.background1, transparency: 100 }, line: { color: C.accent1, width: 1, dashType: 'dash' } });
+  // ejes
+  linea(s, gx, gy + qh, gw, 0, C.accent5, 1);
+  linea(s, gx + qw, gy, 0, 2 * qh, C.accent5, 1);
+  linea(s, gx, gy, 0, 2 * qh, C.accent5, 0.75);
+  linea(s, gx, gy + 2 * qh, gw, 0, C.accent5, 0.75);
+  const Q = [
+    [1, 0, '1', 'AÑO 1 · ENTRADA', 'Desarrollo de producto', 'Sin oferta en Chile', true],
+    [0, 0, '2', 'AÑO 2', 'Penetración', 'Más clientes, mismo mercado'],
+    [1, 1, '2', 'DESDE EL AÑO 2', 'Diversificación', 'Calibración y kits para talleres', true],
+    [0, 1, '3', 'AÑO 3', 'Desarrollo de mercado', 'Flotas y regiones'],
+  ];
+  // los nodos rodean la cruz de ejes (izquierda: junto al eje; derecha: al inicio) para que la ruta no cruce texto
+  const nodo = (c, r) => [gx + c * qw + (c ? 0.62 : qw - 0.62), gy + r * qh + 0.62];
+  Q.forEach(([c, r, n, a, t, d, on]) => {
+    const x = gx + c * qw, y = gy + r * qh, [nx, ny] = nodo(c, r);
+    s.addShape(S.ellipse, { x: nx - 0.27, y: ny - 0.27, w: 0.54, h: 0.54, fill: { color: on ? C.accent1 : C.background1 }, line: { color: C.accent1, width: 1.5 } });
+    T(s, n, { x: nx - 0.27, y: ny - 0.27, w: 0.54, h: 0.54, align: 'center', valign: 'middle', fontFace: F_CON, bold: true, fontSize: 22, color: on ? C.background1 : C.accent1 });
+    const tx = c ? x + 1.05 : x + 0.3, tw = qw - 1.35, dos = t.length > 16;
+    mono(s, a, { x: tx, y: y + 0.2, w: tw + 0.1, h: 0.3, color: C.accent1 });
+    T(s, t, { x: tx, y: y + 0.5, w: tw, h: dos ? 0.74 : 0.38, fontSize: TX.cuerpoL, bold: true, lineSpacingMultiple: 0.92 });
+    T(s, d, { x: tx, y: y + (dos ? 1.24 : 0.92), w: tw, h: 0.6, fontSize: 18, color: on ? C.text1 : C.text2, lineSpacingMultiple: 0.95 });
   });
-  flecha(s, gx + qw + gapX - 0.05, gy + qh / 2, -(gapX - 0.1), 0, C.accent1, 1.75);
-  flecha(s, gx + 0.45, gy + qh + 0.05, 0, gapY - 0.1, C.accent1, 1.75);
-  flecha(s, gx + 2 * qw + gapX - 0.45, gy + qh + 0.05, 0, gapY - 0.1, C.accent1, 1.75, 'dash');
-  // la ventaja competitiva, dicha explícitamente (observación del profesor guía)
-  const cx = gx + gw + 0.36, cw = R - cx, cy = Y0, ch = gy + 2 * qh + gapY - Y0;
-  cajaHot(s, cx, cy, cw, ch);
-  mono(s, 'VENTAJA COMPETITIVA', { x: cx + 0.25, y: cy + 0.22, w: cw - 0.5, h: 0.3, color: C.accent1 });
-  T(s, 'La biblioteca de calibraciones', { x: cx + 0.25, y: cy + 0.62, w: cw - 0.45, h: 0.9, fontSize: 26, bold: true });
-  T(s, 'Sostenible: crece con cada instalación y es lo más difícil de copiar.', { x: cx + 0.25, y: cy + 1.6, w: cw - 0.45, h: 1.0, fontSize: TX.cuerpo, color: C.text2 });
-  regla(s, cy + 2.72, cx + 0.25, cw - 0.5);
-  T(s, 'Por eso la red parte en el año 2: se vende mientras es exclusiva.', { x: cx + 0.25, y: cy + 2.86, w: cw - 0.45, h: 1.0, fontSize: TX.cuerpo, color: C.text1 });
+  // ruta: 1 → 2 (penetración) → 3 (desarrollo de mercado); 1 ⇢ 2 (diversificación, adelantada)
+  const [x1, y1] = nodo(1, 0), [x2, y2] = nodo(0, 0), [x3, y3] = nodo(0, 1), [x4, y4] = nodo(1, 1);
+  flecha(s, x1 - 0.32, y1, -(x1 - x2 - 0.66), 0, C.accent1, 1.75);
+  flecha(s, x2, y2 + 0.32, 0, y3 - y2 - 0.66, C.accent1, 1.75);
+  flecha(s, x1, y1 + 0.32, 0, y4 - y1 - 0.66, C.accent1, 1.75, 'dash');
+  // ventaja competitiva sostenible (observación del profesor guía), con la unidad de control donde vive la calibración
+  const cx = gx + gw + 0.45, cw = R - cx;
+  foto(s, 'ansoff-unidad.jpg', cx, Y0, cw, 0.95, 'Unidad de control del kit (imagen ilustrativa)');
+  mono(s, 'IMAGEN ILUSTRATIVA', { x: cx + 0.12, y: Y0 + 0.95 - 0.3, w: cw - 0.24, h: 0.24, fontSize: 10, color: C.text2 });
+  mono(s, 'VENTAJA COMPETITIVA\nSOSTENIBLE', { x: cx, y: Y0 + 1.1, w: cw, h: 0.58, color: C.accent1 });
+  T(s, 'La biblioteca de calibraciones', { x: cx, y: Y0 + 1.72, w: cw, h: 0.84, fontSize: 26, bold: true, lineSpacingMultiple: 0.92 });
+  T(s, 'Crece con cada instalación y es lo más difícil de copiar.', { x: cx, y: Y0 + 2.6, w: cw, h: 0.62, fontSize: 18, color: C.text2 });
+  linea(s, cx, Y0 + 3.3, cw, 0, C.accent1, 1);
+  T(s, 'Por eso la red parte en el año 2: se vende mientras es exclusiva.', { x: cx, y: Y0 + 3.38, w: cw, h: 0.82, fontSize: 18, color: C.text1 });
   return s;
 };
 
@@ -481,32 +509,40 @@ D.posicionamiento = () => {
 // =====================================================================
 D.precio = () => {
   const s = contenido('PLAN DE MARKETING · MIX: PRODUCTO Y PRECIO', 'PLUS CUESTA 16% MÁS', 'y ahorra 24% más.');
-  const cw = 3.42, ch = 2.92, gap = 0.28;
-  [['ESENCIAL', '$4.290.000', 'Hasta 15%', '$117.069', false], ['PLUS', '$4.990.000', 'Hasta 20%', '$145.327', true]].forEach(([k, p, prom, ah, hot], i) => {
-    const x = M + i * (cw + gap), y = Y0;
-    if (hot) cajaHot(s, x, y, cw, ch); else caja(s, x, y, cw, ch);
-    mono(s, k, { x: x + 0.25, y: y + 0.2, w: cw - 0.5, h: 0.3, color: hot ? C.accent1 : C.text1 });
-    numero(s, p, { x: x + 0.25, y: y + 0.55, w: cw - 0.4, h: 0.72, fontSize: TX.cifra, valign: 'top', color: hot ? C.accent1 : C.text1 });
-    marca(s, 'sup', 'REFERENCIA · CON IVA', x + 0.25, y + 1.32);
-    regla(s, y + 1.94, x + 0.25, cw - 0.5, C.accent5);
-    T(s, [{ text: prom, options: { bold: true } }, { text: ' de ahorro', options: { color: C.text2 } }], { x: x + 0.25, y: y + 2.05, w: cw - 0.4, h: 0.4, fontSize: TX.cuerpoL });
-    T(s, [{ text: ah, options: { bold: true } }, { text: ' al mes', options: { color: C.text2 } }], { x: x + 0.25, y: y + 2.48, w: cw - 0.4, h: 0.4, fontSize: TX.cuerpoL });
+  // dos fichas de versión: Esencial en grafito, Plus con el acento (resplandor, borde superior y visor)
+  const cw = 3.72, gap = 0.36, ch = 4.08;
+  [['ESENCIAL', '$4.290.000', '15%', '$117.069', false], ['PLUS', '$4.990.000', '20%', '$145.327', true]].forEach(([k, p, prom, ah, hot], i) => {
+    const x = M + i * (cw + gap), y = Y0, px = x + 0.3, pw = cw - 0.6;
+    if (hot) s.addImage({ path: A('brillo.png'), x: x - 0.9, y: y - 0.6, w: cw + 1.8, h: ch + 1.2, altText: '' });
+    s.addShape(S.rect, { x, y, w: cw, h: ch, fill: { color: hot ? HOT : C.background2 }, line: { color: hot ? C.accent1 : C.accent5, width: hot ? 1 : 0.75 } });
+    s.addShape(S.rect, { x, y, w: cw, h: 0.06, fill: { color: hot ? C.accent1 : C.text2 }, line: { type: 'none' } });
+    if (hot) visor(s, x, y, cw, ch);
+    mono(s, k, { x: px, y: y + 0.26, w: pw, h: 0.3, fontSize: 18, color: hot ? C.accent1 : C.text1 });
+    numero(s, p, { x: px, y: y + 0.6, w: pw + 0.2, h: 0.78, fontSize: 48, valign: 'top', color: hot ? C.accent1 : C.text1 });
+    marca(s, 'sup', 'REFERENCIA · CON IVA', px, y + 1.42);
+    regla(s, y + 2.0, px, pw, C.accent5);
+    // dos cifras distintas: el máximo simulado en ciudad y el ahorro mensual estimado de un colectivo
+    mono(s, 'AHORRO MÁXIMO EN CIUDAD', { x: px, y: y + 2.14, w: pw, h: 0.28, fontSize: 14 });
+    T(s, [{ text: 'hasta ', options: { fontFace: F_BODY, bold: false, fontSize: 20, color: C.text2 } }, { text: prom }], { x: px, y: y + 2.4, w: pw, h: 0.62, fontFace: F_CON, bold: true, fontSize: 40, valign: 'bottom', color: C.text1 });
+    mono(s, 'AHORRO DE UN COLECTIVO', { x: px, y: y + 3.14, w: pw, h: 0.28, fontSize: 14 });
+    T(s, [{ text: ah }, { text: ' al mes', options: { fontFace: F_BODY, bold: false, fontSize: 20, color: C.text2 } }], { x: px, y: y + 3.4, w: pw, h: 0.56, fontFace: F_CON, bold: true, fontSize: 36, valign: 'bottom', color: hot ? C.accent1 : C.text1 });
   });
-  marca(s, 'est', 'ESTIMACIÓN · AHORRO DE UN COLECTIVO', M, Y0 + ch + 0.16);
+  // recuperación de la inversión: gráfico editable, Plus en celeste y Esencial en gris
   const gx = M + 2 * cw + gap + 0.5, gw = R - gx;
-  mono(s, 'MESES PARA RECUPERAR LA INVERSIÓN', { x: gx, y: Y0, w: gw, h: 0.62, color: C.text1 });
-  leyenda(s, [[HEX.dk2, 'Esencial'], [HEX.accent1, 'Plus']], gx, Y0 + 0.66);
+  mono(s, 'MESES PARA RECUPERAR LA INVERSIÓN', { x: gx, y: Y0, w: gw, h: 0.6, color: C.text1 });
+  leyenda(s, [[HEX.dk2, 'Esencial'], [HEX.accent1, 'Plus']], gx, Y0 + 0.64);
   s.addChart(pres.ChartType.bar, [
     { name: 'Esencial', labels: ['Colectivo', 'Aplicación'], values: [36.6, 28.9] },
     { name: 'Plus', labels: ['Colectivo', 'Aplicación'], values: [34.3, 27.5] },
   ], Object.assign({}, ejes, {
-    x: gx - 0.1, y: Y0 + 1.08, w: gw + 0.1, h: 2.36, barDir: 'col', barGapWidthPct: 45,
+    x: gx - 0.1, y: Y0 + 1.02, w: gw + 0.1, h: 1.7, barDir: 'col', barGapWidthPct: 55, barOverlapPct: -8,
     chartColors: [HEX.dk2, HEX.accent1], valAxisMinVal: 0, valAxisMaxVal: 44,
-    showValue: true, dataLabelPosition: 'outEnd', dataLabelFormatCode: '0', dataLabelFontSize: 26,
+    showValue: true, dataLabelPosition: 'outEnd', dataLabelFormatCode: '0.0', dataLabelFontSize: 20,
     objectName: 'Meses para recuperar la inversión por versión',
   }));
-  regla(s, 6.14, M, CW, C.accent1);
-  T(s, [{ text: 'Plus cuesta $700.000 más, ', options: { bold: true } }, { text: 'pero cada punto de ahorro sale más barato.', options: { color: C.text2 } }], { x: M, y: 6.24, w: CW, h: 0.5, fontSize: TX.sub });
+  marca(s, 'est', 'ESTIMACIÓN · SIMULADO', gx, Y0 + 2.8);
+  linea(s, gx, Y0 + 3.3, gw, 0, C.accent1, 1);
+  T(s, [{ text: 'Plus cuesta $700.000 más, ', options: { bold: true } }, { text: 'pero cada punto de ahorro sale más barato.', options: { color: C.text2 } }], { x: gx, y: Y0 + 3.38, w: gw, h: 0.82, fontSize: 18 });
   return s;
 };
 
@@ -1189,12 +1225,16 @@ D['a-gantt'] = () => {
 // ---------- orden de la exposición (guion.js) y anexo ----------
 const nota = x => x.texto ? `${x.quien.toUpperCase()} · ${G.segundos(x.texto)} s\n\n${x.texto}` : `${x.quien.toUpperCase()} · ${x.nota}`;
 let quienAnterior = null, parte = 0;
+// LUMINE_PILOTO=portada,precio,ansoff arma solo esas láminas (propuestas para aprobar), con su numeración real
+const PILOTO = process.env.LUMINE_PILOTO ? process.env.LUMINE_PILOTO.split(',') : null;
 G.PRINCIPAL.forEach(x => {
   if (x.quien !== quienAnterior) { abrirSeccion(`${++parte} · ${x.quien}`); quienAnterior = x.quien; }
   if (!D[x.d]) throw new Error('Falta la diapositiva ' + x.d);
+  if (PILOTO && !PILOTO.includes(x.d)) { if (!/^(portada|apertura-|cierre)/.test(x.d)) NUM++; return; }
   CLAVE = x.d;
   D[x.d]().addNotes(nota(x));
 });
+if (!PILOTO) {
 abrirSeccion('Anexo');
 INDICE_ANEXO = G.PRINCIPAL.length + 1;
 CLAVE = 'indice';
@@ -1206,6 +1246,7 @@ G.ANEXO.forEach(a => {
   D[a.d]().addNotes(`ANEXO ${a.codigo} · Solo si preguntan.\n\n${a.apoyo}`);
 });
 ANEXO_ACTUAL = null;
+}
 
 // pptxgenjs escribe la paleta de Office: se reemplaza por la de Lumine en ppt/theme/theme1.xml
 async function aplicarTema(archivo, tema) {

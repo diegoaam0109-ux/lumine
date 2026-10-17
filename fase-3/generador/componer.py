@@ -57,6 +57,57 @@ def portada():
     lienzo.save(OUT / 'portada-rayos.jpg', quality=90)
 
 
+def portada_premium():
+    """Portada tipo aviso: el auto en rayos X ocupa la mitad inferior derecha, con un halo celeste localizado bajo la
+    batería, luz de borde fría y un reflejo discreto; arriba y a la izquierda queda negro para el texto."""
+    from PIL import ImageChops, ImageEnhance
+    lienzo = Image.new('RGB', (W, H), NEGRO)
+    src = Image.open(ID / 'imagenes' / 'lumine-01-rayos-x.jpg').convert('RGB')
+    k = 1.30                                   # escala: el auto mide ~8,4 in de largo en la lámina
+    foto = src.resize((round(src.width * k), round(src.height * k)), Image.LANCZOS)
+    foto = foto.filter(ImageFilter.UnsharpMask(radius=2, percent=60, threshold=2))
+    foto = ImageEnhance.Contrast(foto).enhance(1.10)
+    x0, y0 = W - foto.width + 150, H - foto.height + 130   # el techo queda bajo la mitad de la lámina
+    m = Image.new('L', foto.size, 255)
+    m = Image.composite(m, Image.new('L', foto.size, 0), rampa(*foto.size, 120, 560, 0, 1))
+    m = Image.composite(m, Image.new('L', foto.size, 0), rampa(*foto.size, 120, 420, 0, 1, eje='y'))
+    lienzo.paste(foto, (x0, y0), m)
+    # halo celeste localizado bajo la batería y el eje trasero (no una mancha detrás de todo)
+    halo = Image.new('L', (W, H), 0)
+    d = ImageDraw.Draw(halo)
+    cx, cy = x0 + round(980 * k), y0 + round(600 * k)
+    d.ellipse((cx - 620, cy - 120, cx + 620, cy + 120), fill=120)
+    halo = halo.filter(ImageFilter.GaussianBlur(130))
+    luz = Image.composite(Image.new('RGB', (W, H), (34, 184, 240)), Image.new('RGB', (W, H), (0, 0, 0)), halo)
+    lienzo = ImageChops.screen(lienzo, luz)
+    # luz de borde fría: un barrido blanco muy tenue que cae sobre el techo
+    borde = Image.new('L', (W, H), 0)
+    d = ImageDraw.Draw(borde)
+    rx, ry = x0 + round(900 * k), y0 + round(300 * k)
+    d.ellipse((rx - 700, ry - 90, rx + 700, ry + 90), fill=40)
+    borde = borde.filter(ImageFilter.GaussianBlur(90))
+    lienzo = ImageChops.screen(lienzo, Image.composite(Image.new('RGB', (W, H), (236, 236, 236)), Image.new('RGB', (W, H), 0), borde))
+    # viñeta: el negro manda en las esquinas y en la franja del título
+    v = Image.new('L', (W, H), 0)
+    d = ImageDraw.Draw(v)
+    d.ellipse((-300, -200, W + 500, H + 700), fill=255)
+    v = v.filter(ImageFilter.GaussianBlur(260))
+    lienzo = Image.composite(lienzo, Image.new('RGB', (W, H), NEGRO), v)
+    lienzo.save(OUT / 'portada-premium.jpg', quality=92)
+    print('portada: auto en', x0, y0, 'escala', k)
+
+
+def brillo():
+    """Resplandor celeste suave (PNG con transparencia) para poner detrás del dato o del cuadrante protagonista."""
+    w, h = 1600, 800
+    a = Image.new('L', (w, h), 0)
+    ImageDraw.Draw(a).ellipse((200, 200, w - 200, h - 200), fill=70)
+    a = a.filter(ImageFilter.GaussianBlur(120))
+    img = Image.new('RGBA', (w, h), (34, 184, 240, 0))
+    img.putalpha(a)
+    img.save(OUT / 'brillo.png')
+
+
 def apertura(nombre, archivo, fx=0.5, fy=0.5):
     """Foto en los dos tercios derechos, fundida hacia el negro de la izquierda donde va el texto."""
     lienzo = Image.new('RGB', (W, H), NEGRO)
@@ -83,6 +134,8 @@ def recorte(nombre, archivo, w, h, fx=0.5, fy=0.5, velo=30):
 
 if __name__ == '__main__':
     portada()
+    portada_premium()
+    brillo()
     apertura('apertura-marketing.jpg', 'lumine-05-colectivero-santiago.jpg', fx=0.95)
     apertura('apertura-rrhh.jpg', 'lumine-14-capacitacion.jpg', fx=0.55)
     apertura('apertura-operaciones.jpg', 'lumine-16-taller.jpg', fx=0.5)
@@ -97,5 +150,6 @@ if __name__ == '__main__':
     ], 1):
         recorte(f'flujo-{n}.jpg', archivo, 1.3, 0.66, fx, fy)
     recorte('controles-banco.jpg', 'lumine-17-banco-pruebas.jpg', 3.6, 1.0, 0.5, 0.55)
+    recorte('ansoff-unidad.jpg', 'lumine-06-unidad-control.jpg', 3.73, 0.95, 0.5, 0.55, velo=0)
     recorte('dotacion-equipo.jpg', 'lumine-18-equipo.jpg', 3.58, 1.15, 0.5, 0.55)
     print('listo:', ', '.join(p.name for p in sorted(OUT.glob('*.jpg'))))

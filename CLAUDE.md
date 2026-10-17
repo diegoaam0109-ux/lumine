@@ -117,6 +117,9 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - ¿Exigir 12 meses en nivel 2 antes de validar el nivel 3 (DGUV)? No implementar sin confirmación.
 - Licencia SEC del instalador: según el D.S. 92 sería clase C hasta 50 kW o B sobre eso; falta confirmarlo con la SEC.
 - Guion: decidir si la frase "Dos observaciones críticas…" (diapositiva 14) se deja, se reformula o se quita.
+- Fase 3 · rediseño visual premium: tres láminas piloto (portada, Ansoff, producto y precio) en `fase-3/pilotos/`,
+  esperando aprobación antes de aplicar el sistema a las 35. Inconsistencias abiertas: química de la batería (informe:
+  litio-titanato; identidad: LFP) y motores (informe: dos en las ruedas; render: uno central).
 
 ## Trampas técnicas conocidas
 
