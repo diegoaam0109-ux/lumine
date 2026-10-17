@@ -81,8 +81,12 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   Estrategia: diferenciación enfocada.
 
 **Presentación de la Fase 3**:
-- Máximo 10 minutos: 19 diapositivas + anexo de 11 con índice enlazado. Diego 1–5 (objetivos a Ansoff), Benjamín 6–11
-  (posicionamiento a dotación), Lukas 12–19 (Habilita, operaciones y conclusiones); ~415 palabras c/u (1.248 en total).
+- Máximo 10 minutos: 23 diapositivas (19 con texto, una apertura con foto por plan y un cierre con el logotipo gigante) +
+  anexo de 11 con índice enlazado. Diego 1–6 (portada a Ansoff), Benjamín 7–13 (posicionamiento a dotación), Lukas 14–23
+  (Habilita, operaciones, conclusiones y cierre); ~415 palabras c/u (1.249 en total).
+- Imágenes: portada con `lumine-01-rayos-x`, aperturas con colectivero, capacitación y taller (rotuladas «imagen
+  ilustrativa» u «operación proyectada»), cierre con `escenario-c`. Se componen con `generador/componer.py`. Las láminas
+  con datos no llevan fotos. La primera etapa de la investigación se llama «Profundidad» (entrevista en profundidad).
 - Rediseño de legibilidad (17-10-2026): escala fija en `TX` de `generador/deck.js` (titulares 34/40 pt, cuerpo 20–24, etiquetas
   de gráficos 16 o más, cifras 30–48, marcas de estado 14, institucional 11–12). Si algo no cabe, se divide la lámina; nunca se
   achica la letra. Estructura y dotación, Habilita y nómina, flujo y controles, resultados y dólar van en láminas separadas;

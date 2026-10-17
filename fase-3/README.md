@@ -16,15 +16,27 @@ presentación salen de ese informe; lo que el informe deja pendiente se muestra 
 
 ## Contenido (máximo 10 minutos)
 
-19 diapositivas para exponer (unos 9 minutos y medio, poco más de 3 por integrante) y un anexo de 11 que solo se usa si preguntan.
+23 diapositivas para exponer (unos 9 minutos y medio, poco más de 3 por integrante): 19 con texto, una apertura con foto
+por cada plan y un cierre con el logotipo gigante. Además, un anexo de 11 que solo se usa si preguntan.
 La diapositiva índice del anexo tiene un enlace a cada tema, y cada diapositiva del anexo tiene un enlace de vuelta al índice.
 
 | Integrante | Diapositivas | Contenido |
 |---|---|---|
-| Diego Alarcón | 1 a 5 | Portada, objetivos, segmentación, investigación de mercado y matriz de Ansoff |
-| Benjamín Torres | 6 a 11 | Posicionamiento, producto y precio, demanda y pronóstico, presupuesto de marketing, estructura y dotación |
-| Lukas Verdugo | 12 a 19 | Lumine Habilita, nómina, flujo operacional, puntos de control, cronograma, resultados, sensibilidad al dólar y conclusiones |
-| Anexo | 20 a 31 | Índice; hipótesis, dudas del cliente, mezcla de marketing, cobros a la red, mercado y adopción, perfiles de cargo, rentas y bonos, jornada de instalación, inversión y gasto, sensibilidad, Carta Gantt completa |
+| Diego Alarcón | 1 a 6 | Portada, apertura de Marketing, objetivos, segmentación, investigación de mercado y matriz de Ansoff |
+| Benjamín Torres | 7 a 13 | Posicionamiento, producto y precio, demanda y pronóstico, presupuesto de marketing, apertura de RR. HH., estructura y dotación |
+| Lukas Verdugo | 14 a 23 | Lumine Habilita, nómina, apertura de Operaciones, flujo operacional, puntos de control, cronograma, resultados, sensibilidad al dólar, conclusiones y cierre |
+| Anexo | 24 a 35 | Índice; hipótesis, dudas del cliente, mezcla de marketing, cobros a la red, mercado y adopción, perfiles de cargo, rentas y bonos, jornada de instalación, inversión y gasto, sensibilidad, Carta Gantt completa |
+
+Las aperturas y el cierre no tienen texto en el guion: se pasan sin hablar.
+
+## Imágenes
+
+Vienen del kit de identidad (`integrador-2/identidad/`). `generador/componer.py` las combina con el negro de la marca
+(degradado horneado, para que el texto siempre quede sobre fondo oscuro) y deja los fondos en `generador/assets/`:
+portada (auto en rayos X), aperturas de Marketing (colectivero), Recursos Humanos (capacitación) y Operaciones (taller), y
+cierre (`escenario-c`). Las fotos de taller y capacitación muestran la operación propuesta: se rotulan «Operación
+proyectada · imagen ilustrativa». Las láminas con cifras no llevan fotos, para que no compitan con los datos.
+Si cambias una imagen, corre `python3 componer.py` (requiere Pillow) antes de `./render.sh`.
 
 ## Legibilidad
 

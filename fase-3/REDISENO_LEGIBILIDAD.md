@@ -149,3 +149,22 @@ No se corrigió ninguna: hay que contrastarlas con el informe de la Fase 3 (que 
 - Los enlaces del índice apuntan a las láminas 21 a 31 y cada anexo vuelve a la 20.
 - Falta abrirla en PowerPoint en Windows: el render se hizo con LibreOffice, que puede cortar líneas un poco distinto.
   Instala antes las fuentes de `fuentes/`.
+
+## 6. Segunda ronda (17-10-2026): imágenes y primera etapa de la investigación
+
+- **Investigación (lámina 5):** la primera etapa pasa de «Exploratoria» a **«Profundidad»**, a pedido del equipo. Los nombres
+  de las cuatro etapas quedan en la serif itálica de la marca (34 pt), como los acentos de los titulares. Para que el
+  orador no contradiga la lámina, el guion cambia «la entrevista exploratoria» por «la entrevista en profundidad»
+  (1.249 palabras).
+- **Portada:** el plano técnico se reemplaza por la ilustración del auto en rayos X (`lumine-01-rayos-x`), con el texto a la
+  izquierda sobre negro. Rotulada «Ilustración del kit».
+- **Aperturas nuevas (láminas 2, 10 y 16):** una por plan, con foto a la derecha fundida en negro, «Plan n de 3», el nombre
+  del plan, «tres planes, un mismo gatillo.» y sus temas. Usan el colectivero en Santiago, la capacitación y el taller,
+  rotuladas «Imagen ilustrativa» u «Operación proyectada · imagen ilustrativa» porque Lumine aún no opera. No tienen
+  texto en el guion.
+- **Cierre nuevo (lámina 23):** «Tres planes, un mismo gatillo.», «Gracias · ¿Preguntas?» y el logotipo gigante sobre el
+  fondo `escenario-c`. El «Gracias · ¿Preguntas?» sale de las conclusiones.
+- **Recursos no usados:** las demás imágenes del kit (componentes, flota, bencinera, maqueta, bodega, centro de control,
+  etc.) no se pusieron en láminas con cifras, para no competir con los datos. Si se quiere, pueden ir en el anexo o en una
+  lámina propia de producto.
+- La exposición pasa a 23 láminas y el anexo a las 24–35. El texto hablado no cambia salvo la palabra indicada.

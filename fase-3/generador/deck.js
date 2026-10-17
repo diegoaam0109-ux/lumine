@@ -146,13 +146,25 @@ function leyenda(s, items, x, y, o = {}) {
 
 // ---------- marcos (layouts) ----------
 const logo = { image: { path: A('logo.png'), x: M, y: 0.42, w: LOGO_W, h: LOGO_H, altText: 'Lumine Motors' } };
+// Fondos con imagen: se componen con componer.py desde integrador-2/identidad (degradado horneado).
 pres.defineSlideMaster({
   title: 'PORTADA',
-  background: { path: A('fondo-portada.jpg') },
+  background: { path: A('portada-rayos.jpg') },
   objects: [
     logo,
-    { placeholder: { options: { name: 'title', type: 'title', x: M, y: 1.5, w: CW, h: 1.95, fontFace: F_TIT, fontSize: 60, color: C.text1, align: 'center', valign: 'top', margin: 0, lineSpacingMultiple: 0.86 }, text: '' } },
+    { placeholder: { options: { name: 'title', type: 'title', x: M, y: 1.5, w: 9.6, h: 1.95, fontFace: F_TIT, fontSize: 60, color: C.text1, align: 'left', valign: 'top', margin: 0, lineSpacingMultiple: 0.86 }, text: '' } },
   ],
+});
+pres.defineSlideMaster({
+  title: 'APERTURA',
+  background: { color: C.background1 },
+  objects: [logo],
+  slideNumber: { x: R - 0.8, y: 7.02, w: 0.8, h: 0.26, fontFace: F_MONO, fontSize: 12, color: HEX.accent1, align: 'right', margin: 0 },
+});
+pres.defineSlideMaster({
+  title: 'CIERRE',
+  background: { path: A('cierre-escenario.jpg') },
+  objects: [logo],
 });
 pres.defineSlideMaster({
   title: 'CONTENIDO',
@@ -240,16 +252,15 @@ const AÑOS = ['Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'];
 D.portada = () => {
   const s = pres.addSlide({ masterName: 'PORTADA', sectionTitle: SEC });
   mono(s, 'UNAB · OCTUBRE 2026', { x: 7.2, y: 0.4, w: R - 7.2, h: 0.26, align: 'right', valign: 'middle', fontSize: 12 });
-  T(s, 'Fase 3 · Capítulo III: Plan de Marketing, Operaciones y Recursos Humanos', { x: M, y: 0.95, w: CW, h: 0.42, align: 'center', valign: 'middle', fontSize: TX.sub, color: C.text2 });
+  T(s, 'Fase 3 · Capítulo III: Plan de Marketing, Operaciones y Recursos Humanos', { x: M, y: 0.95, w: CW, h: 0.42, valign: 'middle', fontSize: TX.sub, color: C.text2 });
   s.addText([
     { text: 'LUMINE MOTORS', options: { breakLine: true } },
-    { text: 'reconversión híbrida.', options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: 76 } },
+    { text: 'reconversión híbrida.', options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: 70 } },
   ], { placeholder: 'title' });
   // frase explicativa (guía: tipo de solución y necesidad, 15 a 20 palabras)
-  T(s, 'Kit que hibrida autos a combustión de tracción delantera para gastar menos bencina sin cambiar de auto.', { x: 1.4, y: 3.5, w: W - 2.8, h: 0.8, align: 'center', fontSize: TX.cuerpoL, color: C.text1 });
-  const pw = 4.6, ph = pw * 740 / 2400;
-  s.addImage({ path: A('plano.png'), x: (W - pw) / 2, y: 4.38, w: pw, h: ph, altText: 'Plano del kit Lumine: auto en vista lateral con el motor eléctrico en el eje trasero' });
-  linea(s, M, 5.9, CW, 0, C.accent5);
+  T(s, 'Kit que hibrida autos a combustión de tracción delantera para gastar menos bencina sin cambiar de auto.', { x: M, y: 3.62, w: 4.55, h: 1.6, fontSize: TX.cuerpoL, color: C.text1 });
+  mono(s, 'ILUSTRACIÓN DEL KIT', { x: R - 3.0, y: 0.7, w: 3.0, h: 0.26, align: 'right', fontSize: TX.inst });
+  linea(s, M, 5.95, CW, 0, C.accent5);
   const filas = [
     [['UNIVERSIDAD', 'Universidad Andrés Bello · Facultad de Economía y Negocios · Ingeniería Comercial', CW]],
     [['CURSO', 'Integrador II: Taller de Empresas · ICMA 1001', 4.6], ['GRUPO', '1', 0.7], ['PROFESOR', 'Roberto Brito', 1.75], ['INTEGRANTES', 'Diego Alarcón · Benjamín Torres · Lukas Verdugo', CW - 7.05]],
@@ -263,6 +274,36 @@ D.portada = () => {
       x += w;
     });
   });
+  return s;
+};
+
+// =====================================================================
+// APERTURAS · una por plan, con foto del kit de identidad (sin datos: no compiten con los gráficos)
+// =====================================================================
+function apertura(n, plan, temas, foto, rotulo) {
+  const s = pres.addSlide({ masterName: 'APERTURA', sectionTitle: SEC });
+  s.background = { path: A(foto) };
+  mono(s, `PLAN ${n} DE 3`, { x: M, y: 1.75, w: 5, h: 0.32, color: C.accent1 });
+  const th = plan.split('\n').length * 0.82;
+  T(s, plan, { x: M, y: 2.12, w: 8.5, h: th, fontFace: F_TIT, fontSize: 54, valign: 'top', lineSpacingMultiple: 0.88 });
+  T(s, 'tres planes, un mismo gatillo.', { x: M, y: 2.12 + th + 0.12, w: 6.5, h: 0.7, fontFace: F_SER, italic: true, fontSize: TX.acento, color: C.accent1 });
+  const ly = 2.12 + th + 1.0;
+  linea(s, M, ly, 4.6, 0, C.accent1, 1);
+  temas.forEach((t, i) => T(s, t, { x: M, y: ly + 0.15 + i * 0.4, w: 4.6, h: 0.34, fontSize: TX.cuerpo, color: C.text2 }));
+  mono(s, rotulo, { x: R - 6.0, y: 6.96, w: 5.1, h: 0.26, align: 'right', fontSize: TX.inst });
+  return s;
+}
+D['apertura-mkt'] = () => apertura(1, 'MARKETING', ['Objetivos y segmentación', 'Investigación y estrategia', 'Precio, demanda y presupuesto'], 'apertura-marketing.jpg', 'IMAGEN ILUSTRATIVA');
+D['apertura-rrhh'] = () => apertura(2, 'RECURSOS\nHUMANOS', ['Estructura y dotación', 'Lumine Habilita', 'Nómina'], 'apertura-rrhh.jpg', 'OPERACIÓN PROYECTADA · IMAGEN ILUSTRATIVA');
+D['apertura-ops'] = () => apertura(3, 'OPERACIONES', ['Flujo y puntos de control', 'Cronograma', 'Resultados y riesgo cambiario'], 'apertura-operaciones.jpg', 'OPERACIÓN PROYECTADA · IMAGEN ILUSTRATIVA');
+
+// CIERRE · logotipo gigante sobre el escenario (motivo de la marca)
+D.cierre = () => {
+  const s = pres.addSlide({ masterName: 'CIERRE', sectionTitle: SEC });
+  T(s, [{ text: 'TRES PLANES, ', options: {} }, { text: 'un mismo gatillo.', options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: 48 } }], { x: M, y: 1.35, w: CW, h: 0.9, fontFace: F_TIT, fontSize: 40 });
+  mono(s, 'GRACIAS · ¿PREGUNTAS?', { x: M, y: 2.45, w: 8, h: 0.36, fontSize: 20, color: C.text1 });
+  const pw = CW, ph = pw * 96 / 584;
+  s.addImage({ path: A('palabra.png'), x: M, y: 7.5 - ph - 0.45, w: pw, h: ph, altText: 'LUMINE' });
   return s;
 };
 
@@ -328,14 +369,14 @@ D.investigacion = () => {
   const n = 4, colW = CW / n, ly = Y0 + 0.12;
   linea(s, M + 0.1, ly, CW - colW + 0.1, 0, C.accent5, 1.5);
   linea(s, M + 0.1, ly, 0.0001, 0, C.accent1, 1.5);
-  [['EXPLORATORIA', '1', 'conductor de aplicaciones', true], ['EXPERTOS', '4', 'expertos del rubro', false], ['CLIENTES', '5', 'perfiles de cliente', false], ['ENCUESTA', '150', 'encuestas por cuotas', false]].forEach(([k, v, u, hecho], i) => {
+  [['PROFUNDIDAD', '1', 'conductor de aplicaciones', true], ['EXPERTOS', '4', 'expertos del rubro', false], ['CLIENTES', '5', 'perfiles de cliente', false], ['ENCUESTA', '150', 'encuestas por cuotas', false]].forEach(([k, v, u, hecho], i) => {
     const x = M + i * colW;
     s.addShape(S.ellipse, { x: x + 0.01, y: ly - 0.1, w: 0.2, h: 0.2, fill: { color: hecho ? C.accent1 : C.background1 }, line: { color: hecho ? C.accent1 : C.text2, width: 1.5 } });
     mono(s, `ETAPA ${i + 1}`, { x, y: ly + 0.24, w: colW - 0.2, h: 0.28, color: hecho ? C.accent1 : C.text2 });
-    T(s, k.charAt(0) + k.slice(1).toLowerCase(), { x, y: ly + 0.52, w: colW - 0.2, h: 0.4, fontSize: TX.cuerpoL, bold: true, color: hecho ? C.accent1 : C.text1 });
-    numero(s, v, { x, y: ly + 0.95, w: colW - 0.2, h: 0.72, fontSize: TX.cifraXL, valign: 'top', color: hecho ? C.accent1 : C.text1 });
-    T(s, u, { x, y: ly + 1.66, w: colW - 0.3, h: 0.62, fontSize: TX.cuerpo, color: C.text2 });
-    marca(s, hecho ? 'ok' : 'pen', hecho ? 'REALIZADA' : 'POR REALIZAR', x, ly + 2.34);
+    T(s, k.charAt(0) + k.slice(1).toLowerCase(), { x, y: ly + 0.44, w: colW - 0.2, h: 0.56, fontFace: F_SER, italic: true, fontSize: 34, color: hecho ? C.accent1 : C.text1 });
+    numero(s, v, { x, y: ly + 1.0, w: colW - 0.2, h: 0.72, fontSize: TX.cifraXL, valign: 'top', color: hecho ? C.accent1 : C.text1 });
+    T(s, u, { x, y: ly + 1.7, w: colW - 0.3, h: 0.62, fontSize: TX.cuerpo, color: C.text2 });
+    marca(s, hecho ? 'ok' : 'pen', hecho ? 'REALIZADA' : 'POR REALIZAR', x, ly + 2.38);
   });
   const by = 5.74;
   regla(s, by - 0.12, M, CW, C.accent1);
@@ -788,7 +829,6 @@ D.conclusiones = () => {
   ['¿El reglamento admitirá el kit, y desde cuándo?', '¿El ahorro medido confirma los precios?'].forEach((q, i) => {
     T(s, q, { x: M + i * (qw + 0.4), y: qy + 0.36, w: qw, h: 0.95, fontFace: F_SER, italic: true, fontSize: 28, color: C.text1 });
   });
-  mono(s, 'GRACIAS · ¿PREGUNTAS?', { x: R - 4.6, y: qy, w: 4.6, h: 0.3, valign: 'middle', align: 'right', color: C.accent1 });
   return s;
 };
 
@@ -1131,7 +1171,7 @@ D['a-gantt'] = () => {
 };
 
 // ---------- orden de la exposición (guion.js) y anexo ----------
-const nota = x => `${x.quien.toUpperCase()} · ${G.segundos(x.texto)} s\n\n${x.texto}`;
+const nota = x => x.texto ? `${x.quien.toUpperCase()} · ${G.segundos(x.texto)} s\n\n${x.texto}` : `${x.quien.toUpperCase()} · ${x.nota}`;
 let quienAnterior = null, parte = 0;
 G.PRINCIPAL.forEach(x => {
   if (x.quien !== quienAnterior) { abrirSeccion(`${++parte} · ${x.quien}`); quienAnterior = x.quien; }

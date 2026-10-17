@@ -14,7 +14,7 @@ const mmss = x => { const s = Math.round(x); return `${Math.floor(s / 60)}:${Str
 let md = '# Guion · Fase 3 de Lumine Motors\n\n';
 md += 'Integrador II: Taller de Empresas · ICMA 1001 · Grupo 1 · Profesor Roberto Brito. ';
 md += 'Capítulo III: Plan de Marketing, Operaciones y Recursos Humanos.\n\n';
-md += `Máximo 10 minutos: ${filas.length} diapositivas, unos ${mmss(total / g.PALABRAS_POR_MINUTO * 60)} a ${g.PALABRAS_POR_MINUTO} palabras por minuto (${total} palabras). `;
+md += `Máximo 10 minutos: ${filas.length} diapositivas (${filas.filter(x => !x.texto).length} sin texto: aperturas de cada plan y cierre), unos ${mmss(total / g.PALABRAS_POR_MINUTO * 60)} a ${g.PALABRAS_POR_MINUTO} palabras por minuto (${total} palabras). `;
 md += `Cada integrante habla lo mismo, poco más de tres minutos. El anexo (${g.ANEXO.length} diapositivas) no se expone: se usa solo si preguntan.\n\n`;
 md += '| Parte | Integrante | Diapositivas | Palabras | Tiempo |\n|---|---|---|---|---|\n';
 quienes.forEach((q, i) => {
@@ -25,7 +25,7 @@ quienes.forEach((q, i) => {
   const f = filas.filter(x => x.quien === q), p = f.reduce((a, x) => a + g.palabras(x.texto), 0);
   md += `\n## Parte ${i + 1} · ${q} · diapositivas ${f[0].n} a ${f[f.length - 1].n}\n\n`;
   md += `Unos ${mmss(p / g.PALABRAS_POR_MINUTO * 60)} (${p} palabras). ${traspaso[i + 1]}\n\n`;
-  md += f.map(x => `### ${x.n} · ${x.titulo} · ${g.segundos(x.texto)} s\n\n${x.texto}`).join('\n\n') + '\n';
+  md += f.map(x => x.texto ? `### ${x.n} · ${x.titulo} · ${g.segundos(x.texto)} s\n\n${x.texto}` : `### ${x.n} · ${x.titulo}\n\n_${x.nota}_`).join('\n\n') + '\n';
 });
 md += '\n## Anexo · solo si preguntan\n\n';
 md += 'La diapositiva índice tiene un enlace a cada tema: se hace clic en el tema y se salta directo.\n\n';

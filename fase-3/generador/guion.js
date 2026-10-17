@@ -8,6 +8,7 @@ const PRINCIPAL = [
     'Buenos días. Somos Diego Alarcón, Benjamín Torres y Lukas Verdugo, y les presentamos el capítulo tres de Lumine Motors: los planes de marketing, recursos humanos y operaciones. ' +
     'Los tres comparten un mismo gatillo, así que un cambio en la demanda mueve el plan completo. ' +
     'Yo parto con los objetivos y el mercado, Benjamín sigue con la estrategia comercial y Lukas cierra con las personas y las operaciones.' },
+  { d: 'apertura-mkt', quien: DIEGO, titulo: 'Apertura · Plan de Marketing', texto: '', nota: 'Transición sin texto: se pasa directo a los objetivos.' },
   { d: 'objetivos', quien: DIEGO, titulo: '299 vehículos el primer año', texto:
     'El objetivo general es que en cinco años Lumine sea la referencia de la hibridación de posventa en Chile, con tres talleres propios en la Región Metropolitana y una red certificada en todas las regiones. ' +
     'Las metas del primer año siguen al cliente: instalar al menos 299 vehículos, publicar tres casos con ahorro medido en nueve meses, llegar a 80% de clientes satisfechos y a 15% de clientes por recomendación. ' +
@@ -19,7 +20,7 @@ const PRINCIPAL = [
   { d: 'investigacion', quien: DIEGO, titulo: 'Seis hipótesis por probar', texto:
     'Nada de esto se le ha preguntado aún a un conductor, así que la investigación es mixta y secuencial: primero entrevistas a cuatro expertos y a cinco perfiles de clientes, después una encuesta por cuotas a 150 personas, con 100 como mínimo. ' +
     'Como no es aleatoria, los resultados serán indicativos. ' +
-    'Pone a prueba seis hipótesis; por ejemplo, que la barrera principal es la confianza y no el precio. Hasta ahora hicimos la entrevista exploratoria; el resto está por realizar.' },
+    'Pone a prueba seis hipótesis; por ejemplo, que la barrera principal es la confianza y no el precio. Hasta ahora hicimos la entrevista en profundidad; el resto está por realizar.' },
   { d: 'ansoff', quien: DIEGO, titulo: 'Entra por desarrollo de producto', texto:
     'En la matriz de Ansoff, Lumine entra por desarrollo de producto: el mercado existe, porque los conductores ya buscan gastar menos, pero la hibridación aditiva no tiene oferta en Chile. ' +
     'En el año 2 viene la penetración y, antes de lo habitual, la diversificación relacionada: vender patrones de calibración, kits y certificación a otros talleres, porque la exclusividad de la calibración se agota con el tiempo. ' +
@@ -44,6 +45,7 @@ const PRINCIPAL = [
     'El primer año invierte 80,9 millones de pesos, el 6,8% de los ingresos propios, porque concentra el lanzamiento y 25 clientes piloto con 50% de descuento a cambio de su caso medido. ' +
     'Desde el segundo año baja a 2,3% de los ingresos, y desde el tercero la partida mayor son las comisiones, que siguen a las instalaciones. ' +
     'En cinco años, el marketing suma 575 millones.' },
+  { d: 'apertura-rrhh', quien: BENJA, titulo: 'Apertura · Plan de Recursos Humanos', texto: '', nota: 'Transición sin texto: se pasa directo a la estructura.' },
   { d: 'estructura', quien: BENJA, titulo: 'Crece el número, no la estructura', texto:
     'Para atender esa demanda, la estructura es funcional y sin mandos intermedios: cinco áreas que responden a la Gerencia General. ' +
     'La estructura no cambia con el crecimiento; cambia cuántas personas hay en cada cargo, y nadie se contrata antes de que la carga lo justifique. ' +
@@ -56,6 +58,7 @@ const PRINCIPAL = [
     'Con formación intensiva, un técnico nuevo llega al nivel 4 en unos ocho meses.' },
   { d: 'nomina', quien: LUKAS, titulo: 'Costo por instalación a la mitad', texto:
     'La nómina sube de 152 a 755 millones en cinco años, pero el costo por instalación cae a la mitad, de 508 mil pesos a 253 mil en el cuarto año, porque los cargos fijos se reparten en más autos.' },
+  { d: 'apertura-ops', quien: LUKAS, titulo: 'Apertura · Plan de Operaciones', texto: '', nota: 'Transición sin texto: se pasa directo al flujo operacional.' },
   { d: 'flujo', quien: LUKAS, titulo: 'El cliente decide', texto:
     'El flujo sigue a un vehículo desde la cotización hasta el fin de vida de la batería, en cinco etapas. ' +
     'Una regla lo atraviesa: el negocio mide y recomienda, pero la decisión de instalar es siempre del cliente. Solo se detiene por razones técnicas.' },
@@ -76,6 +79,7 @@ const PRINCIPAL = [
     'Tercero, los tres planes se mueven con un mismo gatillo, la demanda sobre el 80% de la capacidad, y cada línea gana desde el segundo año. ' +
     'Quedan dos preguntas: si el reglamento admitirá el kit y desde cuándo, y si el ahorro medido y la encuesta confirman los precios. ' +
     'Muchas gracias; quedamos atentos a sus preguntas.' },
+  { d: 'cierre', quien: LUKAS, titulo: 'Cierre', texto: '', nota: 'Queda en pantalla mientras responden las preguntas.' },
 ];
 
 // Diapositivas de apoyo: no se exponen; se muestran solo si una pregunta las pide.
