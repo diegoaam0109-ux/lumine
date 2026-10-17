@@ -93,7 +93,7 @@ pres.defineSlideMaster({
   background: { path: A('fondo-portada.jpg') },
   objects: [
     logo,
-    { placeholder: { options: { name: 'title', type: 'title', x: M, y: 1.72, w: CW, h: 1.95, fontFace: F_TIT, fontSize: 60, color: C.text1, align: 'center', valign: 'top', margin: 0, lineSpacingMultiple: 0.86 }, text: '' } },
+    { placeholder: { options: { name: 'title', type: 'title', x: M, y: 1.32, w: CW, h: 1.0, fontFace: F_TIT, fontSize: 50, color: C.text1, align: 'center', valign: 'top', margin: 0, lineSpacingMultiple: 0.86 }, text: '' } },
   ],
 });
 pres.defineSlideMaster({
@@ -149,13 +149,17 @@ const ejes = { // estilo común de gráficos: etiquetas mono grises, rejilla cas
 // =====================================================================
 D[1] = () => {
   const s = pres.addSlide({ masterName: 'PORTADA', sectionTitle: SEC });
+  // ilustración conceptual del kit (ChatGPT) a sangre, con velo abajo para leer los datos del curso
+  s.addImage({ path: A('lumine-01-rayos-x.jpg'), x: 0, y: 0.45, w: W, h: W * 941 / 1672, altText: 'Ilustración conceptual: auto en rayos X con el kit Lumine (unidad de control, baterías bajo el piso y motor eléctrico en el eje trasero)' });
+  s.addImage({ path: A('velo.png'), x: 0, y: 4.6, w: W, h: 2.9 });
+  s.addShape(S.rect, { x: 0, y: 6.2, w: W, h: 1.3, fill: { color: C.background1, transparency: 25 }, line: { type: 'none' } });
+  s.addImage({ path: A('logo.png'), x: M, y: 0.42, w: LOGO_W, h: LOGO_H, altText: 'Lumine Motors' });
   mono(s, 'UNAB · OCTUBRE 2026', { x: 7.2, y: 0.4, w: R - 7.2, h: 0.26, align: 'right', valign: 'middle', fontSize: 9 });
-  mono(s, 'DESARROLLO DE LA ESTRATEGIA · LUMINE MOTORS CHILE SPA', { x: M, y: 1.22, w: CW, h: 0.3, align: 'center', valign: 'middle', fontSize: 10 });
+  mono(s, 'DESARROLLO DE LA ESTRATEGIA · LUMINE MOTORS CHILE SPA', { x: M, y: 0.95, w: CW, h: 0.3, align: 'center', valign: 'middle', fontSize: 10 });
   s.addText([
-    { text: 'ANÁLISIS', options: { breakLine: true } },
-    { text: 'estratégico.', options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: 76 } },
+    { text: 'ANÁLISIS ' },
+    { text: 'estratégico.', options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: 62 } },
   ], { placeholder: 'title' });
-  s.addImage({ path: A('plano.png'), x: (W - 7.4) / 2, y: 3.62, w: 7.4, h: 7.4 * 740 / 2400, altText: 'Plano del kit Lumine: auto en vista lateral con el motor eléctrico en el eje trasero' });
   linea(s, M, 6.05, CW, 0, C.accent5);
   const cols = [
     ['CURSO', 'Control de Gestión · Teoría', 2.75],
