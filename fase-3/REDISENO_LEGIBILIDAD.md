@@ -168,3 +168,18 @@ No se corrigió ninguna: hay que contrastarlas con el informe de la Fase 3 (que 
   etc.) no se pusieron en láminas con cifras, para no competir con los datos. Si se quiere, pueden ir en el anexo o en una
   lámina propia de producto.
 - La exposición pasa a 23 láminas y el anexo a las 24–35. El texto hablado no cambia salvo la palabra indicada.
+
+## 7. Tercera ronda (17-10-2026): tipografía automotriz y fotos complementarias
+
+- **Tipografía:** de tres opciones (la actual, toda la familia Archivo y Michroma), el equipo eligió primero la B y
+  luego cambió a la **C**: titulares en Michroma (estilo Eurostile, de autos deportivos), en 32 pt porque es muy ancha;
+  el «%» de los titulares va en Archivo Expanded porque el de Michroma se lee como «o/o». El resto en la familia Archivo:
+  acento en Expanded Light itálica celeste (reemplaza a Instrument Serif; baja de 40 a 32 pt), texto en Archivo (reemplaza
+  a Figtree), etiquetas en SemiCondensed (reemplaza a IBM Plex Mono) y cifras en Condensed. Todas van incrustadas en el PPTX.
+- **Objetivos (lámina 3):** se quitaron «Cotizaciones digitales: Por confirmar» y la marca «Estimación · Pronóstico», a
+  pedido del equipo. La meta de cotizaciones sigue sin cifra en el informe y el guion la menciona como «por confirmar»;
+  el pronóstico de instalaciones ya no lleva la marca en la lámina, pero la fuente al pie y el guion lo tratan como tal.
+- **Fotos complementarias, sin láminas nuevas:** el flujo operacional lleva una foto por etapa (web, diagnóstico, dúo de
+  técnicos, entrega y centro de control); los puntos de control, el auto en el banco de pruebas; la dotación, el equipo
+  de técnicos. Son chicas, con borde fino, y la fuente al pie dice «Imágenes ilustrativas de la operación proyectada».
+- Los textos, cifras y gráficos no cambian (comprobado por programa).

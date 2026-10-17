@@ -19,11 +19,19 @@ const OUT = process.argv[2] || 'Grupo_01_LumineMotors_Fase3.pptx';
 const A = f => path.join(__dirname, 'assets', f);
 
 // ---------- tema ----------
-const F_TIT = 'Archivo SemiExpanded ExtraBold';
-const F_CON = 'Archivo Condensed';
-const F_BODY = 'Figtree';
-const F_MONO = 'IBM Plex Mono';
-const F_SER = 'Instrument Serif';
+// Juegos tipográficos. C (elegido por el equipo el 17-10-2026, «deportiva»): titulares en Michroma (estilo Eurostile)
+// y el resto en la familia Archivo: acento en itálica liviana, texto normal, etiquetas semicondensadas y cifras condensadas.
+// B es igual pero con titulares en Archivo Expanded; A es el de la marca (serif itálica y mono). Se comparan con
+// LUMINE_TIPO=A|B|C. Los .ttf de Archivo se crean con mkfonts.py; Michroma viene estática de @fontsource/michroma.
+const JUEGOS = {
+  A: ['Archivo SemiExpanded ExtraBold', 'Archivo Condensed', 'Figtree', 'IBM Plex Mono', 'Instrument Serif'],
+  B: ['Archivo Expanded ExtraBold', 'Archivo Condensed', 'Archivo', 'Archivo SemiCondensed Medium', 'Archivo Expanded Light'],
+  C: ['Michroma', 'Archivo Condensed', 'Archivo', 'Archivo SemiCondensed Medium', 'Archivo Expanded Light'],
+};
+const TIPO = process.env.LUMINE_TIPO || 'C';
+// el «%» de Michroma es un dibujo estilizado (o/o) que se lee mal: en los titulares se escribe con Archivo
+const F_PCT = 'Archivo Expanded ExtraBold';
+const [F_TIT, F_CON, F_BODY, F_MONO, F_SER] = JUEGOS[TIPO];
 const THEME = {
   name: 'Lumine',
   headFontFace: F_TIT,
@@ -42,7 +50,7 @@ const GRAFITO = '1A1E22'; // superficie grafito de controles y segunda serie neu
 
 // Escala tipográfica (pt). Es la regla de toda la presentación.
 const TX = {
-  tit: 34, acento: 40,       // titulares
+  tit: TIPO === 'C' ? 32 : 34, acento: TIPO === 'A' ? 40 : 32,  // titulares (el acento serif es más angosto que una sans ancha)
   sub: 24,                   // subtítulos y frases de cierre de una lámina
   cuerpo: 20, cuerpoL: 22,   // texto
   etq: 16,                   // etiquetas de gráficos y de cajas (mínimo)
@@ -122,6 +130,11 @@ function marca(s, tipo, text, x, y, o = {}) {
   mono(s, text, { x: xx + 0.12, y, w: w - 0.24, h, fontSize: size, color: st.color, valign: 'middle', align: o.align || 'center', charSpacing: 1 });
   return w;
 }
+// foto complementaria con borde fino; las fotos se recortan a la medida exacta en componer.py
+function foto(s, archivo, x, y, w, h, alt, borde = C.accent5) {
+  s.addImage({ path: A(archivo), x, y, w, h, altText: alt });
+  s.addShape(S.rect, { x, y, w, h, fill: { color: C.background1, transparency: 100 }, line: { color: borde, width: 0.75 } });
+}
 // número grande condensado (voz de tablero)
 const numero = (s, text, o = {}) => T(s, text, Object.assign({ fontFace: F_CON, bold: true, fontSize: TX.cifra, color: C.text1, valign: 'bottom' }, o));
 // dos cifras con una flecha dibujada entre ellas (las tipografías de la marca no traen «→»)
@@ -174,7 +187,7 @@ pres.defineSlideMaster({
     logo,
     { text: { text: CURSO, options: { x: 6.2, y: 0.4, w: R - 6.2, h: 0.26, align: 'right', valign: 'middle', fontFace: F_MONO, fontSize: TX.inst, color: C.text2, charSpacing: 1.5, margin: 0 } } },
     { placeholder: { options: { name: 'etiqueta', type: 'body', x: M, y: 0.92, w: CW, h: 0.3, fontFace: F_MONO, fontSize: 12, color: C.text2, charSpacing: 1.5, margin: 0, valign: 'middle' }, text: '' } },
-    { placeholder: { options: { name: 'title', type: 'title', x: M, y: 1.28, w: CW, h: 1.22, fontFace: F_TIT, fontSize: TX.tit, color: C.text1, align: 'left', margin: 0, valign: 'top', lineSpacingMultiple: 0.86 }, text: '' } },
+    { placeholder: { options: { name: 'title', type: 'title', x: M, y: 1.36, w: CW, h: 1.2, fontFace: F_TIT, fontSize: TX.tit, color: C.text1, align: 'left', margin: 0, valign: 'top', lineSpacingMultiple: 0.86 }, text: '' } },
   ],
   slideNumber: { x: R - 0.8, y: 7.02, w: 0.8, h: 0.26, fontFace: F_MONO, fontSize: 12, color: HEX.accent1, align: 'right', margin: 0 },
 });
@@ -192,11 +205,11 @@ const FUENTES = {
   demanda: `Fuentes: INE (2025); Centro UC en Emol (2026); Descubre (2026); Massiani y Gohs (2015); elaboración propia (Tabla N° 10, Anexo N° 4).`,
   'presupuesto-mkt': `Fuente: elaboración propia (${INF}, Tabla N° 11). Montos netos de IVA.`,
   estructura: `Fuentes: borrador de reglamento MTT (2021); elaboración propia (${INF}, Figura N° 3 y Tabla N° 12).`,
-  dotacion: `Fuentes: borrador de reglamento MTT (2021); elaboración propia (${INF}, Figura N° 3 y Tabla N° 12).`,
+  dotacion: `Fuentes: borrador de reglamento MTT (2021); elaboración propia (${INF}, Figura N° 3 y Tabla N° 12). Imágenes ilustrativas de la operación proyectada.`,
   habilita: `Fuentes: Ley N° 21.735; Ley N° 16.744; Ley N° 19.728; elaboración propia (${INF}, Tablas N° 14 a 16 y Anexo N° 7).`,
   nomina: `Fuentes: Ley N° 21.735; Ley N° 16.744; Ley N° 19.728; elaboración propia (${INF}, Tablas N° 14 a 16 y Anexo N° 7).`,
-  flujo: `Fuentes: borrador de reglamento MTT (2021), arts. 11 a 18; elaboración propia (${INF}, Figura N° 4 y Tabla N° 17).`,
-  controles: `Fuentes: borrador de reglamento MTT (2021), arts. 11 a 18; elaboración propia (${INF}, Figura N° 4, Tabla N° 17 y Anexo N° 8). Tiempos estimados.`,
+  flujo: `Fuentes: borrador de reglamento MTT (2021), arts. 11 a 18; elaboración propia (${INF}, Figura N° 4 y Tabla N° 17). Imágenes ilustrativas de la operación proyectada.`,
+  controles: `Fuentes: borrador de reglamento MTT (2021), arts. 11 a 18; elaboración propia (${INF}, Figura N° 4, Tabla N° 17 y Anexo N° 8). Tiempos estimados. Imágenes ilustrativas de la operación proyectada.`,
   gantt: `Fuente: elaboración propia (${INF}, Figura N° 5). Mes 1 = enero de 2027 (supuesto).`,
   resultados: `Fuentes: Dynojet Research (2016); Importadora JAK (2026); elaboración propia (${INF}, Tablas N° 18 a 21).`,
   dolar: `Fuente: elaboración propia (${INF}, Tabla N° 21). Dólar base $965,71.`,
@@ -227,7 +240,8 @@ function contenido(etiqueta, titulo, acento, codigo) {
     s.addText('VOLVER AL ÍNDICE DEL ANEXO', { x: 7.7, y: 0.7, w: R - 7.7, h: 0.26, align: 'right', valign: 'middle', fontFace: F_MONO, fontSize: 12, color: C.accent1, charSpacing: 1, margin: 0, hyperlink: { slide: INDICE_ANEXO, tooltip: 'Volver al índice del anexo' } });
   }
   s.addText([{ text: n, options: { color: C.accent1 } }, { text: '  —— ', options: { color: C.accent5 } }, { text: etiqueta }], { placeholder: 'etiqueta' });
-  s.addText([{ text: titulo + ' ' }, { text: acento, options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: TX.acento } }], { placeholder: 'title' });
+  const partes = (titulo + ' ').split(/(%)/).filter(Boolean).map(t => t === '%' && TIPO === 'C' ? { text: t, options: { fontFace: F_PCT } } : { text: t });
+  s.addText([...partes, { text: acento, options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: TX.acento } }], { placeholder: 'title' });
   const f = FUENTES[CLAVE];
   if (!f) throw new Error('Falta la fuente de la diapositiva ' + CLAVE);
   T(s, f, { x: M, y: 6.94, w: R - M - 1.0, h: 0.42, valign: 'top', fontSize: TX.inst, color: C.text2 });
@@ -254,8 +268,8 @@ D.portada = () => {
   mono(s, 'UNAB · OCTUBRE 2026', { x: 7.2, y: 0.4, w: R - 7.2, h: 0.26, align: 'right', valign: 'middle', fontSize: 12 });
   T(s, 'Fase 3 · Capítulo III: Plan de Marketing, Operaciones y Recursos Humanos', { x: M, y: 0.95, w: CW, h: 0.42, valign: 'middle', fontSize: TX.sub, color: C.text2 });
   s.addText([
-    { text: 'LUMINE MOTORS', options: { breakLine: true } },
-    { text: 'reconversión híbrida.', options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: 70 } },
+    { text: 'LUMINE MOTORS', options: { breakLine: true, fontSize: TIPO === 'C' ? 46 : 60 } },
+    { text: 'reconversión híbrida.', options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: TIPO === 'A' ? 70 : TIPO === 'C' ? 44 : 50 } },
   ], { placeholder: 'title' });
   // frase explicativa (guía: tipo de solución y necesidad, 15 a 20 palabras)
   T(s, 'Kit que hibrida autos a combustión de tracción delantera para gastar menos bencina sin cambiar de auto.', { x: M, y: 3.62, w: 4.55, h: 1.6, fontSize: TX.cuerpoL, color: C.text1 });
@@ -286,7 +300,7 @@ function apertura(n, plan, temas, foto, rotulo) {
   mono(s, `PLAN ${n} DE 3`, { x: M, y: 1.75, w: 5, h: 0.32, color: C.accent1 });
   const th = plan.split('\n').length * 0.82;
   T(s, plan, { x: M, y: 2.12, w: 8.5, h: th, fontFace: F_TIT, fontSize: 54, valign: 'top', lineSpacingMultiple: 0.88 });
-  T(s, 'tres planes, un mismo gatillo.', { x: M, y: 2.12 + th + 0.12, w: 6.5, h: 0.7, fontFace: F_SER, italic: true, fontSize: TX.acento, color: C.accent1 });
+  T(s, 'tres planes, un mismo gatillo.', { x: M, y: 2.12 + th + 0.12, w: 9.2, h: 0.7, fontFace: F_SER, italic: true, fontSize: TX.acento, color: C.accent1 });
   const ly = 2.12 + th + 1.0;
   linea(s, M, ly, 4.6, 0, C.accent1, 1);
   temas.forEach((t, i) => T(s, t, { x: M, y: ly + 0.15 + i * 0.4, w: 4.6, h: 0.34, fontSize: TX.cuerpo, color: C.text2 }));
@@ -315,9 +329,6 @@ D.objetivos = () => {
   T(s, [{ text: 'Meta a cinco años: ', options: { bold: true } }, { text: 'ser la referencia de la hibridación de posventa en Chile.', options: { color: C.text2 } }], { x: M, y: Y0, w: CW, h: 0.45, fontSize: TX.cuerpoL });
   const ly = 3.28;
   mono(s, 'METAS DEL PRIMER AÑO', { x: M, y: ly, w: 5, h: 0.4, valign: 'middle', color: C.text1 });
-  const wm = anchoMarca('POR CONFIRMAR');
-  marca(s, 'pen', 'POR CONFIRMAR', R, ly, { alignRight: true });
-  mono(s, 'COTIZACIONES DIGITALES:', { x: R - wm - 5.2, y: ly, w: 5.0, h: 0.4, align: 'right', valign: 'middle' });
   const n = 4, gap = 0.3, tw = (CW - (n - 1) * gap) / n, ty = 3.78, th = 1.42;
   [['299', 'instalaciones'], ['3', 'casos con ahorro medido'], ['80%', 'clientes satisfechos'], ['15%', 'llega por recomendación']].forEach(([v, k], i) => {
     const x = M + i * (tw + gap);
@@ -327,7 +338,6 @@ D.objetivos = () => {
   });
   const hy = 5.38;
   mono(s, 'INSTALACIONES PROPIAS POR AÑO', { x: M, y: hy, w: 6, h: 0.4, valign: 'middle', color: C.text1 });
-  marca(s, 'est', 'ESTIMACIÓN · PRONÓSTICO', R, hy, { alignRight: true });
   const lx = M + 0.2, lw = CW - 0.4, ly2 = hy + 0.9, step = lw / 4;
   linea(s, lx, ly2, lw, 0, C.accent5, 1.25);
   [['AÑO 1', '299'], ['AÑO 2', '869'], ['AÑO 3', '1.674'], ['AÑO 4', '2.268'], ['AÑO 5', '2.851']].forEach(([a, v], i) => {
@@ -373,7 +383,7 @@ D.investigacion = () => {
     const x = M + i * colW;
     s.addShape(S.ellipse, { x: x + 0.01, y: ly - 0.1, w: 0.2, h: 0.2, fill: { color: hecho ? C.accent1 : C.background1 }, line: { color: hecho ? C.accent1 : C.text2, width: 1.5 } });
     mono(s, `ETAPA ${i + 1}`, { x, y: ly + 0.24, w: colW - 0.2, h: 0.28, color: hecho ? C.accent1 : C.text2 });
-    T(s, k.charAt(0) + k.slice(1).toLowerCase(), { x, y: ly + 0.44, w: colW - 0.2, h: 0.56, fontFace: F_SER, italic: true, fontSize: 34, color: hecho ? C.accent1 : C.text1 });
+    T(s, k.charAt(0) + k.slice(1).toLowerCase(), { x, y: ly + 0.44, w: colW - 0.2, h: 0.56, fontFace: F_SER, italic: true, fontSize: TIPO === 'A' ? 34 : 26, color: hecho ? C.accent1 : C.text1 });
     numero(s, v, { x, y: ly + 1.0, w: colW - 0.2, h: 0.72, fontSize: TX.cifraXL, valign: 'top', color: hecho ? C.accent1 : C.text1 });
     T(s, u, { x, y: ly + 1.7, w: colW - 0.3, h: 0.62, fontSize: TX.cuerpo, color: C.text2 });
     marca(s, hecho ? 'ok' : 'pen', hecho ? 'REALIZADA' : 'POR REALIZAR', x, ly + 2.38);
@@ -381,7 +391,7 @@ D.investigacion = () => {
   const by = 5.74;
   regla(s, by - 0.12, M, CW, C.accent1);
   mono(s, 'LA HIPÓTESIS QUE MÁS DECIDE', { x: M, y: by, w: 6, h: 0.3, color: C.text1 });
-  T(s, '«La barrera es la confianza, no el precio.»', { x: M, y: by + 0.32, w: 8.2, h: 0.6, fontFace: F_SER, italic: true, fontSize: 34, color: C.accent1 });
+  T(s, '«La barrera es la confianza, no el precio.»', { x: M, y: by + 0.32, w: 8.2, h: 0.6, fontFace: F_SER, italic: true, fontSize: TIPO === 'A' ? 34 : 26, color: C.accent1 });
   T(s, 'Muestra por cuotas: resultados indicativos (±8% con 150 casos).', { x: M + 8.3, y: by + 0.3, w: CW - 8.3, h: 0.66, fontSize: TX.etq, color: C.text2, valign: 'middle' });
   return s;
 };
@@ -403,8 +413,9 @@ D.ansoff = () => {
     else if (st === 'futuro') caja(s, x, y, qw, qh, { fill: { color: HOT }, line: { color: C.accent1, width: 1, dashType: 'dash' } });
     else caja(s, x, y, qw, qh);
     mono(s, a, { x: x + 0.22, y: y + 0.16, w: qw - 0.44, h: 0.3, color: C.accent1 });
-    T(s, t, { x: x + 0.22, y: y + 0.5, w: qw - 0.4, h: 0.42, fontSize: TX.cuerpoL, bold: true });
-    T(s, d, { x: x + 0.22, y: y + 0.96, w: qw - 0.4, h: 0.66, fontSize: TX.cuerpo, color: st === 'normal' ? C.text2 : C.text1 });
+    const dos = t.length > 18; // «Desarrollo de producto» y «de mercado» van en dos líneas
+    T(s, t, { x: x + 0.22, y: y + 0.48, w: qw - 0.4, h: dos ? 0.7 : 0.38, fontSize: TX.cuerpoL, bold: true, lineSpacingMultiple: 0.95 });
+    T(s, d, { x: x + 0.22, y: y + (dos ? 1.2 : 0.92), w: qw - 0.4, h: dos ? 0.42 : 0.66, fontSize: TX.cuerpo, color: st === 'normal' ? C.text2 : C.text1 });
   });
   flecha(s, gx + qw + gapX - 0.05, gy + qh / 2, -(gapX - 0.1), 0, C.accent1, 1.75);
   flecha(s, gx + 0.45, gy + qh + 0.05, 0, gapY - 0.1, C.accent1, 1.75);
@@ -599,7 +610,7 @@ D.estructura = () => {
 // 3.2.1 DOTACIÓN · evolución de personas al cierre de cada año
 D.dotacion = () => {
   const s = contenido('RECURSOS HUMANOS · DOTACIÓN', 'DE 13 A 56 PERSONAS EN CINCO AÑOS;', 'casi dos de cada tres son técnicos.');
-  const lw = 8.4;
+  const lw = 8.1;
   mono(s, 'PERSONAS AL CIERRE DE CADA AÑO', { x: M, y: Y0, w: lw, h: 0.3, color: C.text1 });
   s.addChart(pres.ChartType.bar, [{ name: 'Dotación', labels: ['Pre', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'], values: [5, 13, 21, 33, 40, 56] }], Object.assign({}, ejes, {
     x: M - 0.1, y: Y0 + 0.4, w: lw + 0.1, h: YF - Y0 - 0.4, barDir: 'col', barGapWidthPct: 40,
@@ -608,11 +619,13 @@ D.dotacion = () => {
     objectName: 'Dotación al cierre de cada año',
   }));
   const cx = M + lw + 0.45, cw = R - cx;
-  cajaHot(s, cx, Y0, cw, 2.35);
-  mono(s, 'TÉCNICOS AL AÑO 5', { x: cx + 0.25, y: Y0 + 0.22, w: cw - 0.5, h: 0.3, color: C.accent1 });
-  T(s, [{ text: '36', options: { fontFace: F_CON, bold: true, fontSize: TX.cifraXL, color: C.accent1 } }, { text: '  de 56', options: { fontFace: F_CON, bold: true, fontSize: TX.cifraS, color: C.text1 } }], { x: cx + 0.25, y: Y0 + 0.6, w: cw - 0.5, h: 0.8, valign: 'bottom' });
-  T(s, 'personas del equipo', { x: cx + 0.25, y: Y0 + 1.5, w: cw - 0.5, h: 0.4, fontSize: TX.cuerpo, color: C.text2 });
-  T(s, 'Nadie se contrata antes de que la carga lo justifique.', { x: cx, y: Y0 + 2.6, w: cw, h: 1.0, fontSize: TX.cuerpo, color: C.text2 });
+  foto(s, 'dotacion-equipo.jpg', cx, Y0, cw, 1.15, 'Equipo de técnicos de Lumine (operación proyectada)');
+  const by = Y0 + 1.32;
+  cajaHot(s, cx, by, cw, 1.75);
+  mono(s, 'TÉCNICOS AL AÑO 5', { x: cx + 0.25, y: by + 0.18, w: cw - 0.5, h: 0.3, color: C.accent1 });
+  T(s, [{ text: '36', options: { fontFace: F_CON, bold: true, fontSize: TX.cifraXL, color: C.accent1 } }, { text: '  de 56', options: { fontFace: F_CON, bold: true, fontSize: TX.cifraS, color: C.text1 } }], { x: cx + 0.25, y: by + 0.46, w: cw - 0.5, h: 0.78, valign: 'bottom' });
+  T(s, 'personas del equipo', { x: cx + 0.25, y: by + 1.24, w: cw - 0.5, h: 0.4, fontSize: TX.cuerpo, color: C.text2 });
+  T(s, 'Nadie se contrata antes de que la carga lo justifique.', { x: cx, y: by + 1.9, w: cw, h: 0.98, fontSize: TX.cuerpo, color: C.text2 });
   return s;
 };
 
@@ -675,7 +688,8 @@ D.flujo = () => {
     ['CERTIFICACIÓN', 'Sale certificado', 'Firma del Responsable Técnico.'],
     ['POSTVENTA', 'Ahorro medido', 'Informe a los tres meses.'],
   ];
-  const rh = 0.8, c1 = M + 0.95, c2 = M + 4.1, c3 = M + 7.55;
+  const rh = 0.8, c1 = M + 0.95, c2 = M + 3.85, c3 = M + 6.95, fw = 1.3, fh = 0.66;
+  const alt = ['Cotización en la web', 'Diagnóstico con telemetría', 'Dúo de técnicos instalando el kit', 'Entrega del auto certificado', 'Centro de control que mide el ahorro'];
   linea(s, M + 0.31, Y0 + rh / 2, 0, rh * (et.length - 1), C.accent5, 1.5);
   et.forEach(([e, t, d], i) => {
     const y = Y0 + i * rh, hot = i === 2;
@@ -684,7 +698,8 @@ D.flujo = () => {
     tag(s, '0' + (i + 1), M, y + (rh - 0.42) / 2, { w: 0.62, h: 0.42, size: TX.etq, off: !hot });
     mono(s, e, { x: c1, y, w: c2 - c1 - 0.2, h: rh, valign: 'middle', color: hot ? C.accent1 : C.text2 });
     T(s, t, { x: c2, y, w: c3 - c2 - 0.2, h: rh, valign: 'middle', fontSize: TX.sub, bold: true, color: hot ? C.accent1 : C.text1 });
-    T(s, d, { x: c3, y, w: R - c3, h: rh, valign: 'middle', fontSize: TX.cuerpo, color: hot ? C.text1 : C.text2 });
+    T(s, d, { x: c3, y, w: R - fw - 0.25 - c3, h: rh, valign: 'middle', fontSize: TX.cuerpo, color: hot ? C.text1 : C.text2 });
+    foto(s, `flujo-${i + 1}.jpg`, R - fw, y + (rh - fh) / 2, fw, fh, alt[i], hot ? C.accent1 : C.accent5);
   });
   return s;
 };
@@ -693,9 +708,10 @@ D.flujo = () => {
 D.controles = () => {
   const s = contenido('OPERACIONES · PUNTOS DE CONTROL', 'UNA JORNADA DE 8,4 HORAS,', 'cuatro controles.');
   numero(s, '8,4 h', { x: M, y: Y0, w: 2.6, h: 0.86, fontSize: TX.cifraXL, valign: 'middle', color: C.accent1 });
-  T(s, [{ text: 'Un vehículo por jornada', options: { bold: true, breakLine: true } }, { text: 'Dúo con un técnico de nivel 3.', options: { color: C.text2 } }], { x: M + 2.6, y: Y0, w: 6, h: 0.86, fontSize: TX.cuerpoL, valign: 'middle' });
-  marca(s, 'est', 'ESTIMACIÓN · TIEMPOS', R, Y0 + 0.24, { alignRight: true });
+  T(s, [{ text: 'Un vehículo por jornada', options: { bold: true, breakLine: true } }, { text: 'Dúo con un técnico de nivel 3.', options: { color: C.text2 } }], { x: M + 2.6, y: Y0, w: 5.2, h: 0.86, fontSize: TX.cuerpoL, valign: 'middle' });
+  foto(s, 'controles-banco.jpg', R - 3.6, Y0 - 0.06, 3.6, 1.0, 'Auto con el kit en el banco de pruebas');
   const py = 3.86;
+  marca(s, 'est', 'ESTIMACIÓN · TIEMPOS', R, py - 0.05, { alignRight: true });
   regla(s, py - 0.14, M, CW, C.accent1);
   mono(s, 'CUATRO CONTROLES · SI FALLA, SE DETIENE', { x: M, y: py, w: CW, h: 0.3, color: C.accent1 });
   const n = 4, gap = 0.22, pw = (CW - (n - 1) * gap) / n, by = py + 0.44, bh = 1.15;
@@ -703,7 +719,7 @@ D.controles = () => {
     const x = M + i * (pw + gap);
     caja(s, x, by, pw, bh);
     tag(s, '0' + (i + 1), x + 0.2, by + 0.2, { w: 0.6, h: 0.38, size: TX.etq });
-    T(s, q, { x: x + 0.2, y: by + 0.62, w: pw - 0.35, h: 0.46, fontSize: TX.sub, bold: true });
+    T(s, q, { x: x + 0.2, y: by + 0.64, w: pw - 0.3, h: 0.42, fontSize: TX.cuerpoL, bold: true });
     if (i < n - 1) flecha(s, x + pw + 0.03, by + bh / 2, gap - 0.06, 0, C.accent1, 1.5);
   });
   const cy = by + bh + 0.3;
@@ -888,7 +904,7 @@ D['a-dudas'] = () => {
   d.forEach(([q, r, b], i) => {
     const x = M + (i % 2) * (cw + gap), y = Y0 + Math.floor(i / 2) * (ch + 0.18);
     caja(s, x, y, cw, ch);
-    T(s, q, { x: x + 0.25, y, w: 2.3, h: ch, valign: 'middle', fontFace: F_SER, italic: true, fontSize: 30, color: C.accent1 });
+    T(s, q, { x: x + 0.25, y, w: 2.35, h: ch, valign: 'middle', fontFace: F_SER, italic: true, fontSize: TIPO === 'A' ? 30 : 24, color: C.accent1 });
     T(s, r, { x: x + 2.7, y: y + 0.14, w: cw - 2.85, h: 0.66, fontSize: TX.cuerpo, bold: true, valign: 'middle' });
     T(s, b, { x: x + 2.7, y: y + 0.84, w: cw - 2.85, h: 0.66, fontSize: TX.cuerpo, color: C.text2, valign: 'top' });
   });
@@ -1058,8 +1074,8 @@ D['a-jornada'] = () => {
   ['¿Vehículo apto?', '¿Masa y ejes?', '¿Aislación?', '¿Dinamómetro?'].forEach((q, i) => {
     const xx = M + i * (pw + 0.2);
     caja(s, xx, py + 0.36, pw, 0.7);
-    s.addShape(S.diamond, { x: xx + 0.2, y: py + 0.55, w: 0.32, h: 0.32, fill: { color: C.accent1 }, line: { type: 'none' } });
-    T(s, q, { x: xx + 0.65, y: py + 0.36, w: pw - 0.75, h: 0.7, valign: 'middle', fontSize: TX.cuerpo, bold: true });
+    s.addShape(S.rect, { x: xx, y: py + 0.36, w: 0.07, h: 0.7, fill: { color: C.accent1 }, line: { type: 'none' } });
+    T(s, q, { x: xx + 0.25, y: py + 0.36, w: pw - 0.32, h: 0.7, valign: 'middle', fontSize: TX.cuerpo, bold: true });
   });
   return s;
 };
@@ -1209,13 +1225,19 @@ async function aplicarTema(archivo, tema) {
 // Sin esto, PowerPoint reemplaza las fuentes de la marca por Calibri o Arial en cualquier computador que no las tenga
 // instaladas. Se incrustan como PowerPoint (ppt/fonts/*.fntdata en formato EOT sin comprimir, que lee T2Embed).
 // Las nueve son OFL con fsType 0, es decir, se permite incrustarlas.
-const FUENTES_PPTX = [
-  [F_TIT, { regular: 'ArchivoSemiExpanded-ExtraBold.ttf' }],
-  [F_CON, { regular: 'ArchivoCondensed-Regular.ttf', bold: 'ArchivoCondensed-Bold.ttf' }],
-  [F_BODY, { regular: 'Figtree-Regular.ttf', bold: 'Figtree-Bold.ttf' }],
-  [F_MONO, { regular: 'IBMPlexMono-Regular.ttf', bold: 'IBMPlexMono-Bold.ttf' }],
-  [F_SER, { regular: 'InstrumentSerif-Regular.ttf', italic: 'InstrumentSerif-Italic.ttf' }],
-];
+const ARCHIVOS = {
+  A: [{ regular: 'ArchivoSemiExpanded-ExtraBold.ttf' }, { regular: 'ArchivoCondensed-Regular.ttf', bold: 'ArchivoCondensed-Bold.ttf' },
+    { regular: 'Figtree-Regular.ttf', bold: 'Figtree-Bold.ttf' }, { regular: 'IBMPlexMono-Regular.ttf', bold: 'IBMPlexMono-Bold.ttf' },
+    { regular: 'InstrumentSerif-Regular.ttf', italic: 'InstrumentSerif-Italic.ttf' }],
+  B: [{ regular: 'ArchivoExpanded-ExtraBold.ttf' }, { regular: 'ArchivoCondensed-Regular.ttf', bold: 'ArchivoCondensed-Bold.ttf' },
+    { regular: 'Archivo-Regular.ttf', bold: 'Archivo-Bold.ttf' }, { regular: 'ArchivoSemiCondensed-Medium.ttf', bold: 'ArchivoSemiCondensed-Bold.ttf' },
+    { regular: 'ArchivoExpandedLight-Regular.ttf', italic: 'ArchivoExpandedLight-Italic.ttf' }],
+  C: [{ regular: 'Michroma-Regular.ttf' }, { regular: 'ArchivoCondensed-Regular.ttf', bold: 'ArchivoCondensed-Bold.ttf' },
+    { regular: 'Archivo-Regular.ttf', bold: 'Archivo-Bold.ttf' }, { regular: 'ArchivoSemiCondensed-Medium.ttf', bold: 'ArchivoSemiCondensed-Bold.ttf' },
+    { regular: 'ArchivoExpandedLight-Regular.ttf', italic: 'ArchivoExpandedLight-Italic.ttf' }],
+};
+const FUENTES_PPTX = JUEGOS[TIPO].map((f, i) => [f, ARCHIVOS[TIPO][i]]);
+if (TIPO === 'C') FUENTES_PPTX.push([F_PCT, { regular: 'ArchivoExpanded-ExtraBold.ttf' }]);
 function ttfAEot(ttf) {
   const tablas = {};
   for (let i = 0, n = ttf.readUInt16BE(4); i < n; i++) {

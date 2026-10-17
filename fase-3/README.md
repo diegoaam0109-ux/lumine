@@ -8,7 +8,7 @@ Integrantes: Diego Alarcón, Benjamín Torres y Lukas Verdugo.
 | `Grupo_01_LumineMotors_Fase3.pdf` | Presentar desde cualquier computador: las tipografías van incrustadas. |
 | `Grupo_01_LumineMotors_Fase3.pptx` | Editar en PowerPoint. Cada diapositiva trae **notas del orador** con lo que hay que decir. |
 | `GUION.md` | Guion de la exposición: qué dice cada integrante, con tiempos por diapositiva y el traspaso. |
-| `fuentes/` | Tipografías (Archivo, Figtree, IBM Plex Mono, Instrument Serif). Instálalas antes de abrir el PPT. |
+| `fuentes/` | Tipografías: Michroma y la familia Archivo (expandida, normal, semicondensada y condensada) que usa la presentación, y las de la marca (Figtree, IBM Plex Mono, Instrument Serif) para la opción A. Ya van incrustadas en el PPTX. |
 | `generador/` | Script que arma la presentación. El guion vive en `generador/guion.js` y llega a las notas y a `GUION.md`. |
 
 El informe de la Fase 3 (.docx) **no está en el repositorio** porque el repositorio es público. Todas las cifras de la
@@ -81,7 +81,13 @@ npm install
 ./render.sh            # PPTX, PDF y GUION.md en la carpeta de arriba, e imágenes de revisión en r/
 ```
 
-El PPTX trae las nueve tipografías **incrustadas** (`ppt/fonts/`), así se ve con la letra de la marca aunque el
+**Tipografía (opción C, «deportiva», elegida por el equipo el 17-10-2026):** titulares en Michroma (estilo Eurostile);
+el «%» de los titulares va en Archivo porque el de Michroma se lee como «o/o». Acento en Archivo Expanded Light itálica
+celeste, texto en Archivo, etiquetas en Archivo SemiCondensed y cifras en Archivo Condensed. Las otras opciones siguen
+disponibles para comparar: `LUMINE_TIPO=B` (titulares en Archivo Expanded) o `LUMINE_TIPO=A` (la de la marca, con serif
+itálica y mono). Los .ttf de Archivo se crean con `generador/mkfonts.py`; Michroma sale de `@fontsource/michroma`.
+
+El PPTX trae sus tipografías **incrustadas** (`ppt/fonts/`), así se ve con la letra de la marca aunque el
 computador no las tenga instaladas. Si PowerPoint mostrara Calibri o Arial, instala las de `fuentes/` (doble clic › Instalar)
 y vuelve a abrirlo. El PDF siempre trae las fuentes.
 

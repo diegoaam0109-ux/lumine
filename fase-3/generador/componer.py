@@ -75,10 +75,27 @@ def cierre():
     foto.save(OUT / 'cierre-escenario.jpg', quality=90)
 
 
+def recorte(nombre, archivo, w, h, fx=0.5, fy=0.5, velo=30):
+    """Foto recortada a la proporción exacta de su caja en la lámina (2× de resolución), apenas oscurecida."""
+    foto = cubrir(Image.open(ID / 'imagenes' / archivo).convert('RGB'), round(w * 300), round(h * 300), fx, fy)
+    oscurecer(foto, Image.new('L', foto.size, velo)).save(OUT / nombre, quality=90)
+
+
 if __name__ == '__main__':
     portada()
     apertura('apertura-marketing.jpg', 'lumine-05-colectivero-santiago.jpg', fx=0.95)
     apertura('apertura-rrhh.jpg', 'lumine-14-capacitacion.jpg', fx=0.55)
     apertura('apertura-operaciones.jpg', 'lumine-16-taller.jpg', fx=0.5)
     cierre()
+    # fotos complementarias dentro de las láminas (medidas en pulgadas, iguales a las de deck.js)
+    for n, (archivo, fx, fy) in enumerate([
+        ('lumine-12-maqueta.jpg', 0.5, 0.45),          # captación: cotiza en la web
+        ('lumine-09-diagnostico.jpg', 0.35, 0.5),      # asesoría: medir antes de decidir
+        ('lumine-08-duo-tecnicos.jpg', 0.5, 0.45),     # taller: el dúo instala
+        ('lumine-21-entrega-cliente.jpg', 0.5, 0.5),   # certificación: sale certificado
+        ('lumine-20-centro-control.jpg', 0.5, 0.4),    # postventa: ahorro medido
+    ], 1):
+        recorte(f'flujo-{n}.jpg', archivo, 1.3, 0.66, fx, fy)
+    recorte('controles-banco.jpg', 'lumine-17-banco-pruebas.jpg', 3.6, 1.0, 0.5, 0.55)
+    recorte('dotacion-equipo.jpg', 'lumine-18-equipo.jpg', 3.58, 1.15, 0.5, 0.55)
     print('listo:', ', '.join(p.name for p in sorted(OUT.glob('*.jpg'))))

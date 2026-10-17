@@ -86,7 +86,12 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   (Habilita, operaciones, conclusiones y cierre); ~415 palabras c/u (1.249 en total).
 - Imágenes: portada con `lumine-01-rayos-x`, aperturas con colectivero, capacitación y taller (rotuladas «imagen
   ilustrativa» u «operación proyectada»), cierre con `escenario-c`. Se componen con `generador/componer.py`. Las láminas
-  con datos no llevan fotos. La primera etapa de la investigación se llama «Profundidad» (entrevista en profundidad).
+  con datos llevan solo fotos chicas complementarias (una por etapa del flujo, banco de pruebas en controles, equipo en
+  dotación), rotuladas al pie. La primera etapa de la investigación se llama «Profundidad» (entrevista en profundidad).
+- Tipografía de la Fase 3: **opción C, titulares en Michroma** (el «%» va en Archivo) y el resto en la familia Archivo
+  (acento Expanded Light itálica, texto Archivo, etiquetas SemiCondensed, cifras Condensed). El equipo la eligió frente a la
+  B (todo Archivo) y a la de la marca (serif itálica + mono); `LUMINE_TIPO=A|B` las recupera. En objetivos se quitaron, a pedido, «Cotizaciones digitales: por confirmar» y
+  la marca «Estimación · pronóstico».
 - Rediseño de legibilidad (17-10-2026): escala fija en `TX` de `generador/deck.js` (titulares 34/40 pt, cuerpo 20–24, etiquetas
   de gráficos 16 o más, cifras 30–48, marcas de estado 14, institucional 11–12). Si algo no cabe, se divide la lámina; nunca se
   achica la letra. Estructura y dotación, Habilita y nómina, flujo y controles, resultados y dólar van en láminas separadas;
@@ -122,7 +127,7 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - Para convertir el PPT a PDF hay que instalar `libreoffice-impress` y las fuentes de `control-de-gestion/fuentes/`.
   `render.sh` exporta con configuración regional es-CL para que los decimales salgan con coma.
 - Playwright usa el Chromium de `/opt/pw-browsers`; no ejecutes `playwright install`.
-- El PPTX de la Fase 3 incrusta sus nueve tipografías (EOT en `ppt/fonts/`, función `incrustarFuentes` de `deck.js`);
+- El PPTX de la Fase 3 incrusta sus tipografías (EOT en `ppt/fonts/`, función `incrustarFuentes` de `deck.js`);
   sin eso, PowerPoint sin las fuentes instaladas muestra Calibri y «no se parece al estilo». LibreOffice 24.2 no lee fuentes
   incrustadas en PPTX, así que el render de prueba necesita las fuentes instaladas.
 - En Windows, las fuentes instaladas para el usuario no llegan a LibreOffice hasta cerrar sesión: si `pdffonts` muestra
