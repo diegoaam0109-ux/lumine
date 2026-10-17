@@ -99,7 +99,7 @@ const numero = (s, text, o = {}) => T(s, text, Object.assign({ fontFace: F_CON, 
 const regla = (s, y, x = M, w = CW, color = C.accent5) => linea(s, x, y, w, 0, color, 0.75);
 // rombo de decisión con texto adentro
 function rombo(s, text, x, y, w, h, hot) {
-  s.addText(text, { shape: S.diamond, x, y, w, h, fill: { color: hot ? HOT : C.background2 }, line: { color: C.accent1, width: 1 }, fontFace: F_BODY, fontSize: 9.5, color: C.text1, align: 'center', valign: 'middle', margin: 0, lang: 'es-CL' });
+  s.addText(text, { shape: S.diamond, x, y, w, h, fill: { color: hot ? HOT : C.background2 }, line: { color: C.accent1, width: 1 }, fontFace: F_BODY, fontSize: 10.5, color: C.text1, align: 'center', valign: 'middle', margin: 0, lang: 'es-CL' });
 }
 // paso de un diagrama: caja con texto centrado
 function paso(s, text, x, y, w, h, o = {}) {
@@ -149,7 +149,7 @@ const FUENTES = {
   objetivos: `Fuente: elaboración propia con base en ${INF} (§3.1.1, Tablas N° 1 y 10).`,
   segmentacion: `Fuentes: INE (2025), parque de vehículos 2024; SII (2025); Fielbaum y Tirachini (2021); elaboración propia (${INF}, §3.1.2).`,
   investigacion: `Fuente: elaboración propia (${INF}, §3.1.3, Tablas N° 2 y 3). Muestra no probabilística: resultados indicativos.`,
-  ansoff: `Fuentes: Ansoff (1965); elaboración propia (${INF}, §3.1.4, Figura N° 1).`,
+  ansoff: `Fuentes: Ansoff (1965); elaboración propia (${INF}, §3.1.4, §3.1.5.4, §3.2.1 y Figura N° 1).`,
   posicionamiento: `Fuentes: KMcheck (2026); Autofact (2026); Mercado Libre (2026); Abastible (2026); Gasco (s.f.); BioBioChile (2026); elaboración propia (Anexo N° 2).`,
   precio: `Fuentes: elaboración propia (${INF}, Tablas N° 5 y 6; Anexos N° 2 y 9); Banco Central de Chile (2026), tasa de consumo.`,
   demanda: `Fuentes: INE (2025); Centro UC en Emol (2026); Descubre (2026); Massiani y Gohs (2015); elaboración propia (Tabla N° 10, Anexo N° 4).`,
@@ -239,56 +239,43 @@ D.portada = () => {
 
 // =====================================================================
 // 3.1.1 OBJETIVOS
+// Tamaños mínimos (crítica del profesor guía: «demasiados textos pequeños»):
+// texto principal 12,5 a 14 pt, etiquetas mono 9 pt o más, cifras condensadas grandes.
 // =====================================================================
 D.objetivos = () => {
   const s = contenido('01', 'PLAN DE MARKETING · OBJETIVOS', '299 VEHÍCULOS EL PRIMER AÑO,', 'la referencia al quinto.');
-  // objetivo general
-  const gx = M, gy = 2.55, gw = 3.9, gh = 2.35;
+  const gx = M, gy = 2.55, gw = 3.9, gh = 2.42;
   cajaHot(s, gx, gy, gw, gh);
-  mono(s, 'OBJETIVO GENERAL · CINCO AÑOS', { x: gx + 0.25, y: gy + 0.2, w: gw - 0.5, h: 0.24, fontSize: 9, color: C.accent1 });
-  T(s, 'Ser la referencia de la hibridación de posventa en Chile.', { x: gx + 0.25, y: gy + 0.5, w: gw - 0.5, h: 0.8, fontSize: 15.5, bold: true });
-  T(s, 'Tres talleres propios en la Región Metropolitana y una red certificada que instale con los patrones de Lumine en todas las regiones.', { x: gx + 0.25, y: gy + 1.38, w: gw - 0.5, h: 0.9, fontSize: 12, color: C.text2 });
+  mono(s, 'OBJETIVO GENERAL · CINCO AÑOS', { x: gx + 0.25, y: gy + 0.2, w: gw - 0.5, h: 0.24, color: C.accent1 });
+  T(s, 'Ser la referencia de la hibridación de posventa en Chile.', { x: gx + 0.25, y: gy + 0.52, w: gw - 0.5, h: 0.9, fontSize: 17, bold: true });
+  T(s, 'Tres talleres propios en la Región Metropolitana y una red certificada en todas las regiones.', { x: gx + 0.25, y: gy + 1.45, w: gw - 0.5, h: 0.85, fontSize: 13, color: C.text2 });
   // metas del primer año
-  const mx = gx + gw + 0.4, mw = R - mx, n = 5, gap = 0.15, tw = (mw - (n - 1) * gap) / n;
-  mono(s, 'METAS DEL PRIMER AÑO', { x: mx, y: gy - 0.02, w: mw, h: 0.24, fontSize: 9, color: C.text1 });
-  const metas = [
-    ['299', 'vehículos instalados', 'Uso laboral de la RM'],
-    [null, 'cotizaciones digitales', 'Según la conversión medida'],
-    ['3', 'casos con ahorro medido', 'Publicados en nueve meses'],
-    ['80%', 'clientes satisfechos', 'Nota 4 o 5 de 5, a los tres meses'],
-    ['15%', 'clientes por recomendación', 'Pregunta de origen del formulario'],
-  ];
-  metas.forEach(([v, k, d], i) => {
+  const mx = gx + gw + 0.4, mw = R - mx, n = 5, gap = 0.12, tw = (mw - (n - 1) * gap) / n;
+  mono(s, 'METAS DEL PRIMER AÑO', { x: mx, y: gy - 0.02, w: mw, h: 0.24, color: C.text1 });
+  const metas = [['299', 'vehículos instalados'], [null, 'cotizaciones digitales'], ['3', 'casos con ahorro medido'], ['80%', 'clientes satisfechos'], ['15%', 'clientes por recomendación']];
+  metas.forEach(([v, k], i) => {
     const x = mx + i * (tw + gap), y = gy + 0.32, h = gh - 0.32;
     caja(s, x, y, tw, h);
-    tag(s, '0' + (i + 1), x + 0.15, y + 0.15, { off: v === null });
-    if (v) numero(s, v, { x: x + 0.15, y: y + 0.38, w: tw - 0.3, h: 0.72, fontSize: 44, color: i === 0 ? C.accent1 : C.text1 });
-    else porConfirmar(s, x + 0.15, y + 0.72, tw - 0.3, { size: 7 });
-    T(s, k, { x: x + 0.15, y: y + 1.12, w: tw - 0.3, h: 0.42, fontSize: 11.5, bold: true });
-    T(s, d, { x: x + 0.15, y: y + 1.52, w: tw - 0.3, h: 0.48, fontSize: 10, color: C.text2 });
+    tag(s, '0' + (i + 1), x + 0.13, y + 0.15, { off: v === null });
+    if (v) numero(s, v, { x: x + 0.13, y: y + 0.42, w: tw - 0.26, h: 0.72, fontSize: 44, color: i === 0 ? C.accent1 : C.text1 });
+    else porConfirmar(s, x + 0.13, y + 0.75, tw - 0.26, { size: 7.5 });
+    T(s, k, { x: x + 0.13, y: y + 1.24, w: tw - 0.2, h: 0.8, fontSize: 12.5, bold: true });
   });
   // hitos de los años 1 a 5
-  const hy = 5.08;
-  mono(s, 'HITOS · INSTALACIONES PROPIAS Y RED POR AÑO', { x: M, y: hy, w: 6, h: 0.24, fontSize: 9, color: C.text1 });
-  supuesto(s, 'PRONÓSTICO · ESCENARIO BASE', R - 2.75, hy - 0.03, 2.75, { align: 'center' });
+  const hy = 5.2;
+  mono(s, 'INSTALACIONES PROPIAS Y RED POR AÑO', { x: M, y: hy, w: 6, h: 0.24, color: C.text1 });
+  supuesto(s, 'PRONÓSTICO · ESCENARIO BASE', R - 2.8, hy - 0.03, 2.8, { align: 'center', size: 9 });
   const lx = M + 0.2, lw = CW - 0.4, ly = hy + 0.66;
   linea(s, lx, ly, lw, 0, C.accent5, 1.25);
-  const hitos = [
-    ['AÑO 1', '299', 'Un taller · tres dúos'],
-    ['AÑO 2', '869', 'Seis dúos · 3 talleres certificados'],
-    ['AÑO 3', '1.674', 'Taller 2 · 9 certificados · 1.ª flota'],
-    ['AÑO 4', '2.268', 'Dos talleres llenos · 20 certificados'],
-    ['AÑO 5', '2.851', 'Tercer taller · 42 certificados'],
-  ];
+  const hitos = [['AÑO 1', '299', 'Un taller, tres dúos'], ['AÑO 2', '869', 'Seis dúos · red de 3'], ['AÑO 3', '1.674', 'Taller 2 · red de 9'], ['AÑO 4', '2.268', 'Dos talleres · red de 20'], ['AÑO 5', '2.851', 'Taller 3 · red de 42']];
   const step = lw / (hitos.length - 1);
   hitos.forEach(([a, v, d], i) => {
-    const cx = lx + i * step, bw = 2.6;
-    const bx = Math.min(Math.max(cx - bw / 2, M), R - bw);
-    s.addShape(S.ellipse, { x: cx - 0.07, y: ly - 0.07, w: 0.14, h: 0.14, fill: { color: i === 0 ? C.accent1 : C.background1 }, line: { color: C.accent1, width: 1.25 } });
-    mono(s, a, { x: bx, y: ly - 0.36, w: bw, h: 0.22, fontSize: 8.5, align: i === 0 ? 'left' : i === hitos.length - 1 ? 'right' : 'center', color: C.accent1 });
+    const cx = lx + i * step, bw = 2.7, bx = Math.min(Math.max(cx - bw / 2, M), R - bw);
     const al = i === 0 ? 'left' : i === hitos.length - 1 ? 'right' : 'center';
-    numero(s, v, { x: bx, y: ly + 0.12, w: bw, h: 0.48, fontSize: 28, valign: 'top', align: al });
-    T(s, d, { x: bx, y: ly + 0.6, w: bw, h: 0.42, fontSize: 10.5, color: C.text2, align: al });
+    s.addShape(S.ellipse, { x: cx - 0.07, y: ly - 0.07, w: 0.14, h: 0.14, fill: { color: i === 0 ? C.accent1 : C.background1 }, line: { color: C.accent1, width: 1.25 } });
+    mono(s, a, { x: bx, y: ly - 0.37, w: bw, h: 0.22, align: al, color: C.accent1 });
+    numero(s, v, { x: bx, y: ly + 0.1, w: bw, h: 0.46, fontSize: 28, valign: 'top', align: al });
+    T(s, d, { x: bx, y: ly + 0.56, w: bw, h: 0.3, fontSize: 12.5, color: C.text2, align: al });
   });
   return s;
 };
@@ -298,51 +285,38 @@ D.objetivos = () => {
 // =====================================================================
 D.segmentacion = () => {
   const s = contenido('02', 'PLAN DE MARKETING · SEGMENTACIÓN', 'EL CLIENTE SE DEFINE POR SU AUTO,', 'no por su edad.');
-  const lw = 4.4, y0 = 2.55;
-  mono(s, 'DELIMITACIÓN · SIN ESTO NO HAY COMPRA', { x: M, y: y0, w: lw, h: 0.24, fontSize: 9, color: C.text1 });
-  const cond = [
-    ['Técnica', 'Liviano, a combustión y con tracción delantera: el kit va sobre el eje trasero.'],
-    ['Acceso', 'Que llegue al taller: todo Chile, salvo Rapa Nui, Juan Fernández y la Antártica.'],
-    ['Unidad', 'Persona natural vinculada a un vehículo que cumpla la condición técnica.'],
-  ];
-  const rh = 0.78;
+  const lw = 4.6, y0 = 2.55, rh = 0.9;
+  mono(s, 'SIN ESTO NO HAY COMPRA', { x: M, y: y0, w: lw, h: 0.24, color: C.text1 });
+  const cond = [['Técnica', 'Liviano, a combustión y con tracción delantera.'], ['Acceso', 'Todo Chile, salvo Rapa Nui, Juan Fernández y la Antártica.'], ['Unidad', 'Persona natural vinculada a un auto compatible.']];
   cond.forEach(([t, d], i) => {
-    const y = y0 + 0.34 + i * rh;
+    const y = y0 + 0.36 + i * rh;
     regla(s, y, M, lw);
-    tag(s, '0' + (i + 1), M, y + 0.12);
-    T(s, t, { x: M + 0.55, y: y + 0.08, w: lw - 0.55, h: 0.3, fontSize: 14, bold: true });
-    T(s, d, { x: M + 0.55, y: y + 0.38, w: lw - 0.55, h: 0.4, fontSize: 11, color: C.text2 });
+    tag(s, '0' + (i + 1), M, y + 0.13);
+    T(s, t, { x: M + 0.55, y: y + 0.08, w: lw - 0.55, h: 0.32, fontSize: 15, bold: true });
+    T(s, d, { x: M + 0.55, y: y + 0.4, w: lw - 0.55, h: 0.48, fontSize: 12.5, color: C.text2 });
   });
-  regla(s, y0 + 0.34 + 3 * rh, M, lw);
-  T(s, 'La antigüedad del auto y la capacidad de pago no delimitan el mercado.', { x: M, y: y0 + 0.42 + 3 * rh, w: lw, h: 0.42, fontSize: 10.5, color: C.text2, italic: true });
+  regla(s, y0 + 0.36 + 3 * rh, M, lw);
   // cuatro variables
-  const gx = M + lw + 0.4, gw = R - gx, gap = 0.2, cw = (gw - gap) / 2, ch = 1.42;
-  const vars = [
-    ['GEOGRÁFICA', '36,8%', 'del parque está en la Región Metropolitana (RM); el ahorro varía, pero no desaparece.'],
-    ['DEMOGRÁFICA', '4 roles', 'Usuario, dueño efectivo, decisor o pagador e influyentes.'],
-    ['PSICOGRÁFICA', '5 motivos', 'Ahorro, ambiente, anticipación normativa, innovación y apego al auto.'],
-    ['CONDUCTUAL', '6 dimensiones', 'La intensidad y el tipo de uso fijan cuándo el ahorro paga la inversión.'],
-  ];
+  const gx = M + lw + 0.4, gw = R - gx, gap = 0.2, cw = (gw - gap) / 2, ch = 1.45;
+  const vars = [['GEOGRÁFICA', '36,8%', 'del parque, en la Región Metropolitana (RM).'], ['DEMOGRÁFICA', '4 roles', 'usuario, dueño, pagador e influyentes.'], ['PSICOGRÁFICA', '5 motivos', 'ahorro, ambiente, norma, innovación y apego.'], ['CONDUCTUAL', '6 dimensiones', 'la intensidad de uso define el valor.']];
   vars.forEach(([k, v, d], i) => {
     const x = gx + (i % 2) * (cw + gap), y = y0 + Math.floor(i / 2) * (ch + gap), hot = i === 3;
     if (hot) cajaHot(s, x, y, cw, ch); else caja(s, x, y, cw, ch);
-    mono(s, k, { x: x + 0.2, y: y + 0.15, w: cw - 0.4, h: 0.22, fontSize: 8.5, color: hot ? C.accent1 : C.text2 });
-    numero(s, v, { x: x + 0.2, y: y + 0.36, w: cw - 0.4, h: 0.55, fontSize: 30, valign: 'top', color: hot ? C.accent1 : C.text1 });
-    T(s, d, { x: x + 0.2, y: y + 0.9, w: cw - 0.4, h: 0.52, fontSize: 11, color: C.text2 });
+    mono(s, k, { x: x + 0.2, y: y + 0.15, w: cw - 0.4, h: 0.22, color: hot ? C.accent1 : C.text2 });
+    numero(s, v, { x: x + 0.2, y: y + 0.38, w: cw - 0.4, h: 0.55, fontSize: 32, valign: 'top', color: hot ? C.accent1 : C.text1 });
+    T(s, d, { x: x + 0.2, y: y + 0.96, w: cw - 0.4, h: 0.42, fontSize: 12.5, color: C.text2 });
   });
   // punto de entrada y empresas
-  const by = 5.85;
-  regla(s, by - 0.1, M, CW, C.accent1);
+  const by = 5.9;
+  regla(s, by - 0.08, M, CW, C.accent1);
   punto(s, M, by + 0.1);
-  mono(s, 'PUNTO DE ENTRADA', { x: M + 0.17, y: by, w: 3, h: 0.26, valign: 'middle', fontSize: 9, color: C.accent1 });
-  T(s, 'Uso laboral de alta intensidad en la RM: colectivos, taxis y aplicaciones.', { x: M, y: by + 0.3, w: 5.4, h: 0.55, fontSize: 13.5, bold: true });
-  const ex = M + 5.9, ew = R - ex;
-  mono(s, 'MERCADO DE EMPRESAS', { x: ex, y: by, w: ew, h: 0.26, valign: 'middle', fontSize: 9, color: C.text1 });
-  const emp = [['14.473', 'autos arrendados a conductores'], ['408', 'líneas de colectivos'], ['22.447', 'talleres mecánicos']];
-  const eww = ew / 3;
-  emp.forEach(([v, d], i) => {
-    numero(s, v, { x: ex + i * eww, y: by + 0.27, w: eww, h: 0.36, fontSize: 20, valign: 'top' });
-    T(s, d, { x: ex + i * eww, y: by + 0.6, w: eww - 0.1, h: 0.3, fontSize: 10.5, color: C.text2 });
+  mono(s, 'PUNTO DE ENTRADA', { x: M + 0.17, y: by, w: 3, h: 0.26, valign: 'middle', color: C.accent1 });
+  T(s, 'Uso laboral intensivo en la RM: colectivos, taxis y aplicaciones.', { x: M, y: by + 0.3, w: 5.7, h: 0.6, fontSize: 14, bold: true });
+  const ex = M + 6.2, ew = R - ex, eww = ew / 3;
+  mono(s, 'MERCADO DE EMPRESAS', { x: ex, y: by, w: ew, h: 0.26, valign: 'middle', color: C.text1 });
+  [['14.473', 'autos arrendados'], ['408', 'líneas de colectivos'], ['22.447', 'talleres mecánicos']].forEach(([v, d], i) => {
+    numero(s, v, { x: ex + i * eww, y: by + 0.28, w: eww, h: 0.38, fontSize: 22, valign: 'top' });
+    T(s, d, { x: ex + i * eww, y: by + 0.64, w: eww - 0.1, h: 0.26, fontSize: 12, color: C.text2 });
   });
   return s;
 };
@@ -352,88 +326,75 @@ D.segmentacion = () => {
 // =====================================================================
 D.investigacion = () => {
   const s = contenido('03', 'PLAN DE MARKETING · INVESTIGACIÓN DE MERCADO', 'SEIS HIPÓTESIS', 'antes de fijar el precio.');
-  const y0 = 2.55, n = 4, gap = 0.35, cw = (CW - (n - 1) * gap) / n, ch = 2.28;
-  mono(s, 'DISEÑO MIXTO, SECUENCIAL Y EXPLORATORIO · CUATRO ETAPAS', { x: M, y: y0, w: CW, h: 0.24, fontSize: 9, color: C.text1 });
-  const et = [
-    ['EXPLORATORIA', '1', 'conductor de aplicaciones', '100.000 km al año; un ahorro de 5% a 10% ya le parece motivo.', true],
-    ['EXPERTOS', '4', 'expertos', 'Estado, academia, industria y mecánica.', false],
-    ['CLIENTES', '5', 'perfiles más', 'Ruta larga, colectivo o taxi, dueño que no maneja, familiar y traslado.', false],
-    ['ENCUESTA', '150', 'casos, mínimo 100', 'Por cuotas en la RM: 23 preguntas y 7 minutos.', false],
-  ];
-  et.forEach(([k, v, u, d, hecho], i) => {
-    const x = M + i * (cw + gap), y = y0 + 0.32;
+  const y0 = 2.55, n = 4, gap = 0.35, cw = (CW - (n - 1) * gap) / n, ch = 2.15;
+  mono(s, 'CUATRO ETAPAS · PRIMERO CUALITATIVA, DESPUÉS ENCUESTA', { x: M, y: y0, w: CW, h: 0.24, color: C.text1 });
+  const et = [['EXPLORATORIA', '1', 'conductor de aplicaciones', true], ['EXPERTOS', '4', 'Estado, academia, industria y mecánica', false], ['CLIENTES', '5', 'perfiles de conductor y dueño', false], ['ENCUESTA', '150', 'casos por cuotas (mínimo 100)', false]];
+  et.forEach(([k, v, u, hecho], i) => {
+    const x = M + i * (cw + gap), y = y0 + 0.34;
     caja(s, x, y, cw, ch);
     if (i < n - 1) flecha(s, x + cw + 0.04, y + ch / 2, gap - 0.08, 0, C.accent1, 1.25);
     tag(s, '0' + (i + 1), x + 0.18, y + 0.16, { off: !hecho });
-    mono(s, k, { x: x + 0.65, y: y + 0.16, w: cw - 0.8, h: 0.27, valign: 'middle', fontSize: 9, color: C.text1 });
-    numero(s, v, { x: x + 0.18, y: y + 0.48, w: 1.3, h: 0.6, fontSize: 38, valign: 'top', color: hecho ? C.accent1 : C.text1 });
-    T(s, u, { x: x + 0.18, y: y + 1.06, w: cw - 0.36, h: 0.28, fontSize: 12, bold: true });
-    T(s, d, { x: x + 0.18, y: y + 1.34, w: cw - 0.36, h: 0.48, fontSize: 10, color: C.text2 });
-    chip(s, hecho ? 'REALIZADA' : 'POR REALIZAR', x + 0.18, y + ch - 0.4, 1.45, hecho ? C.accent2 : C.accent3);
+    mono(s, k, { x: x + 0.65, y: y + 0.16, w: cw - 0.8, h: 0.27, valign: 'middle', color: C.text1 });
+    numero(s, v, { x: x + 0.18, y: y + 0.5, w: 1.6, h: 0.62, fontSize: 40, valign: 'top', color: hecho ? C.accent1 : C.text1 });
+    T(s, u, { x: x + 0.18, y: y + 1.12, w: cw - 0.36, h: 0.5, fontSize: 12.5, bold: true });
+    chip(s, hecho ? 'REALIZADA' : 'POR REALIZAR', x + 0.18, y + ch - 0.42, 1.6, hecho ? C.accent2 : C.accent3, { size: 9 });
   });
-  // hipótesis y muestra
-  const by = 5.58, lw = 7.6;
-  mono(s, 'QUÉ PONE A PRUEBA · 3 DE 6 HIPÓTESIS (ANEXO A1)', { x: M, y: by - 0.2, w: lw, h: 0.24, fontSize: 9, color: C.text1 });
-  const h = [['H1', 'El uso laboral tiene más intención de compra que el particular.'], ['H4', 'La barrera principal es la confianza, no el precio.'], ['H6', 'Se prefiere hibridar antes que gas, cambiar de auto o no hacer nada.']];
-  h.forEach(([k, t], i) => {
-    const y = by + 0.12 + i * 0.37;
+  const by = 5.25, lw = 7.6;
+  mono(s, 'QUÉ PONE A PRUEBA · 3 DE 6 (ANEXO A1)', { x: M, y: by, w: lw, h: 0.24, color: C.text1 });
+  [['H1', 'El uso laboral compra más que el particular.'], ['H4', 'La barrera es la confianza, no el precio.'], ['H6', 'Se prefiere hibridar a gas, cambiar de auto o nada.']].forEach(([k, t], i) => {
+    const y = by + 0.32 + i * 0.42;
     regla(s, y, M, lw, C.accent6);
-    tag(s, k, M, y + 0.06, { w: 0.42 });
-    T(s, t, { x: M + 0.6, y, w: lw - 0.6, h: 0.38, valign: 'middle', fontSize: 12 });
+    tag(s, k, M, y + 0.08, { w: 0.44 });
+    T(s, t, { x: M + 0.62, y, w: lw - 0.62, h: 0.42, valign: 'middle', fontSize: 13.5 });
   });
-  const cx = M + lw + 0.45, cw2 = R - cx, cy = by - 0.2, ch2 = 1.45;
-  caja(s, cx, cy, cw2, ch2);
-  mono(s, 'MUESTRA POR CUOTAS', { x: cx + 0.2, y: cy + 0.14, w: cw2 - 0.4, h: 0.22, fontSize: 8.5, color: C.accent1 });
-  numero(s, '±8,0%', { x: cx + 0.2, y: cy + 0.35, w: 1.9, h: 0.6, fontSize: 34, valign: 'top' });
-  T(s, 'Error de referencia con 150 casos. Una muestra aleatoria exigiría 385: los resultados son indicativos.', { x: cx + 2.05, y: cy + 0.4, w: cw2 - 2.25, h: 0.95, fontSize: 10.5, color: C.text2 });
-  T(s, 'Precio con el método de Van Westendorp.', { x: cx + 0.2, y: cy + 1.02, w: 1.85, h: 0.38, fontSize: 9.5, color: C.text2 });
+  const cx = M + lw + 0.45, cw2 = R - cx;
+  caja(s, cx, by, cw2, 1.58);
+  mono(s, 'MUESTRA POR CUOTAS', { x: cx + 0.2, y: by + 0.14, w: cw2 - 0.4, h: 0.22, color: C.accent1 });
+  numero(s, '±8,0%', { x: cx + 0.2, y: by + 0.42, w: 1.9, h: 0.62, fontSize: 36, valign: 'top' });
+  T(s, 'Error con 150 casos: resultados indicativos.', { x: cx + 2.1, y: by + 0.45, w: cw2 - 2.3, h: 0.95, fontSize: 12.5, color: C.text2 });
   return s;
 };
 
 // =====================================================================
-// 3.1.4 MATRIZ DE ANSOFF
+// 3.1.4 MATRIZ DE ANSOFF Y VENTAJA COMPETITIVA
 // =====================================================================
 D.ansoff = () => {
   const s = contenido('04', 'PLAN DE MARKETING · MATRIZ DE ANSOFF', 'UN PRODUCTO NUEVO', 'en un mercado que ya existe.');
-  const gx = M + 0.55, gw = 8.25, gapX = 0.55, gapY = 0.5, qw = (gw - gapX) / 2, gy = 2.88, qh = 1.68;
-  mono(s, 'PRODUCTO EXISTENTE', { x: gx, y: 2.52, w: qw, h: 0.24, fontSize: 9, align: 'center', color: C.text1 });
-  mono(s, 'PRODUCTO NUEVO', { x: gx + qw + gapX, y: 2.52, w: qw, h: 0.24, fontSize: 9, align: 'center', color: C.text1 });
-  T(s, 'MERCADO EXISTENTE', { x: M - 0.95 + 0.12, y: gy + qh / 2 - 0.13, w: 2.0, h: 0.26, rotate: 270, fontFace: F_MONO, fontSize: 8.5, color: C.text1, charSpacing: 1.5, align: 'center' });
-  T(s, 'MERCADO NUEVO', { x: M - 0.95 + 0.12, y: gy + qh + gapY + qh / 2 - 0.13, w: 2.0, h: 0.26, rotate: 270, fontFace: F_MONO, fontSize: 8.5, color: C.text1, charSpacing: 1.5, align: 'center' });
+  const gx = M + 0.55, gw = 8.0, gapX = 0.55, gapY = 0.5, qw = (gw - gapX) / 2, gy = 2.88, qh = 1.7;
+  mono(s, 'PRODUCTO EXISTENTE', { x: gx, y: 2.52, w: qw, h: 0.24, align: 'center', color: C.text1 });
+  mono(s, 'PRODUCTO NUEVO', { x: gx + qw + gapX, y: 2.52, w: qw, h: 0.24, align: 'center', color: C.text1 });
+  T(s, 'MERCADO EXISTENTE', { x: M - 0.83, y: gy + qh / 2 - 0.13, w: 2.0, h: 0.26, rotate: 270, fontFace: F_MONO, fontSize: 9, color: C.text1, charSpacing: 1.5, align: 'center' });
+  T(s, 'MERCADO NUEVO', { x: M - 0.83, y: gy + qh + gapY + qh / 2 - 0.13, w: 2.0, h: 0.26, rotate: 270, fontFace: F_MONO, fontSize: 9, color: C.text1, charSpacing: 1.5, align: 'center' });
   const q = [
-    [0, 0, 'PENETRACIÓN', 'AÑO 2', 'Más clientes del mismo mercado: uso medio, recomendación y el mecánico de confianza como canal.', 'normal'],
-    [1, 0, 'DESARROLLO DE PRODUCTO', 'AÑO 1 · AQUÍ ENTRA LUMINE', 'Hibridación aditiva certificada, sin oferta en Chile, para conductores que ya buscan gastar menos.', 'hot'],
-    [0, 1, 'DESARROLLO DE MERCADO', 'AÑO 3', 'Flotas y regiones a través de la red certificada, y convenios con líneas de colectivos.', 'normal'],
-    [1, 1, 'DIVERSIFICACIÓN RELACIONADA', 'DESDE EL AÑO 2', 'Patrones de calibración, kits por volumen y certificación con Habilita, vendidos a otros talleres.', 'futuro'],
+    [0, 0, 'PENETRACIÓN', 'AÑO 2', 'Más clientes del mismo mercado: uso medio y recomendación.', 'normal'],
+    [1, 0, 'DESARROLLO DE PRODUCTO', 'AÑO 1 · AQUÍ ENTRA LUMINE', 'Hibridación aditiva certificada, sin oferta en Chile.', 'hot'],
+    [0, 1, 'DESARROLLO DE MERCADO', 'AÑO 3', 'Flotas y regiones, a través de la red certificada.', 'normal'],
+    [1, 1, 'DIVERSIFICACIÓN', 'RELACIONADA · DESDE EL AÑO 2', 'Patrones de calibración, kits y certificación para otros talleres.', 'futuro'],
   ];
   q.forEach(([c, r, t, a, d, st]) => {
     const x = gx + c * (qw + gapX), y = gy + r * (qh + gapY);
     if (st === 'hot') cajaHot(s, x, y, qw, qh);
     else if (st === 'futuro') caja(s, x, y, qw, qh, { fill: { color: HOT }, line: { color: C.accent1, width: 1, dashType: 'dash' } });
     else caja(s, x, y, qw, qh);
-    T(s, t, { x: x + 0.22, y: y + 0.16, w: qw - 0.44, h: 0.3, fontSize: 13, bold: true, charSpacing: 1 });
-    mono(s, a, { x: x + 0.22, y: y + 0.47, w: qw - 0.44, h: 0.22, fontSize: 8.5, color: C.accent1 });
-    T(s, d, { x: x + 0.22, y: y + 0.78, w: qw - 0.44, h: 0.8, fontSize: 11.5, color: st === 'normal' ? C.text2 : C.text1 });
+    T(s, t, { x: x + 0.22, y: y + 0.16, w: qw - 0.44, h: 0.32, fontSize: 14, bold: true, charSpacing: 1 });
+    mono(s, a, { x: x + 0.22, y: y + 0.5, w: qw - 0.44, h: 0.22, color: C.accent1 });
+    T(s, d, { x: x + 0.22, y: y + 0.82, w: qw - 0.44, h: 0.8, fontSize: 13, color: st === 'normal' ? C.text2 : C.text1 });
   });
-  // ruta de crecimiento
   const midY0 = gy + qh / 2;
   flecha(s, gx + qw + gapX - 0.05, midY0, -(gapX - 0.1), 0);
-  mono(s, 'AÑO 2', { x: gx + qw + 0.02, y: midY0 - 0.27, w: gapX - 0.04, h: 0.2, fontSize: 7.5, align: 'center', color: C.accent1, charSpacing: 0.5 });
   flecha(s, gx + 0.45, gy + qh + 0.05, 0, gapY - 0.1);
-  mono(s, 'AÑO 3', { x: gx + 0.55, y: gy + qh + 0.14, w: 0.8, h: 0.22, fontSize: 8, color: C.accent1 });
+  mono(s, 'AÑO 3', { x: gx + 0.55, y: gy + qh + 0.13, w: 0.9, h: 0.22, color: C.accent1 });
   flecha(s, gx + 2 * qw + gapX - 0.45, gy + qh + 0.05, 0, gapY - 0.1, C.accent1, 1.25, 'dash');
-  mono(s, 'AÑO 2', { x: gx + 2 * qw + gapX - 1.35, y: gy + qh + 0.14, w: 0.8, h: 0.22, fontSize: 8, align: 'right', color: C.accent1 });
-  // por qué se adelanta la diversificación
+  mono(s, 'AÑO 2', { x: gx + 2 * qw + gapX - 1.45, y: gy + qh + 0.13, w: 0.9, h: 0.22, align: 'right', color: C.accent1 });
+  // la ventaja competitiva, dicha explícitamente (observación del profesor guía)
   const cx = gx + gw + 0.45, cw = R - cx, cy = 2.88, ch = 2 * qh + gapY;
-  caja(s, cx, cy, cw, ch);
-  mono(s, 'UNA EXCEPCIÓN DELIBERADA', { x: cx + 0.22, y: cy + 0.18, w: cw - 0.44, h: 0.22, fontSize: 8.5, color: C.accent1 });
-  T(s, 'La diversificación se adelanta al año 2.', { x: cx + 0.22, y: cy + 0.48, w: cw - 0.44, h: 0.6, fontSize: 15, bold: true });
-  T(s, 'El valor de la calibración depende de su exclusividad, que se agota con el tiempo.', { x: cx + 0.22, y: cy + 1.15, w: cw - 0.44, h: 0.75, fontSize: 11.5, color: C.text2 });
-  regla(s, cy + 1.98, cx + 0.22, cw - 0.44);
-  T(s, 'Cada taller de la red devuelve sus datos: la red alimenta la biblioteca en vez de diluirla.', { x: cx + 0.22, y: cy + 2.1, w: cw - 0.44, h: 0.8, fontSize: 11.5, color: C.text2 });
-  regla(s, cy + 2.95, cx + 0.22, cw - 0.44);
-  mono(s, 'TALLERES PROPIOS', { x: cx + 0.22, y: cy + 3.07, w: cw - 0.44, h: 0.22, fontSize: 8, color: C.text1 });
-  T(s, 'Segundo en el mes 25 y tercero en el 49.', { x: cx + 0.22, y: cy + 3.32, w: cw - 0.44, h: 0.45, fontSize: 11.5, color: C.text2 });
+  cajaHot(s, cx, cy, cw, ch);
+  mono(s, 'NUESTRA VENTAJA COMPETITIVA', { x: cx + 0.22, y: cy + 0.18, w: cw - 0.44, h: 0.22, color: C.accent1 });
+  T(s, 'La biblioteca de calibraciones por modelo.', { x: cx + 0.22, y: cy + 0.48, w: cw - 0.44, h: 0.9, fontSize: 17, bold: true });
+  T(s, 'Sostenible: crece con cada instalación y es lo más difícil de copiar.', { x: cx + 0.22, y: cy + 1.4, w: cw - 0.44, h: 0.9, fontSize: 13, color: C.text2 });
+  regla(s, cy + 2.38, cx + 0.22, cw - 0.44);
+  mono(s, 'RED DESDE EL AÑO 2', { x: cx + 0.22, y: cy + 2.48, w: cw - 0.44, h: 0.22, color: C.text1 });
+  T(s, 'Su exclusividad se agota: se vende mientras vale, y la red devuelve sus datos.', { x: cx + 0.22, y: cy + 2.76, w: cw - 0.44, h: 1.1, fontSize: 13, color: C.text2 });
   return s;
 };
 
@@ -442,51 +403,46 @@ D.ansoff = () => {
 // =====================================================================
 D.posicionamiento = () => {
   const s = contenido('05', 'PLAN DE MARKETING · POSICIONAMIENTO', 'EL ESPACIO VACÍO:', 'ahorrar sin cambiar de auto.');
-  const px = 3.25, pw = R - px, rows = [[2.55, 1.35], [4.0, 1.0], [5.1, 1.32]];
+  const px = 3.25, pw = R - px, rows = [[2.58, 1.35], [4.03, 1.0], [5.13, 1.3]];
   // escala logarítmica de inversión (millones de pesos); $0 va aparte a la izquierda
   const lo = Math.log10(0.5), hi = Math.log10(26), x0 = px + 1.0, xw = pw - 1.15;
   const X = v => v === 0 ? px + 0.42 : x0 + (Math.log10(v) - lo) / (hi - lo) * xw;
   const etq = [['Conserva su auto', 'sin límite de antigüedad'], ['Conserva su auto', 'con límite de antigüedad'], ['Debe reemplazar', 'su auto']];
   rows.forEach(([y, h], i) => {
     s.addShape(S.rect, { x: px, y, w: pw, h, fill: { color: i === 0 ? HOT : C.background2 }, line: { type: 'none' } });
-    T(s, [{ text: etq[i][0], options: { breakLine: true, bold: i === 0 } }, { text: etq[i][1], options: { color: C.text2 } }], { x: M, y, w: px - M - 0.2, h, align: 'right', valign: 'middle', fontSize: 12.5 });
+    T(s, [{ text: etq[i][0], options: { breakLine: true, bold: i === 0 } }, { text: etq[i][1], options: { color: C.text2 } }], { x: M, y, w: px - M - 0.2, h, align: 'right', valign: 'middle', fontSize: 13 });
   });
-  mono(s, 'QUÉ EXIGE AL CONDUCTOR', { x: M, y: 2.28, w: 2.6, h: 0.22, fontSize: 8, align: 'right' });
-  // eje
-  const ay = 6.47;
+  mono(s, 'QUÉ EXIGE AL CONDUCTOR', { x: M, y: 2.28, w: 2.6, h: 0.22, align: 'right' });
+  supuesto(s, 'LUMINE: PRECIO DE REFERENCIA · AHORRO SIMULADO', R - 4.6, 2.25, 4.6, { size: 9, align: 'center', h: 0.26 });
+  const ay = 6.48;
   linea(s, px, ay, pw, 0, C.text2, 0.75);
   [[0, '$0'], [1, '$1 M'], [2, '$2 M'], [5, '$5 M'], [10, '$10 M'], [20, '$20 M']].forEach(([v, l]) => {
     linea(s, X(v), ay, 0, 0.06, C.text2, 0.75);
-    mono(s, l, { x: X(v) - 0.5, y: ay + 0.07, w: 1.0, h: 0.2, fontSize: 8, align: 'center' });
+    mono(s, l, { x: X(v) - 0.5, y: ay + 0.07, w: 1.0, h: 0.2, fontSize: 9, align: 'center' });
   });
-  mono(s, 'INVERSIÓN INICIAL DEL CONDUCTOR · MILLONES DE PESOS · ESCALA LOGARÍTMICA', { x: px, y: ay + 0.27, w: pw, h: 0.2, fontSize: 7.5, align: 'center' });
-  // fila 1: espacio vacío, no hacer nada y Lumine
+  mono(s, 'INVERSIÓN INICIAL · MILLONES DE PESOS · ESCALA LOGARÍTMICA', { x: px, y: ay + 0.27, w: pw, h: 0.2, fontSize: 9, align: 'center' });
   const r1 = rows[0];
   s.addShape(S.rect, { x: X(0.62), y: r1[0] + 0.12, w: X(7.2) - X(0.62), h: r1[1] - 0.24, fill: { color: HOT, transparency: 100 }, line: { color: C.accent1, width: 0.75, dashType: 'sysDot' } });
-  T(s, 'Espacio hoy sin oferta: ahorrar sin reemplazar el auto', { x: X(0.62) + 0.15, y: r1[0] + r1[1] - 0.48, w: 4.2, h: 0.26, fontSize: 10.5, color: C.accent1, bold: true });
-  s.addShape(S.ellipse, { x: X(0) - 0.08, y: r1[0] + 0.35, w: 0.16, h: 0.16, fill: { color: C.text2 }, line: { type: 'none' } });
-  T(s, [{ text: 'No hacer nada', options: { breakLine: true, bold: true } }, { text: 'sin ahorro', options: { color: C.text2 } }], { x: X(0) - 0.55, y: r1[0] + 0.58, w: 1.1, h: 0.5, fontSize: 10, align: 'center' });
+  T(s, 'Espacio hoy sin oferta', { x: X(0.62) + 0.15, y: r1[0] + r1[1] - 0.52, w: 3.6, h: 0.3, fontSize: 13, color: C.accent1, bold: true });
+  s.addShape(S.ellipse, { x: X(0) - 0.08, y: r1[0] + 0.32, w: 0.16, h: 0.16, fill: { color: C.text2 }, line: { type: 'none' } });
+  T(s, [{ text: 'No hacer nada', options: { breakLine: true, bold: true } }, { text: 'sin ahorro', options: { color: C.text2 } }], { x: X(0) - 0.6, y: r1[0] + 0.55, w: 1.2, h: 0.55, fontSize: 11.5, align: 'center' });
   const lyL = r1[0] + 0.43;
   s.addShape(S.rect, { x: X(4.29), y: lyL - 0.04, w: X(4.99) - X(4.29), h: 0.08, fill: { color: C.accent1 }, line: { type: 'none' } });
   [4.29, 4.99].forEach(v => s.addShape(S.ellipse, { x: X(v) - 0.09, y: lyL - 0.09, w: 0.18, h: 0.18, fill: { color: C.accent1 }, line: { type: 'none' } }));
-  mono(s, 'ESENCIAL · PLUS', { x: X(4.29) - 0.6, y: lyL + 0.14, w: 1.9, h: 0.2, fontSize: 7.5, align: 'center', color: C.accent1 });
-  supuesto(s, 'LUMINE: PRECIO DE REFERENCIA · AHORRO SIMULADO', R - 3.9, 2.25, 3.9, { size: 7.5, align: 'center', h: 0.24 });
+  mono(s, 'ESENCIAL · PLUS', { x: X(4.29) - 0.7, y: lyL + 0.14, w: 2.1, h: 0.22, align: 'center', color: C.accent1 });
   const bx = X(8.2), bw = R - bx - 0.15;
-  cajaHot(s, bx, r1[0] + 0.2, bw, r1[1] - 0.4);
-  T(s, 'LUMINE MOTORS', { x: bx + 0.15, y: r1[0] + 0.3, w: bw - 0.3, h: 0.3, fontSize: 13, bold: true, align: 'center' });
-  T(s, [{ text: '$4,3 M y $5,0 M', options: { breakLine: true } }, { text: 'hasta 15% y 20% menos bencina' }], { x: bx + 0.1, y: r1[0] + 0.6, w: bw - 0.2, h: 0.42, fontSize: 10, color: C.accent1, align: 'center' });
-  // fila 2: gas
+  cajaHot(s, bx, r1[0] + 0.18, bw, r1[1] - 0.36);
+  T(s, 'LUMINE MOTORS', { x: bx + 0.1, y: r1[0] + 0.26, w: bw - 0.2, h: 0.32, fontSize: 14, bold: true, align: 'center' });
+  T(s, [{ text: '$4,3 M y $5,0 M', options: { breakLine: true } }, { text: 'hasta 15% y 20%' }], { x: bx + 0.1, y: r1[0] + 0.6, w: bw - 0.2, h: 0.5, fontSize: 12, color: C.accent1, align: 'center' });
   const r2 = rows[1], gy = r2[0] + r2[1] - 0.3;
   s.addShape(S.rect, { x: X(0.9), y: gy, w: X(1.8) - X(0.9), h: 0.1, fill: { color: C.text2 }, line: { type: 'none' } });
-  T(s, [{ text: 'Conversión a gas  ', options: { bold: true } }, { text: '$0,9–1,8 M · hasta 35% · máx. 7 años (GLP)', options: { color: C.text2 } }], { x: X(0.9) - 0.1, y: r2[0] + 0.12, w: 5.6, h: 0.3, fontSize: 11 });
-  // fila 3: reemplazar el auto
+  T(s, [{ text: 'Conversión a gas  ', options: { bold: true } }, { text: '$0,9–1,8 M · hasta 35% · máx. 7 años', options: { color: C.text2 } }], { x: X(0.9) - 0.1, y: r2[0] + 0.12, w: 6.6, h: 0.32, fontSize: 12.5 });
   const r3 = rows[2];
-  const alt = [['Híbrido usado', '$9,5–13 M', 9.5, 13], ['Híbrido nuevo', 'desde $12,0 M (ligero)', 11.99, 16.49], ['Eléctrico nuevo', 'desde $14,0 M · se enchufa', 13.99, 26]];
-  alt.forEach(([t, d, a, b], i) => {
-    const y = r3[0] + 0.2 + i * 0.36;
-    s.addShape(S.rect, { x: X(a), y: y + 0.08, w: X(b) - X(a), h: 0.1, fill: { color: C.text2 }, line: { type: 'none' } });
-    s.addShape(S.ellipse, { x: X(a) - 0.07, y: y + 0.06, w: 0.14, h: 0.14, fill: { color: C.text1 }, line: { type: 'none' } });
-    T(s, [{ text: t + '  ', options: { bold: true } }, { text: d, options: { color: C.text2 } }], { x: X(a) - 4.55, y: y - 0.02, w: 4.4, h: 0.3, fontSize: 11, align: 'right' });
+  [['Híbrido usado', '$9,5–13 M', 9.5, 13], ['Híbrido nuevo', 'desde $12,0 M', 11.99, 16.49], ['Eléctrico nuevo', 'desde $14,0 M', 13.99, 26]].forEach(([t, d, a, b], i) => {
+    const y = r3[0] + 0.16 + i * 0.37;
+    s.addShape(S.rect, { x: X(a), y: y + 0.09, w: X(b) - X(a), h: 0.1, fill: { color: C.text2 }, line: { type: 'none' } });
+    s.addShape(S.ellipse, { x: X(a) - 0.07, y: y + 0.07, w: 0.14, h: 0.14, fill: { color: C.text1 }, line: { type: 'none' } });
+    T(s, [{ text: t + '  ', options: { bold: true } }, { text: d, options: { color: C.text2 } }], { x: X(a) - 4.15, y: y - 0.02, w: 4.0, h: 0.32, fontSize: 12.5, align: 'right' });
   });
   return s;
 };
@@ -496,51 +452,40 @@ D.posicionamiento = () => {
 // =====================================================================
 D.precio = () => {
   const s = contenido('06', 'PLAN DE MARKETING · MIX: PRODUCTO Y PRECIO', 'PLUS CUESTA 16% MÁS', 'y ahorra 24% más.');
-  const y0 = 2.55, cw = 3.05, ch = 3.25, gap = 0.25;
-  const v = [
-    ['ESENCIAL', '$4.290.000', 'Hasta 15% menos bencina', '2 × 4.000 W', '$117.069', '$454.226', false],
-    ['PLUS', '$4.990.000', 'Hasta 20% menos bencina', '2 × 6.000 W', '$145.327', '$683.376', true],
-  ];
+  const y0 = 2.55, cw = 3.05, ch = 3.3, gap = 0.25;
+  const v = [['ESENCIAL', '$4.290.000', 'Hasta 15% menos bencina', '2 × 4.000 W', '$117.069', '$454.226', false], ['PLUS', '$4.990.000', 'Hasta 20% menos bencina', '2 × 6.000 W', '$145.327', '$683.376', true]];
   v.forEach(([k, p, prom, mot, ah, mg, hot], i) => {
     const x = M + i * (cw + gap);
     if (hot) cajaHot(s, x, y0, cw, ch); else caja(s, x, y0, cw, ch);
-    mono(s, k, { x: x + 0.22, y: y0 + 0.18, w: 1.4, h: 0.24, fontSize: 9, color: hot ? C.accent1 : C.text1 });
-    if (hot) chip(s, 'RECOMENDADA', x + cw - 1.45, y0 + 0.16, 1.25, C.accent1);
+    mono(s, k, { x: x + 0.22, y: y0 + 0.18, w: 1.4, h: 0.24, color: hot ? C.accent1 : C.text1 });
+    if (hot) chip(s, 'RECOMENDADA', x + cw - 1.55, y0 + 0.16, 1.35, C.accent1, { size: 9 });
     numero(s, p, { x: x + 0.2, y: y0 + 0.45, w: cw - 0.4, h: 0.6, fontSize: 34, valign: 'top', color: hot ? C.accent1 : C.text1 });
-    supuesto(s, 'PRECIO DE REFERENCIA · CON IVA', x + 0.22, y0 + 1.02, 2.45, { size: 7, h: 0.24 });
-    const filas = [['PROMESA · SIMULADA', prom],['MOTORES EN RUEDA', mot], ['AHORRO DEL COLECTIVO', ah + ' al mes'], ['MARGEN POR KIT', mg]];
-    filas.forEach(([a, b], j) => {
-      const y = y0 + 1.38 + j * 0.45;
+    supuesto(s, 'REFERENCIA · CON IVA', x + 0.22, y0 + 1.04, 2.1, { size: 8.5, h: 0.26 });
+    [['PROMESA · SIMULADA', prom], ['MOTORES EN RUEDA', mot], ['AHORRO DEL COLECTIVO', ah + ' al mes'], ['MARGEN POR KIT', mg]].forEach(([a, b], j) => {
+      const y = y0 + 1.42 + j * 0.46;
       regla(s, y, x + 0.22, cw - 0.44, C.accent6);
-      mono(s, a, { x: x + 0.22, y: y + 0.04, w: cw - 0.44, h: 0.18, fontSize: 7.5 });
-      T(s, b, { x: x + 0.22, y: y + 0.2, w: cw - 0.44, h: 0.24, fontSize: 12, bold: j >= 2 });
+      mono(s, a, { x: x + 0.22, y: y + 0.03, w: cw - 0.44, h: 0.2, fontSize: 9 });
+      T(s, b, { x: x + 0.22, y: y + 0.21, w: cw - 0.44, h: 0.25, fontSize: 13, bold: j >= 2 });
     });
   });
-  // gráfico: meses para recuperar la inversión
   const gx = M + 2 * cw + gap + 0.5, gw = R - gx;
-  mono(s, 'MESES PARA RECUPERAR LA INVERSIÓN', { x: gx, y: y0, w: gw, h: 0.24, fontSize: 9, color: C.text1 });
+  mono(s, 'MESES PARA RECUPERAR LA INVERSIÓN', { x: gx, y: y0, w: gw, h: 0.24, color: C.text1 });
   s.addChart(pres.ChartType.bar, [
     { name: 'Esencial', labels: ['Colectivo', 'Aplicación'], values: [36.6, 28.9] },
     { name: 'Plus', labels: ['Colectivo', 'Aplicación'], values: [34.3, 27.5] },
   ], Object.assign({}, ejes, {
-    x: gx - 0.1, y: y0 + 0.3, w: gw + 0.1, h: 2.95, barDir: 'col', barGapWidthPct: 60,
+    x: gx - 0.1, y: y0 + 0.3, w: gw + 0.1, h: 3.0, barDir: 'col', barGapWidthPct: 60,
     chartColors: [HEX.dk2, HEX.accent1], valAxisMinVal: 0, valAxisMaxVal: 42, valAxisHidden: true, valGridLine: { style: 'none' },
-    showValue: true, dataLabelPosition: 'outEnd', dataLabelFormatCode: '0.0', dataLabelFontSize: 12, dataLabelFontBold: true,
-    catAxisLabelFontSize: 11, catAxisLabelColor: HEX.dk1, showLegend: true, legendPos: 't', objectName: 'Meses para recuperar la inversión por versión',
+    showValue: true, dataLabelPosition: 'outEnd', dataLabelFormatCode: '0.0', dataLabelFontSize: 14, dataLabelFontBold: true,
+    catAxisLabelFontSize: 12.5, catAxisLabelColor: HEX.dk1, showLegend: true, legendPos: 't', legendFontSize: 12, objectName: 'Meses para recuperar la inversión por versión',
   }));
-  // tira inferior: garantía, financiamiento y precio a validar
-  const by = 6.05, iw = (CW - 0.6) / 3;
-  const it = [
-    ['GARANTÍA', 'Kit e instalación: 3 años o 200.000 km. Batería: 5 años o 300.000 km.', C.accent1],
-    ['FINANCIAMIENTO', 'Cuota de Plus a 48 meses: $159.967 al 25,6% anual. El convenio busca una línea preferente.', C.accent1],
-    ['A VALIDAR', 'Precios de referencia: la encuesta los ajusta con el método de Van Westendorp.', C.accent3],
-  ];
-  it.forEach(([k, d, col], i) => {
+  const by = 6.08, iw = (CW - 0.6) / 3;
+  [['GARANTÍA', 'Kit: 3 años o 200.000 km. Batería: 5 años o 300.000 km.', C.accent1], ['FINANCIAMIENTO', 'Cuota de Plus a 48 meses: $159.967 (25,6% anual).', C.accent1], ['A VALIDAR', 'La encuesta ajusta los precios (Van Westendorp).', C.accent3]].forEach(([k, d, col], i) => {
     const x = M + i * (iw + 0.3);
     regla(s, by - 0.08, x, iw);
     punto(s, x, by + 0.08, col);
-    mono(s, k, { x: x + 0.17, y: by, w: iw - 0.2, h: 0.24, valign: 'middle', fontSize: 8.5, color: C.text1 });
-    T(s, d, { x, y: by + 0.28, w: iw, h: 0.5, fontSize: 10.5, color: C.text2 });
+    mono(s, k, { x: x + 0.17, y: by, w: iw - 0.2, h: 0.24, valign: 'middle', color: C.text1 });
+    T(s, d, { x, y: by + 0.27, w: iw, h: 0.52, fontSize: 12, color: C.text2 });
   });
   return s;
 };
@@ -550,35 +495,31 @@ D.precio = () => {
 // =====================================================================
 D.demanda = () => {
   const s = contenido('07', 'PLAN DE MARKETING · DEMANDA Y PRONÓSTICO DE VENTAS', 'MÁS DEMANDA QUE CAPACIDAD', 'desde el año 1.');
-  const y0 = 2.55, lw = 3.7;
-  mono(s, 'TAMAÑO DEL MERCADO · VEHÍCULOS (2024)', { x: M, y: y0, w: lw, h: 0.24, fontSize: 9, color: C.text1 });
-  const emb = [['TAM · MERCADO TOTAL · CHILE', '4.409.729', 1.0], ['SAM · DISPONIBLE · RM', '1.685.930', 0.78], ['SEGMENTO LABORAL · RM', '162.780', 0.56]];
-  emb.forEach(([k, v, f], i) => {
-    const y = y0 + 0.34 + i * 0.88, w = lw * f;
-    const hot = i === 2;
-    caja(s, M, y, w, 0.76, hot ? { fill: { color: HOT }, line: { color: C.accent1, width: 1.25 } } : {});
-    mono(s, k, { x: M + 0.15, y: y + 0.08, w: lw - 0.3, h: 0.2, fontSize: 7.5, color: hot ? C.accent1 : C.text2 });
-    numero(s, v, { x: M + 0.15, y: y + 0.28, w: w - 0.3, h: 0.44, fontSize: 24, valign: 'top' });
+  const y0 = 2.55, lw = 3.8;
+  mono(s, 'TAMAÑO DEL MERCADO · VEHÍCULOS', { x: M, y: y0, w: lw, h: 0.24, color: C.text1 });
+  [['TAM · TOTAL · CHILE', '4.409.729', 1.0], ['SAM · DISPONIBLE · RM', '1.685.930', 0.8], ['SEGMENTO LABORAL · RM', '162.780', 0.62]].forEach(([k, v, f], i) => {
+    const y = y0 + 0.34 + i * 0.9, w = lw * f, hot = i === 2;
+    caja(s, M, y, w, 0.8, hot ? { fill: { color: HOT }, line: { color: C.accent1, width: 1.25 } } : {});
+    mono(s, k, { x: M + 0.15, y: y + 0.08, w: lw - 0.3, h: 0.22, fontSize: 9, color: hot ? C.accent1 : C.text2 });
+    numero(s, v, { x: M + 0.15, y: y + 0.3, w: w - 0.3, h: 0.46, fontSize: 26, valign: 'top' });
   });
-  T(s, 'Taxis 22.838 · colectivos 12.982 · aplicaciones 126.960 (estimación propia).', { x: M, y: y0 + 2.98, w: lw, h: 0.45, fontSize: 10.5, color: C.text2 });
-  regla(s, y0 + 3.5, M, lw);
-  mono(s, 'ADOPCIÓN · MODELO DE BASS', { x: M, y: y0 + 3.6, w: lw, h: 0.22, fontSize: 8.5, color: C.accent1 });
-  T(s, [{ text: '11,1% del segmento al año 5, ', options: { bold: true } }, { text: 'bajo el 16% de innovadores y adoptadores tempranos.', options: { color: C.text2 } }], { x: M, y: y0 + 3.86, w: lw, h: 0.5, fontSize: 11 });
-  // gráfico: demanda, instalaciones propias y red
+  T(s, 'Aplicaciones: 126.960 (estimación propia).', { x: M, y: y0 + 3.08, w: lw, h: 0.3, fontSize: 12, color: C.text2 });
+  regla(s, y0 + 3.48, M, lw);
+  T(s, [{ text: '11,1% al año 5 ', options: { bold: true } }, { text: 'con el modelo de Bass: bajo el 16% de primeros adoptantes.', options: { color: C.text2 } }], { x: M, y: y0 + 3.58, w: lw, h: 0.72, fontSize: 12.5 });
   const gx = M + lw + 0.45, gw = R - gx;
-  mono(s, 'VEHÍCULOS POR AÑO · ESCENARIO BASE', { x: gx, y: y0, w: gw, h: 0.24, fontSize: 9, color: C.text1 });
-  supuesto(s, 'ESTIMACIÓN · MODELO DE BASS', R - 2.6, y0 - 0.03, 2.6, { align: 'center' });
+  mono(s, 'VEHÍCULOS POR AÑO', { x: gx, y: y0, w: gw, h: 0.24, color: C.text1 });
+  supuesto(s, 'ESTIMACIÓN · ESCENARIO BASE', R - 2.8, y0 - 0.03, 2.8, { align: 'center', size: 9 });
   s.addChart(pres.ChartType.bar, [
     { name: 'Demanda atendible', labels: AÑOS, values: [367, 990, 1971, 3835, 7137] },
     { name: 'Instalaciones propias', labels: AÑOS, values: [299, 869, 1674, 2268, 2851] },
-    { name: 'Kits vendidos a la red', labels: AÑOS, values: [0, 365, 1074, 3287, 7773] },
+    { name: 'Kits a la red', labels: AÑOS, values: [0, 365, 1074, 3287, 7773] },
   ], Object.assign({}, ejes, {
-    x: gx - 0.1, y: y0 + 0.3, w: gw + 0.1, h: 3.55, barDir: 'col', barGapWidthPct: 45, barOverlapPct: 0,
-    chartColors: [HEX.accent5, HEX.accent1, HONDO], valAxisMinVal: 0, valAxisMaxVal: 8500, valAxisHidden: true, valGridLine: { style: 'none' },
-    showValue: true, dataLabelPosition: 'outEnd', dataLabelFormatCode: '#,##0;;', dataLabelFontSize: 8.5,
-    catAxisLabelFontSize: 10.5, catAxisLabelColor: HEX.dk1, showLegend: true, legendPos: 't', legendFontSize: 9.5, objectName: 'Pronóstico de ventas por año',
+    x: gx - 0.1, y: y0 + 0.3, w: gw + 0.1, h: 3.55, barDir: 'col', barGapWidthPct: 40, barOverlapPct: 0,
+    chartColors: [HEX.accent5, HEX.accent1, HONDO], valAxisMinVal: 0, valAxisMaxVal: 8600, valAxisHidden: true, valGridLine: { style: 'none' },
+    showValue: true, dataLabelPosition: 'outEnd', dataLabelFormatCode: '#,##0;;', dataLabelFontSize: 10, dataLabelFontBold: true,
+    catAxisLabelFontSize: 12, catAxisLabelColor: HEX.dk1, showLegend: true, legendPos: 't', legendFontSize: 11.5, objectName: 'Pronóstico de ventas por año',
   }));
-  T(s, [{ text: 'Pronóstico = el menor entre demanda y capacidad. ', options: { bold: true } }, { text: 'El límite es físico, técnicos y espacio: lo que los talleres propios no cubren lo instala la red.', options: { color: C.text2 } }], { x: gx, y: y0 + 3.95, w: gw, h: 0.45, fontSize: 11 });
+  T(s, [{ text: 'Pronóstico = el menor entre demanda y capacidad. ', options: { bold: true } }, { text: 'El resto lo atiende la red.', options: { color: C.text2 } }], { x: gx, y: y0 + 3.95, w: gw, h: 0.35, fontSize: 12.5 });
   return s;
 };
 
@@ -588,39 +529,37 @@ D.demanda = () => {
 D['presupuesto-mkt'] = () => {
   const s = contenido('08', 'PLAN DE MARKETING · PRESUPUESTO', '$80,9 MILLONES EL PRIMER AÑO:', 'el 6,8% de los ingresos.');
   const y0 = 2.55, lw = 7.7;
-  mono(s, 'POR PARTIDA · MILLONES DE PESOS NETOS', { x: M, y: y0, w: lw, h: 0.24, fontSize: 9, color: C.text1 });
-  supuesto(s, 'PAUTA: DECISIÓN DE INVERSIÓN', M + lw - 2.7, y0 - 0.03, 2.7, { align: 'center' });
+  mono(s, 'POR PARTIDA · MILLONES DE PESOS NETOS', { x: M, y: y0, w: lw, h: 0.24, color: C.text1 });
+  supuesto(s, 'PAUTA: DECISIÓN DE INVERSIÓN', M + lw - 2.9, y0 - 0.03, 2.9, { align: 'center', size: 9 });
   // Tabla N° 11 del informe, agrupada: clientes piloto, pauta digital, comisiones y el resto de las partidas
   s.addChart(pres.ChartType.bar, [
     { name: 'Clientes piloto', labels: AÑOS, values: [49.47, 23.75, 23.75, 23.75, 23.75] },
     { name: 'Pauta digital', labels: AÑOS, values: [14.40, 18.00, 24.00, 24.00, 30.00] },
-    { name: 'Comisiones de venta', labels: AÑOS, values: [4.92, 15.58, 30.30, 42.45, 56.98] },
+    { name: 'Comisiones', labels: AÑOS, values: [4.92, 15.58, 30.30, 42.45, 56.98] },
     { name: 'Otras partidas', labels: AÑOS, values: [12.15, 22.65, 38.22, 44.14, 52.96] },
   ], Object.assign({}, ejes, {
-    x: M - 0.1, y: y0 + 0.3, w: lw + 0.1, h: 3.95, barDir: 'col', barGrouping: 'stacked', barGapWidthPct: 55,
-    chartColors: [HEX.accent1, HONDO, HEX.dk2, HEX.accent5], valAxisMinVal: 0, valAxisMaxVal: 180, valAxisMajorUnit: 40,
-    valAxisLabelFormatCode: '0', showValue: true, dataLabelPosition: 'ctr', dataLabelFormatCode: '[<7]"";0.0', dataLabelFontSize: 8.5, dataLabelColor: HEX.lt1, dataLabelFontBold: true,
-    catAxisLabelFontSize: 10.5, catAxisLabelColor: HEX.dk1, showLegend: true, legendPos: 't', legendFontSize: 9.5, objectName: 'Presupuesto de marketing por partida',
+    x: M - 0.1, y: y0 + 0.3, w: lw + 0.1, h: 3.95, barDir: 'col', barGrouping: 'stacked', barGapWidthPct: 45,
+    chartColors: [HEX.accent1, HONDO, HEX.dk2, HEX.accent5], valAxisMinVal: 0, valAxisMaxVal: 180, valAxisMajorUnit: 40, valAxisLabelFontSize: 10.5,
+    valAxisLabelFormatCode: '0', showValue: true, dataLabelPosition: 'ctr', dataLabelFormatCode: '[<9]"";0', dataLabelFontSize: 11, dataLabelColor: HEX.lt1, dataLabelFontBold: true,
+    catAxisLabelFontSize: 12, catAxisLabelColor: HEX.dk1, showLegend: true, legendPos: 't', legendFontSize: 11.5, objectName: 'Presupuesto de marketing por partida',
   }));
-  // totales por año
   const cx = M + lw + 0.45, cw = R - cx;
   caja(s, cx, y0, cw, 4.25);
   visor(s, cx, y0, cw, 4.25);
-  mono(s, 'TOTAL · MILLONES', { x: cx + 0.25, y: y0 + 0.18, w: 2.2, h: 0.22, fontSize: 8.5, color: C.accent1 });
-  mono(s, '% INGRESOS', { x: cx + cw - 1.45, y: y0 + 0.18, w: 1.2, h: 0.22, fontSize: 7.5, align: 'right' });
-  const tot = [['Año 1', '80,9', '6,8%'], ['Año 2', '80,0', '2,3%'], ['Año 3', '116,3', ''], ['Año 4', '134,3', ''], ['Año 5', '163,7', '1,5%']];
-  tot.forEach(([a, v, p], i) => {
-    const y = y0 + 0.5 + i * 0.47;
+  mono(s, 'TOTAL · MILLONES', { x: cx + 0.25, y: y0 + 0.18, w: 2.2, h: 0.22, color: C.accent1 });
+  mono(s, '% INGRESOS', { x: cx + cw - 1.55, y: y0 + 0.18, w: 1.3, h: 0.22, align: 'right' });
+  [['Año 1', '80,9', '6,8%'], ['Año 2', '80,0', '2,3%'], ['Año 3', '116,3', ''], ['Año 4', '134,3', ''], ['Año 5', '163,7', '1,5%']].forEach(([a, v, p], i) => {
+    const y = y0 + 0.5 + i * 0.5;
     regla(s, y, cx + 0.25, cw - 0.5, C.accent6);
-    T(s, a, { x: cx + 0.25, y, w: 1.0, h: 0.47, valign: 'middle', fontSize: 12.5 });
-    T(s, v, { x: cx + 1.2, y, w: 1.15, h: 0.47, valign: 'middle', align: 'right', fontFace: F_CON, bold: true, fontSize: 19, color: i === 0 ? C.accent1 : C.text1 });
-    T(s, p || '—', { x: cx + cw - 1.3, y, w: 1.05, h: 0.47, valign: 'middle', align: 'right', fontFace: F_CON, bold: true, fontSize: 15, color: p ? C.text1 : C.accent5 });
+    T(s, a, { x: cx + 0.25, y, w: 1.0, h: 0.5, valign: 'middle', fontSize: 14 });
+    T(s, v, { x: cx + 1.2, y, w: 1.2, h: 0.5, valign: 'middle', align: 'right', fontFace: F_CON, bold: true, fontSize: 21, color: i === 0 ? C.accent1 : C.text1 });
+    T(s, p || '—', { x: cx + cw - 1.3, y, w: 1.05, h: 0.5, valign: 'middle', align: 'right', fontFace: F_CON, bold: true, fontSize: 17, color: p ? C.text1 : C.accent5 });
   });
-  const gy = y0 + 0.5 + 5 * 0.47;
+  const gy = y0 + 0.5 + 5 * 0.5;
   linea(s, cx + 0.25, gy, cw - 0.5, 0, C.accent1, 1);
-  T(s, 'Cinco años', { x: cx + 0.25, y: gy, w: 1.3, h: 0.5, valign: 'middle', fontSize: 13, bold: true });
-  T(s, '575,2', { x: cx + 1.2, y: gy, w: 1.15, h: 0.5, valign: 'middle', align: 'right', fontFace: F_CON, bold: true, fontSize: 21, color: C.accent1 });
-  T(s, 'Por objetivo y tarea, no por porcentaje de ventas. El año 1 concentra el lanzamiento y 25 clientes piloto con 50% de descuento.', { x: cx + 0.25, y: gy + 0.58, w: cw - 0.5, h: 0.75, fontSize: 10, color: C.text2 });
+  T(s, 'Cinco años', { x: cx + 0.25, y: gy, w: 1.4, h: 0.52, valign: 'middle', fontSize: 14, bold: true });
+  T(s, '575,2', { x: cx + 1.2, y: gy, w: 1.2, h: 0.52, valign: 'middle', align: 'right', fontFace: F_CON, bold: true, fontSize: 23, color: C.accent1 });
+  T(s, 'Por objetivo y tarea, no por porcentaje de ventas.', { x: cx + 0.25, y: gy + 0.6, w: cw - 0.5, h: 0.55, fontSize: 12, color: C.text2 });
   return s;
 };
 
@@ -629,57 +568,43 @@ D['presupuesto-mkt'] = () => {
 // =====================================================================
 D.estructura = () => {
   const s = contenido('09', 'RECURSOS HUMANOS · ESTRUCTURA Y DOTACIÓN', 'CRECE EL NÚMERO DE PERSONAS,', 'no la estructura.');
-  // organigrama dibujado con formas
   const ox = M, ow = 7.75, y0 = 2.55;
-  mono(s, 'ORGANIGRAMA · PERSONAS AL ABRIR → AL CIERRE DEL AÑO 5', { x: ox, y: y0, w: ow, h: 0.24, fontSize: 9, color: C.text1 });
-  const n = 5, gap = 0.13, bw = (ow - (n - 1) * gap) / n, bh = 0.92;
-  const gw = 2.7, gx = ox + (ow - gw) / 2, gy = y0 + 0.36, gh = 0.62;
+  mono(s, 'ORGANIGRAMA · AL ABRIR → AÑO 5', { x: ox, y: y0, w: ow, h: 0.24, color: C.text1 });
+  const n = 5, gap = 0.12, bw = (ow - (n - 1) * gap) / n, bh = 1.02;
+  const gw = 2.9, gx = ox + (ow - gw) / 2, gy = y0 + 0.36, gh = 0.62;
   cajaHot(s, gx, gy, gw, gh);
-  T(s, [{ text: 'Gerencia General', options: { bold: true, breakLine: true } }, { text: '1 · depende de los accionistas', options: { color: C.accent1, fontSize: 9.5 } }], { x: gx, y: gy, w: gw, h: gh, align: 'center', valign: 'middle', fontSize: 12 });
+  T(s, [{ text: 'Gerencia General', options: { bold: true, breakLine: true } }, { text: '1 · reporta a los accionistas', options: { color: C.accent1, fontSize: 11 } }], { x: gx, y: gy, w: gw, h: gh, align: 'center', valign: 'middle', fontSize: 13 });
   const ry = gy + gh + 0.42, busY = gy + gh + 0.2;
   linea(s, gx + gw / 2, gy + gh, 0, busY - gy - gh, C.text2, 0.75);
   linea(s, ox + bw / 2, busY, ow - bw, 0, C.text2, 0.75);
-  const areas = [
-    ['Responsable Técnico', '1 → 3 · uno por taller', false],
-    ['Ingeniería de Calibración', '1 → 4', false],
-    ['Comercial y Postventa', '1 → 4', false],
-    ['Comercial de Empresas', '0 → 2 · desde el año 4', true],
-    ['Administración y Personas', '1', false],
-  ];
-  areas.forEach(([t, d, fut], i) => {
+  [['Responsable Técnico', '1 → 3', false], ['Ingeniería de Calibración', '1 → 4', false], ['Comercial y Postventa', '1 → 4', false], ['Comercial de Empresas', '0 → 2', true], ['Admin. y Personas', '1', false]].forEach(([t, d, fut], i) => {
     const x = ox + i * (bw + gap);
-    linea(s, x + bw / 2, busY, 0, ry - busY, C.text2, 0.75, fut ? { line: { color: HEX.dk2, width: 0.75, dashType: 'dash' } } : {});
+    linea(s, x + bw / 2, busY, 0, ry - busY, C.text2, 0.75);
     if (fut) cajaFutura(s, x, ry, bw, bh); else caja(s, x, ry, bw, bh);
-    T(s, t, { x: x + 0.06, y: ry + 0.08, w: bw - 0.12, h: 0.5, align: 'center', valign: 'middle', fontSize: 10.5, bold: true });
-    T(s, d, { x: x + 0.06, y: ry + 0.58, w: bw - 0.12, h: 0.28, align: 'center', valign: 'middle', fontSize: 9, color: fut ? C.text2 : C.accent1 });
+    T(s, t, { x: x + 0.05, y: ry + 0.06, w: bw - 0.1, h: 0.58, align: 'center', valign: 'middle', fontSize: 11.5, bold: true });
+    numero(s, d, { x: x + 0.05, y: ry + 0.64, w: bw - 0.1, h: 0.32, align: 'center', valign: 'middle', fontSize: 16, color: fut ? C.text2 : C.accent1 });
   });
-  // segundo nivel
-  const sy = ry + bh + 0.35, sh = 0.82;
-  const sub = [[0, 'Técnicos instaladores', '2 → 36 · dos por dúo', false], [2, 'Asistente de Postventa', '0 → 4 · desde el año 3', true], [4, 'Asistente de Administración', '0 → 1 · desde el año 4', true]];
-  sub.forEach(([i, t, d, fut]) => {
+  const sy = ry + bh + 0.34, sh = 0.9;
+  [[0, 'Técnicos instaladores', '2 → 36', false], [2, 'Asistente de Postventa', '0 → 4', true], [4, 'Asistente de Administración', '0 → 1', true]].forEach(([i, t, d, fut]) => {
     const x = ox + i * (bw + gap);
     linea(s, x + bw / 2, ry + bh, 0, sy - ry - bh, C.text2, 0.75);
     if (fut) cajaFutura(s, x, sy, bw, sh); else caja(s, x, sy, bw, sh);
-    T(s, t, { x: x + 0.06, y: sy + 0.06, w: bw - 0.12, h: 0.44, align: 'center', valign: 'middle', fontSize: 10, bold: true });
-    T(s, d, { x: x + 0.06, y: sy + 0.5, w: bw - 0.12, h: 0.26, align: 'center', valign: 'middle', fontSize: 8.5, color: fut ? C.text2 : C.accent1 });
+    T(s, t, { x: x + 0.05, y: sy + 0.05, w: bw - 0.1, h: 0.52, align: 'center', valign: 'middle', fontSize: 11, bold: true });
+    numero(s, d, { x: x + 0.05, y: sy + 0.56, w: bw - 0.1, h: 0.3, align: 'center', valign: 'middle', fontSize: 15, color: fut ? C.text2 : C.accent1 });
   });
-  mono(s, 'LÍNEA PUNTEADA: INGRESA DESPUÉS DE LA APERTURA', { x: ox, y: sy + sh + 0.18, w: ow, h: 0.2, fontSize: 7.5 });
-  T(s, 'Servicios externos: contabilidad, formación en alta tensión, mutualidad, asesoría legal, aduana y transporte de baterías.', { x: ox, y: sy + sh + 0.42, w: ow, h: 0.3, fontSize: 10, color: C.text2 });
-  // gráfico: dotación al cierre de cada año
+  T(s, 'Punteado: ingresa después de abrir. Contabilidad, formación, legal y aduana son externos.', { x: ox, y: sy + sh + 0.16, w: ow, h: 0.5, fontSize: 12, color: C.text2 });
   const cx = ox + ow + 0.45, cw = R - cx;
-  mono(s, 'DOTACIÓN AL CIERRE · PERSONAS', { x: cx, y: y0, w: cw, h: 0.24, fontSize: 9, color: C.text1 });
+  mono(s, 'DOTACIÓN AL CIERRE · PERSONAS', { x: cx, y: y0, w: cw, h: 0.24, color: C.text1 });
   s.addChart(pres.ChartType.bar, [
-    { name: 'Técnicos', labels: ['Preap.', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'], values: [2, 8, 14, 24, 26, 36] },
-    { name: 'Resto del equipo', labels: ['Preap.', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'], values: [3, 5, 7, 9, 14, 20] },
+    { name: 'Técnicos', labels: ['Pre', 'A1', 'A2', 'A3', 'A4', 'A5'], values: [2, 8, 14, 24, 26, 36] },
+    { name: 'Resto', labels: ['Pre', 'A1', 'A2', 'A3', 'A4', 'A5'], values: [3, 5, 7, 9, 14, 20] },
   ], Object.assign({}, ejes, {
-    x: cx - 0.1, y: y0 + 0.3, w: cw + 0.1, h: 3.45, barDir: 'col', barGrouping: 'stacked', barGapWidthPct: 45,
+    x: cx - 0.1, y: y0 + 0.3, w: cw + 0.1, h: 3.5, barDir: 'col', barGrouping: 'stacked', barGapWidthPct: 40,
     chartColors: [HEX.accent1, HEX.dk2], valAxisMinVal: 0, valAxisMaxVal: 60, valAxisHidden: true, valGridLine: { style: 'none' },
-    showValue: true, dataLabelPosition: 'ctr', dataLabelFormatCode: '[<4]"";0', dataLabelFontSize: 9, dataLabelColor: HEX.lt1, dataLabelFontBold: true,
-    catAxisLabelFontSize: 9, catAxisLabelColor: HEX.dk1, showLegend: true, legendPos: 't', legendFontSize: 9, objectName: 'Dotación al cierre de cada año',
+    showValue: true, dataLabelPosition: 'ctr', dataLabelFormatCode: '[<5]"";0', dataLabelFontSize: 11, dataLabelColor: HEX.lt1, dataLabelFontBold: true,
+    catAxisLabelFontSize: 11, catAxisLabelColor: HEX.dk1, showLegend: true, legendPos: 't', legendFontSize: 11, objectName: 'Dotación al cierre de cada año',
   }));
-  const tots = ['5', '13', '21', '33', '40', '56'];
-  T(s, [{ text: 'Total: ', options: { color: C.text2 } }, { text: tots.join(' · '), options: { bold: true } }], { x: cx, y: y0 + 3.82, w: cw, h: 0.3, fontSize: 11.5 });
-  T(s, 'El salto del año 3 es el segundo taller; desde el año 4 pesa la red.', { x: cx, y: y0 + 4.12, w: cw, h: 0.45, fontSize: 10, color: C.text2 });
+  T(s, [{ text: 'Total: ', options: { color: C.text2 } }, { text: '5 · 13 · 21 · 33 · 40 · 56', options: { bold: true } }], { x: cx, y: y0 + 3.88, w: cw, h: 0.32, fontSize: 13.5 });
   return s;
 };
 
@@ -689,56 +614,40 @@ D.estructura = () => {
 D.rrhh = () => {
   const s = contenido('10', 'RECURSOS HUMANOS · POLÍTICA Y PRESUPUESTO', 'TÉCNICOS FORMADOS EN CASA,', 'costo a la mitad.');
   const y0 = 2.55, lw = 6.3;
-  mono(s, 'LUMINE HABILITA · 39 COMPETENCIAS · 13 MÓDULOS · 392 HORAS', { x: M, y: y0, w: lw, h: 0.24, fontSize: 9, color: C.text1 });
-  T(s, 'N1 a N4: niveles de habilitación del técnico, de aprendiz a formador.', { x: M, y: y0 + 0.26, w: lw, h: 0.26, fontSize: 10.5, color: C.text2 });
-  // escalera de niveles: renta bruta mensual y bono único al validar
-  const niv = [
-    ['N1', 'Acompaña', '$750.000', null],
-    ['N2', 'Instala supervisado', '$850.000', '$200.000'],
-    ['N3', 'Trabaja solo', '$1.000.000', '$300.000'],
-    ['N4', 'Forma y valida', '$1.150.000', '$350.000'],
-  ];
-  const gap = 0.12, sw = (lw - 3 * gap) / 4, base = y0 + 3.45;
+  mono(s, 'LUMINE HABILITA · RENTA BRUTA Y BONO POR NIVEL', { x: M, y: y0, w: lw, h: 0.24, color: C.text1 });
+  T(s, 'N1 a N4: niveles de habilitación, de aprendiz a formador.', { x: M, y: y0 + 0.28, w: lw, h: 0.3, fontSize: 12, color: C.text2 });
+  const niv = [['N1', 'Acompaña', '$750.000', null], ['N2', 'Instala supervisado', '$850.000', '$200.000'], ['N3', 'Trabaja solo', '$1.000.000', '$300.000'], ['N4', 'Forma y valida', '$1.150.000', '$350.000']];
+  const gap = 0.12, sw = (lw - 3 * gap) / 4, base = y0 + 3.48;
   niv.forEach(([k, d, r, b], i) => {
-    const x = M + i * (sw + gap), h = 1.75 + i * 0.37, y = base - h, hot = i === 3;
+    const x = M + i * (sw + gap), h = 1.75 + i * 0.36, y = base - h, hot = i === 3;
     if (hot) cajaHot(s, x, y, sw, h); else caja(s, x, y, sw, h);
-    tag(s, k, x + 0.15, y + 0.15, { off: i < 2 });
-    T(s, d, { x: x + 0.15, y: y + 0.5, w: sw - 0.3, h: 0.45, fontSize: 11, bold: true });
-    numero(s, r, { x: x + 0.15, y: y + h - 0.95, w: sw - 0.3, h: 0.4, fontSize: 19, valign: 'top', color: hot ? C.accent1 : C.text1 });
-    mono(s, b ? 'BONO ' + b : 'SIN BONO', { x: x + 0.15, y: y + h - 0.5, w: sw - 0.3, h: 0.2, fontSize: 7, color: b ? C.accent1 : C.text2, charSpacing: 0.8 });
-    mono(s, 'RENTA BRUTA', { x: x + 0.15, y: y + h - 0.28, w: sw - 0.3, h: 0.18, fontSize: 6.5, charSpacing: 0.8 });
+    tag(s, k, x + 0.13, y + 0.15, { off: i < 2 });
+    T(s, d, { x: x + 0.13, y: y + 0.5, w: sw - 0.2, h: 0.5, fontSize: 12.5, bold: true });
+    numero(s, r, { x: x + 0.1, y: y + h - 0.78, w: sw - 0.15, h: 0.4, fontSize: 19, valign: 'top', color: hot ? C.accent1 : C.text1 });
+    mono(s, b ? '+ BONO ' + b : 'SIN BONO', { x: x + 0.13, y: y + h - 0.36, w: sw - 0.2, h: 0.22, fontSize: 8.5, color: b ? C.accent1 : C.text2, charSpacing: 0.6 });
   });
-  const ny = base + 0.2;
-  const notas = [['~8 MESES', 'hasta el N4, con dos meses de formación intensiva'], ['DÚOS FIJOS', 'siempre con un N3 o N4; dos N1 nunca forman dúo'], ['24 MESES', 'revalidación del núcleo de seguridad']];
-  const nw = (lw - 0.4) / 3;
-  notas.forEach(([k, d], i) => {
+  const ny = base + 0.18, nw = (lw - 0.4) / 3;
+  [['~8 MESES', 'hasta el N4'], ['DÚOS FIJOS', 'siempre con N3 o N4'], ['24 MESES', 'revalidar seguridad']].forEach(([k, d], i) => {
     const x = M + i * (nw + 0.2);
     regla(s, ny, x, nw);
-    mono(s, k, { x, y: ny + 0.08, w: nw, h: 0.22, fontSize: 8.5, color: C.accent1 });
-    T(s, d, { x, y: ny + 0.32, w: nw, h: 0.5, fontSize: 10, color: C.text2 });
+    mono(s, k, { x, y: ny + 0.08, w: nw, h: 0.22, color: C.accent1 });
+    T(s, d, { x, y: ny + 0.33, w: nw, h: 0.3, fontSize: 12.5, color: C.text2 });
   });
-  // gráfico: costo empresa de la nómina
   const gx = M + lw + 0.5, gw = R - gx;
-  mono(s, 'COSTO EMPRESA · MILLONES DE $', { x: gx, y: y0, w: gw, h: 0.24, fontSize: 9, color: C.text1 });
-  supuesto(s, 'SIN REAJUSTES · SUPUESTO', R - 2.4, y0 - 0.03, 2.4, { align: 'center', size: 7.5 });
-  s.addChart(pres.ChartType.bar, [
-    { name: 'Costo empresa', labels: AÑOS, values: [152.0, 265.6, 430.4, 574.7, 755.1] },
-  ], Object.assign({}, ejes, {
-    x: gx - 0.1, y: y0 + 0.3, w: gw + 0.1, h: 2.75, barDir: 'col', barGapWidthPct: 50,
-    chartColors: [HEX.dk2], valAxisMinVal: 0, valAxisMaxVal: 860, valAxisHidden: true, valGridLine: { style: 'none' },
-    showValue: true, dataLabelPosition: 'outEnd', dataLabelFormatCode: '0.0', dataLabelFontSize: 10.5, dataLabelFontBold: true,
-    catAxisLabelFontSize: 10, catAxisLabelColor: HEX.dk1, showLegend: false, objectName: 'Costo empresa de la nómina por año',
+  mono(s, 'NÓMINA · MILLONES DE $', { x: gx, y: y0, w: gw, h: 0.24, color: C.text1 });
+  supuesto(s, 'SUPUESTO: SIN REAJUSTES', R - 2.4, y0 - 0.03, 2.4, { align: 'center', size: 8.5 });
+  s.addChart(pres.ChartType.bar, [{ name: 'Costo empresa', labels: AÑOS, values: [152.0, 265.6, 430.4, 574.7, 755.1] }], Object.assign({}, ejes, {
+    x: gx - 0.1, y: y0 + 0.3, w: gw + 0.1, h: 2.7, barDir: 'col', barGapWidthPct: 45,
+    chartColors: [HEX.dk2], valAxisMinVal: 0, valAxisMaxVal: 880, valAxisHidden: true, valGridLine: { style: 'none' },
+    showValue: true, dataLabelPosition: 'outEnd', dataLabelFormatCode: '0', dataLabelFontSize: 12.5, dataLabelFontBold: true,
+    catAxisLabelFontSize: 12, catAxisLabelColor: HEX.dk1, showLegend: false, objectName: 'Costo empresa de la nómina por año',
   }));
-  // costo por instalación propia, alineado bajo cada año
-  const cy = y0 + 3.15;
+  const cy = y0 + 3.1;
   regla(s, cy, gx, gw, C.accent1);
-  mono(s, 'COSTO DE NÓMINA POR INSTALACIÓN PROPIA', { x: gx, y: cy + 0.08, w: gw, h: 0.22, fontSize: 8.5, color: C.accent1 });
-  const cpi = ['$508.307', '$305.608', '$257.099', '$253.417', '$264.857'];
-  const plotX = gx + 0.12, plotW = gw - 0.2, colW = plotW / 5;
-  cpi.forEach((v, i) => {
-    numero(s, v, { x: plotX + i * colW, y: cy + 0.36, w: colW, h: 0.36, fontSize: 15, valign: 'top', align: 'center', color: i === 3 ? C.accent1 : C.text1 });
-  });
-  T(s, 'Los cargos fijos se reparten en más autos; el año 5 sube porque abre el tercer taller y la red pide más personas.', { x: gx, y: cy + 0.78, w: gw, h: 0.5, fontSize: 10, color: C.text2 });
+  mono(s, 'NÓMINA POR INSTALACIÓN PROPIA · MILES DE $', { x: gx, y: cy + 0.08, w: gw, h: 0.22, color: C.accent1 });
+  const plotX = gx + 0.12, colW = (gw - 0.2) / 5;
+  ['508', '306', '257', '253', '265'].forEach((v, i) => numero(s, v, { x: plotX + i * colW, y: cy + 0.36, w: colW, h: 0.42, fontSize: 22, valign: 'top', align: 'center', color: i === 3 ? C.accent1 : C.text1 }));
+  T(s, 'Los cargos fijos se reparten en más autos.', { x: gx, y: cy + 0.84, w: gw, h: 0.3, fontSize: 12, color: C.text2 });
   return s;
 };
 
@@ -748,68 +657,52 @@ D.rrhh = () => {
 D.flujo = () => {
   const s = contenido('11', 'OPERACIONES · FLUJO OPERACIONAL', 'EL NEGOCIO MIDE Y RECOMIENDA;', 'el cliente decide.');
   const y0 = 2.5, n = 5, gap = 0.16, cw = (CW - (n - 1) * gap) / n;
-  const etapas = ['CAPTACIÓN', 'ASESORÍA Y DECISIÓN', 'TALLER', 'CERTIFICACIÓN', 'POSTVENTA'];
-  etapas.forEach((e, i) => {
+  ['CAPTACIÓN', 'ASESORÍA', 'TALLER', 'CERTIFICACIÓN', 'POSTVENTA'].forEach((e, i) => {
     const x = M + i * (cw + gap), hot = i === 2;
-    s.addText('', { shape: i === 0 ? S.homePlate : S.chevron, x, y: y0, w: cw + (i < n - 1 ? 0.12 : 0), h: 0.42, fill: { color: hot ? C.accent1 : C.accent5 }, line: { type: 'none' } });
-    T(s, [{ text: '0' + (i + 1) + '  ', options: { color: hot ? C.background1 : C.accent1 } }, { text: e }], { x: x + 0.22, y: y0, w: cw - 0.3, h: 0.42, valign: 'middle', fontFace: F_MONO, fontSize: 8.5, bold: true, color: hot ? C.background1 : C.text1, charSpacing: 1 });
+    s.addText('', { shape: i === 0 ? S.homePlate : S.chevron, x, y: y0, w: cw + (i < n - 1 ? 0.12 : 0), h: 0.44, fill: { color: hot ? C.accent1 : C.accent5 }, line: { type: 'none' } });
+    T(s, [{ text: '0' + (i + 1) + '  ', options: { color: hot ? C.background1 : C.accent1 } }, { text: e }], { x: x + 0.24, y: y0, w: cw - 0.3, h: 0.44, valign: 'middle', fontFace: F_MONO, fontSize: 10, bold: true, color: hot ? C.background1 : C.text1, charSpacing: 1 });
   });
-  const X = i => M + i * (cw + gap), bw = cw - 0.1, bx = i => X(i) + 0.05;
-  const t0 = y0 + 0.55, bh = 0.55, rh = 0.62, gp = 0.13, ob = 0.48;
+  const bx = i => M + i * (cw + gap) + 0.04, bw = cw - 0.08, t0 = y0 + 0.62, bh = 0.72, g = 0.16, rh = 0.88;
+  const abajo = (i, y, col = C.text2) => flecha(s, bx(i) + bw / 2, y, 0, g, col, 1);
+  const p = (i, y, txt, o = {}) => paso(s, txt, bx(i), y, bw, o.h || bh, Object.assign({ size: 12 }, o));
   // 1 · captación
-  paso(s, 'Cotiza en el sitio: el estimador da ahorro y plazo', bx(0), t0, bw, bh);
-  flecha(s, bx(0) + bw / 2, t0 + bh, 0, gp, C.text2, 1);
-  rombo(s, '¿Modelo elegible y calibrado?', bx(0) + 0.1, t0 + bh + gp, bw - 0.2, rh);
-  flecha(s, bx(0) + bw / 2, t0 + bh + gp + rh, 0, gp, C.accent3, 1);
-  mono(s, 'NO', { x: bx(0) + bw / 2 + 0.06, y: t0 + bh + gp + rh, w: 0.4, h: 0.17, fontSize: 7, color: C.accent3 });
-  paso(s, 'Ingeniería de Calibración (IC) registra la demanda; el primer cliente puede ser piloto', bx(0), t0 + bh + 2 * gp + rh, bw, 0.68, { alerta: true, size: 10 });
-  mono(s, 'SÍ →', { x: bx(0) + bw - 0.45, y: t0 + bh + gp + 0.08, w: 0.5, h: 0.18, fontSize: 7.5, color: C.accent1, align: 'right' });
+  p(0, t0, 'Cotiza con el estimador web'); abajo(0, t0 + bh);
+  rombo(s, '¿Modelo calibrado?', bx(0) + 0.05, t0 + bh + g, bw - 0.1, rh);
+  abajo(0, t0 + bh + g + rh, C.accent3);
+  mono(s, 'NO', { x: bx(0) + bw / 2 + 0.07, y: t0 + bh + g + rh, w: 0.4, h: 0.18, fontSize: 9, color: C.accent3 });
+  p(0, t0 + bh + 2 * g + rh, 'Se registra la demanda', { alerta: true, h: 0.62 });
   // 2 · asesoría y decisión
-  paso(s, 'Asesoría: ahorro, intervalo y plazo por versión', bx(1), t0, bw, bh);
-  flecha(s, bx(1) + bw / 2, t0 + bh, 0, gp, C.text2, 1);
-  paso(s, 'Opcional: mide una semana con su celular', bx(1), t0 + bh + gp, bw, ob, { futuro: true, size: 10 });
-  const r2 = t0 + bh + gp + ob + gp;
-  flecha(s, bx(1) + bw / 2, t0 + bh + gp + ob, 0, gp, C.text2, 1);
-  rombo(s, '¿Decide instalar?', bx(1) + 0.1, r2, bw - 0.2, rh);
-  flecha(s, bx(1) + bw / 2, r2 + rh, 0, gp, C.accent1, 1);
-  mono(s, 'SÍ', { x: bx(1) + bw / 2 + 0.06, y: r2 + rh, w: 0.4, h: 0.17, fontSize: 7, color: C.accent1 });
-  paso(s, 'Paga o financia; orden de trabajo y agenda', bx(1), r2 + rh + gp, bw, 0.55, { size: 10 });
-  mono(s, 'NO: QUEDA INFORMADO', { x: bx(1), y: r2 + rh + gp + 0.58, w: bw, h: 0.18, fontSize: 7, align: 'center' });
+  p(1, t0, 'Asesoría por versión del kit'); abajo(1, t0 + bh);
+  p(1, t0 + bh + g, 'Medición opcional de una semana', { futuro: true });
+  abajo(1, t0 + 2 * bh + g);
+  rombo(s, '¿Decide instalar?', bx(1) + 0.05, t0 + 2 * bh + 2 * g, bw - 0.1, rh);
+  mono(s, 'NO: QUEDA INFORMADO', { x: bx(1), y: t0 + 2 * bh + 2 * g + rh + 0.04, w: bw, h: 0.22, fontSize: 9, align: 'center' });
   // 3 · taller
-  paso(s, 'Instalación en una jornada de 8,4 h', bx(2), t0, bw, bh, { hot: true, bold: true });
-  flecha(s, bx(2) + bw / 2, t0 + bh, 0, gp, C.text2, 1);
-  mono(s, 'CUATRO PUNTOS DE CONTROL', { x: bx(2), y: t0 + bh + gp + 0.02, w: bw, h: 0.2, fontSize: 7.5, align: 'center', color: C.accent1 });
-  ['Vehículo apto', 'Masa ≤ 20% y ejes ≤ 10%', 'Aislación ≥ 100 Ω/V', 'Dinamómetro: asistencia y regeneración'].forEach((p, k) => {
-    const y = t0 + bh + gp + 0.28 + k * 0.4;
-    s.addShape(S.diamond, { x: bx(2) + 0.08, y: y + 0.08, w: 0.2, h: 0.2, fill: { color: C.accent1 }, line: { type: 'none' } });
-    T(s, p, { x: bx(2) + 0.36, y, w: bw - 0.4, h: 0.36, valign: 'middle', fontSize: 9.5 });
+  p(2, t0, 'Una jornada: 8,4 horas', { hot: true, bold: true }); abajo(2, t0 + bh);
+  mono(s, 'CUATRO CONTROLES', { x: bx(2), y: t0 + bh + g + 0.02, w: bw, h: 0.22, fontSize: 9, align: 'center', color: C.accent1 });
+  ['Vehículo apto', 'Masa y ejes', 'Aislación', 'Dinamómetro'].forEach((c, k) => {
+    const y = t0 + bh + g + 0.32 + k * 0.4;
+    s.addShape(S.diamond, { x: bx(2) + 0.2, y: y + 0.09, w: 0.2, h: 0.2, fill: { color: C.accent1 }, line: { type: 'none' } });
+    T(s, c, { x: bx(2) + 0.5, y, w: bw - 0.55, h: 0.38, valign: 'middle', fontSize: 12.5 });
   });
-  mono(s, 'SI FALLA: SE DETIENE', { x: bx(2), y: t0 + bh + gp + 1.9, w: bw, h: 0.18, fontSize: 7, align: 'center', color: C.accent3 });
   // 4 · certificación
-  paso(s, 'El Responsable Técnico (RT) firma el Certificado Individual (art. 14)', bx(3), t0, bw, bh);
-  flecha(s, bx(3) + bw / 2, t0 + bh, 0, gp, C.text2, 1);
-  paso(s, 'Entrega y línea base de ahorro', bx(3), t0 + bh + gp, bw, ob, { size: 10 });
-  flecha(s, bx(3) + bw / 2, t0 + bh + gp + ob, 0, gp, C.text2, 1);
-  paso(s, 'El cliente verifica en planta de revisión y anota la alteración en el registro (arts. 16 y 17)', bx(3), t0 + bh + 2 * gp + ob, bw, 0.72, { futuro: true, size: 10 });
-  mono(s, 'BORDE PUNTEADO: TERCEROS U OPCIONAL', { x: bx(3), y: t0 + bh + 2 * gp + ob + 0.76, w: bw, h: 0.3, fontSize: 6.5, align: 'center', charSpacing: 0.6 });
+  p(3, t0, 'El Responsable Técnico firma el certificado'); abajo(3, t0 + bh);
+  p(3, t0 + bh + g, 'Entrega y línea base de ahorro'); abajo(3, t0 + 2 * bh + g);
+  p(3, t0 + 2 * bh + 2 * g, 'Revisión técnica del cliente', { futuro: true });
   // 5 · postventa
-  paso(s, 'Telemetría e informe de ahorro a los 3 meses', bx(4), t0, bw, bh);
-  flecha(s, bx(4) + bw / 2, t0 + bh, 0, gp, C.text2, 1);
-  rombo(s, '¿Desviación sobre el umbral?', bx(4) + 0.1, t0 + bh + gp, bw - 0.2, rh);
-  flecha(s, bx(4) + bw / 2, t0 + bh + gp + rh, 0, gp, C.accent1, 1);
-  mono(s, 'SÍ', { x: bx(4) + bw / 2 + 0.06, y: t0 + bh + gp + rh, w: 0.4, h: 0.17, fontSize: 7, color: C.accent1 });
-  paso(s, 'Recalibra; IC ajusta la biblioteca', bx(4), t0 + bh + 2 * gp + rh, bw, ob, { size: 10 });
-  flecha(s, bx(4) + bw / 2, t0 + bh + 2 * gp + rh + ob, 0, gp, C.text2, 1);
-  paso(s, 'Mantención, garantía y batería a reciclaje (Ley REP)', bx(4), t0 + bh + 3 * gp + rh + ob, bw, 0.55, { size: 10 });
+  p(4, t0, 'Informe de ahorro a los 3 meses'); abajo(4, t0 + bh);
+  rombo(s, '¿Se desvía del estimado?', bx(4) + 0.05, t0 + bh + g, bw - 0.1, rh);
+  abajo(4, t0 + bh + g + rh, C.accent1);
+  mono(s, 'SÍ', { x: bx(4) + bw / 2 + 0.07, y: t0 + bh + g + rh, w: 0.4, h: 0.18, fontSize: 9, color: C.accent1 });
+  p(4, t0 + bh + 2 * g + rh, 'Recalibra y mejora la biblioteca', { h: 0.72 });
   // recursos críticos
-  const by = 6.12, iw = (CW - 0.6) / 3;
+  const by = 6.08, iw = (CW - 0.6) / 3;
   regla(s, by - 0.1, M, CW, C.accent1);
-  const rc = [['HORAS DE DÚO', '8,4 h por vehículo: el límite de capacidad.'], ['DINAMÓMETRO', '1,0 h por vehículo: 54% de uso con seis dúos; uno basta.'], ['BIBLIOTECA', 'Restringe el surtido de modelos, no las horas.']];
-  rc.forEach(([k, d], i) => {
+  [['LÍMITE DE CAPACIDAD', 'Las horas de los dúos.'], ['DINAMÓMETRO', 'Uno por local basta (54% con seis dúos).'], ['BIBLIOTECA', 'Limita qué modelos se venden.']].forEach(([k, d], i) => {
     const x = M + i * (iw + 0.3);
     punto(s, x, by + 0.08, i === 0 ? C.accent1 : C.text2);
-    mono(s, k, { x: x + 0.17, y: by, w: iw, h: 0.24, valign: 'middle', fontSize: 8.5, color: C.text1 });
-    T(s, d, { x, y: by + 0.27, w: iw, h: 0.45, fontSize: 10.5, color: C.text2 });
+    mono(s, k, { x: x + 0.17, y: by, w: iw, h: 0.24, valign: 'middle', color: C.text1 });
+    T(s, d, { x, y: by + 0.28, w: iw, h: 0.32, fontSize: 12.5, color: C.text2 });
   });
   return s;
 };
@@ -820,94 +713,79 @@ D.flujo = () => {
 D.gantt = () => {
   const s = contenido('12', 'OPERACIONES · CARTA GANTT DE IMPLEMENTACIÓN', 'ABRIR EN ENERO DE 2027', 'depende de un reglamento.');
   // eje: meses −3 a 12 en detalle; años 2 a 5 por trimestre (31 columnas iguales)
-  const x0 = 4.3, xw = R - x0, u = xw / 31;
+  const x0 = 4.6, xw = R - x0, u = xw / 31;
   const P = m => x0 + u * (m < 0 ? m + 3 : m <= 13 ? m + 2 : 15 + (m - 13) / 3); // inicio del mes m (mes 1 = enero 2027)
-  const top = 2.8, rh = 0.205, gapG = 0.07;
+  const top = 2.85, rh = 0.31, gapG = 0.1;
   const grupos = [
     ['PREAPERTURA', [
-      ['Investigación de mercado', [['bar', -3, 1, 'p', 'terreno, piloto y encuesta']]],
+      ['Investigación de mercado', [['bar', -3, 1, 'p', 'terreno y encuesta']]],
       ['Local, permisos y financiamiento', [['bar', -3, 1, 'p', 'a cargo de los socios']]],
-      ['Homologación del primer modelo', [['bar', -2, 1, 'p', 'con el auto del cliente piloto']]],
-      ['Formación del primer dúo', [['bar', -2, 1, 'p']]],
+      ['Homologación y primer dúo', [['bar', -2, 1, 'p', 'con el auto del cliente piloto']]],
       ['Reglamento de la Ley 21.793', [['star', -1, 'debe estar vigente antes de vender']]],
     ]],
     ['TALLER 1', [
-      ['Apertura comercial', [['hito', 1, 'enero 2027']]],
-      ['Formación y entrada de dúos', [['bar', 4, 6, 'o'], ['hito', 6, '2'], ['bar', 10, 12, 'o'], ['hito', 12, '3'], ['bar', 12, 14, 'o'], ['hito', 14, '4'], ['bar', 16, 18, 'o'], ['hito', 18, '5'], ['bar', 18, 20, 'o'], ['hito', 20, '6']]],
+      ['Apertura y dúos 1 a 6', [['hito', 1, '1'], ['bar', 4, 6, 'o'], ['hito', 6, '2'], ['bar', 10, 12, 'o'], ['hito', 12, '3'], ['bar', 12, 14, 'o'], ['hito', 14, '4'], ['bar', 16, 18, 'o'], ['hito', 18, '5'], ['bar', 18, 20, 'o'], ['hito', 20, '6']]],
     ]],
     ['BIBLIOTECA Y RED', [
       ['Calibración de modelos', [['bar', 1, 13, 'p', 'dos al mes', true], ['bar', 13, 61, 'o', 'uno al mes', true]]],
       ['Red certificada', [['bar', 13, 61, 'p'], ['n', 25, '3'], ['n', 37, '9'], ['n', 49, '20'], ['n', 61, '42']]],
-      ['Flotas y convenios con colectivos', [['bar', 25, 61, 'o', 'desde el año 3', true]]],
+      ['Flotas y colectivos', [['bar', 25, 61, 'o', 'desde el año 3', true]]],
     ]],
     ['TALLERES 2 Y 3', [
-      ['Taller 2', [['bar', 22, 25, 'a'], ['bar', 25, 37, 'o', '6 dúos al mes 36', true], ['hito', 25]]],
-      ['Taller 3', [['bar', 46, 49, 'a'], ['bar', 49, 61, 'o', '6 dúos al mes 60', true], ['hito', 49]]],
-    ]],
-    ['EQUIPO', [
-      ['Ingresos por carga de trabajo', [['dot', 29, 'As. de Postventa', 'l'], ['dot', 37, '2.ª persona en Calibración y As. de Administración', 'b'], ['dot', 46, 'Com. de Empresas', 'r']]],
-      ['', []],
+      ['Taller 2', [['izq', 22, 'abre en el mes 25; seis dúos en el 36'], ['bar', 22, 25, 'a'], ['bar', 25, 37, 'o'], ['hito', 25]]],
+      ['Taller 3', [['izq', 46, 'abre en el mes 49; seis dúos en el 60'], ['bar', 46, 49, 'a'], ['bar', 49, 61, 'o'], ['hito', 49]]],
     ]],
   ];
   const nFilas = grupos.reduce((a, g) => a + g[1].length, 0);
   const bottom = top + nFilas * rh + (grupos.length - 1) * gapG;
-  // encabezado de años y separadores
-  [['2026', -3, 1], ['AÑO 1 · 2027 (MESES)', 1, 13], ['AÑO 2', 13, 25], ['AÑO 3', 25, 37], ['AÑO 4', 37, 49], ['AÑO 5', 49, 61]].forEach(([t, a, b], i) => {
-    mono(s, t, { x: P(a), y: top - 0.3, w: P(b) - P(a), h: 0.22, fontSize: 8, align: 'center', color: i === 1 ? C.accent1 : C.text1 });
+  [['2026', -3, 1], ['AÑO 1 · 2027', 1, 13], ['AÑO 2', 13, 25], ['AÑO 3', 25, 37], ['AÑO 4', 37, 49], ['AÑO 5', 49, 61]].forEach(([t, a, b], i) => {
+    mono(s, t, { x: P(a), y: top - 0.32, w: P(b) - P(a), h: 0.24, fontSize: 9.5, align: 'center', color: i === 1 ? C.accent1 : C.text1 });
     if (i > 0) linea(s, P(a), top - 0.06, 0, bottom - top + 0.12, i === 1 ? C.text2 : C.accent5, 0.75);
   });
-  // eje inferior: meses y trimestres
-  const meses = ['oct', 'nov', 'dic', 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+  const meses = ['o', 'n', 'd', 'e', 'f', 'm', 'a', 'm', 'j', 'j', 'a', 's', 'o', 'n', 'd'];
   for (let c = 0; c < 31; c++) {
     const l = c < 15 ? meses[c] : 'T' + ((c - 15) % 4 + 1);
-    mono(s, l, { x: x0 + c * u, y: bottom + 0.1, w: u, h: 0.18, fontSize: 6, align: 'center', charSpacing: 0 });
+    mono(s, l, { x: x0 + c * u, y: bottom + 0.08, w: u, h: 0.22, fontSize: 8.5, align: 'center', charSpacing: 0 });
   }
-  // filas
   let y = top;
   const col = { p: C.accent1, o: '1D4F66', a: C.accent3 };
   grupos.forEach(([g, filas], gi) => {
     if (gi) { regla(s, y + gapG / 2 - 0.01, M, CW, C.accent6); y += gapG; }
-    mono(s, g, { x: M, y, w: 1.3, h: filas.length * rh, fontSize: 7.5, color: C.accent1, valign: filas.length > 1 ? 'top' : 'middle', charSpacing: 1 });
+    mono(s, g, { x: M, y, w: 1.25, h: filas.length * rh, fontSize: 8.5, color: C.accent1, valign: filas.length > 1 ? 'top' : 'middle', charSpacing: 1 });
     filas.forEach(([nom, items]) => {
-      if (nom) T(s, nom, { x: M + 1.2, y, w: x0 - M - 1.32, h: rh, align: 'right', valign: 'middle', fontSize: 9 });
+      T(s, nom, { x: M + 1.2, y, w: x0 - M - 1.32, h: rh, align: 'right', valign: 'middle', fontSize: 11.5 });
       items.forEach(it => {
         const cy = y + rh / 2;
         if (it[0] === 'bar') {
           const [, a, b, c, txt, dentro] = it, bx = P(a), bw = P(b) - P(a);
-          s.addShape(S.rect, { x: bx, y: y + 0.035, w: bw, h: rh - 0.07, fill: { color: col[c] }, line: { type: 'none' } });
-          if (txt && dentro) T(s, txt, { x: bx, y, w: bw, h: rh, align: 'center', valign: 'middle', fontSize: 8, bold: true, color: c === 'p' ? C.background1 : C.text1 });
-          else if (txt) T(s, txt, { x: bx + bw + 0.08, y, w: 3.2, h: rh, valign: 'middle', fontSize: 8.5, color: C.text2 });
+          s.addShape(S.rect, { x: bx, y: y + 0.04, w: bw, h: rh - 0.08, fill: { color: col[c] }, line: { type: 'none' } });
+          if (txt && dentro) T(s, txt, { x: bx, y, w: bw, h: rh, align: 'center', valign: 'middle', fontSize: 10, bold: true, color: c === 'p' ? C.background1 : C.text1 });
+          else if (txt) T(s, txt, { x: bx + bw + 0.08, y, w: 3.4, h: rh, valign: 'middle', fontSize: 11, color: C.text2 });
         } else if (it[0] === 'hito') {
           const [, m, txt] = it, hx = P(m);
-          s.addShape(S.diamond, { x: hx - 0.08, y: cy - 0.08, w: 0.16, h: 0.16, fill: { color: C.text1 }, line: { color: C.background1, width: 0.5 } });
-          if (txt && txt.length > 2) T(s, txt, { x: hx + 0.14, y, w: 1.6, h: rh, valign: 'middle', fontSize: 8.5, color: C.text2 });
-          else if (txt) mono(s, txt, { x: hx - 0.2, y: y - 0.16, w: 0.4, h: 0.16, fontSize: 7, align: 'center', color: C.text1 });
+          s.addShape(S.diamond, { x: hx - 0.1, y: cy - 0.1, w: 0.2, h: 0.2, fill: { color: C.text1 }, line: { color: C.background1, width: 0.5 } });
+          if (txt) mono(s, txt, { x: hx - 0.2, y: y - 0.15, w: 0.4, h: 0.17, fontSize: 9, align: 'center', color: C.text1 });
         } else if (it[0] === 'star') {
           const [, m, txt] = it, hx = P(m) + u / 2;
-          s.addShape(S.star5, { x: hx - 0.11, y: cy - 0.11, w: 0.22, h: 0.22, fill: { color: C.accent3 }, line: { type: 'none' } });
-          T(s, txt, { x: hx + 0.18, y, w: 3.4, h: rh, valign: 'middle', fontSize: 8.5, color: C.accent3, bold: true });
+          s.addShape(S.star5, { x: hx - 0.13, y: cy - 0.13, w: 0.26, h: 0.26, fill: { color: C.accent3 }, line: { type: 'none' } });
+          T(s, txt, { x: hx + 0.2, y, w: 4.2, h: rh, valign: 'middle', fontSize: 11, color: C.accent3, bold: true });
+        } else if (it[0] === 'izq') {
+          const [, m, txt] = it;
+          T(s, txt, { x: P(m) - 4.1, y, w: 4.0, h: rh, align: 'right', valign: 'middle', fontSize: 11, color: C.text2 });
         } else if (it[0] === 'n') {
           const [, m, txt] = it;
-          mono(s, txt, { x: P(m) - 0.45, y, w: 0.4, h: rh, fontSize: 7.5, align: 'right', valign: 'middle', color: C.background1, bold: true });
-        } else if (it[0] === 'dot') {
-          const [, m, txt, lado] = it, hx = P(m);
-          s.addShape(S.ellipse, { x: hx - 0.06, y: cy - 0.06, w: 0.12, h: 0.12, fill: { color: C.accent1 }, line: { type: 'none' } });
-          if (lado === 'l') T(s, txt, { x: hx - 1.5, y, w: 1.4, h: rh, align: 'right', valign: 'middle', fontSize: 8, color: C.text2 });
-          else if (lado === 'b') T(s, txt, { x: hx - 1.4, y: y + rh * 0.8, w: 2.8, h: rh, align: 'center', valign: 'middle', fontSize: 8, color: C.text2 });
-          else T(s, txt, { x: hx + 0.1, y, w: 1.3, h: rh, valign: 'middle', fontSize: 8, color: C.text2 });
+          mono(s, txt, { x: P(m) - 0.5, y, w: 0.44, h: rh, fontSize: 9.5, align: 'right', valign: 'middle', color: C.background1, bold: true });
         }
       });
       y += rh;
     });
   });
-  // leyenda
-  const ly = bottom + 0.38;
-  const ley = [['rect', C.accent1, 'Actividad principal'], ['rect', '1D4F66', 'Operación o continuidad'], ['rect', C.accent3, 'Preapertura de taller'], ['diamond', C.text1, 'Hito'], ['star5', C.accent3, 'Hito crítico'], ['ellipse', C.accent1, 'Ingreso de personal']];
+  const ly = bottom + 0.42;
   let lx = M;
-  ley.forEach(([sh, c, t]) => {
-    s.addShape(S[sh], { x: lx, y: ly + 0.04, w: 0.14, h: 0.14, fill: { color: c }, line: { type: 'none' } });
-    mono(s, t, { x: lx + 0.2, y: ly, w: 2.0, h: 0.22, fontSize: 7.5, valign: 'middle', charSpacing: 0.8 });
-    lx += 2.02;
+  [['rect', C.accent1, 'Actividad principal'], ['rect', '1D4F66', 'Operación'], ['rect', C.accent3, 'Preapertura de taller'], ['diamond', C.text1, 'Hito (dúo o apertura)'], ['star5', C.accent3, 'Hito crítico']].forEach(([sh, c, t]) => {
+    s.addShape(S[sh], { x: lx, y: ly + 0.04, w: 0.16, h: 0.16, fill: { color: c }, line: { type: 'none' } });
+    T(s, t, { x: lx + 0.24, y: ly, w: 2.3, h: 0.24, fontSize: 11, valign: 'middle', color: C.text2 });
+    lx += 2.45;
   });
   return s;
 };
@@ -918,38 +796,35 @@ D.gantt = () => {
 D['presupuesto-ops'] = () => {
   const s = contenido('13', 'OPERACIONES · PRESUPUESTO Y RESULTADO', 'GANANCIA DESDE EL AÑO 2;', 'el riesgo es el dólar.');
   const y0 = 2.55, lw = 7.4;
-  mono(s, 'RESULTADO REFERENCIAL POR LÍNEA · MILLONES DE PESOS', { x: M, y: y0, w: lw, h: 0.24, fontSize: 9, color: C.text1 });
+  mono(s, 'RESULTADO POR LÍNEA · MILLONES DE PESOS', { x: M, y: y0, w: lw, h: 0.24, color: C.text1 });
   s.addChart(pres.ChartType.bar, [
     { name: 'Línea propia', labels: AÑOS, values: [-130.2, 159.9, 444.8, 694.7, 869.9] },
     { name: 'Red certificada', labels: AÑOS, values: [0, 142.1, 415.2, 1233.2, 2889.5] },
   ], Object.assign({}, ejes, {
-    x: M - 0.1, y: y0 + 0.3, w: lw + 0.1, h: 3.45, barDir: 'col', barGapWidthPct: 50,
-    chartColors: [HEX.accent1, HONDO], valAxisMinVal: -400, valAxisMaxVal: 3200, valAxisHidden: true, valGridLine: { style: 'none' },
-    showValue: true, dataLabelPosition: 'outEnd', dataLabelFormatCode: '#,##0.0;-#,##0.0;;', dataLabelFontSize: 9.5, dataLabelFontBold: true,
-    catAxisLabelFontSize: 10.5, catAxisLabelColor: HEX.dk1, catAxisLabelPos: 'low', showLegend: true, legendPos: 't', objectName: 'Resultado referencial por línea de negocio',
+    x: M - 0.1, y: y0 + 0.3, w: lw + 0.1, h: 3.4, barDir: 'col', barGapWidthPct: 45,
+    chartColors: [HEX.accent1, HONDO], valAxisMinVal: -450, valAxisMaxVal: 3300, valAxisHidden: true, valGridLine: { style: 'none' },
+    showValue: true, dataLabelPosition: 'outEnd', dataLabelFormatCode: '#,##0;-#,##0;;', dataLabelFontSize: 11.5, dataLabelFontBold: true,
+    catAxisLabelFontSize: 12, catAxisLabelColor: HEX.dk1, catAxisLabelPos: 'low', showLegend: true, legendPos: 't', legendFontSize: 12, objectName: 'Resultado referencial por línea de negocio',
   }));
-  T(s, [{ text: 'Margen de la línea propia: ', options: { color: C.text2 } }, { text: '−11,0% · 4,6% · 6,7% · 7,7% · 7,7%', options: { bold: true } }, { text: '. La red rinde cerca de 10%.', options: { color: C.text2 } }], { x: M, y: y0 + 3.85, w: lw, h: 0.3, fontSize: 11 });
-  supuesto(s, 'CÁLCULO REFERENCIAL: SIN IMPUESTOS, DEPRECIACIÓN NI FINANCIAMIENTO · 60% PLUS (SUPUESTO)', M, y0 + 4.12, lw, { size: 7.5, h: 0.24 });
-  // inversión, gasto y sensibilidad al dólar
+  T(s, [{ text: 'Margen propio: ', options: { color: C.text2 } }, { text: '−11% → 7,7%', options: { bold: true } }, { text: ' · red: cerca de 10%', options: { color: C.text2 } }], { x: M, y: y0 + 3.78, w: lw, h: 0.32, fontSize: 13 });
+  supuesto(s, 'REFERENCIAL: SIN IMPUESTOS NI DEPRECIACIÓN · 60% PLUS (SUPUESTO)', M, y0 + 4.14, lw, { size: 8.5, h: 0.26 });
   const cx = M + lw + 0.45, cw = R - cx;
   caja(s, cx, y0, cw, 1.55);
-  mono(s, 'INVERSIÓN POR LOCAL · SEIS PUESTOS', { x: cx + 0.22, y: y0 + 0.15, w: cw - 0.44, h: 0.22, fontSize: 8.5, color: C.accent1 });
-  numero(s, '$81,3 M', { x: cx + 0.22, y: y0 + 0.38, w: 2.2, h: 0.6, fontSize: 32, valign: 'top' });
-  T(s, 'Casi la mitad es el dinamómetro: $36,7 M. El kit es más del 90% del gasto operacional.', { x: cx + 2.35, y: y0 + 0.42, w: cw - 2.55, h: 1.0, fontSize: 10.5, color: C.text2 });
-  const sy = y0 + 1.8;
-  caja(s, cx, sy, cw, 2.45);
-  visor(s, cx, sy, cw, 2.45);
-  mono(s, 'RESULTADO PROPIO DEL AÑO 5 SEGÚN EL DÓLAR', { x: cx + 0.22, y: sy + 0.15, w: cw - 0.44, h: 0.22, fontSize: 8.5, color: C.accent1 });
-  const sen = [['Dólar −10%', 1646.9, '14,6%'], ['Base: $965,71', 869.9, '7,7%'], ['Dólar +10%', 92.9, '0,8%']];
-  const bx = cx + 1.55, bmax = cw - 2.95;
-  sen.forEach(([k, v, m], i) => {
-    const y = sy + 0.5 + i * 0.47;
-    T(s, k, { x: cx + 0.22, y, w: 1.3, h: 0.42, valign: 'middle', fontSize: 10.5 });
-    s.addShape(S.rect, { x: bx, y: y + 0.1, w: Math.max(0.04, bmax * v / 1646.9), h: 0.22, fill: { color: i === 2 ? C.accent4 : i === 1 ? C.accent1 : C.text2 }, line: { type: 'none' } });
-    T(s, dec(v), { x: bx + bmax * v / 1646.9 + 0.08, y, w: 1.0, h: 0.42, valign: 'middle', fontFace: F_CON, bold: true, fontSize: 14 });
-    mono(s, m, { x: cx + cw - 0.75, y, w: 0.55, h: 0.42, valign: 'middle', align: 'right', fontSize: 8.5 });
+  mono(s, 'INVERSIÓN POR LOCAL', { x: cx + 0.22, y: y0 + 0.15, w: cw - 0.44, h: 0.22, color: C.accent1 });
+  numero(s, '$81,3 M', { x: cx + 0.22, y: y0 + 0.42, w: 2.3, h: 0.62, fontSize: 34, valign: 'top' });
+  T(s, 'Casi la mitad, en el dinamómetro.', { x: cx + 2.45, y: y0 + 0.46, w: cw - 2.65, h: 0.9, fontSize: 12.5, color: C.text2 });
+  const sy = y0 + 1.78;
+  caja(s, cx, sy, cw, 2.47);
+  visor(s, cx, sy, cw, 2.47);
+  mono(s, 'RESULTADO PROPIO AÑO 5', { x: cx + 0.22, y: sy + 0.15, w: cw - 0.44, h: 0.22, color: C.accent1 });
+  const bx = cx + 1.65, bmax = cw - 3.05;
+  [['Dólar −10%', 1646.9], ['Base', 869.9], ['Dólar +10%', 92.9]].forEach(([k, v], i) => {
+    const y = sy + 0.5 + i * 0.5;
+    T(s, k, { x: cx + 0.22, y, w: 1.4, h: 0.44, valign: 'middle', fontSize: 12.5 });
+    s.addShape(S.rect, { x: bx, y: y + 0.1, w: Math.max(0.04, bmax * v / 1646.9), h: 0.24, fill: { color: i === 2 ? C.accent4 : i === 1 ? C.accent1 : C.text2 }, line: { type: 'none' } });
+    T(s, dec(v), { x: bx + bmax * v / 1646.9 + 0.08, y, w: 1.2, h: 0.44, valign: 'middle', fontFace: F_CON, bold: true, fontSize: 16 });
   });
-  T(s, 'Cerca del 82% del costo del kit se paga en dólares; la red traslada la variación al taller.', { x: cx + 0.22, y: sy + 1.95, w: cw - 0.44, h: 0.42, fontSize: 9.5, color: C.text2 });
+  T(s, 'El 82% del costo del kit está en dólares.', { x: cx + 0.22, y: sy + 2.0, w: cw - 0.44, h: 0.4, fontSize: 12, color: C.text2 });
   return s;
 };
 
@@ -958,44 +833,32 @@ D['presupuesto-ops'] = () => {
 // =====================================================================
 D.conclusiones = () => {
   const s = contenido('14', 'CONCLUSIONES DEL CAPÍTULO', 'TRES CONCLUSIONES', 'y dos preguntas por resolver.');
-  // tres conclusiones (guía: qué queda fundamentado), cada una con su cifra de respaldo
-  const y0 = 2.55, n = 3, gap = 0.25, cw = (CW - (n - 1) * gap) / n, ch = 2.0;
-  const cc = [
-    ['LA OPORTUNIDAD EXISTE', '367 > 299', 'demanda atendible frente a instalaciones del año 1', 'Hay más demanda que capacidad desde el primer año: el crecimiento depende de técnicos y espacio.'],
-    ['HAY ESPACIO COMPETITIVO', 'ÚNICA', 'alternativa que ahorra sin cambiar de auto ni límite de antigüedad', 'La red vende la calibración mientras sigue siendo exclusiva: 42 talleres al año 5.'],
-    ['UN MISMO GATILLO', '80%', 'de la capacidad, dos meses seguidos', 'Suma un dúo, contrata cuando la carga lo justifica y abre un taller; cada línea gana desde el año 2.'],
-  ];
-  cc.forEach(([k, v, u, d], i) => {
+  const y0 = 2.55, n = 3, gap = 0.25, cw = (CW - (n - 1) * gap) / n, ch = 2.1;
+  [['LA OPORTUNIDAD EXISTE', '367 > 299', 'Demanda atendible frente a instalaciones del año 1: crecer depende de técnicos y espacio.'],
+   ['HAY ESPACIO COMPETITIVO', 'ÚNICA', 'Alternativa que ahorra sin cambiar de auto; la biblioteca es la ventaja y la red la escala.'],
+   ['UN MISMO GATILLO', '80%', 'De capacidad: suma dúos, personas y talleres. Cada línea gana desde el año 2.']].forEach(([k, v, d], i) => {
     const x = M + i * (cw + gap), hot = i === 2;
     if (hot) cajaHot(s, x, y0, cw, ch); else caja(s, x, y0, cw, ch);
     tag(s, '0' + (i + 1), x + 0.2, y0 + 0.18);
-    mono(s, k, { x: x + 0.68, y: y0 + 0.18, w: cw - 0.85, h: 0.27, valign: 'middle', fontSize: 9, color: hot ? C.accent1 : C.text1 });
-    numero(s, v, { x: x + 0.2, y: y0 + 0.52, w: cw - 0.4, h: 0.6, fontSize: 36, valign: 'top', color: hot ? C.accent1 : C.text1 });
-    mono(s, u.toUpperCase(), { x: x + 0.2, y: y0 + 1.1, w: cw - 0.4, h: 0.32, fontSize: 7, charSpacing: 0.8 });
-    T(s, d, { x: x + 0.2, y: y0 + 1.4, w: cw - 0.4, h: 0.56, fontSize: 11 });
+    mono(s, k, { x: x + 0.68, y: y0 + 0.18, w: cw - 0.85, h: 0.27, valign: 'middle', color: hot ? C.accent1 : C.text1 });
+    numero(s, v, { x: x + 0.2, y: y0 + 0.52, w: cw - 0.4, h: 0.62, fontSize: 38, valign: 'top', color: hot ? C.accent1 : C.text1 });
+    T(s, d, { x: x + 0.2, y: y0 + 1.16, w: cw - 0.4, h: 0.88, fontSize: 12.5 });
   });
-  // hoja de ruta en tres tramos
-  const ry = y0 + ch + 0.18;
-  mono(s, 'HOJA DE RUTA A CINCO AÑOS', { x: M, y: ry, w: 5, h: 0.22, fontSize: 9, color: C.text1 });
-  const tr = [['AÑO 1 · PROBAR', '299 instalaciones, 3 casos medidos y 2 modelos calibrados al mes.'], ['AÑOS 2 Y 3 · SUMAR LA RED', 'Regiones con ingresos recurrentes y el segundo taller propio.'], ['AÑOS 4 Y 5 · ESCALAR', 'Tres talleres propios, 42 certificados y 56 personas.']];
-  const tw = (CW - 0.3) / 3, tyy = ry + 0.28;
-  tr.forEach(([a, d], i) => {
+  const ry = y0 + ch + 0.22, tw = (CW - 0.3) / 3, tyy = ry;
+  [['AÑO 1 · PROBAR', '299 instalaciones y 3 casos medidos.'], ['AÑOS 2 Y 3 · SUMAR LA RED', 'Regiones y segundo taller.'], ['AÑOS 4 Y 5 · ESCALAR', 'Tres talleres, red de 42, 56 personas.']].forEach(([a, d], i) => {
     const x = M + i * (tw + 0.15);
-    s.addText('', { shape: i === 0 ? S.homePlate : S.chevron, x, y: tyy, w: tw + 0.12, h: 0.34, fill: { color: i === 0 ? C.accent1 : C.accent5 }, line: { type: 'none' } });
-    mono(s, a, { x: x + 0.25, y: tyy, w: tw - 0.4, h: 0.34, valign: 'middle', fontSize: 8.5, bold: true, color: i === 0 ? C.background1 : C.text1 });
-    T(s, d, { x, y: tyy + 0.4, w: tw - 0.15, h: 0.42, fontSize: 10.5, color: C.text2 });
+    s.addText('', { shape: i === 0 ? S.homePlate : S.chevron, x, y: tyy, w: tw + 0.12, h: 0.38, fill: { color: i === 0 ? C.accent1 : C.accent5 }, line: { type: 'none' } });
+    mono(s, a, { x: x + 0.25, y: tyy, w: tw - 0.4, h: 0.38, valign: 'middle', fontSize: 9.5, bold: true, color: i === 0 ? C.background1 : C.text1 });
+    T(s, d, { x, y: tyy + 0.46, w: tw - 0.15, h: 0.32, fontSize: 12.5, color: C.text2 });
   });
-  // supuestos críticos como preguntas (guía: no como debilidades)
-  const qy = 6.08;
+  const qy = 5.98;
   regla(s, qy - 0.1, M, CW, C.accent3);
-  mono(s, 'POR RESOLVER EN LAS FASES SIGUIENTES', { x: M, y: qy, w: 5, h: 0.24, fontSize: 8.5, color: C.accent3 });
-  const qq = ['¿El reglamento de la Ley 21.793 admitirá el kit aditivo, y desde cuándo?', '¿El ahorro medido y la encuesta confirman los precios y el 60% de Plus?'];
+  mono(s, 'POR RESOLVER', { x: M, y: qy, w: 5, h: 0.24, color: C.accent3 });
   const qw = (CW - 3.0) / 2;
-  qq.forEach((q, i) => {
-    const x = M + i * (qw + 0.3);
-    T(s, q, { x, y: qy + 0.26, w: qw, h: 0.52, fontFace: F_SER, italic: true, fontSize: 15, color: C.text1 });
+  ['¿El reglamento admitirá el kit aditivo, y desde cuándo?', '¿El ahorro medido y la encuesta confirman los precios?'].forEach((q, i) => {
+    T(s, q, { x: M + i * (qw + 0.3), y: qy + 0.27, w: qw, h: 0.6, fontFace: F_SER, italic: true, fontSize: 17, color: C.text1 });
   });
-  mono(s, 'GRACIAS · ¿PREGUNTAS?', { x: R - 2.5, y: qy + 0.3, w: 2.5, h: 0.4, valign: 'middle', align: 'right', fontSize: 10.5, color: C.accent1 });
+  mono(s, 'GRACIAS · ¿PREGUNTAS?', { x: R - 2.6, y: qy + 0.32, w: 2.6, h: 0.4, valign: 'middle', align: 'right', fontSize: 11, color: C.accent1 });
   return s;
 };
 

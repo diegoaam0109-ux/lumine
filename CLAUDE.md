@@ -88,6 +88,10 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   kits al año 5, Esencial $4.290.000 y Plus $4.990.000 con IVA (referencia), dotación 13 → 56. La meta de cotizaciones del
   primer año sigue «Por confirmar».
 - No se nombra a las personas entrevistadas (el repositorio es público).
+- Observaciones del profesor Brito (8-10-2026) que valen para toda presentación: **nada de textos pequeños** (texto
+  principal de 12,5 pt o más, etiquetas de 9 pt o más; el detalle lo dice el orador o va al anexo); decir explícitamente
+  cuál es la **ventaja competitiva sostenible** (la biblioteca de calibraciones, activo intangible), sin confundirla con la
+  estrategia; el FODA no va en la presentación final.
 
 ## Pendientes y preguntas abiertas
 

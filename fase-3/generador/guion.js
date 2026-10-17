@@ -18,12 +18,12 @@ const PRINCIPAL = [
     'Por eso entramos por el uso laboral de alta intensidad: colectivos, taxis y aplicaciones.' },
   { d: 'investigacion', quien: DIEGO, titulo: 'Seis hipótesis por probar', texto:
     'Nada de esto se le ha preguntado aún a un conductor, así que la investigación es mixta y secuencial: primero entrevistas a cuatro expertos y a cinco perfiles de clientes, después una encuesta por cuotas a 150 personas, con 100 como mínimo. ' +
-    'Una muestra aleatoria exigiría 385 casos, así que los resultados serán indicativos. ' +
+    'Como no es aleatoria, los resultados serán indicativos. ' +
     'Pone a prueba seis hipótesis; por ejemplo, que la barrera principal es la confianza y no el precio. Hasta ahora hicimos la entrevista exploratoria; el resto está por realizar.' },
   { d: 'ansoff', quien: DIEGO, titulo: 'Entra por desarrollo de producto', texto:
     'En la matriz de Ansoff, Lumine entra por desarrollo de producto: el mercado existe, porque los conductores ya buscan gastar menos, pero la hibridación aditiva no tiene oferta en Chile. ' +
     'En el año 2 viene la penetración y, antes de lo habitual, la diversificación relacionada: vender patrones de calibración, kits y certificación a otros talleres, porque la exclusividad de la calibración se agota con el tiempo. ' +
-    'En el año 3 llega el desarrollo de mercado, con flotas y regiones. Le paso la palabra a Benjamín.' },
+    'En el año 3 llega el desarrollo de mercado. Y nuestra ventaja competitiva, sostenible en el tiempo, es la biblioteca de calibraciones por modelo: crece con cada instalación y es lo más difícil de copiar. Le paso la palabra a Benjamín.' },
 
   { d: 'posicionamiento', quien: BENJA, titulo: 'El espacio vacío', texto:
     'Gracias, Diego. Este mapa ordena las alternativas por inversión y por lo que exigen al conductor. ' +

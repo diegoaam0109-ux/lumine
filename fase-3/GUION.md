@@ -2,17 +2,17 @@
 
 Integrador II: Taller de Empresas · ICMA 1001 · Grupo 1 · Profesor Roberto Brito. Capítulo III: Plan de Marketing, Operaciones y Recursos Humanos.
 
-Máximo 10 minutos: 15 diapositivas, unos 9:28 a 130 palabras por minuto (1230 palabras). Cada integrante habla lo mismo, poco más de tres minutos. El anexo (10 diapositivas) no se expone: se usa solo si preguntan.
+Máximo 10 minutos: 15 diapositivas, unos 9:36 a 130 palabras por minuto (1248 palabras). Cada integrante habla lo mismo, poco más de tres minutos. El anexo (10 diapositivas) no se expone: se usa solo si preguntan.
 
 | Parte | Integrante | Diapositivas | Palabras | Tiempo |
 |---|---|---|---|---|
-| 1 | Diego Alarcón | 1 a 5 | 403 | 3:06 |
+| 1 | Diego Alarcón | 1 a 5 | 421 | 3:14 |
 | 2 | Benjamín Torres | 6 a 10 | 411 | 3:10 |
 | 3 | Lukas Verdugo | 11 a 15 | 416 | 3:12 |
 
 ## Parte 1 · Diego Alarcón · diapositivas 1 a 5
 
-Unos 3:06 (403 palabras). Termina pasándole la palabra a Benjamín.
+Unos 3:14 (421 palabras). Termina pasándole la palabra a Benjamín.
 
 ### 1 · Portada · 30 s
 
@@ -26,13 +26,13 @@ El objetivo general es que en cinco años Lumine sea la referencia de la hibrida
 
 ¿A quién le vendemos? El cliente no se define por su edad, su ingreso ni la antigüedad de su auto, sino por tener un vehículo compatible: liviano, a combustión y con tracción delantera, porque el kit va en el eje trasero. De las cuatro variables, la decisiva es la conductual: la intensidad y el tipo de uso fijan en cuánto tiempo el ahorro paga la inversión. Por eso entramos por el uso laboral de alta intensidad: colectivos, taxis y aplicaciones.
 
-### 4 · Seis hipótesis por probar · 40 s
+### 4 · Seis hipótesis por probar · 35 s
 
-Nada de esto se le ha preguntado aún a un conductor, así que la investigación es mixta y secuencial: primero entrevistas a cuatro expertos y a cinco perfiles de clientes, después una encuesta por cuotas a 150 personas, con 100 como mínimo. Una muestra aleatoria exigiría 385 casos, así que los resultados serán indicativos. Pone a prueba seis hipótesis; por ejemplo, que la barrera principal es la confianza y no el precio. Hasta ahora hicimos la entrevista exploratoria; el resto está por realizar.
+Nada de esto se le ha preguntado aún a un conductor, así que la investigación es mixta y secuencial: primero entrevistas a cuatro expertos y a cinco perfiles de clientes, después una encuesta por cuotas a 150 personas, con 100 como mínimo. Como no es aleatoria, los resultados serán indicativos. Pone a prueba seis hipótesis; por ejemplo, que la barrera principal es la confianza y no el precio. Hasta ahora hicimos la entrevista exploratoria; el resto está por realizar.
 
-### 5 · Entra por desarrollo de producto · 40 s
+### 5 · Entra por desarrollo de producto · 50 s
 
-En la matriz de Ansoff, Lumine entra por desarrollo de producto: el mercado existe, porque los conductores ya buscan gastar menos, pero la hibridación aditiva no tiene oferta en Chile. En el año 2 viene la penetración y, antes de lo habitual, la diversificación relacionada: vender patrones de calibración, kits y certificación a otros talleres, porque la exclusividad de la calibración se agota con el tiempo. En el año 3 llega el desarrollo de mercado, con flotas y regiones. Le paso la palabra a Benjamín.
+En la matriz de Ansoff, Lumine entra por desarrollo de producto: el mercado existe, porque los conductores ya buscan gastar menos, pero la hibridación aditiva no tiene oferta en Chile. En el año 2 viene la penetración y, antes de lo habitual, la diversificación relacionada: vender patrones de calibración, kits y certificación a otros talleres, porque la exclusividad de la calibración se agota con el tiempo. En el año 3 llega el desarrollo de mercado. Y nuestra ventaja competitiva, sostenible en el tiempo, es la biblioteca de calibraciones por modelo: crece con cada instalación y es lo más difícil de copiar. Le paso la palabra a Benjamín.
 
 ## Parte 2 · Benjamín Torres · diapositivas 6 a 10
 
