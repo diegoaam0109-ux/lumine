@@ -14,20 +14,21 @@ Integrantes: Diego Alarcón, Benjamín Torres y Lukas Verdugo.
 El informe de la Fase 3 (.docx) **no está en el repositorio** porque el repositorio es público. Todas las cifras de la
 presentación salen de ese informe; lo que el informe deja pendiente se muestra como «Por confirmar».
 
-## Contenido (máximo 10 minutos)
+## Contenido (objetivo de 7 minutos)
 
-Versión ejecutiva (18-10-2026): **14 láminas para exponer** (portada, 12 de contenido y cierre; unos 9 minutos) y un anexo
-de 11 que solo se usa si preguntan. La lámina índice del anexo tiene un enlace a cada tema, y cada lámina del anexo tiene un
-enlace de vuelta al índice. El detalle de qué se fusionó y dónde quedó cada dato está en `VERSION_EJECUTIVA.md`.
+Versión de 7 minutos (18-10-2026): **16 láminas para exponer** (portada, 14 de contenido y cierre; unos 6:50) y un anexo
+de 13 para la defensa. La lámina índice del anexo tiene un enlace a cada tema, y cada lámina del anexo tiene un enlace de
+vuelta al índice. Qué cambió, cómo se reparte el tiempo según la rúbrica y qué queda por revisar: `VERSION_7_MINUTOS.md`.
 
 | Integrante | Láminas | Contenido |
 |---|---|---|
-| Diego Alarcón | Portada, 01 a 03 | El mercado y nuestra meta, validar antes de vender, una oportunidad sin oferta en Chile (Ansoff y posicionamiento) |
-| Benjamín Torres | 04 a 07 | Esencial y Plus, la demanda, cómo llegamos al cliente (mix y presupuesto), de 13 a 56 personas |
-| Lukas Verdugo | 08 a 12 y cierre | Lumine Habilita, de la cotización a la postventa, escalar sin adelantarse a la demanda, los números y las conclusiones |
-| Anexo | 15 a 26 | Índice; hipótesis, dudas del cliente, mezcla de marketing, cobros a la red, mercado y adopción, perfiles de cargo, rentas, bonos y nómina, jornada de instalación, inversión y gasto, sensibilidad, Carta Gantt completa |
+| Diego Alarcón | 1 a 4 | Portada, objetivos, segmentación e investigación de mercado |
+| Benjamín Torres | 5 a 9 | Ansoff y posicionamiento, producto y precio, mix de servicios (7 P), demanda y presupuesto de marketing |
+| Lukas Verdugo | 10 a 16 | Estructura y dotación, Lumine Habilita (con código QR a la demo), flujo, Carta Gantt, presupuesto de operaciones, conclusiones y cierre |
+| Anexo | 17 a 30 | Índice; hipótesis, dudas del cliente, mezcla por línea, cobros a la red, mercado y adopción, pronóstico por línea, recuperación y financiamiento, perfiles de cargo, rentas y bonos, jornada, resultado por línea, sensibilidad y Carta Gantt completa |
 
 El cierre no tiene texto en el guion: queda en pantalla durante las preguntas.
+El código QR de la lámina 11 se genera con `generador/qr.py` (requiere segno).
 
 ## Imágenes
 

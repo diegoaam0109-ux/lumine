@@ -110,6 +110,11 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   kits al año 5, Esencial $4.290.000 y Plus $4.990.000 con IVA (referencia), dotación 13 → 56. La meta de cotizaciones del
   primer año sigue «Por confirmar».
 - No se nombra a las personas entrevistadas (el repositorio es público).
+- Versión de 7 minutos (18-10-2026, `fase-3/VERSION_7_MINUTOS.md`): 16 láminas + anexo de 13 para la defensa. Objetivo de
+  7 min porque la presentación final de 20 min da ~7 por fase. Regla de Diego: la lámina es apoyo visual, no el guion
+  (un mensaje, un protagonista, máximo tres datos de apoyo). El tiempo por lámina sigue el peso de la rúbrica del informe
+  (investigación 15% y mix 15% pesan más). La ventaja competitiva ya no va en pantalla (Fases 1 y 2) pero el guion la nombra.
+  La lámina 11 lleva un código QR a la demo de Habilita (`generador/qr.py`).
 - Observaciones del profesor Brito (8-10-2026) que valen para toda presentación: **nada de textos pequeños ni láminas
   cargadas**, pensando en alguien miope al fondo de la sala: una idea y un visual por lámina, texto de 16 pt o más,
   etiquetas de 12 pt o más, cifras grandes; el detalle lo dice el orador o va al anexo. Decir explícitamente
