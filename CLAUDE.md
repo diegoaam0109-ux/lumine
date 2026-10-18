@@ -84,8 +84,8 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - Máximo 10 minutos: 23 diapositivas (19 con texto, una apertura con foto por plan y un cierre con el logotipo gigante) +
   anexo de 11 con índice enlazado. Diego 1–6 (portada a Ansoff), Benjamín 7–13 (posicionamiento a dotación), Lukas 14–23
   (Habilita, operaciones, conclusiones y cierre); ~415 palabras c/u (1.249 en total).
-- Imágenes: portada con `lumine-01-rayos-x`, aperturas con colectivero, capacitación y taller (rotuladas «imagen
-  ilustrativa» u «operación proyectada»), cierre con `escenario-c`. Se componen con `generador/componer.py`. Las láminas
+- Imágenes: portada y cierre con `lumine-01-rayos-x` (compuestos), aperturas con bencinera, taller y banco de pruebas
+  (rotuladas «imagen ilustrativa» u «operación proyectada»). Se componen con `generador/componer.py`. Las láminas
   con datos llevan solo fotos chicas complementarias (una por etapa del flujo, banco de pruebas en controles, equipo en
   dotación), rotuladas al pie. La primera etapa de la investigación se llama «Profundidad» (entrevista en profundidad).
 - Tipografía de la Fase 3: **opción C, titulares en Michroma** (el «%» va en Archivo) y el resto en la familia Archivo
@@ -98,6 +98,10 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   la Carta Gantt completa pasó al anexo (A11) y la exposición usa un cronograma ejecutivo. Marcas: ESTIMACIÓN (raya),
   SUPUESTO o REFERENCIA (puntos), POR CONFIRMAR o PENDIENTE (línea), REALIZADA (verde). Inconsistencias detectadas para
   revisar con el informe: `fase-3/REDISENO_LEGIBILIDAD.md`.
+- Rediseño visual premium (17-10-2026, `fase-3/REDISENO_PREMIUM.md`): solo la paleta de Lumine (sin ámbar, verde ni rojo;
+  marcas de estado en gris acero), fondos `fondo-rejilla` (estrategia) y `fondo-horizonte` (procesos), resplandor `brillo.png`
+  solo tras el dato protagonista, portada y cierre con el auto en rayos X (`componer.py`), aperturas con bencinera, taller y
+  banco de pruebas, posicionamiento en escala lineal. Se mantuvo la tipografía C a pedido del equipo.
 - Estándar: la guía del profesor Brito para las Fases 1 y 2 (fuente al pie de cada lámina, supuestos marcados, siglas
   explicadas, conclusiones con preguntas pendientes, PDF 16:9, archivo `Grupo_01_LumineMotors_Fase3`).
 - Datos solo del informe de la Fase 3 (10-10-2026): pronóstico 299 → 2.851 instalaciones propias, red de 42 talleres y 7.773
@@ -117,9 +121,8 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - ¿Exigir 12 meses en nivel 2 antes de validar el nivel 3 (DGUV)? No implementar sin confirmación.
 - Licencia SEC del instalador: según el D.S. 92 sería clase C hasta 50 kW o B sobre eso; falta confirmarlo con la SEC.
 - Guion: decidir si la frase "Dos observaciones críticas…" (diapositiva 14) se deja, se reformula o se quita.
-- Fase 3 · rediseño visual premium: tres láminas piloto (portada, Ansoff, producto y precio) en `fase-3/pilotos/`,
-  esperando aprobación antes de aplicar el sistema a las 35. Inconsistencias abiertas: química de la batería (informe:
-  litio-titanato; identidad: LFP) y motores (informe: dos en las ruedas; render: uno central).
+- Fase 3: inconsistencias abiertas para revisar con el informe: química de la batería (informe: litio-titanato;
+  identidad: LFP) y motores (informe: dos en las ruedas; render: uno central). Ver `fase-3/REDISENO_PREMIUM.md`.
 
 ## Trampas técnicas conocidas
 

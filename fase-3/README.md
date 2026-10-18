@@ -17,7 +17,7 @@ presentación salen de ese informe; lo que el informe deja pendiente se muestra 
 ## Contenido (máximo 10 minutos)
 
 23 diapositivas para exponer (unos 9 minutos y medio, poco más de 3 por integrante): 19 con texto, una apertura con foto
-por cada plan y un cierre con el logotipo gigante. Además, un anexo de 11 que solo se usa si preguntan.
+por cada plan y un cierre con el auto del kit. Además, un anexo de 11 que solo se usa si preguntan.
 La diapositiva índice del anexo tiene un enlace a cada tema, y cada diapositiva del anexo tiene un enlace de vuelta al índice.
 
 | Integrante | Diapositivas | Contenido |
@@ -33,9 +33,11 @@ Las aperturas y el cierre no tienen texto en el guion: se pasan sin hablar.
 
 Vienen del kit de identidad (`integrador-2/identidad/`). `generador/componer.py` las combina con el negro de la marca
 (degradado horneado, para que el texto siempre quede sobre fondo oscuro) y deja los fondos en `generador/assets/`:
-portada (auto en rayos X), aperturas de Marketing (colectivero), Recursos Humanos (capacitación) y Operaciones (taller), y
-cierre (`escenario-c`). Las fotos de taller y capacitación muestran la operación propuesta: se rotulan «Operación
-proyectada · imagen ilustrativa». Las láminas con cifras no llevan fotos, para que no compitan con los datos.
+portada y cierre (auto en rayos X, con halo celeste bajo el kit), aperturas de Marketing (bencinera), Recursos Humanos
+(taller) y Operaciones (banco de pruebas), y los fondos `fondo-rejilla` (láminas de estrategia) y `fondo-horizonte`
+(láminas de proceso). Las fotos de taller muestran la operación propuesta: se rotulan «Operación proyectada · imagen
+ilustrativa». Las láminas con cifras llevan, como mucho, una foto chica complementaria.
+El detalle del rediseño visual premium y las observaciones académicas están en `REDISENO_PREMIUM.md`.
 Si cambias una imagen, corre `python3 componer.py` (requiere Pillow) antes de `./render.sh`.
 
 ## Legibilidad
@@ -62,7 +64,7 @@ las inconsistencias que hay que revisar con el informe están en `REDISENO_LEGIB
 
 Sigue la guía de presentación de las Fases 1 y 2 de Integrador II (profesor Roberto Brito), que sirve de referencia mientras no
 haya una para la Fase 3: portada con el nombre del proyecto y una frase de 15 a 20 palabras que explica qué hace, una idea por
-diapositiva, **fuente al pie de cada diapositiva**, supuestos y estimaciones marcados en ámbar («Pronóstico», «Precio de
+diapositiva, **fuente al pie de cada diapositiva**, supuestos y estimaciones marcados con un recuadro gris de borde punteado o de raya («Pronóstico», «Precio de
 referencia», «Ahorro simulado», «Supuesto»), siglas explicadas la primera vez, conclusiones con los supuestos críticos como
 preguntas, 16:9, entrega en PDF y nombre de archivo `Grupo_01_LumineMotors_Fase3`. La guía y el ejemplo no se suben al repositorio.
 

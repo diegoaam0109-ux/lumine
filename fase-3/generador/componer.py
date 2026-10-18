@@ -108,6 +108,75 @@ def brillo():
     img.save(OUT / 'brillo.png')
 
 
+def fondo_rejilla():
+    """Fondo de las láminas de estrategia: rejilla técnica casi imperceptible y una luz fría arriba a la derecha."""
+    from PIL import ImageChops
+    lienzo = Image.new('RGB', (W, H), NEGRO)
+    rej = Image.new('RGB', (W, H), NEGRO)
+    d = ImageDraw.Draw(rej)
+    paso = 76
+    for x in range(0, W, paso):
+        d.line([(x, 0), (x, H)], fill=(22, 28, 32), width=1)
+    for y in range(0, H, paso):
+        d.line([(0, y), (W, y)], fill=(22, 28, 32), width=1)
+    m = Image.new('L', (W, H), 0)
+    ImageDraw.Draw(m).ellipse((W * 0.45, -H * 0.55, W * 1.35, H * 0.75), fill=255)
+    m = m.filter(ImageFilter.GaussianBlur(220))
+    lienzo = Image.composite(rej, lienzo, m)
+    luz = Image.new('L', (W, H), 0)
+    ImageDraw.Draw(luz).ellipse((W * 0.62, -H * 0.45, W * 1.2, H * 0.3), fill=34)
+    luz = luz.filter(ImageFilter.GaussianBlur(200))
+    lienzo = ImageChops.screen(lienzo, Image.composite(Image.new('RGB', (W, H), (150, 200, 225)), Image.new('RGB', (W, H), 0), luz))
+    lienzo.save(OUT / 'fondo-rejilla.jpg', quality=92)
+
+
+def fondo_horizonte():
+    """Fondo de las láminas de proceso: un horizonte de luz muy tenue al pie, como el piso de un estudio."""
+    from PIL import ImageChops
+    lienzo = Image.new('RGB', (W, H), NEGRO)
+    piso = Image.new('RGB', (W, H), NEGRO)
+    d = ImageDraw.Draw(piso)
+    hy = int(H * 0.965)
+    for i in range(-14, 15):                       # líneas de fuga del piso
+        d.line([(W / 2 + i * 40, hy), (W / 2 + i * 260, H + 400)], fill=(18, 26, 31), width=1)
+    m = Image.new('L', (W, H), 0)
+    ImageDraw.Draw(m).rectangle((0, hy, W, H), fill=200)
+    lienzo = Image.composite(piso, lienzo, m)
+    luz = Image.new('L', (W, H), 0)
+    ImageDraw.Draw(luz).ellipse((W * 0.15, hy - 26, W * 0.85, hy + 26), fill=70)
+    luz = luz.filter(ImageFilter.GaussianBlur(60))
+    lienzo = ImageChops.screen(lienzo, Image.composite(Image.new('RGB', (W, H), (34, 184, 240)), Image.new('RGB', (W, H), 0), luz))
+    lienzo.save(OUT / 'fondo-horizonte.jpg', quality=92)
+
+
+def cierre_premium():
+    """Cierre: el mismo auto de la portada, más cerca y centrado, con el halo bajo el kit."""
+    from PIL import ImageChops, ImageEnhance
+    lienzo = Image.new('RGB', (W, H), NEGRO)
+    src = Image.open(ID / 'imagenes' / 'lumine-01-rayos-x.jpg').convert('RGB')
+    k = 1.55
+    foto = src.resize((round(src.width * k), round(src.height * k)), Image.LANCZOS)
+    foto = foto.filter(ImageFilter.UnsharpMask(radius=2, percent=70, threshold=2))
+    foto = ImageEnhance.Contrast(foto).enhance(1.10)
+    x0, y0 = -125, 150
+    m = Image.new('L', foto.size, 255)
+    m = Image.composite(m, Image.new('L', foto.size, 0), rampa(*foto.size, 0, 380, 0, 1, eje='y'))
+    lienzo.paste(foto, (x0, y0), m)
+    halo = Image.new('L', (W, H), 0)
+    cx, cy = x0 + round(900 * k), y0 + round(600 * k)
+    ImageDraw.Draw(halo).ellipse((cx - 700, cy - 130, cx + 700, cy + 130), fill=110)
+    halo = halo.filter(ImageFilter.GaussianBlur(140))
+    lienzo = ImageChops.screen(lienzo, Image.composite(Image.new('RGB', (W, H), (34, 184, 240)), Image.new('RGB', (W, H), 0), halo))
+    v = Image.new('L', (W, H), 0)
+    ImageDraw.Draw(v).ellipse((-400, -300, W + 400, H + 600), fill=255)
+    v = v.filter(ImageFilter.GaussianBlur(260))
+    lienzo = Image.composite(lienzo, Image.new('RGB', (W, H), NEGRO), v)
+    # franja superior negra para el texto
+    lienzo = oscurecer(lienzo, rampa(W, H, int(H * 0.30), int(H * 0.46), 0.85, 0, eje='y'))
+    lienzo.save(OUT / 'cierre-premium.jpg', quality=92)
+    print('cierre: auto en', x0, y0, 'escala', k)
+
+
 def apertura(nombre, archivo, fx=0.5, fy=0.5):
     """Foto en los dos tercios derechos, fundida hacia el negro de la izquierda donde va el texto."""
     lienzo = Image.new('RGB', (W, H), NEGRO)
@@ -136,9 +205,12 @@ if __name__ == '__main__':
     portada()
     portada_premium()
     brillo()
-    apertura('apertura-marketing.jpg', 'lumine-05-colectivero-santiago.jpg', fx=0.95)
-    apertura('apertura-rrhh.jpg', 'lumine-14-capacitacion.jpg', fx=0.55)
-    apertura('apertura-operaciones.jpg', 'lumine-16-taller.jpg', fx=0.5)
+    apertura('apertura-marketing.jpg', 'lumine-13-bencinera.jpg', fx=0.85)
+    apertura('apertura-rrhh.jpg', 'lumine-16-taller.jpg', fx=0.5)
+    apertura('apertura-operaciones.jpg', 'lumine-17-banco-pruebas.jpg', fx=0.35)
+    fondo_rejilla()
+    fondo_horizonte()
+    cierre_premium()
     cierre()
     # fotos complementarias dentro de las láminas (medidas en pulgadas, iguales a las de deck.js)
     for n, (archivo, fx, fy) in enumerate([
