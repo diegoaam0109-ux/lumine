@@ -177,6 +177,26 @@ def cierre_premium():
     print('cierre: auto en', x0, y0, 'escala', k)
 
 
+def recorte_kit(nombre, w, h, caja=(540, 300, 1440, 720)):
+    """Acercamiento al kit (batería y eje trasero) desde el render en rayos X, apenas oscurecido en los bordes."""
+    from PIL import ImageEnhance
+    src = Image.open(ID / 'imagenes' / 'lumine-01-rayos-x.jpg').convert('RGB')
+    x0, y0, x1, y1 = caja
+    rw, rh = round(w * 300), round(h * 300)
+    # ajusta la caja a la proporción pedida, centrada en la original
+    cx, cy, bw = (x0 + x1) / 2, (y0 + y1) / 2, x1 - x0
+    bh = bw * rh / rw
+    if bh > src.height:
+        bh = src.height; bw = bh * rw / rh
+    caja = (round(cx - bw / 2), round(max(0, cy - bh / 2)), round(cx + bw / 2), round(max(0, cy - bh / 2) + bh))
+    foto = src.crop(caja).resize((rw, rh), Image.LANCZOS).filter(ImageFilter.UnsharpMask(radius=2, percent=60, threshold=2))
+    foto = ImageEnhance.Contrast(foto).enhance(1.08)
+    v = Image.new('L', foto.size, 0)
+    ImageDraw.Draw(v).ellipse((-rw * 0.25, -rh * 0.35, rw * 1.25, rh * 1.35), fill=255)
+    v = v.filter(ImageFilter.GaussianBlur(min(rw, rh) // 5))
+    Image.composite(foto, Image.new('RGB', foto.size, NEGRO), v).save(OUT / nombre, quality=92)
+
+
 def apertura(nombre, archivo, fx=0.5, fy=0.5):
     """Foto en los dos tercios derechos, fundida hacia el negro de la izquierda donde va el texto."""
     lienzo = Image.new('RGB', (W, H), NEGRO)
@@ -223,5 +243,12 @@ if __name__ == '__main__':
         recorte(f'flujo-{n}.jpg', archivo, 1.3, 0.66, fx, fy)
     recorte('controles-banco.jpg', 'lumine-17-banco-pruebas.jpg', 3.6, 1.0, 0.5, 0.55)
     recorte('ansoff-unidad.jpg', 'lumine-06-unidad-control.jpg', 3.73, 0.95, 0.5, 0.55, velo=0)
+    # versión ejecutiva (12 láminas)
+    recorte_kit('producto-kit.jpg', 4.19, 3.55, caja=(470, 150, 1450, 940))
+    recorte('ventaja-unidad.jpg', 'lumine-06-unidad-control.jpg', 1.0, 0.68, 0.55, 0.55, velo=0)
+    for n, (archivo, fx, fy) in enumerate([
+        ('lumine-12-maqueta.jpg', 0.5, 0.45), ('lumine-09-diagnostico.jpg', 0.35, 0.5), ('lumine-08-duo-tecnicos.jpg', 0.5, 0.45),
+        ('lumine-21-entrega-cliente.jpg', 0.5, 0.5), ('lumine-20-centro-control.jpg', 0.5, 0.4)], 1):
+        recorte(f'proceso-{n}.jpg', archivo, 2.25, 0.8, fx, fy)
     recorte('dotacion-equipo.jpg', 'lumine-18-equipo.jpg', 3.58, 1.15, 0.5, 0.55)
     print('listo:', ', '.join(p.name for p in sorted(OUT.glob('*.jpg'))))

@@ -1,5 +1,8 @@
 # Rediseño visual premium · Fase 3 (17-10-2026)
 
+> La versión vigente es la ejecutiva de 14 láminas (`VERSION_EJECUTIVA.md`). Este registro describe el sistema visual,
+> que se mantiene, y la versión de 35 láminas, que quedó en el historial de git (commit 121dffb).
+
 Rediseño de las 35 láminas según el «Prompt maestro» de dirección de arte. Se aplicó sobre el generador
 (`generador/deck.js` + `componer.py`). Todo sigue editable, gráficos incluidos. Las notas, el orden y los tiempos
 de cada expositor no cambiaron (`guion.js` no se tocó).

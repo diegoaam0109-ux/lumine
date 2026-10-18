@@ -14,8 +14,8 @@ const mmss = x => { const s = Math.round(x); return `${Math.floor(s / 60)}:${Str
 let md = '# Guion · Fase 3 de Lumine Motors\n\n';
 md += 'Integrador II: Taller de Empresas · ICMA 1001 · Grupo 1 · Profesor Roberto Brito. ';
 md += 'Capítulo III: Plan de Marketing, Operaciones y Recursos Humanos.\n\n';
-md += `Máximo 10 minutos: ${filas.length} diapositivas (${filas.filter(x => !x.texto).length} sin texto: aperturas de cada plan y cierre), unos ${mmss(total / g.PALABRAS_POR_MINUTO * 60)} a ${g.PALABRAS_POR_MINUTO} palabras por minuto (${total} palabras). `;
-md += `Cada integrante habla lo mismo, poco más de tres minutos. El anexo (${g.ANEXO.length} diapositivas) no se expone: se usa solo si preguntan.\n\n`;
+md += `Máximo 10 minutos: ${filas.length} diapositivas (${filas.filter(x => !x.texto).length} sin texto: el cierre, que queda en pantalla durante las preguntas), unos ${mmss(total / g.PALABRAS_POR_MINUTO * 60)} a ${g.PALABRAS_POR_MINUTO} palabras por minuto (${total} palabras). `;
+md += `Cada integrante habla cerca de tres minutos. El anexo (${g.ANEXO.length} diapositivas) no se expone: se usa solo si preguntan.\n\n`;
 md += '| Parte | Integrante | Diapositivas | Palabras | Tiempo |\n|---|---|---|---|---|\n';
 quienes.forEach((q, i) => {
   const f = filas.filter(x => x.quien === q), p = f.reduce((a, x) => a + g.palabras(x.texto), 0);

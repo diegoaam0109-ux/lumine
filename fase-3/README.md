@@ -16,27 +16,26 @@ presentación salen de ese informe; lo que el informe deja pendiente se muestra 
 
 ## Contenido (máximo 10 minutos)
 
-23 diapositivas para exponer (unos 9 minutos y medio, poco más de 3 por integrante): 19 con texto, una apertura con foto
-por cada plan y un cierre con el auto del kit. Además, un anexo de 11 que solo se usa si preguntan.
-La diapositiva índice del anexo tiene un enlace a cada tema, y cada diapositiva del anexo tiene un enlace de vuelta al índice.
+Versión ejecutiva (18-10-2026): **14 láminas para exponer** (portada, 12 de contenido y cierre; unos 9 minutos) y un anexo
+de 11 que solo se usa si preguntan. La lámina índice del anexo tiene un enlace a cada tema, y cada lámina del anexo tiene un
+enlace de vuelta al índice. El detalle de qué se fusionó y dónde quedó cada dato está en `VERSION_EJECUTIVA.md`.
 
-| Integrante | Diapositivas | Contenido |
+| Integrante | Láminas | Contenido |
 |---|---|---|
-| Diego Alarcón | 1 a 6 | Portada, apertura de Marketing, objetivos, segmentación, investigación de mercado y matriz de Ansoff |
-| Benjamín Torres | 7 a 13 | Posicionamiento, producto y precio, demanda y pronóstico, presupuesto de marketing, apertura de RR. HH., estructura y dotación |
-| Lukas Verdugo | 14 a 23 | Lumine Habilita, nómina, apertura de Operaciones, flujo operacional, puntos de control, cronograma, resultados, sensibilidad al dólar, conclusiones y cierre |
-| Anexo | 24 a 35 | Índice; hipótesis, dudas del cliente, mezcla de marketing, cobros a la red, mercado y adopción, perfiles de cargo, rentas y bonos, jornada de instalación, inversión y gasto, sensibilidad, Carta Gantt completa |
+| Diego Alarcón | Portada, 01 a 03 | El mercado y nuestra meta, validar antes de vender, una oportunidad sin oferta en Chile (Ansoff y posicionamiento) |
+| Benjamín Torres | 04 a 07 | Esencial y Plus, la demanda, cómo llegamos al cliente (mix y presupuesto), de 13 a 56 personas |
+| Lukas Verdugo | 08 a 12 y cierre | Lumine Habilita, de la cotización a la postventa, escalar sin adelantarse a la demanda, los números y las conclusiones |
+| Anexo | 15 a 26 | Índice; hipótesis, dudas del cliente, mezcla de marketing, cobros a la red, mercado y adopción, perfiles de cargo, rentas, bonos y nómina, jornada de instalación, inversión y gasto, sensibilidad, Carta Gantt completa |
 
-Las aperturas y el cierre no tienen texto en el guion: se pasan sin hablar.
+El cierre no tiene texto en el guion: queda en pantalla durante las preguntas.
 
 ## Imágenes
 
 Vienen del kit de identidad (`integrador-2/identidad/`). `generador/componer.py` las combina con el negro de la marca
 (degradado horneado, para que el texto siempre quede sobre fondo oscuro) y deja los fondos en `generador/assets/`:
-portada y cierre (auto en rayos X, con halo celeste bajo el kit), aperturas de Marketing (bencinera), Recursos Humanos
-(taller) y Operaciones (banco de pruebas), y los fondos `fondo-rejilla` (láminas de estrategia) y `fondo-horizonte`
-(láminas de proceso). Las fotos de taller muestran la operación propuesta: se rotulan «Operación proyectada · imagen
-ilustrativa». Las láminas con cifras llevan, como mucho, una foto chica complementaria.
+portada y cierre (auto en rayos X, con halo celeste bajo el kit), el acercamiento al kit de la lámina 04, la unidad de control
+de la 03, una foto por etapa en la 09 y los fondos `fondo-rejilla` (láminas de estrategia) y `fondo-horizonte` (láminas de
+proceso). Las fotos de taller muestran la operación propuesta y se rotulan como imagen ilustrativa.
 El detalle del rediseño visual premium y las observaciones académicas están en `REDISENO_PREMIUM.md`.
 Si cambias una imagen, corre `python3 componer.py` (requiere Pillow) antes de `./render.sh`.
 

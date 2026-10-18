@@ -81,27 +81,26 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   Estrategia: diferenciación enfocada.
 
 **Presentación de la Fase 3**:
-- Máximo 10 minutos: 23 diapositivas (19 con texto, una apertura con foto por plan y un cierre con el logotipo gigante) +
-  anexo de 11 con índice enlazado. Diego 1–6 (portada a Ansoff), Benjamín 7–13 (posicionamiento a dotación), Lukas 14–23
-  (Habilita, operaciones, conclusiones y cierre); ~415 palabras c/u (1.249 en total).
-- Imágenes: portada y cierre con `lumine-01-rayos-x` (compuestos), aperturas con bencinera, taller y banco de pruebas
-  (rotuladas «imagen ilustrativa» u «operación proyectada»). Se componen con `generador/componer.py`. Las láminas
-  con datos llevan solo fotos chicas complementarias (una por etapa del flujo, banco de pruebas en controles, equipo en
-  dotación), rotuladas al pie. La primera etapa de la investigación se llama «Profundidad» (entrevista en profundidad).
+- **Versión ejecutiva (18-10-2026)**: portada + 12 láminas + cierre (14) y anexo de 11 con índice enlazado; sin aperturas.
+  01 Mercado y meta · 02 Validar · 03 Oportunidad (Ansoff + posicionamiento) · 04 Esencial y Plus · 05 Demanda · 06 Canal y
+  presupuesto · 07 Personas · 08 Habilita · 09 Proceso y controles · 10 Escalar (Gantt + gatillo) · 11 Números · 12 Conclusiones.
+  Diego portada–03, Benjamín 04–07, Lukas 08–cierre; ~9 minutos (1.172 palabras). La versión de 35 láminas quedó en el historial
+  de git (commit 121dffb).
+- Imágenes: portada y cierre con `lumine-01-rayos-x` (compuestos); acercamiento al kit en la lámina 04, unidad de control
+  en la 03 y una foto por etapa en la 09 (rotuladas «imagen ilustrativa»). Se componen con `generador/componer.py`. La primera etapa de la investigación se llama «Profundidad» (entrevista en profundidad).
 - Tipografía de la Fase 3: **opción C, titulares en Michroma** (el «%» va en Archivo) y el resto en la familia Archivo
   (acento Expanded Light itálica, texto Archivo, etiquetas SemiCondensed, cifras Condensed). El equipo la eligió frente a la
   B (todo Archivo) y a la de la marca (serif itálica + mono); `LUMINE_TIPO=A|B` las recupera. En objetivos se quitaron, a pedido, «Cotizaciones digitales: por confirmar» y
   la marca «Estimación · pronóstico».
 - Rediseño de legibilidad (17-10-2026): escala fija en `TX` de `generador/deck.js` (titulares 34/40 pt, cuerpo 20–24, etiquetas
   de gráficos 16 o más, cifras 30–48, marcas de estado 14, institucional 11–12). Si algo no cabe, se divide la lámina; nunca se
-  achica la letra. Estructura y dotación, Habilita y nómina, flujo y controles, resultados y dólar van en láminas separadas;
-  la Carta Gantt completa pasó al anexo (A11) y la exposición usa un cronograma ejecutivo. Marcas: ESTIMACIÓN (raya),
+  achica la letra. La versión ejecutiva fusiona temas en una lámina sin bajar
+  de esos tamaños; la Carta Gantt completa está en el anexo (A11) y la exposición usa un cronograma ejecutivo. Marcas: ESTIMACIÓN (raya),
   SUPUESTO o REFERENCIA (puntos), POR CONFIRMAR o PENDIENTE (línea), REALIZADA (verde). Inconsistencias detectadas para
   revisar con el informe: `fase-3/REDISENO_LEGIBILIDAD.md`.
 - Rediseño visual premium (17-10-2026, `fase-3/REDISENO_PREMIUM.md`): solo la paleta de Lumine (sin ámbar, verde ni rojo;
   marcas de estado en gris acero), fondos `fondo-rejilla` (estrategia) y `fondo-horizonte` (procesos), resplandor `brillo.png`
-  solo tras el dato protagonista, portada y cierre con el auto en rayos X (`componer.py`), aperturas con bencinera, taller y
-  banco de pruebas, posicionamiento en escala lineal. Se mantuvo la tipografía C a pedido del equipo.
+  solo tras el dato protagonista, portada y cierre con el auto en rayos X (`componer.py`), posicionamiento en escala lineal. Se mantuvo la tipografía C a pedido del equipo.
 - Estándar: la guía del profesor Brito para las Fases 1 y 2 (fuente al pie de cada lámina, supuestos marcados, siglas
   explicadas, conclusiones con preguntas pendientes, PDF 16:9, archivo `Grupo_01_LumineMotors_Fase3`).
 - Datos solo del informe de la Fase 3 (10-10-2026): pronóstico 299 → 2.851 instalaciones propias, red de 42 talleres y 7.773
