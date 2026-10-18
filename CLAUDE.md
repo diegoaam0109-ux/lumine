@@ -41,6 +41,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | `.claude/skills/ui-ux-pro-max/` | Skill de diseño de interfaces (MIT). | `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<consulta>" --design-system` |
 | `.claude/skills/lumine-marca/` | Skill con el sistema visual de Lumine (colores, tipografías, motivos, recursos). | Úsala para cualquier pieza nueva con la marca. |
 | `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada** (UNAB, Grupo 1, NRC 4153): estimador de ahorro con IA, prototipo, informe técnico del modelo matemático y revisión cruzada con varias IA. | Pasos para reproducir en `entrega3/README.md`; resultados de la Entrega 4 en `entrega4/Resultados_mejoras_modelo_E4.md`. |
+| `fase-3/` | **Presentación de la Fase 3** de Integrador II: Taller de Empresas (ICMA 1001, Grupo 1, profesor Roberto Brito): Capítulo III, Plan de Marketing, Operaciones y RR.HH. | Generador propio copiado del de Control de Gestión: `generador/deck.js` + `guion.js` + `render.sh` (también en Git Bash para Windows). El informe .docx no se sube. |
 
 
 ## Artefactos publicados (cuenta de Diego)
@@ -82,6 +83,39 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   18 neutros); 2 ventajas sostenibles de 15; cadena de valor 3,00 / 2,71 con brecha −1,29 / −1,43 frente al líder.
   Estrategia: diferenciación enfocada.
 
+**Presentación de la Fase 3**:
+- **Versión ejecutiva (18-10-2026)**: portada + 12 láminas + cierre (14) y anexo de 11 con índice enlazado; sin aperturas.
+  01 Mercado y meta · 02 Validar · 03 Oportunidad (Ansoff + posicionamiento) · 04 Esencial y Plus · 05 Demanda · 06 Canal y
+  presupuesto · 07 Personas · 08 Habilita · 09 Proceso y controles · 10 Escalar (Gantt + gatillo) · 11 Números · 12 Conclusiones.
+  Diego portada–03, Benjamín 04–07, Lukas 08–cierre; ~9 minutos (1.172 palabras). La versión de 35 láminas quedó en el historial
+  de git (commit 121dffb).
+- Imágenes: portada y cierre con `lumine-01-rayos-x` (compuestos); acercamiento al kit en la lámina 04, unidad de control
+  en la 03 y una foto por etapa en la 09 (rotuladas «imagen ilustrativa»). Se componen con `generador/componer.py`. La primera etapa de la investigación se llama «Profundidad» (entrevista en profundidad).
+- Tipografía de la Fase 3: **opción C, titulares en Michroma** (el «%» va en Archivo) y el resto en la familia Archivo
+  (acento Expanded Light itálica, texto Archivo, etiquetas SemiCondensed, cifras Condensed). El equipo la eligió frente a la
+  B (todo Archivo) y a la de la marca (serif itálica + mono); `LUMINE_TIPO=A|B` las recupera. En objetivos se quitaron, a pedido, «Cotizaciones digitales: por confirmar» y
+  la marca «Estimación · pronóstico».
+- Rediseño de legibilidad (17-10-2026): escala fija en `TX` de `generador/deck.js` (titulares 34/40 pt, cuerpo 20–24, etiquetas
+  de gráficos 16 o más, cifras 30–48, marcas de estado 14, institucional 11–12). Si algo no cabe, se divide la lámina; nunca se
+  achica la letra. La versión ejecutiva fusiona temas en una lámina sin bajar
+  de esos tamaños; la Carta Gantt completa está en el anexo (A11) y la exposición usa un cronograma ejecutivo. Marcas: ESTIMACIÓN (raya),
+  SUPUESTO o REFERENCIA (puntos), POR CONFIRMAR o PENDIENTE (línea), REALIZADA (verde). Inconsistencias detectadas para
+  revisar con el informe: `fase-3/REDISENO_LEGIBILIDAD.md`.
+- Rediseño visual premium (17-10-2026, `fase-3/REDISENO_PREMIUM.md`): solo la paleta de Lumine (sin ámbar, verde ni rojo;
+  marcas de estado en gris acero), fondos `fondo-rejilla` (estrategia) y `fondo-horizonte` (procesos), resplandor `brillo.png`
+  solo tras el dato protagonista, portada y cierre con el auto en rayos X (`componer.py`), posicionamiento en escala lineal. Se mantuvo la tipografía C a pedido del equipo.
+- Estándar: la guía del profesor Brito para las Fases 1 y 2 (fuente al pie de cada lámina, supuestos marcados, siglas
+  explicadas, conclusiones con preguntas pendientes, PDF 16:9, archivo `Grupo_01_LumineMotors_Fase3`).
+- Datos solo del informe de la Fase 3 (10-10-2026): pronóstico 299 → 2.851 instalaciones propias, red de 42 talleres y 7.773
+  kits al año 5, Esencial $4.290.000 y Plus $4.990.000 con IVA (referencia), dotación 13 → 56. La meta de cotizaciones del
+  primer año sigue «Por confirmar».
+- No se nombra a las personas entrevistadas (el repositorio es público).
+- Observaciones del profesor Brito (8-10-2026) que valen para toda presentación: **nada de textos pequeños ni láminas
+  cargadas**, pensando en alguien miope al fondo de la sala: una idea y un visual por lámina, texto de 16 pt o más,
+  etiquetas de 12 pt o más, cifras grandes; el detalle lo dice el orador o va al anexo. Decir explícitamente
+  cuál es la **ventaja competitiva sostenible** (la biblioteca de calibraciones, activo intangible), sin confundirla con la
+  estrategia; el FODA no va en la presentación final.
+
 ## Pendientes y preguntas abiertas
 
 - Datos comerciales reales (precio, % de ahorro, garantía, tiempo de instalación, contacto): en proceso; no inventarlos.
@@ -89,6 +123,8 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - ¿Exigir 12 meses en nivel 2 antes de validar el nivel 3 (DGUV)? No implementar sin confirmación.
 - Licencia SEC del instalador: según el D.S. 92 sería clase C hasta 50 kW o B sobre eso; falta confirmarlo con la SEC.
 - Guion: decidir si la frase "Dos observaciones críticas…" (diapositiva 14) se deja, se reformula o se quita.
+- Fase 3: inconsistencias abiertas para revisar con el informe: química de la batería (informe: litio-titanato;
+  identidad: LFP) y motores (informe: dos en las ruedas; render: uno central). Ver `fase-3/REDISENO_PREMIUM.md`.
 
 ## Trampas técnicas conocidas
 
@@ -99,3 +135,8 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - Para convertir el PPT a PDF hay que instalar `libreoffice-impress` y las fuentes de `control-de-gestion/fuentes/`.
   `render.sh` exporta con configuración regional es-CL para que los decimales salgan con coma.
 - Playwright usa el Chromium de `/opt/pw-browsers`; no ejecutes `playwright install`.
+- El PPTX de la Fase 3 incrusta sus tipografías (EOT en `ppt/fonts/`, función `incrustarFuentes` de `deck.js`);
+  sin eso, PowerPoint sin las fuentes instaladas muestra Calibri y «no se parece al estilo». LibreOffice 24.2 no lee fuentes
+  incrustadas en PPTX, así que el render de prueba necesita las fuentes instaladas.
+- En Windows, las fuentes instaladas para el usuario no llegan a LibreOffice hasta cerrar sesión: si `pdffonts` muestra
+  Arial o DejaVu en vez de Archivo, Figtree, IBM Plex Mono e Instrument Serif, el PDF salió con fuentes de reemplazo.
