@@ -42,6 +42,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | `.claude/skills/lumine-marca/` | Skill con el sistema visual de Lumine (colores, tipografías, motivos, recursos). | Úsala para cualquier pieza nueva con la marca. |
 | `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada** (UNAB, Grupo 1, NRC 4153): estimador de ahorro con IA, prototipo, informe técnico del modelo matemático y revisión cruzada con varias IA. | Pasos para reproducir en `entrega3/README.md`; resultados de la Entrega 4 en `entrega4/Resultados_mejoras_modelo_E4.md`. |
 | `fase-3/` | **Presentación de la Fase 3** de Integrador II: Taller de Empresas (ICMA 1001, Grupo 1, profesor Roberto Brito): Capítulo III, Plan de Marketing, Operaciones y RR.HH. | Generador propio copiado del de Control de Gestión: `generador/deck.js` + `guion.js` + `render.sh` (también en Git Bash para Windows). El informe .docx no se sube. |
+| `solemne-2/` | **Solemne 2 de Control de Gestión** (ICMA901): mapa estratégico y CMI de Lumine, con indicadores, EVA y ejercicios. | `generador/deck.js` + `guion.js` + `render.sh` (mismo sistema que la Fase 3). `RESPALDO.md` tiene contradicciones, riesgos y respuestas para la defensa. El paquete del curso (docx, xlsx) no se sube. |
 
 
 ## Artefactos publicados (cuenta de Diego)
@@ -121,12 +122,25 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   cuál es la **ventaja competitiva sostenible** (la biblioteca de calibraciones, activo intangible), sin confundirla con la
   estrategia; el FODA no va en la presentación final.
 
+**Solemne 2 de Control de Gestión** (20-10-2026):
+- 12 láminas, sin anexo ni animaciones; guion del paquete íntegro en las notas (1.373 palabras: ~13 min a 105 palabras por
+  minuto). Reparto equilibrado: Diego 1–4, Benjamín 5–8, Lukas 9–12 (el paquete proponía 1–5, 6–9 y 10–12).
+- Responde a las observaciones del profesor: se conserva «Rentabilidad por sobre el costo de capital» medida con EVA; la
+  perspectiva de clientes gira en torno a C01 (informe individual antes y después); el mapa tiene flechas rotuladas A → P → C → F.
+- Estados: SIN MEDIR (gris), HITO CRÍTICO PENDIENTE (rojo, solo comprobado: P01, P02 y reglamento) y COMPLETADO (verde,
+  ninguno). Es la única presentación con rojo, ámbar y verde, porque el semáforo es el tema. Rótulos visibles
+  «EJEMPLO DE CLASE · NO LUMINE» (EVA del módulo 4) y «EJERCICIO HIPOTÉTICO» (8 de 10).
+- Tipografía de la marca (juego A: Archivo SemiExpanded, serif itálica y mono), como la presentación anterior del curso.
+
 ## Pendientes y preguntas abiertas
 
 - Datos comerciales reales (precio, % de ahorro, garantía, tiempo de instalación, contacto): en proceso; no inventarlos.
 - ¿Agregar un tutor con IA dentro de los módulos de Habilita? Sin respuesta.
 - ¿Exigir 12 meses en nivel 2 antes de validar el nivel 3 (DGUV)? No implementar sin confirmación.
 - Licencia SEC del instalador: según el D.S. 92 sería clase C hasta 50 kW o B sobre eso; falta confirmarlo con la SEC.
+- Solemne 2: aprobar los KPI y metas de diseño del paquete; WACC y tolerancia de error del ahorro sin definir; corregir en el
+  Excel los responsables (A02, P03, F03) según la estructura de la Fase 3 y el redondeo de CASO_SIMULADO; confirmar la modalidad
+  (la circular diurna habla de evaluación práctica). Detalle en `solemne-2/RESPALDO.md`.
 - Guion: decidir si la frase "Dos observaciones críticas…" (diapositiva 14) se deja, se reformula o se quita.
 - Fase 3: inconsistencias abiertas para revisar con el informe: química de la batería (informe: litio-titanato;
   identidad: LFP) y motores (informe: dos en las ruedas; render: uno central). Ver `fase-3/REDISENO_PREMIUM.md`.
