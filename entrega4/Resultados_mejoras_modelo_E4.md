@@ -48,7 +48,7 @@ Dos IA distintas (ChatGPT y DeepSeek) llegaron por separado al mismo problema de
 
 - Corregir la fuga (GroupKFold) cambia poco (33% → 36%): **la baja cobertura no era fuga sino diferencia de dominio** entre conductores sintéticos y reales.
 - Con la calibración corregida, el modelo reajustado llega a 78% de cobertura (nominal 80%) y supera tanto a "solo sintéticas" como a "solo CMAP": el peso ×20 sí aporta.
-- Conclusión: los datos de terreno de la E4 son la pieza que falta; con pocos vehículos reales el modelo ya se acerca a la cobertura prometida.
+- Conclusión: con pocos vehículos reales (CMAP) el modelo ya se acerca a la cobertura prometida. Los datos CMAP son la única fuente real del proyecto: el levantamiento en terreno se eliminó del alcance (ver sección 6).
 
 ## 4. ¿El modelo aprende al conductor o al simulador? (DeepSeek #1)
 
@@ -61,8 +61,20 @@ Población B simulada con otra semilla, +10 pts de congestión, +30% de paradas,
 | Ref. simulación directa semana 1 | 0,82 | 0,72 | — |
 
 - El MAE no se degrada en una población distinta (−2%): el modelo generaliza dentro del simulador.
-- Límite honesto: A y B salen del mismo simulador, por lo que esta prueba no descarta que el simulador difiera de la realidad. Eso solo lo responde el terreno (CMAP ya mostró 2 pp de error sin reajuste).
+- Límite honesto: A y B salen del mismo simulador, por lo que esta prueba no descarta que el simulador difiera de la realidad. Eso solo lo responden datos reales; en este proyecto, los de CMAP (2 pp de error sin reajuste, 1,28 pp con reajuste).
 
 ## 5. Texto sugerido para el informe E4
 
-> En la Entrega 4 se aplicó una revisión cruzada con cinco IA. Gemini verificó a mano los cálculos centrales sin encontrar diferencias. ChatGPT y DeepSeek, de forma independiente, detectaron debilidades en la validación externa y en el diseño de evaluación. Al corregirlas se obtuvo: (1) el error real del modelo, promediado en 10 particiones, es 0,89 ± 0,08 pp y no 0,95; (2) un modelo lineal regularizado con las mismas 11 variables es mejor (0,77 pp) en las 10 particiones, por lo que se adopta para el Nivel 2; (3) la baja cobertura externa de la E3 se debía a la diferencia entre conductores sintéticos y reales, no a fuga de información, y con calibración corregida y reajuste con datos reales la cobertura sube a 78%; (4) el modelo mantiene su error en una población simulada distinta, aunque solo los datos de terreno pueden validar el simulador mismo.
+> En la Entrega 4 se aplicó una revisión cruzada con cinco IA. Gemini verificó a mano los cálculos centrales sin encontrar diferencias. ChatGPT y DeepSeek, de forma independiente, detectaron debilidades en la validación externa y en el diseño de evaluación. Al corregirlas se obtuvo: (1) el error real del modelo, promediado en 10 particiones, es 0,89 ± 0,08 pp y no 0,95; (2) un modelo lineal regularizado con las mismas 11 variables es mejor (0,77 pp) en las 10 particiones, por lo que se adopta para el Nivel 2; (3) la baja cobertura externa de la E3 se debía a la diferencia entre conductores sintéticos y reales, no a fuga de información, y con calibración corregida y reajuste con datos reales la cobertura sube a 78%; (4) el modelo mantiene su error en una población simulada distinta, aunque la validación del simulador mismo descansa en los datos reales secundarios de CMAP, ya que el levantamiento en terreno se eliminó del alcance por tiempo.
+
+## 6. Cambio de alcance: se elimina el trabajo en terreno
+
+La Entrega 3 planteaba 12 viajes registrados con phyphox y una encuesta online para la Entrega 4. Por tiempo, el equipo decidió eliminar ese levantamiento. Consecuencias que el informe debe declarar:
+
+- La única evidencia real es secundaria: 45 jornadas de 21 vehículos (CMAP) más la calibración contra FASTSim.
+- El objetivo específico que dependía del terreno queda cumplido solo con datos secundarios y se declara como limitación.
+- Las cifras de ahorro siguen siendo de simulación; se recomienda una prueba piloto con vehículos reales como trabajo futuro, fuera del alcance del TIG.
+
+Texto sugerido:
+
+> Por restricciones de tiempo, el equipo eliminó del alcance el levantamiento en terreno previsto en la Entrega 3. La validación con datos reales se apoya exclusivamente en las 45 jornadas CMAP de 21 vehículos y en la calibración contra FASTSim. Esto se declara como limitación principal y se propone una prueba piloto como trabajo futuro.
