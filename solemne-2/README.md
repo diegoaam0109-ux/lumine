@@ -8,7 +8,7 @@ palabras por minuto; máximo 15) y un anexo de 15 láminas con índice enlazado 
 |---|---|
 | `Lumine_Solemne2_CMI_Control_de_Gestion.pptx` | Presentación editable, con las tipografías incrustadas y el guion completo en las notas. |
 | `Lumine_Solemne2_CMI_Control_de_Gestion.pdf` | Versión para revisar o proyectar. |
-| `GUION.md` | Guion por expositor, con tiempos y transiciones (se genera desde `generador/guion.js`). |
+| `GUION.md` y `Lumine_Solemne2_Guion.docx` | Guion por expositor, con tiempos (Markdown y Word; ambos salen de `generador/guion.js`). |
 | `RESPALDO.md` | Decisiones del equipo, contradicciones entre fuentes, riesgos de la defensa y preguntas para ensayar. |
 | `generador/` | `deck.js` (pptxgenjs), `guion.js` (fuente única del guion y del anexo), `guion-md.js`, `render.sh` y `qr.py` (código QR a la demo de Habilita). |
 | `fuentes/` | Tipografías de la marca (licencia OFL). |

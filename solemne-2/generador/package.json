@@ -4,10 +4,12 @@
   "description": "Generador de la presentación de la Solemne 2 de Control de Gestión (mapa estratégico y CMI) de Lumine Motors",
   "scripts": {
     "build": "node deck.js ../Lumine_Solemne2_CMI_Control_de_Gestion.pptx",
-    "guion": "node guion-md.js > ../GUION.md"
+    "guion": "node guion-md.js > ../GUION.md",
+    "guion-docx": "node guion-docx.js ../Lumine_Solemne2_Guion.docx"
   },
   "dependencies": {
-    "pptxgenjs": "^4.0.1",
-    "jszip": "^3.10.2"
+    "docx": "^9.13.0",
+    "jszip": "^3.10.2",
+    "pptxgenjs": "^4.0.1"
   }
 }
