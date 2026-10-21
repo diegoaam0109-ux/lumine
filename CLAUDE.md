@@ -42,7 +42,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | `.claude/skills/lumine-marca/` | Skill con el sistema visual de Lumine (colores, tipografías, motivos, recursos). | Úsala para cualquier pieza nueva con la marca. |
 | `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada** (UNAB, Grupo 1, NRC 4153): estimador de ahorro con IA, prototipo, informe técnico del modelo matemático y revisión cruzada con varias IA. | Pasos para reproducir en `entrega3/README.md`; resultados de la Entrega 4 en `entrega4/Resultados_mejoras_modelo_E4.md`. |
 | `fase-3/` | **Presentación de la Fase 3** de Integrador II: Taller de Empresas (ICMA 1001, Grupo 1, profesor Roberto Brito): Capítulo III, Plan de Marketing, Operaciones y RR.HH. | Generador propio copiado del de Control de Gestión: `generador/deck.js` + `guion.js` + `render.sh` (también en Git Bash para Windows). El informe .docx no se sube. |
-| `solemne-2/` | **Solemne 2 de Control de Gestión** (ICMA901): mapa estratégico y CMI de Lumine, con indicadores, EVA y ejercicios. | `generador/deck.js` + `guion.js` + `render.sh` (mismo sistema que la Fase 3). `RESPALDO.md` tiene contradicciones, riesgos y respuestas para la defensa. El paquete del curso (docx, xlsx) no se sube. |
+| `solemne-2/` | **Solemne 2 de Control de Gestión** (ICMA901): de la estrategia de Lumine a un CMI en red (17 objetivos, 20 relaciones). | `generador/deck.js` + `guion.js` + `render.sh` (mismo sistema que la Fase 3). `RESPALDO.md` tiene contradicciones, riesgos y respuestas para la defensa. El paquete del curso (docx, xlsx) no se sube. |
 
 
 ## Artefactos publicados (cuenta de Diego)
@@ -122,17 +122,19 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   cuál es la **ventaja competitiva sostenible** (la biblioteca de calibraciones, activo intangible), sin confundirla con la
   estrategia; el FODA no va en la presentación final.
 
-**Solemne 2 de Control de Gestión** (20-10-2026, versión aprobada con el método «la lámina apoya al que habla»):
-- 12 láminas + anexo de 9 con índice enlazado (orden de preguntas probables). Guion reescrito a 130 palabras por minuto:
-  1.556 palabras, ~12:00, ~4:00 c/u (Diego 1–4, Benjamín 5–8, Lukas 9–12), traspasos en las láminas 4 y 8. Titular =
-  mensaje; un protagonista y hasta tres datos de apoyo; nada se repite. Sin rúbrica ponderada: los tres temas del
-  comunicado (plan y desviaciones, indicadores, EVA y CMI) se suponen de igual peso.
-- Responde al profesor: se conserva «Rentabilidad por sobre el costo de capital» con EVA; C01 (informe individual antes y
-  después) es el centro de clientes; el mapa tiene flechas rotuladas A → P → C → F.
-- Estados por forma y color: gris punteado = sin medir; rojo grueso = hito crítico pendiente comprobado (A03, P01, P02, C02).
-  Rótulos de texto solo para «EJEMPLO DE CLASE · NO LUMINE» (EVA del módulo 4) y «EJERCICIO HIPOTÉTICO» (8 de 10).
-  Única presentación con verde, ámbar y rojo, porque el semáforo es el tema. Lámina 6: QR a la demo de Habilita.
-- Responsables según la estructura de la Fase 3 (el Excel del paquete nombra otras áreas). Tipografía de la marca (juego A).
+**Solemne 2 de Control de Gestión** (20-10-2026, versión de coautoría; presentación oral confirmada, máximo 15 min):
+- 15 láminas + anexo de 15 con índice enlazado. Guion a 130 palabras por minuto: 1.793 palabras, ~13:48; Diego 1–5,
+  Benjamín 6–10, Lukas 11–15. Integra la presentación anterior del curso (negocio, misión-visión-valores como reglas de
+  control, cliente, cinco fuerzas y escenarios regulatorios, biblioteca y FODA cruzado, diferenciación enfocada y ejes) y
+  culmina en el CMI en red: clientes como propuesta de valor, mapa editable, tres rutas (habilitación, evidencia y valor
+  económico), ficha y ciclo de decisión.
+- CMI revisado (17 objetivos, 20 relaciones): F1 en dos etapas (VAN > 0 y TIR > tasa exigida antes de invertir; retorno
+  sobre el capital empleado frente a su costo una vez operando); el financiamiento pasa a P6 «Alianzas que destraban la
+  compra»; C3 se mide desde el cliente; C4 como conversión; la antigua F4 pasa a F3. Sin ejercicios numéricos (ni EVA,
+  ni NOPAT, ni el caso 8 de 10). QR de Lumine Habilita en la lámina de capacidades.
+- Forma y color: línea continua = habilitante, blanca gruesa = condición externa, punteada = hipótesis; color de los
+  objetivos = eje estratégico de origen; estados cumple (círculo), alerta (triángulo), no cumple (cuadrado), meta
+  pendiente (cuadrado punteado) y sin medir (anillo a trazos). Responsables según la estructura de la Fase 3.
 
 ## Pendientes y preguntas abiertas
 
@@ -140,9 +142,9 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - ¿Agregar un tutor con IA dentro de los módulos de Habilita? Sin respuesta.
 - ¿Exigir 12 meses en nivel 2 antes de validar el nivel 3 (DGUV)? No implementar sin confirmación.
 - Licencia SEC del instalador: según el D.S. 92 sería clase C hasta 50 kW o B sobre eso; falta confirmarlo con la SEC.
-- Solemne 2: aprobar los KPI y metas de diseño del paquete; WACC y tolerancia de error del ahorro sin definir; corregir en el
-  Excel los responsables (A02, P03, F03) según la estructura de la Fase 3 y el redondeo de CASO_SIMULADO; confirmar la modalidad
-  (la circular diurna habla de evaluación práctica). Detalle en `solemne-2/RESPALDO.md`.
+- Solemne 2: aprobar los 17 objetivos, metas y responsables; Plan Financiero (tasa, flujos, inversión) y tolerancia del
+  ahorro sin definir; metas de C3 y C4 con la primera muestra; faltan la pauta de la Solemne y `2_Contexto_Lumine_Motors.md`.
+  Detalle en `solemne-2/RESPALDO.md`.
 - Guion: decidir si la frase "Dos observaciones críticas…" (diapositiva 14) se deja, se reformula o se quita.
 - Fase 3: inconsistencias abiertas para revisar con el informe: química de la batería (informe: litio-titanato;
   identidad: LFP) y motores (informe: dos en las ruedas; render: uno central). Ver `fase-3/REDISENO_PREMIUM.md`.

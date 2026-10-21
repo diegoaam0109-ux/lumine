@@ -1,4 +1,4 @@
-// Solemne 2 · Control de Gestión (ICMA901, UNAB) · Mapa estratégico y CMI de Lumine Motors
+// Solemne 2 · Control de Gestión (ICMA901, UNAB) · De la estrategia al CMI de Lumine Motors (versión de coautoría, 20-10-2026)
 // Mismo sistema visual que las presentaciones de Control de Gestión y de la Fase 3: escenario negro, un solo acento
 // celeste, titulares anchos en mayúsculas con acento en serif itálica, etiquetas mono y cifras condensadas.
 //
@@ -147,30 +147,148 @@ pres.defineSlideMaster({
   slideNumber: { x: R - 0.8, y: 7.02, w: 0.8, h: 0.26, fontFace: F_MONO, fontSize: 12, color: HEX.accent1, align: 'right', margin: 0 },
 });
 
-// Fuente al pie de cada diapositiva. Solo se citan los materiales del paquete de la Solemne, del curso y del proyecto.
-const PAQ = 'Excel de la Solemne 2';
+// ---------- CMI en red revisado: una sola fuente para el mapa, las rutas y el anexo ----------
+// eje: 1 Habilitación formal, 2 Acceso comercial, 3 Conocimiento y escala (presentación anterior); [] = nuevo o recuperado.
+const OBJ = {
+  A1: { n: 'Biblioteca de calibraciones', ind: 'Calibraciones registradas y controladas ÷ generadas', meta: '100% antes de reutilizar', regla: 'Crítico', resp: 'Ingeniería de Calibración', ini: 'Repositorio versionado con control de acceso', eje: [3] },
+  A2: { n: 'Técnicos habilitados', ind: 'Técnicos con validación vigente ÷ asignados', meta: '100% antes de tareas críticas', regla: 'Crítico', resp: 'Responsable Técnico', ini: 'Ruta de habilitación en Lumine Habilita', eje: [3] },
+  A3: { n: 'Protocolo de medición', ind: 'Protocolos de prueba aprobados', meta: '1 antes del primer piloto', regla: 'Hito', resp: 'Ingeniería de Calibración', ini: 'Protocolo antes y después con línea base del mismo auto', eje: [3] },
+  A4: { n: 'Lumine Habilita', ind: 'Componentes de habilitación documentados ÷ definidos', meta: '100% del paquete mínimo antes de licenciar', regla: 'Crítico', resp: 'Responsable Técnico', ini: 'Paquete mínimo de formación y evaluación', eje: [3] },
+  P1: { n: 'Vía legal', ind: 'Vía sectorial aplicable documentada', meta: '1 antes de la actividad comercial', regla: 'Hito', resp: 'Gerente General', ini: 'Plantear al MTT el precedente del gas licuado', eje: [1] },
+  P2: { n: 'Par modelo-kit aprobado', ind: 'Pares modelo-kit formalmente aprobados', meta: '1 o más antes de instalar ese par', regla: 'Hito', resp: 'Ingeniería de Calibración', ini: 'Homologar primero los modelos más densos', eje: [1] },
+  P3: { n: 'Instalación segura', ind: 'Órdenes con control técnico completo ÷ cerradas', meta: '100% de las órdenes', regla: 'Crítico', resp: 'Responsable Técnico', ini: 'Checklist técnico y acta de liberación', eje: [] },
+  P4: { n: 'Medición y posventa', ind: 'Expedientes de medición y entrega completos ÷ exigibles', meta: '100% de los exigibles', regla: 'Crítico', resp: 'Ingeniería de Calibración', ini: 'Expediente único por vehículo', eje: [3] },
+  P5: { n: 'Réplica en talleres', ind: 'Paquete de licencia validado', meta: 'Hito; fecha por definir', regla: 'Meta pendiente', resp: 'Gerente General', ini: 'Manual técnico y selección de talleres', eje: [3] },
+  P6: { n: 'Alianzas que destraban', ind: 'Convenios vigentes: aseguradora, planta de revisión y financiera', meta: '1 de cada una antes del primer kit', regla: 'Hito', resp: 'Gerente General', ini: 'Convenios del cruce DA del FODA', eje: [1, 2] },
+  C1: { n: 'Promesa técnica cumplida', ind: 'Servicios conformes ÷ entregas verificadas', meta: '100% de las entregas', regla: 'Crítico', resp: 'Responsable Técnico', ini: 'Acta de conformidad firmada', eje: [] },
+  C2: { n: 'Ahorro acreditado', ind: 'Reportes comparativos completos ÷ exigibles', meta: '100% de los exigibles', regla: 'Crítico', resp: 'Comercial y Postventa', ini: 'Reporte con método, límites y acuse', eje: [3] },
+  C3: { n: 'Confianza del cliente', ind: 'Confianza declarada después del servicio; reclamos por servicio', meta: 'Por definir con la primera muestra', regla: 'Meta pendiente', resp: 'Comercial y Postventa', ini: 'Encuesta posservicio y registro de reclamos', eje: [] },
+  C4: { n: 'Segmento captado', ind: 'Consultas del segmento convertidas en instalaciones', meta: 'Por definir con la primera muestra', regla: 'Meta pendiente', resp: 'Comercial y Postventa', ini: 'Clasificar consultas por uso y seguir su conversión', eje: [2] },
+  F1: { n: 'Rentabilidad sobre el costo de capital', ind: 'Antes de invertir: VAN > 0 y TIR > tasa exigida. Operando: retorno sobre el capital empleado frente a su costo', meta: 'Superar el costo de capital', regla: 'Retorno', resp: 'Gerente General', ini: 'Plan Financiero con tasa sustentada', eje: [] },
+  F2: { n: 'Margen por servicio', ind: 'Margen de contribución unitario', meta: 'Por definir en el Plan Financiero', regla: 'Meta pendiente', resp: 'Gerente General', ini: 'Cobertura cambiaria y abastecimiento de largo plazo', eje: [] },
+  F3: { n: 'Expansión y licencias', ind: 'Evaluación incremental por alternativa (taller o licencias)', meta: 'Umbral por definir en el Plan Financiero', regla: 'Meta pendiente', resp: 'Gerente General', ini: 'Evaluar cada alternativa antes de abrir', eje: [3] },
+};
+// tipo: hab = habilitante · ext = condición externa · hip = hipótesis por comprobar
+const REL = [
+  ['R01', 'A1', 'P2', 'hab', 'Calibraciones versionadas respaldan el expediente del par', 'El expediente usa una calibración aprobada', 1],
+  ['R02', 'P1', 'P2', 'ext', 'La vía formal define los requisitos de aprobación del kit', 'Norma o criterio habilitante confirmado', 1],
+  ['R03', 'P2', 'P3', 'hab', 'Solo pares aprobados se instalan comercialmente', 'La orden identifica un par aprobado', 1],
+  ['R04', 'A2', 'P3', 'hab', 'Personal habilitado sostiene la ejecución segura', 'Asignaciones y checklists validados', 1],
+  ['R05', 'P3', 'C1', 'hab', 'El control final verifica la promesa técnica', 'Acta de conformidad', 1],
+  ['R06', 'P1', 'P5', 'ext', 'La réplica también exige viabilidad regulatoria', 'Aplicabilidad a terceros verificada', 1],
+  ['R07', 'A3', 'P4', 'hab', 'Datos comparables permiten informes defendibles', 'Expedientes con línea base común', 2],
+  ['R08', 'P3', 'P4', 'hip', 'Una instalación trazable permite el seguimiento', 'Componentes y línea base identificados', 2],
+  ['R09', 'P4', 'C2', 'hab', 'Datos revisados habilitan un reporte confiable', 'Informe con método, límites y acuse', 2],
+  ['R10', 'C1', 'C3', 'hip', 'Cumplir la promesa técnica reforzaría la confianza', 'Opinión posservicio y reclamos', 2],
+  ['R11', 'C2', 'C3', 'hip', 'Evidencia comprensible del ahorro sumaría confianza', 'Opinión posservicio y reclamos', 2],
+  ['R12', 'P6', 'C3', 'hip', 'El respaldo de aseguradoras y plantas suma confianza', 'Confianza con y sin respaldo', 2],
+  ['R13', 'C3', 'C4', 'hip', 'Más confianza mejoraría la conversión de consultas', 'Conversión segmentada antes y después', 2],
+  ['R14', 'P6', 'C4', 'hip', 'La cuota disponible destrabaría la compra', 'Conversión con y sin financiamiento', 2],
+  ['R15', 'C4', 'F2', 'hip', 'Más volumen aporta solo con precio y costo controlados', 'Margen real y contribución total', 3],
+  ['R16', 'P3', 'F2', 'hip', 'Menos retrabajo contendría el costo variable', 'Costo por orden y reprocesos', 3],
+  ['R17', 'F2', 'F1', 'hip', 'El margen alimenta flujos descontables', 'Conciliación de costos, ventas y flujo', 3],
+  ['R18', 'A4', 'P5', 'hip', 'Un método documentado hace replicable el servicio', 'Paquete de formación revisado', 3],
+  ['R19', 'P5', 'F3', 'hip', 'El paquete permite evaluar la línea de licencias', 'Modelo de ingresos y costos aprobado', 3],
+  ['R20', 'F3', 'F1', 'hip', 'Expandirse crea valor solo con evaluación positiva', 'VAN incremental por alternativa', 3],
+];
+// nombres cortos solo para el mapa completo (los nodos son angostos)
+const CORTO = { A1: 'Biblioteca', P2: 'Par aprobado', C1: 'Promesa cumplida' };
+const EJE = { 1: HEX.dk1, 2: HEX.accent1, 3: '0A6F9E' };
+const EJE_NOMBRE = { 1: 'Habilitación formal', 2: 'Acceso comercial', 3: 'Conocimiento y escala' };
+const LINEA = {
+  hab: { color: C.accent1, width: 2 },
+  ext: { color: C.text1, width: 3.25 },
+  hip: { color: C.accent1, width: 1.5, dashType: 'dash' },
+};
+// polilínea con flecha en el último tramo; pts = [[x, y], ...]
+function ruta(s, pts, tipo) {
+  const st = LINEA[tipo];
+  for (let i = 0; i < pts.length - 1; i++) {
+    const [x1, y1] = pts[i], [x2, y2] = pts[i + 1], ult = i === pts.length - 2;
+    s.addShape(S.line, { x: x1, y: y1, w: x2 - x1, h: y2 - y1, line: Object.assign({}, st, ult ? { endArrowType: 'triangle' } : {}) });
+  }
+}
+function leyendaLineas(s, x0 = R) {
+  const items = [['hab', 'HABILITANTE'], ['ext', 'CONDICIÓN EXTERNA'], ['hip', 'HIPÓTESIS']];
+  let x = x0;
+  [...items].reverse().forEach(([t, k]) => {
+    const w = k.length * (12 * 0.6 + 0.5) / 72 + 0.1;
+    x -= w;
+    mono(s, k, { x, y: 0.92, w, h: 0.3, fontSize: 12, color: C.text1, valign: 'middle', charSpacing: 0.5 });
+    s.addShape(S.line, { x: x - 0.55, y: 1.07, w: 0.42, h: 0, line: Object.assign({}, LINEA[t]) });
+    x -= 0.85;
+  });
+}
+// barra superior de color según el eje estratégico de origen (dividida si viene de dos)
+function barraEje(s, ejes, x, y, w, h = 0.07) {
+  if (!ejes.length) return;
+  const bw = w / ejes.length;
+  ejes.forEach((e, i) => s.addShape(S.rect, { x: x + i * bw, y, w: bw, h, fill: { color: EJE[e] }, line: { type: 'none' } }));
+}
+// nodo del mapa: código arriba, nombre abajo
+function nodo(s, id, x, y, w, h, o = {}) {
+  const ob = OBJ[id], hot = !!o.hot;
+  if (hot) { brillo(s, x, y, w, h, 0.4); cajaHot(s, x, y, w, h); } else caja(s, x, y, w, h, { line: { color: o.borde || C.text2, width: 0.75 } });
+  barraEje(s, ob.eje, x, y, w);
+  const size = o.size || 14;
+  if (o.inline) {
+    T(s, [{ text: id + '  ', options: { fontFace: F_MONO, fontSize: 12, bold: true, color: C.accent1 } }, { text: o.corto && CORTO[id] || ob.n, options: { bold: hot } }], { x: x + 0.1, y: y + 0.06, w: w - 0.16, h: h - 0.08, fontSize: size, valign: 'middle', lineSpacingMultiple: 0.88 });
+    return;
+  }
+  mono(s, id, { x: x + 0.1, y: y + 0.08, w: 0.8, h: size >= 18 ? 0.3 : 0.2, fontSize: size >= 18 ? 15 : 12, bold: true, color: C.accent1 });
+  T(s, ob.n, { x: x + 0.1, y: y + (size >= 18 ? 0.38 : 0.26), w: w - 0.16, h: h - (size >= 18 ? 0.44 : 0.3), fontSize: size, bold: hot, valign: 'top', lineSpacingMultiple: 0.88 });
+}
+// estado con forma y color: cumple = círculo · alerta = triángulo · no cumple = cuadrado · meta pendiente = cuadrado punteado · sin medir = anillo a trazos
+function forma(s, tipo, x, y, d) {
+  if (tipo === 'cumple') s.addShape(S.ellipse, { x, y, w: d, h: d, fill: { color: VERDE }, line: { type: 'none' } });
+  if (tipo === 'alerta') s.addShape(S.triangle, { x, y, w: d, h: d, fill: { color: AMBAR }, line: { type: 'none' } });
+  if (tipo === 'nocumple') s.addShape(S.rect, { x: x + d * 0.08, y: y + d * 0.08, w: d * 0.84, h: d * 0.84, fill: { color: ROJO }, line: { type: 'none' } });
+  if (tipo === 'pend') s.addShape(S.rect, { x: x + d * 0.08, y: y + d * 0.08, w: d * 0.84, h: d * 0.84, fill: { color: C.background1, transparency: 100 }, line: { color: GRIS, width: 1.5, dashType: 'sysDot' } });
+  if (tipo === 'sin') s.addShape(S.ellipse, { x, y, w: d, h: d, fill: { color: C.background1, transparency: 100 }, line: { color: GRIS, width: 1.75, dashType: 'dash' } });
+}
+// rótulo de código (chip) para remitir a un objetivo del CMI
+function chip(s, id, x, y, o = {}) {
+  const w = o.w || (id.length * 0.13 + 0.3), h = o.h || 0.36;
+  s.addShape(S.rect, { x, y, w, h, fill: { color: o.fill || C.accent5 }, line: { type: 'none' } });
+  barraEje(s, (OBJ[id] || { eje: [] }).eje, x, y, w, 0.05);
+  T(s, id, { x, y, w, h, fontFace: F_MONO, fontSize: o.size || 14, bold: true, align: 'center', valign: 'middle', color: C.text1 });
+  return w;
+}
+
+// Fuente al pie de cada diapositiva. Solo materiales del proyecto, del curso y del paquete de la Solemne.
+const PREV = 'presentación «Análisis estratégico» (Control de Gestión, octubre de 2026)';
+const CMI = 'CMI en red revisado (propuesta del equipo para la Solemne 2)';
 const FUENTES = {
-  correccion: 'Fuentes: CMI de Lumine, versión original y versión actualizada a las Fases 1 y 2; retroalimentación del profesor, transcrita por el equipo.',
-  valor: `Fuentes: contexto vigente de Lumine Motors (17-10-2026); ${PAQ}, indicador C01. El ahorro es una estimación de ingeniería, no medida en autos chilenos.`,
-  mapa: `Fuentes: CMI de Lumine actualizado (Fases 1 y 2); ${PAQ}, hoja MATRIZ_CMI; módulos 2 y 3 del curso. Cada flecha es una hipótesis por verificar.`,
-  hitos: `Fuentes: Ley N° 21.793 (publicada el 14-01-2026, sin reglamento); ${PAQ}, hoja MATRIZ_CMI (P01, P02 y P03).`,
-  habilita: `Fuentes: Lumine Habilita, versión de demostración publicada por el equipo (datos ficticios); ${PAQ}, indicador A02.`,
-  eva: `Fuentes: módulo 4 del curso (empresa genérica en US$, no Lumine); ${PAQ}, hoja EVA.`,
-  ficha: `Fuente: ${PAQ}, hoja MATRIZ_CMI (C01). Responsable según la estructura de la Fase 3.`,
-  semaforo: `Fuentes: material del curso «Sistemas de Control de Gestión: Indicadores»; ${PAQ}, hoja SEGUIMIENTO. Umbrales propuestos por el equipo.`,
-  desviacion: `Fuente: ${PAQ}, hoja CASO_SIMULADO. Ejercicio didáctico: no son datos de Lumine.`,
-  ciclo: `Fuentes: material del curso «Sistemas de Control de Gestión: Indicadores» (ciclo de seguimiento); ${PAQ}, hoja CASO_SIMULADO.`,
-  conclusion: 'Fuente: elaboración propia. El WACC y la tolerancia de error del ahorro quedan por definir con antecedentes.',
+  negocio: `Fuentes: contexto vigente de Lumine Motors; ${PREV}. El ahorro es una estimación de ingeniería, no medida en autos chilenos.`,
+  identidad: `Fuente: ${PREV}, misión, visión y valores (texto resumido; versión literal en el anexo).`,
+  cliente: `Fuente: ${PREV}, relaciones de valor con los clientes. Entrevistas (n = 3): resultado indicativo, no representativo.`,
+  entorno: `Fuentes: ${PREV}, cinco fuerzas (instrumento 02, escala 0 a 5) y escenarios regulatorios; Ley N° 21.793 (14-01-2026), sin reglamento.`,
+  interno: `Fuentes: ${PREV}, competencias (instrumento 05) y FODA cruzado; Lumine Habilita, versión de demostración (datos ficticios).`,
+  estrategia: `Fuente: ${PREV}, declaración de la estrategia y ejes estratégicos.`,
+  ejes: `Fuentes: ${PREV} (ejes y objetivos); CMI actualizado de las Fases 1 y 2; ${CMI}.`,
+  clientes: `Fuentes: ${PREV} (atributos que valora el cliente); ${CMI}. Las metas de C3 y C4 se fijan con la primera muestra de clientes.`,
+  mapa: `Fuente: ${CMI}: 17 objetivos y 20 relaciones. Las flechas son condiciones o hipótesis por comprobar, no causalidad demostrada.`,
+  ruta1: `Fuentes: ${CMI}, relaciones R01 a R06; ${PREV}, FODA cruzado (iniciativas).`,
+  ruta2: `Fuente: ${CMI}, relaciones R07 a R14. El ahorro es una estimación de ingeniería, no medida en autos chilenos.`,
+  ruta3: `Fuentes: ${CMI}, relaciones R15 a R20; CMI original de Lumine (objetivo destacado por el profesor); módulo 4 del curso. Sin cifras: el Plan Financiero no existe aún.`,
+  ficha: `Fuentes: ${CMI}, ficha de C2 y estados del tablero; material del curso «Sistemas de Control de Gestión: Indicadores».`,
+  cierre: `Fuentes: ${CMI}, ciclo de decisión; material del curso «Sistemas de Control de Gestión: Indicadores».`,
   indice: 'Las fuentes de cada tema están al pie de su diapositiva.',
-  'a-eva': `Fuentes: módulo 4 del curso (empresa genérica en US$, no Lumine); ${PAQ}, hoja EVA.`,
-  'a-semaforo': `Fuente: ${PAQ}, hojas MATRIZ_CMI y SEGUIMIENTO. En el Excel, C03 usa otra regla: verde solo sobre la meta y ámbar desde 70% de ella.`,
-  'a-matriz1': `Fuente: ${PAQ}, hoja MATRIZ_CMI. Responsables según la estructura de la Fase 3 (el Excel nombra otras áreas para A02 y P03).`,
-  'a-matriz2': `Fuente: ${PAQ}, hoja MATRIZ_CMI. Responsables según la estructura de la Fase 3 (el Excel nombra otras áreas para F01 y F03).`,
-  'a-cmi': 'Fuentes: CMI de Lumine, versión original y versión actualizada a las Fases 1 y 2; dossier de la Solemne 2.',
-  'a-ahorro': 'Fuentes: contexto vigente de Lumine Motors (17-10-2026); dossier de la Solemne 2. El ahorro es una estimación de ingeniería, no medida en autos chilenos.',
-  'a-apoyo': `Fuente: ${PAQ}, hoja MATRIZ_CMI (C02 y C03). La meta de C03 es orientativa.`,
-  'a-financia': `Fuente: ${PAQ}, hoja MATRIZ_CMI (F02 y F03). El Plan Financiero de Lumine aún no existe.`,
-  'a-naturaleza': 'Fuentes: contexto vigente de Lumine Motors (17-10-2026); dossier y Excel de la Solemne 2; módulo 4 del curso.',
+  'a-f1': 'Fuentes: CMI original de Lumine; módulo 4 del curso (creación de valor sobre el costo de capital). Sin cifras de Lumine.',
+  'a-cmiA': `Fuente: ${CMI}. Responsables según la estructura de la Fase 3; metas propuestas por el equipo.`,
+  'a-cmiP': `Fuente: ${CMI}. Responsables según la estructura de la Fase 3; metas propuestas por el equipo.`,
+  'a-cmiC': `Fuente: ${CMI}. Responsables según la estructura de la Fase 3; metas propuestas por el equipo.`,
+  'a-cmiF': `Fuente: ${CMI}. Sin cifras: el Plan Financiero no existe aún.`,
+  'a-rel1': `Fuente: ${CMI}. Relaciones habilitantes, condiciones externas e hipótesis; ninguna es una correlación medida.`,
+  'a-rel2': `Fuente: ${CMI}. Relaciones habilitantes, condiciones externas e hipótesis; ninguna es una correlación medida.`,
+  'a-cambios': 'Fuentes: Excel «04_CMI_Red_Causal_y_Control» y dossier del CMI corregido (propuesta previa); decisiones del equipo del 20-10-2026.',
+  'a-estados': `Fuentes: ${CMI}, hoja de seguimiento; material del curso «Sistemas de Control de Gestión: Indicadores». Umbrales propuestos.`,
+  'a-iniciativas': `Fuentes: ${PREV}, FODA cruzado; ${CMI}. Sin presupuesto: es la siguiente etapa del plan.`,
+  'a-foda': `Fuente: ${PREV}, FODA por perspectivas del CMI, y las fuentes citadas allí.`,
+  'a-cadena': `Fuente: ${PREV}, cadena de valor (instrumento 06).`,
+  'a-pest': `Fuente: ${PREV}, instrumentos 02 (cinco fuerzas) y 03 (PEST). Escalas propias, no comparables con las del informe de Integrador II.`,
+  'a-identidad': `Fuente: ${PREV}, presentación de la organización.`,
+  'a-origen': `Fuentes: contexto vigente de Lumine Motors; ${CMI}.`,
 };
 
 let SEC = null, CLAVE = null, NUM = 0, ANEXO_ACTUAL = null, INDICE_ANEXO = null;
@@ -179,7 +297,7 @@ function contenido(etiqueta, titulo, acento) {
   const s = pres.addSlide({ masterName: 'CONTENIDO', sectionTitle: SEC });
   let n;
   if (ANEXO_ACTUAL) {
-    n = ANEXO_ACTUAL.codigo; etiqueta = 'ANEXO · ' + etiqueta;
+    n = ANEXO_ACTUAL.codigo; etiqueta = 'ANEXO · ' + etiqueta + (ANEXO_ACTUAL.parte ? ' · ' + ANEXO_ACTUAL.parte.toUpperCase() : '');
     s.addText('VOLVER AL ÍNDICE DEL ANEXO', { x: 7.7, y: 0.7, w: R - 7.7, h: 0.26, align: 'right', valign: 'middle', fontFace: F_MONO, fontSize: 12, color: C.accent1, charSpacing: 1, margin: 0, hyperlink: { slide: INDICE_ANEXO, tooltip: 'Volver al índice del anexo' } });
   } else n = CLAVE === 'indice' ? 'A' : String(++NUM).padStart(2, '0');
   s.addText([{ text: n, options: { color: C.accent1 } }, { text: '  —— ', options: { color: C.accent5 } }, { text: etiqueta }], { placeholder: 'etiqueta' });
@@ -191,32 +309,17 @@ function contenido(etiqueta, titulo, acento) {
   T(s, f, { x: M, y: 6.94, w: R - M - 1.0, h: 0.42, valign: 'top', fontSize: TX.inst, color: C.text2 });
   return s;
 }
-// leyenda de estados (forma y color) en la esquina superior derecha, a la altura de la etiqueta
-function leyendaEstados(s, tipos) {
-  let x = R;
-  [...tipos].reverse().forEach(t => {
-    const [color, text] = ESTADO[t];
-    const w = text.length * (12 * 0.6 + 0.5) / 72 + 0.2;
-    x -= w;
-    mono(s, text, { x, y: 0.92, w, h: 0.3, fontSize: 12, color, valign: 'middle', charSpacing: 0.5 });
-    if (t === 'sin') s.addShape(S.rect, { x: x - 0.34, y: 0.98, w: 0.24, h: 0.18, fill: { color: C.background1, transparency: 100 }, line: { color: GRIS, width: 1, dashType: 'dash' } });
-    else s.addShape(S.rect, { x: x - 0.34, y: 0.98, w: 0.24, h: 0.18, fill: { color: C.background1, transparency: 100 }, line: { color, width: 1.75 } });
-    x -= 0.65;
-  });
-}
-// borde de una caja según su estado: gris punteado = sin medir; rojo grueso = hito crítico pendiente
-const borde = st => st === 'crit' ? { color: ROJO, width: 1.75 } : { color: GRIS, width: 1, dashType: 'dash' };
 
 // =====================================================================
-// 1 · PORTADA · la pregunta y la premisa preoperativa
+// 1 · PORTADA
 // =====================================================================
 D.portada = () => {
   const s = pres.addSlide({ masterName: 'PORTADA', sectionTitle: SEC });
   mono(s, 'UNAB · OCTUBRE 2026', { x: 7.2, y: 0.4, w: R - 7.2, h: 0.26, align: 'right', valign: 'middle', fontSize: 12 });
-  mono(s, [{ text: 'SOLEMNE 2', options: { color: C.accent1 } }, { text: '  ·  MAPA ESTRATÉGICO Y CUADRO DE MANDO INTEGRAL', options: { color: C.text2 } }], { x: M, y: 1.0, w: CW, h: 0.32, fontSize: 14, valign: 'middle' });
+  mono(s, [{ text: 'SOLEMNE 2', options: { color: C.accent1 } }, { text: '  ·  DE LA ESTRATEGIA AL CUADRO DE MANDO INTEGRAL', options: { color: C.text2 } }], { x: M, y: 1.0, w: CW, h: 0.32, fontSize: 14, valign: 'middle' });
   s.addText([
-    { text: '¿CÓMO CONTROLAR', options: { breakLine: true } },
-    { text: 'una empresa que aún no opera?', options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: 46 } },
+    { text: '¿CÓMO SE CONTROLA', options: { breakLine: true, fontSize: 46 } },
+    { text: 'una estrategia antes de operar?', options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: 44 } },
   ], { placeholder: 'title' });
   linea(s, M, 3.0, 0.06, 0.86, C.accent1, 3);
   T(s, [{ text: 'Lumine es preoperativa: ', options: { bold: true } }, { text: 'el tablero mide lo que falta demostrar, no logros.', options: { color: C.text2 } }],
@@ -242,541 +345,682 @@ D.portada = () => {
 };
 
 // =====================================================================
-// 2 · EL CMI CONSERVA EL RETORNO Y CORRIGE LO CRITICADO · tres filas antes → después
+// 2 · UN KIT QUE SE SUMA, NO REEMPLAZA · plano del kit
 // =====================================================================
-D.correccion = () => {
-  const s = contenido('RETROALIMENTACIÓN · CMI ORIGINAL Y ACTUALIZADO', 'EL CMI CONSERVA EL RETORNO', 'y corrige lo criticado.');
-  // leyenda de forma: punto lleno = destacado; anillo = criticado
-  const lx = R - 3.6;
-  s.addShape(S.ellipse, { x: lx, y: 0.99, w: 0.16, h: 0.16, fill: { color: C.accent1 }, line: { type: 'none' } });
-  mono(s, 'DESTACADO', { x: lx + 0.26, y: 0.92, w: 1.2, h: 0.3, fontSize: 12, color: C.text1, valign: 'middle' });
-  s.addShape(S.ellipse, { x: lx + 1.7, y: 0.99, w: 0.16, h: 0.16, fill: { color: C.background1, transparency: 100 }, line: { color: C.text1, width: 1.5 } });
-  mono(s, 'CRITICADO', { x: lx + 1.96, y: 0.92, w: 1.3, h: 0.3, fontSize: 12, color: C.text1, valign: 'middle' });
-  const lw = 5.6, rx = M + lw + 0.95, rw = R - rx;
-  mono(s, 'LO QUE DIJO EL PROFESOR', { x: M, y: Y0, w: lw, h: 0.3 });
-  mono(s, 'LO QUE CAMBIAMOS', { x: rx, y: Y0, w: rw, h: 0.3, color: C.accent1 });
-  const filas = [
-    [true, 'Rentabilidad sobre el costo de capital', 'Se conserva y se mide con EVA'],
-    [false, 'Clientes descritos como canales y convenios', 'El informe al cliente pasa al centro'],
-    [false, 'Objetivos sin relación de causa y efecto', 'Flechas con mecanismo e indicador'],
-  ];
-  const rh = 1.0, g = 0.22;
-  filas.forEach(([ok, o, c], i) => {
-    const y = Y0 + 0.48 + i * (rh + g);
-    caja(s, M, y, lw, rh);
-    const d = 0.3;
-    if (ok) s.addShape(S.ellipse, { x: M + 0.28, y: y + (rh - d) / 2, w: d, h: d, fill: { color: C.accent1 }, line: { type: 'none' } });
-    else s.addShape(S.ellipse, { x: M + 0.28, y: y + (rh - d) / 2, w: d, h: d, fill: { color: C.background1, transparency: 100 }, line: { color: C.text1, width: 2 } });
-    T(s, o, { x: M + 0.85, y, w: lw - 1.05, h: rh, fontSize: TX.cuerpo, color: C.text2, valign: 'middle' });
-    flecha(s, M + lw + 0.15, y + rh / 2, 0.65, 0);
-    if (i === 0) { brillo(s, rx, y, rw, rh, 0.4); cajaHot(s, rx, y, rw, rh); } else caja(s, rx, y, rw, rh, { line: { color: C.accent1, width: 1 } });
-    T(s, c, { x: rx + 0.3, y, w: rw - 0.45, h: rh, fontSize: TX.cuerpoL, bold: true, valign: 'middle' });
+D.negocio = () => {
+  const s = contenido('CONTEXTO · LA EMPRESA', 'UN KIT QUE SE SUMA,', 'no reemplaza.');
+  const iw = 8.7, ih = iw * 740 / 2400;
+  s.addImage({ path: A('plano.png'), x: M + 0.1, y: Y0 - 0.05, w: iw, h: ih, altText: 'Plano del kit: motor original adelante, unidad de control, banco de baterías y motor eléctrico en el eje trasero' });
+  const ly = Y0 + ih + 0.05, pw = (iw + 0.2) / 4;
+  regla(s, ly, M, iw + 0.2);
+  [['01', 'MOTOR ORIGINAL', 'Intacto, con su tracción delantera'], ['02', 'UNIDAD DE CONTROL', 'Decide cuándo asistir y corta ante fallas'], ['03', 'BANCO DE BATERÍAS', 'Guarda la energía del frenado'], ['04', 'MOTOR ELÉCTRICO', 'En el eje trasero, con freno regenerativo']].forEach(([n, k, v], i) => {
+    const x = M + i * pw;
+    tag(s, n, x, ly + 0.16, { off: i === 0, w: 0.5, h: 0.34, size: 14 });
+    mono(s, k, { x: x + 0.6, y: ly + 0.16, w: pw - 0.65, h: 0.34, fontSize: 12, color: C.text1, valign: 'middle' });
+    T(s, v, { x, y: ly + 0.6, w: pw - 0.15, h: 0.7, fontSize: 16, color: C.text2 });
+  });
+  const rx = M + iw + 0.6, rw = R - rx;
+  [['PREOPERATIVA', 'Sin instalaciones, personal, clientes ni flujo de caja', null], ['SEGMENTO', 'Tracción delantera y alto kilometraje', null], ['PROMESA', 'Hasta 20% menos bencina en ciudad', 'ESTIMACIÓN']].forEach(([k, v, m], i) => {
+    const y = Y0 + i * 1.32;
+    regla(s, y, rx, rw, i ? C.accent5 : C.accent1);
+    mono(s, k, { x: rx, y: y + 0.1, w: rw, h: 0.3, fontSize: 13, color: C.accent1 });
+    T(s, v, { x: rx, y: y + 0.42, w: rw, h: 0.8, fontSize: 17, valign: 'top' });
+    if (m) marca(s, 'est', m, R, y + 0.06, { alignRight: true, size: 12, h: 0.32 });
   });
   return s;
 };
 
 // =====================================================================
-// 3 · EL CLIENTE COMPRA EVIDENCIA, NO UNA PROMESA DE 20% · fracción del indicador C01
+// 3 · NUESTROS VALORES SON REGLAS DE CONTROL
 // =====================================================================
-D.valor = () => {
-  const s = contenido('PERSPECTIVA DE CLIENTES · PROPUESTA DE VALOR', 'EL CLIENTE COMPRA EVIDENCIA,', 'no una promesa de 20%.');
-  leyendaEstados(s, ['sin']);
+D.identidad = () => {
+  const s = contenido('LA ORGANIZACIÓN · MISIÓN, VISIÓN Y VALORES', 'NUESTROS VALORES', 'son reglas de control.');
   const lw = 5.0;
-  mono(s, 'LO QUE COMPRA', { x: M, y: Y0, w: lw, h: 0.3 });
-  ['Modernizar su propio auto', 'Un procedimiento seguro y trazable'].forEach((t, i) => {
-    const y = Y0 + 0.5 + i * 0.9;
-    tag(s, String(i + 1), M, y + 0.1, { off: true, w: 0.5, h: 0.5, size: 20 });
-    T(s, t, { x: M + 0.75, y, w: lw - 0.75, h: 0.7, fontSize: TX.cuerpoL, valign: 'middle' });
+  [['MISIÓN', 'Reducir el combustible por kilómetro del auto que el cliente ya tiene, sin reemplazarlo ni intervenir su motor.'], ['VISIÓN 2031', 'El taller de referencia en hibridación de vehículos en uso, con un procedimiento reconocido por la autoridad, las plantas de revisión técnica y las aseguradoras.']].forEach(([k, v], i) => {
+    const y = Y0 + i * 2.15;
+    regla(s, y, M, lw, C.accent1);
+    mono(s, k, { x: M, y: y + 0.1, w: lw, h: 0.3, fontSize: 13, color: C.accent1 });
+    T(s, v, { x: M, y: y + 0.45, w: lw, h: 1.6, fontFace: F_SER, italic: true, fontSize: 20, valign: 'top', lineSpacingMultiple: 1.0 });
   });
-  // lo que NO compra: la cifra estimada, marcada como tal
-  const ny = Y0 + 2.5;
-  regla(s, ny, M, lw);
-  mono(s, 'LO QUE NO SE PROMETE', { x: M, y: ny + 0.14, w: lw, h: 0.3 });
-  T(s, 'Hasta 20% menos bencina', { x: M, y: ny + 0.5, w: lw, h: 0.5, fontSize: TX.cuerpoL, color: C.text2, valign: 'middle' });
-  marca(s, 'est', 'ESTIMACIÓN, NO MEDICIÓN', M, ny + 1.06);
-  // protagonista: la fracción del indicador
-  const cx = M + lw + 0.7, cw = R - cx, cy = Y0, ch = YF - Y0 - 0.1;
+  const rx = M + lw + 0.6, rw = R - rx, kw = 2.9;
+  mono(s, 'VALOR', { x: rx, y: Y0, w: kw, h: 0.3, fontSize: 13 });
+  mono(s, 'REGLA DE CONTROL', { x: rx + kw + 0.55, y: Y0, w: rw - kw - 0.55, h: 0.3, fontSize: 13, color: C.accent1 });
+  [['Verificabilidad antes que afirmación', 'Un dato sin medir no vale cero'], ['Formalidad como condición de operación', 'Compuertas que no se saltan'], ['Trazabilidad del conocimiento técnico', 'Cada calibración queda registrada'], ['Responsabilidad sobre el ciclo completo', 'El control sigue después de la entrega']].forEach(([v, c], i) => {
+    const y = Y0 + 0.4 + i * 0.92;
+    regla(s, y, rx, rw, i ? C.accent5 : C.accent1);
+    T(s, v, { x: rx, y, w: kw, h: 0.92, fontSize: 18, bold: true, valign: 'middle' });
+    flecha(s, rx + kw + 0.1, y + 0.46, 0.35, 0);
+    T(s, c, { x: rx + kw + 0.55, y, w: rw - kw - 0.55, h: 0.92, fontSize: 18, color: C.text2, valign: 'middle' });
+  });
+  return s;
+};
+
+// =====================================================================
+// 4 · EL PRECIO DECIDE SI COMPRA; LA CONFIANZA, SI SE ATREVE
+// =====================================================================
+D.cliente = () => {
+  const s = contenido('CLIENTE · PROPUESTA DE VALOR Y MODELO DE NEGOCIO', 'EL PRECIO DECIDE SI COMPRA;', 'la confianza, si se atreve.');
+  marca(s, 'est', 'TENTATIVO · 3 ENTREVISTAS', R, Y0 - 0.02, { alignRight: true, size: 12, h: 0.34 });
+  mono(s, 'NECESIDAD CENTRAL', { x: M, y: Y0, w: 5, h: 0.3, fontSize: 13 });
+  T(s, '«Evitar pagar cada vez más por usar el auto.»', { x: M, y: Y0 + 0.32, w: CW, h: 0.55, fontFace: F_SER, italic: true, fontSize: 26, color: C.text1, valign: 'middle' });
+  const cy = Y0 + 1.05, ch = 1.95, cw = (CW - 0.4) / 2;
+  [['DECIDE SI COMPRA', 'PRECIO', 'Una cuota mensual comparable con el ahorro mensual, no un precio de lista.', false], ['DECIDE SI SE ATREVE', 'CONFIANZA', 'Certificación, garantía escrita, un caso exitoso y quién responde ante fallas.', true]].forEach(([k, t, v, hot], i) => {
+    const x = M + i * (cw + 0.4);
+    if (hot) { brillo(s, x, cy, cw, ch, 0.5); cajaHot(s, x, cy, cw, ch); } else caja(s, x, cy, cw, ch, { line: { color: C.text2, width: 0.75 } });
+    mono(s, k, { x: x + 0.3, y: cy + 0.22, w: cw - 0.6, h: 0.3, fontSize: 13, color: C.accent1 });
+    T(s, t, { x: x + 0.3, y: cy + 0.55, w: cw - 0.6, h: 0.55, fontFace: F_TIT, fontSize: 28, valign: 'middle' });
+    T(s, v, { x: x + 0.3, y: cy + 1.15, w: cw - 0.6, h: 0.7, fontSize: 18, color: C.text2, valign: 'top' });
+  });
+  const my = cy + ch + 0.3;
+  regla(s, my, M, CW);
+  mono(s, 'MODELO DE NEGOCIO', { x: M, y: my + 0.14, w: 3, h: 0.3, fontSize: 13 });
+  T(s, [{ text: 'Taller propio', options: { bold: true } }, { text: '   +   ', options: { color: C.accent1 } }, { text: 'licencias de calibración y procedimiento a otros talleres', options: { color: C.text2 } }], { x: M, y: my + 0.45, w: CW - 2.0, h: 0.45, fontSize: 19, valign: 'middle' });
+  marca(s, 'sup', 'POTENCIAL', R, my + 0.5, { alignRight: true, size: 12, h: 0.34 });
+  return s;
+};
+
+// =====================================================================
+// 5 · COMPETIMOS CONTRA NO HACER NADA Y LA VÍA LEGAL DECIDE SI OPERAMOS
+// =====================================================================
+D.entorno = () => {
+  const s = contenido('ANÁLISIS EXTERNO · CINCO FUERZAS Y ESCENARIOS', 'COMPETIMOS CONTRA NO HACER NADA,', 'y la vía legal decide si operamos.');
+  const lw = 5.0;
+  mono(s, 'CINCO FUERZAS · PONDERACIÓN', { x: M, y: Y0, w: lw, h: 0.3, fontSize: 13 });
+  brillo(s, M, Y0 + 0.5, 2.4, 1.1, 0.5);
+  numero(s, '55%', { x: M, y: Y0 + 0.35, w: lw, h: 1.3, fontSize: 80, valign: 'middle', color: C.accent1 });
+  T(s, [{ text: 'Sustitutos y clientes: ', options: { bold: true } }, { text: 'seguir con el auto cuesta $0.', options: { color: C.text2 } }], { x: M, y: Y0 + 1.7, w: lw, h: 0.8, fontSize: 20, valign: 'top' });
+  regla(s, Y0 + 2.6, M, lw);
+  T(s, 'La cuota ataca la causa: la falta de liquidez.', { x: M, y: Y0 + 2.7, w: lw, h: 0.7, fontSize: 18, color: C.text2, valign: 'top' });
+  const rx = M + lw + 0.6, rw = R - rx;
+  mono(s, 'ESCENARIOS REGULATORIOS', { x: rx, y: Y0, w: rw, h: 0.3, fontSize: 13 });
+  const esc = [['E1', 'Vía legal amplia', 'protege al primero que homologa'], ['E2', 'Vía acotada', 'solo parque sin ABS, airbag ni estabilidad'], ['E3', 'Vía alternativa', 'alteración de características'], ['E4', 'Sin vía legal', 'el negocio no opera']];
+  const rh = 0.66, y0 = Y0 + 0.4;
+  esc.forEach(([k, t, v], i) => {
+    const y = y0 + i * rh, hoy = i >= 2;
+    regla(s, y, rx + 0.35, rw - 0.35, i ? C.accent5 : C.accent1);
+    tag(s, k, rx + 0.35, y + (rh - 0.36) / 2, { off: !hoy, w: 0.52, h: 0.36, size: 13 });
+    T(s, t, { x: rx + 1.02, y, w: 2.25, h: rh, fontSize: 18, bold: true, valign: 'middle' });
+    T(s, v, { x: rx + 3.3, y, w: rw - 3.3, h: rh, fontSize: 16, color: C.text2, valign: 'middle' });
+  });
+  // la rama vigente (E3 o E4), marcada por forma
+  linea(s, rx + 0.12, y0 + 2 * rh + 0.08, 0, 2 * rh - 0.16, C.accent1, 3);
+  mono(s, 'HOY', { x: rx - 0.55, y: y0 + 2 * rh, w: 0.6, h: 2 * rh, fontSize: 12, color: C.accent1, valign: 'middle' });
+  const by = y0 + 4 * rh + 0.25;
+  regla(s, by, rx, rw);
+  T(s, 'Ley N° 21.793 publicada, sin reglamento', { x: rx, y: by + 0.06, w: rw - 2.4, h: 0.55, fontSize: 18, valign: 'middle' });
+  marca(s, 'pen', 'RIESGO EXTERNO', R, by + 0.14, { alignRight: true, size: 12, h: 0.36 });
+  return s;
+};
+
+// =====================================================================
+// 6 · FORTALEZA DE DISEÑO, NO DE EJECUCIÓN · biblioteca, prueba Habilita y FODA cruzado
+// =====================================================================
+D.interno = () => {
+  const s = contenido('ANÁLISIS INTERNO · COMPETENCIAS Y FODA CRUZADO', 'FORTALEZA DE DISEÑO, NO DE EJECUCIÓN:', 'el FODA dice qué demostrar.');
+  const lw = 4.7, ch = 2.35;
+  brillo(s, M, Y0, lw, ch, 0.5);
+  cajaHot(s, M, Y0, lw, ch);
+  mono(s, 'ÚNICA FUENTE DE EXCLUSIVIDAD', { x: M + 0.28, y: Y0 + 0.2, w: lw - 0.5, h: 0.3, fontSize: 13, color: C.accent1 });
+  T(s, 'Biblioteca de calibraciones', { x: M + 0.28, y: Y0 + 0.55, w: lw - 0.5, h: 0.5, fontSize: 24, bold: true, valign: 'middle' });
+  T(s, 'Hoy vacía; sostenible solo si se protege como secreto empresarial.', { x: M + 0.28, y: Y0 + 1.1, w: lw - 0.5, h: 0.7, fontSize: 16, color: C.text2 });
+  marca(s, 'est', 'POTENCIAL, NO EFECTIVA', M + 0.28, Y0 + ch - 0.52, { size: 12, h: 0.34 });
+  // prueba concreta de capacidad: Lumine Habilita
+  const qy = Y0 + ch + 0.25, q = YF - qy - 0.02;
+  s.addImage({ path: A('qr-habilita.png'), x: M, y: qy, w: q, h: q, altText: 'Código QR a la demostración de Lumine Habilita' });
+  T(s, [{ text: 'Lumine Habilita', options: { bold: true, breakLine: true } }, { text: 'formación de técnicos por competencias', options: { color: C.text2 } }], { x: M + q + 0.2, y: qy, w: lw - q - 0.2, h: q - 0.4, fontSize: 16, valign: 'top' });
+  marca(s, 'sup', 'DEMO · DATOS FICTICIOS', M + q + 0.2, qy + q - 0.36, { size: 11, h: 0.32 });
+  const rx = M + lw + 0.55, rw = R - rx;
+  mono(s, 'FODA CRUZADO: QUÉ DEMOSTRAR', { x: rx, y: Y0, w: rw, h: 0.3, fontSize: 13 });
+  const cr = [['FO', 'Homologar primero los modelos más densos del segmento', ['P2']], ['DO', 'Plantear al MTT el precedente del gas licuado', ['P1']], ['DA', 'Convenios con aseguradora, planta de revisión y financiera antes del primer kit', ['P6']], ['DA', 'Cubrir la exposición al dólar de un kit importado', ['F2']]];
+  const rh = 0.95;
+  cr.forEach(([k, t, ids], i) => {
+    const y = Y0 + 0.4 + i * rh;
+    regla(s, y, rx, rw, i ? C.accent5 : C.accent1);
+    tag(s, k, rx, y + (rh - 0.36) / 2, { off: true, w: 0.55, h: 0.36, size: 13 });
+    T(s, t, { x: rx + 0.75, y, w: rw - 2.0, h: rh, fontSize: 18, valign: 'middle' });
+    chip(s, ids[0], R - 0.75, y + (rh - 0.36) / 2, { w: 0.75 });
+    if (i === 3) mono(s, 'INICIATIVA', { x: R - 2.0, y: y + rh - 0.32, w: 1.2, h: 0.26, fontSize: 11, color: C.text2, align: 'right' });
+  });
+  return s;
+};
+
+// =====================================================================
+// 7 · DIFERENCIACIÓN ENFOCADA · declaración, renuncias y tres ejes
+// =====================================================================
+D.estrategia = () => {
+  const s = contenido('FORMULACIÓN · ESTRATEGIA, RENUNCIAS Y EJES', 'DIFERENCIACIÓN ENFOCADA:', 'competir con evidencia, no con precio.');
+  linea(s, M, Y0 + 0.05, 0.06, 1.05, C.accent1, 3);
+  T(s, '«Un servicio certificado que reduce el combustible del auto que el cliente ya tiene, para conductores de alto kilometraje, sostenido por un conocimiento de calibración que un competidor no puede comprar.»',
+    { x: M + 0.3, y: Y0, w: CW - 0.3, h: 1.15, fontFace: F_SER, italic: true, fontSize: 21, valign: 'middle', lineSpacingMultiple: 1.0 });
+  const ry = Y0 + 1.4;
+  mono(s, 'RENUNCIAS', { x: M, y: ry, w: 2, h: 0.36, fontSize: 13, valign: 'middle' });
+  let x = M + 1.75;
+  ['NO COMPETIR POR PRECIO', 'NO ATENDER BAJO KILOMETRAJE', 'NO OFRECER INMEDIATEZ'].forEach(t => { x += marca(s, 'no', t, x, ry, { size: 12, h: 0.36 }) + 0.2; });
+  const ey = ry + 0.7, eh = YF - ey, ew = (CW - 0.5) / 3;
+  [[1, 'vía legal y terceros'], [2, 'capacidad de pago del cliente'], [3, 'ahorro todavía no medido']].forEach(([e, a], i) => {
+    const xx = M + i * (ew + 0.25);
+    caja(s, xx, ey, ew, eh, { line: { color: C.accent5, width: 0.75 } });
+    barraEje(s, [e], xx, ey, ew, 0.1);
+    mono(s, 'EJE ' + e, { x: xx + 0.25, y: ey + 0.25, w: ew - 0.5, h: 0.3, fontSize: 13, color: C.text2 });
+    T(s, EJE_NOMBRE[e], { x: xx + 0.25, y: ey + 0.58, w: ew - 0.5, h: 0.5, fontSize: 22, bold: true, valign: 'middle' });
+    T(s, [{ text: 'Ataca: ', options: { color: C.text2 } }, { text: a }], { x: xx + 0.25, y: ey + 1.15, w: ew - 0.5, h: eh - 1.3, fontSize: 17, valign: 'top' });
+  });
+  return s;
+};
+
+// =====================================================================
+// 8 · LOS OCHO OBJETIVOS DE LA ESTRATEGIA LLEGAN AL CMI
+// =====================================================================
+D.ejes = () => {
+  const s = contenido('DE LA ESTRATEGIA AL CMI · TRAZABILIDAD', 'LOS OCHO OBJETIVOS DE LA ESTRATEGIA', 'llegan al CMI.');
+  const ew = (CW - 0.5) / 3, ey = Y0, eh = 3.05;
+  const ejes = [[1, [['01', 'Autorización del taller', ['P1']], ['02', 'Homologación progresiva', ['P2']], ['03', 'Aseguradoras y plantas', ['P6']]]],
+    [2, [['04', 'Consolidar el segmento', ['C4']], ['05', 'Financiamiento al cliente', ['P6']]]],
+    [3, [['06', 'Demostrar el ahorro real', ['A3', 'P4', 'C2']], ['07', 'Retener el conocimiento', ['A1', 'A2', 'A4']], ['08', 'Ampliar capacidad', ['P5', 'F3']]]]];
+  ejes.forEach(([e, objs], i) => {
+    const x = M + i * (ew + 0.25);
+    caja(s, x, ey, ew, eh, { line: { color: C.accent5, width: 0.75 } });
+    barraEje(s, [e], x, ey, ew, 0.1);
+    T(s, [{ text: 'EJE ' + e + '  ', options: { fontFace: F_MONO, fontSize: 12, color: C.text2 } }, { text: EJE_NOMBRE[e], options: { bold: true } }], { x: x + 0.2, y: ey + 0.18, w: ew - 0.4, h: 0.42, fontSize: 18, valign: 'middle' });
+    objs.forEach(([n, t, ids], j) => {
+      const y = ey + 0.72 + j * 0.76;
+      regla(s, y, x + 0.2, ew - 0.4);
+      mono(s, n, { x: x + 0.2, y: y + 0.08, w: 0.4, h: 0.3, fontSize: 12, color: C.accent1 });
+      T(s, t, { x: x + 0.62, y: y + 0.04, w: ew - 0.84, h: 0.38, fontSize: 15, valign: 'top' });
+      let cx = x + 0.62;
+      ids.forEach(id => { cx += chip(s, id, cx, y + 0.42, { h: 0.28, size: 12, w: 0.5 }) + 0.08; });
+    });
+  });
+  const by = ey + eh + 0.25;
+  regla(s, by, M, CW, C.accent1);
+  mono(s, 'NUEVOS POR LA RETROALIMENTACIÓN', { x: M, y: by + 0.14, w: 4.2, h: 0.3, fontSize: 13, color: C.accent1 });
+  let cx = M;
+  ['C1', 'C3', 'P3', 'F2', 'F1'].forEach(id => { cx += chip(s, id, cx, by + 0.52, { w: 0.62 }) + 0.12; });
+  T(s, 'F1 se recupera del primer CMI', { x: cx + 0.1, y: by + 0.5, w: 3.4, h: 0.4, fontSize: 15, color: C.text2, valign: 'middle' });
+  marca(s, 'pen', 'BRECHA CAMBIARIA: INICIATIVA EN F2', R, by + 0.5, { alignRight: true, size: 12, h: 0.38 });
+  return s;
+};
+
+// =====================================================================
+// 9 · LA PERSPECTIVA CLIENTES MIDE LO QUE EL CLIENTE COMPRA
+// =====================================================================
+D.clientes = () => {
+  const s = contenido('CMI · PERSPECTIVA CLIENTES', 'LA PERSPECTIVA CLIENTES', 'mide lo que el cliente compra.');
+  const c0 = M + 1.35, c1 = c0 + 3.25, c2 = c1 + 3.55, wq = 3.05, wo = 3.35, wi = R - c2;
+  mono(s, 'EL CLIENTE QUIERE', { x: c0, y: Y0, w: wq, h: 0.3, fontSize: 13 });
+  mono(s, 'OBJETIVO', { x: c1, y: Y0, w: wo, h: 0.3, fontSize: 13, color: C.accent1 });
+  mono(s, 'INDICADOR', { x: c2, y: Y0, w: wi, h: 0.3, fontSize: 13 });
+  const filas = [['C1', 'Que funcione sin tocar el motor'], ['C2', 'Saber cuánto ahorra'], ['C3', 'Atreverse a comprar'], ['C4', 'Comprar']];
+  const rh = 0.76, y0 = Y0 + 0.4;
+  filas.forEach(([id, q], i) => {
+    const y = y0 + i * rh, ob = OBJ[id];
+    regla(s, y, c0, R - c0, i ? C.accent5 : C.accent1);
+    T(s, q, { x: c0, y, w: wq, h: rh, fontFace: F_SER, italic: true, fontSize: 20, valign: 'middle' });
+    chip(s, id, c1, y + (rh - 0.36) / 2, { w: 0.62 });
+    T(s, ob.n, { x: c1 + 0.75, y, w: wo - 0.8, h: rh, fontSize: 18, bold: true, valign: 'middle' });
+    T(s, ob.ind, { x: c2, y, w: wi - (ob.regla === 'Meta pendiente' ? 0.45 : 0), h: rh, fontSize: 16, color: C.text2, valign: 'middle' });
+    if (ob.regla === 'Meta pendiente') forma(s, 'pend', R - 0.32, y + (rh - 0.3) / 2, 0.3);
+  });
+  regla(s, y0 + 4 * rh, c0, R - c0);
+  // agrupación por forma: propuesta de valor (C1, C2) y resultado (C3, C4)
+  [['PROPUESTA', 'DE VALOR', 0], ['RESULTADO', '', 2]].forEach(([a, b, k]) => {
+    const y = y0 + k * rh;
+    linea(s, M + 1.15, y + 0.08, 0, 2 * rh - 0.16, k ? C.text1 : C.accent1, 3);
+    T(s, [{ text: a, options: { breakLine: !!b } }, { text: b }], { x: M, y, w: 1.05, h: 2 * rh, fontFace: F_MONO, fontSize: 12, color: k ? C.text1 : C.accent1, valign: 'middle', align: 'right' });
+  });
+  const by = y0 + 4 * rh + 0.22;
+  T(s, [{ text: 'Las alianzas pasan a procesos (P6): ', options: { bold: true } }, { text: 'son el medio, no el valor.', options: { color: C.text2 } }], { x: c0, y: by, w: R - c0 - 2.1, h: 0.5, fontSize: 19, valign: 'middle' });
+  forma(s, 'pend', R - 1.95, by + 0.12, 0.26);
+  mono(s, 'META PENDIENTE', { x: R - 1.6, y: by + 0.06, w: 1.6, h: 0.38, fontSize: 12, color: GRIS, valign: 'middle' });
+  return s;
+};
+
+// =====================================================================
+// 10 · CADA OBJETIVO EMPUJA A OTRO · mapa estratégico en red, editable
+// =====================================================================
+const MAPA = (() => {
+  const NW = 1.5, X = i => 1.95 + i * (NW + 0.356);
+  const nh = 0.62, Yr = { F: 2.55, Cu: 3.46, Cl: 4.37, P: 5.28, A: 6.19 };
+  const pos = {
+    P5: [X(0), Yr.P], P1: [X(1), Yr.P], P2: [X(2), Yr.P], P3: [X(3), Yr.P], P4: [X(4), Yr.P], P6: [X(5), Yr.P],
+    A4: [X(0), Yr.A], A1: [X(2), Yr.A], A2: [X(3), Yr.A], A3: [X(4), Yr.A],
+    C1: [7.85, Yr.Cl], C2: [9.6, Yr.Cl], C3: [8.75, Yr.Cu], C4: [10.6, Yr.Cu],
+    F3: [X(0), Yr.F], F1: [5.5, Yr.F], F2: [10.4, Yr.F],
+  };
+  return { NW, X, nh, Yr, pos, w: id => id === 'F1' ? 2.4 : NW };
+})();
+D.mapa = () => {
+  const s = contenido('CMI · MAPA ESTRATÉGICO EN RED', 'CADA OBJETIVO EMPUJA A OTRO:', 'tres rutas lo prueban.');
+  leyendaLineas(s);
+  const { nh, Yr, pos } = MAPA, W = MAPA.w;
+  [['FINANCIERA', Yr.F, nh, ''], ['CLIENTES', Yr.Cu, 2 * nh + 0.29, ''], ['PROCESOS', Yr.P, nh, ''], ['APRENDIZAJE', Yr.A, nh, '']].forEach(([t, y, h]) => {
+    linea(s, M, y, 0, h, C.accent1, 2);
+    mono(s, t, { x: M + 0.12, y, w: 1.3, h, fontSize: 12, color: C.text1, valign: 'middle', charSpacing: 0.5 });
+  });
+  serif(s, 'resultado', { x: M + 0.12, y: Yr.Cu + 0.36, w: 1.3, h: 0.26, fontSize: 13, color: C.text2 });
+  serif(s, 'propuesta de valor', { x: M + 0.12, y: Yr.Cl + 0.36, w: 1.3, h: 0.26, fontSize: 13, color: C.text2 });
+  // relaciones (antes que los nodos, para que las flechas queden debajo)
+  const L = id => pos[id][0], Tp = id => pos[id][1], B = id => pos[id][1] + nh, Mx = id => pos[id][0] + W(id) / 2, My = id => pos[id][1] + nh / 2, Rt = id => pos[id][0] + W(id);
+  const v = (x, a, b, t) => ruta(s, [[x, a], [x, b]], t);
+  v(Mx('A1'), Tp('A1'), B('P2'), 'hab');           // R01
+  ruta(s, [[Rt('P1'), My('P1')], [L('P2'), My('P2')]], 'ext'); // R02
+  ruta(s, [[Rt('P2'), My('P2')], [L('P3'), My('P3')]], 'hab'); // R03
+  v(Mx('A2'), Tp('A2'), B('P3'), 'hab');           // R04
+  v(8.5, Tp('P3'), B('C1'), 'hab');                // R05
+  ruta(s, [[L('P1'), My('P1')], [Rt('P5'), My('P5')]], 'ext'); // R06
+  v(Mx('A3'), Tp('A3'), B('P4'), 'hab');           // R07
+  ruta(s, [[Rt('P3'), My('P3')], [L('P4'), My('P4')]], 'hip'); // R08
+  v(10.2, Tp('P4'), B('C2'), 'hab');               // R09
+  v(9.05, Tp('C1'), B('C3'), 'hip');               // R10
+  v(9.9, Tp('C2'), B('C3'), 'hip');                // R11
+  const yg2 = (B('C3') + Tp('C1')) / 2;
+  ruta(s, [[11.45, Tp('P6')], [11.45, yg2], [10.1, yg2], [10.1, B('C3')]], 'hip'); // R12
+  ruta(s, [[Rt('C3'), My('C3')], [L('C4'), My('C4')]], 'hip'); // R13
+  v(11.85, Tp('P6'), B('C4'), 'hip');              // R14
+  v(11.3, Tp('C4'), B('F2'), 'hip');               // R15
+  const yg1 = (B('F1') + Tp('C3')) / 2;
+  ruta(s, [[7.62, Tp('P3')], [7.62, yg1], [10.7, yg1], [10.7, B('F2')]], 'hip'); // R16
+  ruta(s, [[L('F2'), My('F2')], [Rt('F1'), My('F1')]], 'hip'); // R17
+  v(Mx('A4'), Tp('A4'), B('P5'), 'hip');           // R18
+  v(2.7, Tp('P5'), B('F3'), 'hip');                // R19
+  ruta(s, [[Rt('F3'), My('F3')], [L('F1'), My('F1')]], 'hip'); // R20
+  Object.keys(pos).forEach(id => nodo(s, id, pos[id][0], pos[id][1], W(id), nh, { hot: id === 'F1', inline: true, corto: true }));
+  // ventaja sostenible potencial: A1
+  serif(s, 'ventaja sostenible (potencial)', { x: MAPA.X(1) - 0.1, y: Yr.A, w: 1.45, h: nh, fontSize: 14, align: 'right', valign: 'middle' });
+  flecha(s, MAPA.X(1) + 1.38, Yr.A + nh / 2, MAPA.X(2) - MAPA.X(1) - 1.43, 0, C.accent1, 1);
+  // leyenda de ejes en el hueco bajo P6
+  const lx = MAPA.X(5);
+  [[1, ''], [2, ''], [3, '']].forEach(([e, k], i) => {
+    s.addShape(S.rect, { x: lx, y: Yr.A + 0.07 + i * 0.19, w: 0.22, h: 0.07, fill: { color: EJE[e] }, line: { type: 'none' } });
+    T(s, 'eje ' + e, { x: lx + 0.3, y: Yr.A + i * 0.19, w: 1.2, h: 0.2, fontSize: 11, color: C.text2, valign: 'middle' });
+  });
+  return s;
+};
+
+// rutas ampliadas: nodos grandes con el mecanismo escrito sobre cada flecha
+function nodoG(s, id, x, y, w = 2.35, h = 0.95, o = {}) { nodo(s, id, x, y, w, h, Object.assign({ size: 18 }, o)); }
+const rot = (s, t, x, y, w, o = {}) => serif(s, t, Object.assign({ x, y, w, h: 0.32, fontSize: 16, align: 'center', valign: 'middle' }, o));
+
+// =====================================================================
+// 11 · RUTA 1 · HABILITACIÓN: sin vía legal ni par aprobado no se instala
+// =====================================================================
+D.ruta1 = () => {
+  const s = contenido('RUTA 1 · HABILITACIÓN', 'SIN VÍA LEGAL NI PAR APROBADO', 'no se instala.');
+  leyendaLineas(s);
+  const w = 2.35, h = 0.95, g = 0.62, y1 = Y0 + 0.55, y2 = Y0 + 2.25;
+  const x = i => M + 0.3 + i * (w + g);
+  ['P1', 'P2', 'P3', 'C1'].forEach((id, i) => nodoG(s, id, x(i), y1, w, h, { hot: id === 'C1' }));
+  [['ext', 'define requisitos'], ['hab', 'solo pares aprobados'], ['hab', 'verifica la promesa']].forEach(([t, k], i) => {
+    ruta(s, [[x(i) + w, y1 + h / 2], [x(i + 1), y1 + h / 2]], t);
+  });
+  rot(s, 'define requisitos', x(0) + w - 0.6, y1 - 0.4, g + 1.2);
+  rot(s, 'solo pares aprobados', x(1) + w - 0.6, y1 - 0.4, g + 1.2);
+  rot(s, 'verifica la promesa', x(2) + w - 0.6, y1 - 0.4, g + 1.2);
+  nodoG(s, 'P5', x(0), y2, w, h); nodoG(s, 'A1', x(1), y2, w, h); nodoG(s, 'A2', x(2), y2, w, h);
+  ruta(s, [[x(0) + w / 2, y1 + h], [x(0) + w / 2, y2]], 'ext');
+  ruta(s, [[x(1) + w / 2, y2], [x(1) + w / 2, y1 + h]], 'hab');
+  ruta(s, [[x(2) + w / 2, y2], [x(2) + w / 2, y1 + h]], 'hab');
+  rot(s, 'también exige vía legal', x(0) + w / 2 + 0.1, y1 + h + 0.18, 2.2, { align: 'left' });
+  rot(s, 'respalda el expediente', x(1) + w / 2 + 0.1, y1 + h + 0.18, 2.2, { align: 'left' });
+  rot(s, 'ejecución segura', x(2) + w / 2 + 0.1, y1 + h + 0.18, 2.2, { align: 'left' });
+  const by = y2 + h + 0.22;
+  regla(s, by, M, CW, C.accent1);
+  mono(s, 'INICIATIVAS', { x: M, y: by + 0.14, w: 2, h: 0.36, fontSize: 13, color: C.accent1, valign: 'middle' });
+  T(s, [{ text: 'P1 ', options: { fontFace: F_MONO, color: C.accent1 } }, { text: 'Precedente del gas licuado ante el MTT', options: { breakLine: true } }, { text: 'P2 ', options: { fontFace: F_MONO, color: C.accent1 } }, { text: 'Homologar primero los modelos más densos del segmento' }],
+    { x: M + 1.9, y: by + 0.08, w: CW - 1.9, h: 0.68, fontSize: 17, valign: 'top' });
+  return s;
+};
+
+// =====================================================================
+// 12 · RUTA 2 · EVIDENCIA: el ahorro se acredita, no se promete
+// =====================================================================
+D.ruta2 = () => {
+  const s = contenido('RUTA 2 · EVIDENCIA', 'EL AHORRO SE ACREDITA,', 'no se promete.');
+  leyendaLineas(s);
+  const w = 2.35, h = 0.95, g = 0.62, y1 = Y0 + 0.55, y2 = Y0 + 2.25;
+  const x = i => M + 0.3 + i * (w + g);
+  ['P4', 'C2', 'C3', 'C4'].forEach((id, i) => nodoG(s, id, x(i), y1, w, h, { hot: id === 'C2' }));
+  [['hab', 'reporte confiable'], ['hip', 'evidencia'], ['hip', 'conversión']].forEach(([t, k], i) => {
+    ruta(s, [[x(i) + w, y1 + h / 2], [x(i + 1), y1 + h / 2]], t);
+    rot(s, k, x(i) + w - 0.6, y1 - 0.4, g + 1.2);
+  });
+  nodoG(s, 'A3', x(0), y2, w, h); nodoG(s, 'C1', x(1), y2, w, h);
+  const p6x = x(2) + w / 2 + 0.2;
+  nodoG(s, 'P6', p6x, y2, w, h);
+  ruta(s, [[x(0) + w / 2, y2], [x(0) + w / 2, y1 + h]], 'hab');
+  rot(s, 'datos comparables', x(0) + w / 2 + 0.1, y1 + h + 0.18, 2.2, { align: 'left' });
+  ruta(s, [[x(1) + w, y2 + 0.15], [x(2) + 0.5, y1 + h]], 'hip');
+  rot(s, 'promesa cumplida', x(1) + 0.6, y1 + h + 0.18, 1.7, { align: 'right' });
+  ruta(s, [[p6x + 0.45, y2], [p6x + 0.45, y1 + h]], 'hip');
+  ruta(s, [[p6x + w - 0.45, y2], [p6x + w - 0.45, y1 + h]], 'hip');
+  rot(s, 'respaldo', p6x + 0.5, y1 + h + 0.18, 1.0, { align: 'left' });
+  rot(s, 'cuota', p6x + w - 0.4, y1 + h + 0.18, 1.0, { align: 'left' });
+  const by = y2 + h + 0.35;
+  regla(s, by, M, CW, C.accent1);
+  T(s, [{ text: 'Reportes entregados no son litros ahorrados: ', options: { bold: true } }, { text: 'el ahorro se mide aparte, con línea base del mismo auto.', options: { color: C.text2 } }],
+    { x: M, y: by + 0.1, w: CW - 3.0, h: 0.62, fontSize: 18, valign: 'middle' });
+  marca(s, 'est', 'HASTA 20%: ESTIMACIÓN', R, by + 0.2, { alignRight: true, size: 12, h: 0.36 });
+  return s;
+};
+
+// =====================================================================
+// 13 · RUTA 3 · VALOR ECONÓMICO: la rentabilidad sobre el capital es la meta final
+// =====================================================================
+D.ruta3 = () => {
+  const s = contenido('RUTA 3 · VALOR ECONÓMICO', 'LA RENTABILIDAD SOBRE EL CAPITAL', 'es la meta final; hoy no tiene cifra.');
+  leyendaLineas(s);
+  const w = 1.95, h = 1.0, cx = 7.95, cw = R - cx, gx = 2.7;
+  const yC4 = Y0 + 0.3, yP3 = Y0 + 1.5, yF2 = Y0 + 0.9;
+  nodoG(s, 'C4', M, yC4, w, h); nodoG(s, 'P3', M, yP3, w, h); nodoG(s, 'F2', M + gx, yF2, w, h);
+  ruta(s, [[M + w, yC4 + h / 2], [M + gx, yF2 + 0.28]], 'hip');
+  ruta(s, [[M + w, yP3 + h / 2], [M + gx, yF2 + h - 0.28]], 'hip');
+  rot(s, 'volumen con margen', M, yC4 - 0.33, 3.0, { align: 'left' });
+  rot(s, 'menos retrabajo', M, yP3 + h + 0.02, 3.0, { align: 'left' });
+  const y3 = Y0 + 3.05;
+  nodoG(s, 'A4', M, y3, w, h); nodoG(s, 'P5', M + gx, y3, w, h); nodoG(s, 'F3', M + 2 * gx, y3, w, h);
+  ruta(s, [[M + w, y3 + h / 2], [M + gx, y3 + h / 2]], 'hip');
+  ruta(s, [[M + gx + w, y3 + h / 2], [M + 2 * gx, y3 + h / 2]], 'hip');
+  rot(s, 'método', M + w, y3 + h / 2 - 0.36, gx - w, { fontSize: 14 });
+  rot(s, 'licencias', M + gx + w, y3 + h / 2 - 0.36, gx - w, { fontSize: 14 });
+  ruta(s, [[M + gx + w, yF2 + h / 2], [cx, yF2 + h / 2]], 'hip');
+  rot(s, 'flujos', M + gx + w, yF2 + h / 2 - 0.36, cx - M - gx - w);
+  ruta(s, [[M + 2 * gx + w, y3 + h / 2], [cx, y3 + h / 2]], 'hip');
+  // F1: protagonista, con su indicador en dos etapas
+  const cy = Y0, ch = YF - Y0 - 0.06;
   brillo(s, cx, cy, cw, ch, 0.6);
   cajaHot(s, cx, cy, cw, ch);
-  s.addShape(S.rect, { x: cx + cw - 0.62, y: cy + 0.26, w: 0.3, h: 0.22, fill: { color: C.background1, transparency: 100 }, line: { color: GRIS, width: 1, dashType: 'dash' } });
-  mono(s, 'C01 · INDICADOR CENTRAL DE CLIENTES', { x: cx + 0.35, y: cy + 0.24, w: cw - 1.2, h: 0.3, color: C.accent1 });
-  T(s, 'Clientes con informe de consumo antes y después', { x: cx + 0.4, y: cy + 0.85, w: cw - 0.8, h: 1.1, fontSize: 28, bold: true, align: 'center', valign: 'middle' });
-  linea(s, cx + 0.6, cy + 2.08, cw - 1.2, 0, C.accent1, 2.5);
-  T(s, 'Clientes intervenidos', { x: cx + 0.4, y: cy + 2.22, w: cw - 0.8, h: 0.6, fontSize: 28, align: 'center', valign: 'middle' });
-  T(s, 'en condiciones comparables', { x: cx + 0.4, y: cy + 3.2, w: cw - 0.8, h: 0.5, fontFace: F_SER, italic: true, fontSize: 24, color: C.accent1, align: 'center', valign: 'middle' });
-  return s;
-};
-
-// =====================================================================
-// 4 · CADA OBJETIVO CAUSA EL SIGUIENTE · mapa estratégico con flechas rotuladas
-// =====================================================================
-D.mapa = () => {
-  const s = contenido('MAPA ESTRATÉGICO · CAUSA Y EFECTO', 'CADA OBJETIVO CAUSA EL SIGUIENTE:', 'del técnico al EVA.');
-  leyendaEstados(s, ['sin', 'crit']);
-  const col = [2.55, 5.18, 7.81, 10.44], cw = 2.29, nh = 0.6, g = 0.32;
-  const fila = { F: Y0 - 0.04 }; fila.K = fila.F + nh + g; fila.C = fila.K + nh + g; fila.P = fila.C + nh + g; fila.A = fila.P + nh + g;
-  [['FINANCIERA', fila.F, nh], ['CLIENTES', fila.K, 2 * nh + g], ['PROCESOS', fila.P, nh], ['APRENDIZAJE', fila.A, nh]].forEach(([t, y, h]) => {
-    linea(s, M, y, 0, h, C.accent1, 2);
-    mono(s, t, { x: M + 0.16, y, w: 1.8, h, fontSize: 14, color: C.text1, valign: 'middle' });
+  mono(s, 'F1 · RENTABILIDAD POR SOBRE EL COSTO DE CAPITAL', { x: cx + 0.28, y: cy + 0.2, w: cw - 0.5, h: 0.5, fontSize: 13, color: C.accent1 });
+  [['1', 'ANTES DE INVERTIR', 'VAN > 0 y TIR > tasa exigida'], ['2', 'OPERANDO, CADA PERÍODO', 'Retorno sobre el capital empleado frente a su costo']].forEach(([n, k, t], i) => {
+    const y = cy + 0.85 + i * 1.25;
+    regla(s, y, cx + 0.28, cw - 0.56);
+    tag(s, n, cx + 0.28, y + 0.14, { w: 0.42, h: 0.36, size: 15, off: i === 1 });
+    mono(s, k, { x: cx + 0.82, y: y + 0.14, w: cw - 1.1, h: 0.36, fontSize: 13, color: C.text2, valign: 'middle' });
+    T(s, t, { x: cx + 0.28, y: y + 0.55, w: cw - 0.56, h: 0.65, fontSize: 19, bold: true, valign: 'top', lineSpacingMultiple: 0.95 });
   });
-  const nodo = (code, text, x, y, w, tipo) => {
-    if (tipo === 'hot') { brillo(s, x, y, w, nh, 0.4); cajaHot(s, x, y, w, nh); }
-    else caja(s, x, y, w, nh, { line: borde(tipo) });
-    let tx = x + 0.14;
-    if (code) { tag(s, code, x + 0.12, y + (nh - 0.32) / 2, { w: 0.58, h: 0.32, size: 13, off: tipo !== 'hot' }); tx = x + 0.82; }
-    T(s, text, { x: tx, y, w: x + w - tx - 0.08, h: nh, fontSize: 16, bold: tipo === 'hot', valign: 'middle', lineSpacingMultiple: 0.88 });
-  };
-  const ancho = (a, b) => col[b] + cw - col[a];
-  nodo('F01', 'EVA > 0: rentabilidad sobre el costo de capital', col[1], fila.F, ancho(1, 2), 'hot');
-  caja(s, col[0], fila.K, ancho(0, 3), nh, { line: { color: C.accent1, width: 1 } });
-  T(s, 'Confianza: el cliente valora el resultado', { x: col[0], y: fila.K, w: ancho(0, 3), h: nh, fontSize: 18, bold: true, align: 'center', valign: 'middle' });
-  nodo('C01', 'Informe individual antes y después', col[0], fila.C, ancho(0, 1), 'sin');
-  nodo('C02', 'Respaldo de aseguradora y planta de revisión técnica', col[2], fila.C, ancho(2, 3), 'crit');
-  nodo('P03', 'Actas de seguridad', col[1], fila.P, cw, 'sin');
-  nodo('P02', 'Kit homologado', col[2], fila.P, cw, 'crit');
-  nodo('P01', 'Autorización sectorial', col[3], fila.P, cw, 'crit');
-  nodo('A03', 'Medición comparativa', col[0], fila.A, cw, 'crit');
-  nodo('A02', 'Técnicos habilitados', col[1], fila.A, cw, 'sin');
-  nodo('A01', 'Biblioteca de calibraciones', col[2], fila.A, cw, 'sin');
-  const sube = (c, de, a, texto, yt) => {
-    const x = col[c] + 0.36;
-    flecha(s, x, fila[de], 0, fila[a] + nh - fila[de]);
-    serif(s, texto, { x: x + 0.12, y: yt !== undefined ? yt : fila[a] + nh, w: a === 'F' ? 3.5 : 2.0, h: yt !== undefined ? nh : g, fontSize: 17, valign: 'middle' });
-  };
-  sube(0, 'A', 'C', 'sustenta el informe', fila.P);
-  sube(1, 'A', 'P', 'habilita el control');
-  sube(2, 'A', 'P', 'permite homologar');
-  sube(1, 'P', 'C', 'trazabilidad');
-  sube(2, 'P', 'C', 'kit homologado');
-  sube(3, 'P', 'C', 'autoriza operar');
-  sube(0, 'C', 'K', 'evidencia');
-  sube(2, 'C', 'K', 'respaldo');
-  sube(1, 'K', 'F', 'valor captado y margen');
+  marca(s, 'pen', 'SIN CIFRA · FALTA EL PLAN FINANCIERO', cx + 0.28, cy + ch - 0.55, { size: 11, h: 0.36, w: cw - 0.56 });
   return s;
 };
 
 // =====================================================================
-// 5 · SIN AUTORIZACIÓN NI HOMOLOGACIÓN NO SE OPERA · la compuerta
-// =====================================================================
-D.hitos = () => {
-  const s = contenido('PROCESOS · HITOS CRÍTICOS', 'SIN AUTORIZACIÓN NI HOMOLOGACIÓN', 'no se opera, aunque todo esté verde.');
-  leyendaEstados(s, ['crit']);
-  const y = Y0 + 0.05, h = 2.5;
-  // lo demás, aunque estuviera listo
-  const lw = 2.95;
-  caja(s, M, y, lw, h, { line: { color: GRIS, width: 1, dashType: 'dash' } });
-  mono(s, 'AUNQUE ESTÉN LISTOS', { x: M + 0.25, y: y + 0.24, w: lw - 0.5, h: 0.3, fontSize: 13 });
-  T(s, 'Técnicos, biblioteca y clientes', { x: M + 0.25, y: y + 0.7, w: lw - 0.45, h: 1.4, fontSize: TX.cuerpoL, color: C.text2, valign: 'top' });
-  // la compuerta: los dos hitos
-  const gx = M + lw + 0.85, gw = 4.45, gh = (h - 0.24) / 2;
-  flecha(s, M + lw + 0.12, y + h / 2, 0.6, 0, C.text2);
-  [['P01', 'Autorización sectorial'], ['P02', 'Primer par modelo-kit homologado']].forEach(([k, t], i) => {
-    const yy = y + i * (gh + 0.24);
-    caja(s, gx, yy, gw, gh, { fill: { color: '1A0E10' }, line: { color: ROJO, width: 2 } });
-    tag(s, k, gx + 0.25, yy + (gh - 0.44) / 2, { w: 0.72, h: 0.44, size: 18, off: true });
-    T(s, t, { x: gx + 1.2, y: yy, w: gw - 1.35, h: gh, fontSize: TX.sub, bold: true, valign: 'middle', lineSpacingMultiple: 0.95 });
-  });
-  // lo que queda bloqueado
-  const ox = gx + gw + 0.85, ow = R - ox;
-  flecha(s, gx + gw + 0.12, y + h / 2, 0.6, 0, ROJO);
-  caja(s, ox, y, ow, h, { fill: { color: C.background1 }, line: { color: ROJO, width: 1.25, dashType: 'dash' } });
-  T(s, 'Vender e instalar', { x: ox + 0.2, y: y + 0.5, w: ow - 0.4, h: 1.0, fontSize: TX.sub, bold: true, color: C.text2, align: 'center', valign: 'middle' });
-  linea(s, ox + 0.35, y + 1.0, ow - 0.7, 0, ROJO, 2.5);
-  // apoyo: el riesgo externo (única vez) y las actas
-  const ay = y + h + 0.35, rh = 0.62;
-  [['Ley N° 21.793 publicada, sin reglamento', ['pen', 'RIESGO EXTERNO']], ['Actas de seguridad completas en cada orden', ['sin']]].forEach(([t, st], i) => {
-    const yy = ay + i * rh;
-    regla(s, yy, M, CW, i ? C.accent5 : C.accent1);
-    T(s, t, { x: M, y: yy, w: CW - 3, h: rh, fontSize: TX.cuerpo, valign: 'middle' });
-    if (st[0] === 'pen') marca(s, 'pen', st[1], R, yy + 0.11, { alignRight: true });
-    else s.addShape(S.rect, { x: R - 0.4, y: yy + 0.2, w: 0.4, h: 0.24, fill: { color: C.background1, transparency: 100 }, line: { color: GRIS, width: 1, dashType: 'dash' } });
-  });
-  return s;
-};
-
-// =====================================================================
-// 6 · LA HABILITACIÓN DE TÉCNICOS YA SE PUEDE MEDIR · código QR a la demo de Lumine Habilita
-// =====================================================================
-D.habilita = () => {
-  const s = contenido('APRENDIZAJE · PRUEBA CONCRETA', 'LA HABILITACIÓN DE TÉCNICOS', 'ya se puede medir.');
-  const q = 3.55, qx = M + 0.2, qy = Y0 + 0.05;
-  brillo(s, qx, qy, q, q, 0.7);
-  s.addImage({ path: A('qr-habilita.png'), x: qx, y: qy, w: q, h: q, altText: 'Código QR a la demostración de Lumine Habilita' });
-  visor(s, qx, qy, q, q);
-  mono(s, 'ESCANEA PARA ABRIR LA DEMO', { x: qx - 0.2, y: qy + q + 0.14, w: q + 0.4, h: 0.3, fontSize: 12, align: 'center', color: C.text1 });
-  const x = qx + q + 0.85, w = R - x;
-  T(s, 'Lumine Habilita', { x, y: Y0, w, h: 0.62, fontFace: F_TIT, fontSize: 30, valign: 'middle' });
-  T(s, 'Habilitación por competencias del técnico instalador', { x, y: Y0 + 0.66, w, h: 0.45, fontSize: TX.cuerpo, color: C.text2, valign: 'middle' });
-  regla(s, Y0 + 1.3, x, w, C.accent1);
-  [['39', 'competencias'], ['4', 'niveles']].forEach(([v, k], i) => {
-    const xx = x + i * 2.3;
-    numero(s, v, { x: xx, y: Y0 + 1.38, w: 2.1, h: 0.9, fontSize: TX.cifraXL + 6, valign: 'middle', color: C.accent1 });
-    T(s, k, { x: xx, y: Y0 + 2.26, w: 2.1, h: 0.36, fontSize: 18, color: C.text2 });
-  });
-  regla(s, Y0 + 2.8, x, w);
-  tag(s, 'A02', x, Y0 + 3.0, { w: 0.72, h: 0.42, size: 16, off: true });
-  T(s, 'Técnicos habilitados ÷ técnicos asignados', { x: x + 0.9, y: Y0 + 2.92, w: w - 0.9, h: 0.58, fontSize: TX.cuerpo, bold: true, valign: 'middle' });
-  marca(s, 'sup', 'DEMO CON DATOS FICTICIOS', x, Y0 + 3.66);
-  return s;
-};
-
-// =====================================================================
-// 7 · UNA UTILIDAD POSITIVA PUEDE NO PAGAR EL CAPITAL · EVA con el ejemplo del módulo 4
-// =====================================================================
-D.eva = () => {
-  const s = contenido('PERSPECTIVA FINANCIERA · EVA', 'UNA UTILIDAD POSITIVA', 'puede no pagar el capital: por eso el EVA.');
-  numero(s, [{ text: 'EVA', options: { color: C.accent1 } }, { text: '  =  NOPAT  −  CAPITAL INVERTIDO  ×  WACC' }], { x: M, y: Y0 - 0.06, w: CW, h: 0.7, fontSize: 40, valign: 'middle' });
-  T(s, [{ text: 'NOPAT: ', options: { bold: true, color: C.text1 } }, { text: 'resultado operativo después de impuestos   ·   ' }, { text: 'WACC: ', options: { bold: true, color: C.text1 } }, { text: 'costo promedio ponderado del capital' }],
-    { x: M, y: Y0 + 0.66, w: CW, h: 0.36, fontSize: 18, color: C.text2, valign: 'middle' });
-  const cy = Y0 + 1.3, ch = YF - cy - 0.06, lw = 7.6;
-  cajaHot(s, M, cy, lw, ch);
-  noLumine(s, 'EJEMPLO DE CLASE · NO LUMINE', M + 0.3, cy + 0.24);
-  const fila = (k, v, y, o = {}) => {
-    T(s, k, { x: M + 0.3, y, w: 4.4, h: 0.5, fontSize: o.k || TX.cuerpo, bold: !!o.b, valign: 'middle', color: o.kc || C.text1 });
-    numero(s, v, { x: M + 3.8, y, w: lw - 4.1, h: 0.5, fontSize: o.size || TX.cifraS, align: 'right', valign: 'middle', color: o.color || C.text1 });
-  };
-  fila('NOPAT', 'US$ 150.000', cy + 0.86);
-  fila('Cargo por capital: 1.000.000 × 12%', '− US$ 120.000', cy + 1.4, { k: 18, kc: C.text2 });
-  regla(s, cy + 2.0, M + 0.3, lw - 0.6, C.accent1);
-  fila('EVA', 'US$ 30.000', cy + 2.12, { b: true, size: TX.cifra, color: C.accent1 });
-  const rx = M + lw + 0.5, rw = R - rx;
-  caja(s, rx, cy, rw, ch, { line: { color: GRIS, width: 1, dashType: 'dash' } });
-  mono(s, 'LUMINE HOY', { x: rx + 0.3, y: cy + 0.3, w: rw - 0.6, h: 0.3, color: C.text1 });
-  T(s, 'Sin NOPAT, capital invertido ni WACC respaldado', { x: rx + 0.3, y: cy + 0.8, w: rw - 0.6, h: 1.3, fontSize: TX.cuerpoL, bold: true, valign: 'top' });
-  T(s, 'La fórmula queda definida; la cifra, pendiente.', { x: rx + 0.3, y: cy + 2.1, w: rw - 0.6, h: 0.7, fontSize: 18, color: C.text2, valign: 'top' });
-  return s;
-};
-
-// =====================================================================
-// 8 · UN INDICADOR SIN RESPONSABLE NI EVIDENCIA NO CONTROLA NADA · ficha de C01
+// 14 · UN INDICADOR VALE POR SU FICHA; SIN MEDIR NO ES NO CUMPLIR
 // =====================================================================
 D.ficha = () => {
-  const s = contenido('CMI · FICHA DEL INDICADOR', 'SIN RESPONSABLE NI EVIDENCIA,', 'un indicador no controla nada.');
-  const cy = Y0, ch = YF - Y0 - 0.06;
-  caja(s, M, cy, CW, ch, { line: { color: C.accent5, width: 0.75 } });
-  // cabecera de la ficha: indicador y fórmula
-  mono(s, 'FICHA · C01 INFORME AL CLIENTE', { x: M + 0.35, y: cy + 0.26, w: 6, h: 0.3, color: C.accent1 });
-  T(s, [{ text: 'Clientes con informe', options: { bold: true } }, { text: '  ÷  ', options: { color: C.accent1 } }, { text: 'clientes intervenidos' }],
-    { x: M + 0.35, y: cy + 0.62, w: CW - 0.7, h: 0.6, fontSize: 26, valign: 'middle' });
-  regla(s, cy + 1.42, M + 0.35, CW - 0.7);
-  // protagonistas: las tres casillas que convierten un objetivo en control
-  const cols = [['RESPONSABLE', 'Comercial y Postventa'], ['EVIDENCIA', 'Informe con sus límites y acuse firmado'], ['SI SE DESVÍA', 'Completar el informe y contactar al cliente']];
-  const g = 0.3, w = (CW - 0.7 - 2 * g) / 3, yy = cy + 1.7, hh = ch - 1.95;
-  cols.forEach(([k, v], i) => {
-    const x = M + 0.35 + i * (w + g);
-    if (i === 0) { brillo(s, x, yy, w, hh, 0.4); cajaHot(s, x, yy, w, hh); } else caja(s, x, yy, w, hh, { fill: { color: C.background1 }, line: { color: C.accent1, width: 1 } });
-    mono(s, k, { x: x + 0.25, y: yy + 0.24, w: w - 0.5, h: 0.3, fontSize: 14, color: C.accent1 });
-    T(s, v, { x: x + 0.25, y: yy + 0.7, w: w - 0.45, h: hh - 0.9, fontSize: TX.sub, bold: true, valign: 'top', lineSpacingMultiple: 1.0 });
+  const s = contenido('CMI · FICHA DEL INDICADOR Y ESTADOS', 'UN INDICADOR VALE POR SU FICHA;', 'sin medir no es no cumplir.');
+  const lw = 7.3;
+  T(s, [{ text: 'FICHA · ', options: { color: C.text2 } }, { text: 'C2 AHORRO ACREDITADO' }], { x: M, y: Y0, w: lw, h: 0.3, fontFace: F_MONO, fontSize: 13, color: C.accent1 });
+  const filas = [['FÓRMULA', 'Reportes completos ÷ reportes exigibles'], ['FUENTE', 'Expediente de medición y acta de entrega'], ['META PROPUESTA', '100% de los exigibles'], ['RESPONSABLE', 'Comercial y Postventa'], ['SI HAY BRECHA', 'Completar la prueba o transparentar por qué no se pudo']];
+  const rh = 0.74, y0 = Y0 + 0.4;
+  filas.forEach(([k, v], i) => {
+    const y = y0 + i * rh;
+    regla(s, y, M, lw, i ? C.accent5 : C.accent1);
+    mono(s, k, { x: M, y, w: 2.1, h: rh, fontSize: 13, valign: 'middle' });
+    T(s, v, { x: M + 2.15, y, w: lw - 2.15, h: rh, fontSize: 18, bold: k === 'RESPONSABLE' || k === 'SI HAY BRECHA', valign: 'middle' });
   });
-  return s;
-};
-
-// =====================================================================
-// 9 · SIN MEDIR NO ES ROJO · semáforo con el gris aparte
-// =====================================================================
-D.semaforo = () => {
-  const s = contenido('CMI · LECTURA DEL RESULTADO', 'SIN MEDIR', 'no es rojo.');
-  const d = 1.45, y = Y0 + 0.35, g = 0.55;
-  [[VERDE, 'VERDE', '90% o más'], [AMBAR, 'ÁMBAR', '70% a 89%'], [ROJO, 'ROJO', 'menos de 70%']].forEach(([color, k, v], i) => {
-    const x = M + 0.1 + i * (d + g);
-    s.addShape(S.ellipse, { x, y, w: d, h: d, fill: { color }, line: { type: 'none' } });
-    mono(s, k, { x: x - 0.3, y: y + d + 0.16, w: d + 0.6, h: 0.3, fontSize: 15, bold: true, color, align: 'center' });
-    T(s, v, { x: x - 0.3, y: y + d + 0.5, w: d + 0.6, h: 0.4, fontSize: TX.cuerpo, align: 'center' });
-  });
-  // separador y el gris, protagonista
-  const sx = M + 0.1 + 3 * (d + g) + 0.1;
-  linea(s, sx, Y0, 0, 3.3, C.accent5, 1);
-  const gd = 2.35, gx = sx + 0.75, gy = Y0 + 0.05;
-  brillo(s, gx, gy, gd, gd, 0.5);
-  s.addShape(S.ellipse, { x: gx, y: gy, w: gd, h: gd, fill: { color: '2A3034' }, line: { color: GRIS, width: 2.5, dashType: 'dash' } });
-  T(s, 'SIN MEDIR', { x: gx, y: gy, w: gd, h: gd, fontFace: F_MONO, fontSize: 20, bold: true, color: C.text1, align: 'center', valign: 'middle' });
-  T(s, [{ text: 'Celda vacía: ', options: { bold: true } }, { text: 'falta el dato, no se incumplió.', options: { color: C.text2 } }],
-    { x: gx + gd + 0.4, y: gy + 0.5, w: R - gx - gd - 0.4, h: 1.4, fontSize: TX.cuerpoL, valign: 'middle' });
-  const by = Y0 + 3.55;
-  regla(s, by, M, CW, C.accent1);
-  T(s, [{ text: 'Control crítico: ', options: { bold: true } }, { text: 'verde solo al 100%.', options: { bold: true, color: C.accent1 } }],
-    { x: M, y: by + 0.12, w: CW, h: 0.5, fontSize: TX.sub, valign: 'middle' });
-  return s;
-};
-
-// =====================================================================
-// 10 · 8 DE 10 ES ROJO, NO ÁMBAR · ejercicio hipotético
-// =====================================================================
-D.desviacion = () => {
-  const s = contenido('CONTROL · DESVIACIÓN DE UNA META', '8 DE 10 ES ROJO, NO ÁMBAR:', 'el informe es obligatorio.');
-  noLumine(s, 'EJERCICIO HIPOTÉTICO', R, Y0 - 0.08, { alignRight: true });
-  mono(s, 'INFORMES ENTREGADOS A 10 CLIENTES', { x: M, y: Y0, w: 8, h: 0.3 });
-  const n = 10, g = 0.16, q = (CW - (n - 1) * g) / n, qy = Y0 + 0.5, qh = 0.9;
-  for (let i = 0; i < n; i++) {
-    const x = M + i * (q + g), ok = i < 8;
-    if (ok) s.addShape(S.rect, { x, y: qy, w: q, h: qh, fill: { color: C.accent1 }, line: { type: 'none' } });
-    else s.addShape(S.rect, { x, y: qy, w: q, h: qh, fill: { color: '1A0E10' }, line: { color: ROJO, width: 2, dashType: 'dash' } });
-    T(s, String(i + 1), { x, y: qy, w: q, h: qh, fontFace: F_MONO, fontSize: 18, bold: true, align: 'center', valign: 'middle', color: ok ? C.background1 : ROJO });
-  }
-  const ny = qy + qh + 0.28;
-  [['REAL', '80%', C.text1], ['DESVIACIÓN', '−20 pp', C.accent1]].forEach(([k, v, color], i) => {
-    const x = M + i * 3.6;
-    mono(s, k, { x, y: ny, w: 3.4, h: 0.3, fontSize: 14 });
-    numero(s, v, { x, y: ny + 0.3, w: 3.4, h: 0.8, fontSize: TX.cifraXL, valign: 'middle', color });
-  });
-  // dos lecturas del mismo 80%: protagonista el veredicto crítico
-  const cx = M + 7.3, cw = R - cx, half = 0.82;
-  caja(s, cx, ny, cw, half, { fill: { color: C.background1 }, line: { color: AMBAR, width: 1, dashType: 'dash' } });
-  T(s, 'Regla general', { x: cx + 0.25, y: ny, w: cw - 2.0, h: half, fontSize: TX.cuerpo, color: C.text2, valign: 'middle' });
-  estado(s, 'amb', cx + cw - 0.22, ny + (half - 0.44) / 2, { alignRight: true, size: 16, h: 0.44 });
-  const y2 = ny + half + 0.2, h2 = YF - y2;
-  cajaHot(s, cx, y2, cw, h2);
-  T(s, 'Control crítico', { x: cx + 0.25, y: y2, w: cw - 2.0, h: h2, fontSize: TX.cuerpoL, bold: true, valign: 'middle' });
-  estado(s, 'rojo', cx + cw - 0.22, y2 + (h2 - 0.5) / 2, { alignRight: true, size: 18, h: 0.5 });
-  return s;
-};
-
-// =====================================================================
-// 11 · LA DESVIACIÓN SE CIERRA CON EVIDENCIA · ciclo medir → explicar → corregir → verificar
-// =====================================================================
-D.ciclo = () => {
-  const s = contenido('CONTROL · ACCIÓN CORRECTIVA', 'LA DESVIACIÓN SE CIERRA', 'con evidencia, no cambiando el color.');
-  noLumine(s, 'EJERCICIO HIPOTÉTICO', R, Y0 - 0.08, { alignRight: true });
-  mono(s, 'LOS 2 INFORMES QUE FALTAN', { x: M, y: Y0, w: 8, h: 0.3 });
-  const pasos = [
-    ['MEDIR', 'El corte mensual detecta la brecha'],
-    ['EXPLICAR', '¿Faltó medir, validar o entregar?'],
-    ['CORREGIR', 'Responsable y plazo para cerrarlos'],
-    ['VERIFICAR', 'Informe firmado, entrega y acuse'],
-  ];
-  const g = 0.5, pw = (CW - 3 * g) / 4, py = Y0 + 0.58, ph = 1.95;
-  pasos.forEach(([k, v], i) => {
-    const x = M + i * (pw + g), hot = i === 3;
-    if (hot) { brillo(s, x, py, pw, ph, 0.4); cajaHot(s, x, py, pw, ph); } else caja(s, x, py, pw, ph, { line: { color: C.text2, width: 0.75 } });
-    tag(s, String(i + 1).padStart(2, '0'), x + 0.22, py + 0.22, { off: !hot, w: 0.6, h: 0.4, size: 16 });
-    T(s, k, { x: x + 0.22, y: py + 0.72, w: pw - 0.44, h: 0.44, fontSize: TX.sub, bold: true, valign: 'middle', color: hot ? C.accent1 : C.text1 });
-    T(s, v, { x: x + 0.22, y: py + 1.18, w: pw - 0.4, h: 0.7, fontSize: 18, color: C.text2, valign: 'top' });
-    if (i < 3) flecha(s, x + pw + 0.08, py + ph / 2, g - 0.16, 0);
-  });
-  const ly = py + ph + 0.32, x1 = M + pw / 2, x4 = M + 3 * (pw + g) + pw / 2;
-  linea(s, x4, py + ph, 0, ly - py - ph, C.accent1, 1.75);
-  linea(s, x1, ly, x4 - x1, 0, C.accent1, 1.75);
-  flecha(s, x1, ly, 0, py + ph - ly);
-  serif(s, 'nueva medición en el siguiente corte', { x: x1 + 0.3, y: ly + 0.04, w: 6, h: 0.4, fontSize: 18 });
-  const by = ly + 0.62;
-  regla(s, by, M, CW, C.accent1);
-  T(s, [{ text: 'Si la falla se repite: ', options: { bold: true } }, { text: 'se rediseña el protocolo, no se culpa al técnico.', options: { color: C.text2 } }],
-    { x: M, y: by + 0.12, w: CW, h: 0.5, fontSize: TX.cuerpoL, valign: 'middle' });
-  return s;
-};
-
-// =====================================================================
-// 12 · EL CMI DICE CUÁNDO AVANZAR · escalera, pendientes y la pregunta que sigue
-// =====================================================================
-D.conclusion = () => {
-  const s = contenido('CONCLUSIÓN', 'EL CMI DICE CUÁNDO AVANZAR;', 'faltan el WACC y la tolerancia.');
-  const lw = 7.3, gap = 0.16, sw = (lw - 3 * gap) / 4, base = YF - 0.05;
-  [['APRENDIZAJE', 'Capacidades verificables'], ['PROCESOS', 'Procesos formales'], ['CLIENTES', 'Valor demostrado al cliente'], ['FINANCIERA', 'EVA mayor que cero']].forEach(([k, t], i) => {
-    const x = M + i * (sw + gap), h = 1.75 + i * 0.8, y = base - h, hot = i === 3;
-    if (hot) { brillo(s, x, y, sw, h, 0.5); cajaHot(s, x, y, sw, h); } else caja(s, x, y, sw, h, { line: { color: i ? C.text2 : C.accent5, width: 0.75 } });
-    s.addShape(S.rect, { x, y, w: sw, h: 0.05, fill: { color: hot ? C.accent1 : C.text2 }, line: { type: 'none' } });
-    tag(s, String(i + 1), x + 0.18, y + 0.2, { off: !hot, w: 0.46, h: 0.42, size: 18 });
-    mono(s, k, { x: x + 0.18, y: y + 0.72, w: sw - 0.3, h: 0.28, fontSize: 12, color: hot ? C.accent1 : C.text2 });
-    T(s, t, { x: x + 0.16, y: y + 1.0, w: sw - 0.22, h: 0.6, fontSize: 16, bold: true, lineSpacingMultiple: 0.95 });
-  });
+  regla(s, y0 + 5 * rh, M, lw);
   const rx = M + lw + 0.55, rw = R - rx;
-  mono(s, 'POR DEFINIR', { x: rx, y: Y0, w: rw, h: 0.3 });
-  ['WACC de Lumine', 'Tolerancia de error del ahorro'].forEach((t, i) => {
-    const y = Y0 + 0.42 + i * 0.8;
-    regla(s, y, rx, rw);
-    T(s, t, { x: rx, y, w: rw - 1.55, h: 0.8, fontSize: TX.cuerpo, valign: 'middle', lineSpacingMultiple: 0.95 });
-    marca(s, 'pen', 'PENDIENTE', R, y + 0.22, { alignRight: true, size: 12, h: 0.36 });
+  mono(s, 'ESTADOS', { x: rx, y: Y0, w: rw, h: 0.3, fontSize: 13, color: C.accent1 });
+  const st = [['cumple', 'CUMPLE', VERDE], ['alerta', 'ALERTA', AMBAR], ['nocumple', 'NO CUMPLE', ROJO], ['pend', 'META PENDIENTE', GRIS], ['sin', 'SIN MEDIR', C.text1]];
+  const sh = 0.6;
+  st.forEach(([t, k, color], i) => {
+    const y = y0 + i * sh;
+    forma(s, t, rx, y + 0.13, 0.34);
+    mono(s, k, { x: rx + 0.55, y, w: rw - 0.55, h: sh, fontSize: 16, bold: true, color, valign: 'middle' });
   });
-  const ny = Y0 + 2.14;
-  regla(s, ny, rx, rw, C.accent1);
-  mono(s, 'LO QUE SIGUE', { x: rx, y: ny + 0.14, w: rw, h: 0.3, color: C.accent1 });
-  serif(s, '¿Qué iniciativas y presupuesto necesita cada hito?', { x: rx, y: ny + 0.5, w: rw, h: 1.0, fontSize: 24, color: C.text1 });
-  regla(s, YF - 0.62, rx, rw);
-  mono(s, 'GRACIAS · ¿PREGUNTAS?', { x: rx, y: YF - 0.5, w: rw, h: 0.45, fontSize: 18, color: C.text1, valign: 'middle' });
+  const hy = y0 + 5 * sh + 0.18, hh = YF - hy;
+  cajaHot(s, rx, hy, rw, hh);
+  T(s, [{ text: 'Hoy todo el tablero: ', options: { color: C.text2, breakLine: true } }, { text: 'sin medir, no en rojo.', options: { bold: true } }], { x: rx + 0.22, y: hy, w: rw - 0.4, h: hh, fontSize: 18, valign: 'middle' });
   return s;
 };
 
 // =====================================================================
-// ANEXO · índice con enlaces y nueve temas, en el orden de las preguntas más probables
+// 15 · EL CMI DECIDE CUÁNDO AVANZAR, CORREGIR O DETENERSE
 // =====================================================================
-D.indice = (primera) => {
+D.cierre = () => {
+  const s = contenido('CONTROL · CICLO DE DECISIÓN Y CONCLUSIÓN', 'EL CMI DECIDE CUÁNDO AVANZAR,', 'corregir o detenerse.');
+  const pasos = ['OBSERVAR', 'COMPARAR', 'EXPLICAR', 'DECIDIR', 'VOLVER A MEDIR'];
+  const g = 0.32, pw = (CW - 4 * g) / 5, py = Y0, ph = 0.8;
+  pasos.forEach((k, i) => {
+    const x = M + i * (pw + g), hot = i === 3;
+    if (hot) cajaHot(s, x, py, pw, ph); else caja(s, x, py, pw, ph, { line: { color: C.text2, width: 0.75 } });
+    T(s, [{ text: String(i + 1) + '  ', options: { fontFace: F_MONO, color: C.accent1, fontSize: 14 } }, { text: k }], { x: x + 0.15, y: py, w: pw - 0.25, h: ph, fontSize: 17, bold: true, valign: 'middle', color: hot ? C.accent1 : C.text1 });
+    if (i < 4) flecha(s, x + pw + 0.04, py + ph / 2, g - 0.08, 0);
+  });
+  const ly = py + ph + 0.22, x1 = M + pw / 2, x5 = M + 4 * (pw + g) + pw / 2;
+  linea(s, x5, py + ph, 0, ly - py - ph, C.accent1, 1.5);
+  linea(s, x1, ly, x5 - x1, 0, C.accent1, 1.5);
+  flecha(s, x1, ly, 0, py + ph - ly, C.accent1, 1.5);
+  const ry = ly + 0.3, rh = 0.62;
+  mono(s, 'REGLAS DE DECISIÓN', { x: M, y: ry, w: 4, h: 0.3, fontSize: 13, color: C.accent1 });
+  [['una orden no tiene verificación', 'no se entrega'], ['una estimación no tiene respaldo', 'se corrige la información'], ['no hay vía legal', 'se detiene lo que depende de ella']].forEach(([a, b], i) => {
+    const y = ry + 0.36 + i * rh;
+    regla(s, y, M, CW, i ? C.accent5 : C.accent1);
+    T(s, [{ text: 'Si ', options: { color: C.text2 } }, { text: a, options: { bold: true } }], { x: M, y, w: 5.6, h: rh, fontSize: 19, valign: 'middle' });
+    flecha(s, M + 5.7, y + rh / 2, 0.5, 0);
+    T(s, b, { x: M + 6.4, y, w: CW - 6.4, h: rh, fontSize: 19, color: C.text2, valign: 'middle' });
+  });
+  const by = ry + 0.36 + 3 * rh + 0.12;
+  regla(s, by, M, CW);
+  serif(s, 'hacia la visión 2031 · lo que sigue: iniciativas y presupuesto por hito', { x: M, y: by + 0.06, w: 8.5, h: 0.42, fontSize: 18, valign: 'middle' });
+  mono(s, 'GRACIAS · ¿PREGUNTAS?', { x: R - 4, y: by + 0.06, w: 4, h: 0.42, fontSize: 18, color: C.text1, align: 'right', valign: 'middle' });
+  return s;
+};
+
+// =====================================================================
+// ANEXO · índice con enlaces (un renglón por tema) y láminas de respaldo
+// =====================================================================
+D.indice = (primeras) => {
   const s = contenido('MATERIAL DE APOYO', 'ANEXO', 'para preguntas.');
-  T(s, 'No se presenta: clic en la pregunta para saltar a la respuesta.', { x: M, y: Y0 - 0.06, w: CW, h: 0.4, fontSize: 18, color: C.text2 });
-  const rowH = 0.42, y0 = Y0 + 0.36;
-  G.ANEXO.forEach((a, i) => {
-    const y = y0 + i * rowH, n = primera + i;
+  const temas = [];
+  G.ANEXO.forEach((a, i) => { if (!temas.find(t => t.codigo === a.codigo)) temas.push({ codigo: a.codigo, titulo: a.titulo, n: primeras + i, partes: G.ANEXO.filter(b => b.codigo === a.codigo).length }); });
+  const rowH = 0.37, y0 = Y0 + 0.02;
+  temas.forEach((t, i) => {
+    const y = y0 + i * rowH;
     regla(s, y, M, CW);
-    tag(s, a.codigo, M, y + 0.06, { w: 0.6, h: 0.32, size: 14 });
-    s.addText(a.titulo, { x: M + 0.8, y, w: CW - 2.0, h: rowH, valign: 'middle', fontFace: F_BODY, fontSize: 19, color: C.text1, margin: 0, isTextBox: true, hyperlink: { slide: n, tooltip: 'Ir a ' + a.titulo } });
-    s.addText('LÁM. ' + n, { x: R - 1.1, y, w: 1.1, h: rowH, valign: 'middle', align: 'right', fontFace: F_MONO, fontSize: 14, color: C.accent1, charSpacing: 1, margin: 0, isTextBox: true, hyperlink: { slide: n, tooltip: 'Ir a ' + a.titulo } });
+    tag(s, t.codigo, M, y + 0.04, { w: 0.62, h: 0.29, size: 12 });
+    const txt = t.titulo + (t.partes > 1 ? `  (${t.partes} láminas)` : '');
+    s.addText(txt, { x: M + 0.8, y, w: CW - 2.0, h: rowH, valign: 'middle', fontFace: F_BODY, fontSize: 17, color: C.text1, margin: 0, isTextBox: true, hyperlink: { slide: t.n, tooltip: 'Ir a ' + t.titulo } });
+    s.addText('LÁM. ' + t.n, { x: R - 1.1, y, w: 1.1, h: rowH, valign: 'middle', align: 'right', fontFace: F_MONO, fontSize: 13, color: C.accent1, charSpacing: 1, margin: 0, isTextBox: true, hyperlink: { slide: t.n, tooltip: 'Ir a ' + t.titulo } });
   });
-  regla(s, y0 + G.ANEXO.length * rowH, M, CW);
+  regla(s, y0 + temas.length * rowH, M, CW);
   return s;
 };
 
-// tabla simple del anexo: encabezado mono y filas con regla fina
 function tabla(s, cols, filas, y0, o = {}) {
-  const rh = o.rh || 0.6, size = o.size || 17;
+  const rh = o.rh || 0.6, size = o.size || 16;
   let x = M;
-  cols.forEach(([k, w]) => { mono(s, k, { x, y: y0, w, h: 0.32, fontSize: 13, color: C.accent1 }); x += w; });
+  cols.forEach(([k, w]) => { mono(s, k, { x, y: y0, w, h: 0.3, fontSize: 12, color: C.accent1 }); x += w; });
   filas.forEach((f, i) => {
-    const y = y0 + 0.38 + i * rh;
+    const y = y0 + 0.34 + i * rh;
     regla(s, y, M, CW, i ? C.accent5 : C.accent1);
     let xx = M;
     f.forEach((v, j) => {
       const w = cols[j][1];
-      if (o.codigo && j === 0) {
-        tag(s, v, xx, y + (rh - 0.32) / 2, { w: 0.56, h: 0.32, size: 13, off: true });
-        if (o.estados) {
-          const st = o.estados[i];
-          s.addShape(S.rect, { x: xx + 0.64, y: y + (rh - 0.18) / 2, w: 0.2, h: 0.18, fill: { color: C.background1, transparency: 100 }, line: st === 'crit' ? { color: ROJO, width: 1.75 } : { color: GRIS, width: 1, dashType: 'dash' } });
-        }
-      } else T(s, v, { x: xx, y, w: w - 0.15, h: rh, fontSize: size, valign: 'middle', bold: !!(o.negrita && o.negrita.includes(j)), color: o.gris && o.gris.includes(j) ? C.text2 : C.text1, lineSpacingMultiple: 0.92 });
+      if (o.render && o.render[j]) o.render[j](v, xx, y, w, rh, i);
+      else T(s, v, { x: xx, y, w: w - 0.15, h: rh, fontSize: size, valign: 'middle', bold: !!(o.negrita && o.negrita.includes(j)), color: o.gris && o.gris.includes(j) ? C.text2 : C.text1, lineSpacingMultiple: 0.92 });
       xx += w;
     });
   });
-  regla(s, y0 + 0.38 + filas.length * rh, M, CW);
+  regla(s, y0 + 0.34 + filas.length * rh, M, CW);
 }
 
-D['a-eva'] = () => {
-  const s = contenido('PERSPECTIVA FINANCIERA', 'EL EVA,', 'en dos fórmulas equivalentes.');
-  noLumine(s, 'EJEMPLO DE CLASE · NO LUMINE', R, Y0 - 0.08, { alignRight: true });
-  const lw = 6.6;
-  numero(s, 'EVA = NOPAT − CAPITAL × WACC', { x: M, y: Y0 + 0.5, w: lw, h: 0.6, fontSize: TX.cifraS, valign: 'middle' });
-  numero(s, [{ text: 'EVA = ', options: {} }, { text: '(ROIC − WACC) × CAPITAL' }], { x: M, y: Y0 + 1.15, w: lw, h: 0.6, fontSize: TX.cifraS, valign: 'middle' });
-  regla(s, Y0 + 1.95, M, lw, C.accent1);
-  numero(s, '(15% − 12%) × 1.000.000', { x: M, y: Y0 + 2.05, w: lw, h: 0.6, fontSize: TX.cifraS, valign: 'middle', color: C.text2 });
-  numero(s, '= US$ 30.000', { x: M, y: Y0 + 2.65, w: lw, h: 0.75, fontSize: TX.cifra, valign: 'middle', color: C.accent1 });
-  const rx = M + lw + 0.5, rw = R - rx, c1 = 1.4, c2 = (rw - c1) / 2;
-  mono(s, 'VAN Y TIR', { x: rx + c1, y: Y0 + 0.5, w: c2, h: 0.32, fontSize: 14 });
-  mono(s, 'EVA', { x: rx + c1 + c2, y: Y0 + 0.5, w: c2, h: 0.32, fontSize: 14, color: C.accent1 });
-  [['Evalúa', 'El proyecto completo', 'Cada período'], ['Cuándo', 'Antes de invertir', 'Durante la operación'], ['Con qué', 'Flujos descontados', 'Resultado y capital']].forEach(([k, a, b], i) => {
-    const y = Y0 + 0.9 + i * 0.78;
+D['a-f1'] = () => {
+  const s = contenido('PERSPECTIVA FINANCIERA · F1', 'F1 SE MIDE EN DOS ETAPAS:', 'decidir invertir y controlar la operación.');
+  const g = 0.4, w = (CW - g) / 2, y = Y0, h = 3.4;
+  [['1 · ANTES DE INVERTIR', 'VAN > 0 y TIR > tasa exigida', [['Mide', 'si conviene invertir, con flujos proyectados'], ['Cuándo', 'una vez, con el Plan Financiero'], ['Falta', 'flujos, inversión inicial y tasa sustentada']]],
+    ['2 · OPERANDO', 'Retorno sobre el capital empleado frente a su costo', [['Mide', 'si la operación rinde más que el capital'], ['Cuándo', 'cada ejercicio'], ['Falta', 'resultados, capital empleado y costo de capital']]]].forEach(([k, t, rows], i) => {
+    const x = M + i * (w + g);
+    if (i === 0) cajaHot(s, x, y, w, h); else caja(s, x, y, w, h, { line: { color: C.accent1, width: 1 } });
+    mono(s, k, { x: x + 0.28, y: y + 0.2, w: w - 0.5, h: 0.3, fontSize: 13, color: C.accent1 });
+    T(s, t, { x: x + 0.28, y: y + 0.55, w: w - 0.5, h: 0.75, fontSize: 21, bold: true, valign: 'top' });
+    rows.forEach(([a, b], j) => {
+      const yy = y + 1.45 + j * 0.62;
+      regla(s, yy, x + 0.28, w - 0.56);
+      mono(s, a.toUpperCase(), { x: x + 0.28, y: yy, w: 1.1, h: 0.62, fontSize: 12, valign: 'middle' });
+      T(s, b, { x: x + 1.4, y: yy, w: w - 1.7, h: 0.62, fontSize: 16, color: C.text2, valign: 'middle' });
+    });
+  });
+  T(s, [{ text: 'Un VAN positivo autoriza invertir; ', options: { bold: true } }, { text: 'no demuestra que la operación rinda.', options: { bold: true, color: C.accent1 } }], { x: M, y: y + h + 0.25, w: CW, h: 0.5, fontSize: 20, valign: 'middle' });
+  return s;
+};
+
+const cmiPersp = (ids, acento) => () => {
+  const s = contenido('CMI COMPLETO', 'EL CMI COMPLETO:', acento);
+  const rh = ids.length > 4 ? 0.62 : 0.82;
+  tabla(s, [['ID', 0.8], ['OBJETIVO · INDICADOR', 4.6], ['META · REGLA', 2.55], ['RESPONSABLE', 1.95], ['INICIATIVA', CW - 9.9]],
+    ids.map(id => [id, id, id, OBJ[id].resp, OBJ[id].ini]), ids.length > 4 ? Y0 - 0.12 : Y0, {
+      rh, size: 13, gris: [4],
+      render: {
+        0: (id, x, y, w, h) => chip(s, id, x, y + (h - 0.32) / 2, { w: 0.6, h: 0.32, size: 12 }),
+        1: (id, x, y, w, h) => T(s, [{ text: OBJ[id].n, options: { bold: true, breakLine: true } }, { text: OBJ[id].ind, options: { color: C.text2 } }], { x, y, w: w - 0.15, h, fontSize: 13, valign: 'middle', lineSpacingMultiple: 0.92 }),
+        2: (id, x, y, w, h) => T(s, [{ text: OBJ[id].meta, options: { breakLine: true } }, { text: OBJ[id].regla.toUpperCase(), options: { fontFace: F_MONO, fontSize: 11, color: C.accent1 } }], { x, y, w: w - 0.15, h, fontSize: 13, valign: 'middle', lineSpacingMultiple: 0.92 }),
+      },
+    });
+  return s;
+};
+D['a-cmiA'] = cmiPersp(['A1', 'A2', 'A3', 'A4'], 'aprendizaje y crecimiento.');
+D['a-cmiP'] = cmiPersp(['P1', 'P2', 'P3', 'P4', 'P5', 'P6'], 'procesos internos.');
+D['a-cmiC'] = cmiPersp(['C1', 'C2', 'C3', 'C4'], 'clientes.');
+D['a-cmiF'] = cmiPersp(['F1', 'F2', 'F3'], 'financiera.');
+
+const relSlide = (desde, hasta, acento) => () => {
+  const s = contenido('MAPA', 'LAS 20 RELACIONES:', acento);
+  leyendaLineas(s);
+  tabla(s, [['R', 1.25], ['DE · A', 1.4], ['MECANISMO', 5.4], ['CÓMO SE COMPRUEBA', CW - 8.05]],
+    REL.slice(desde, hasta).map(r => [r, `${r[1]} a ${r[2]}`, r[4], r[5]]), Y0 - 0.08, {
+      rh: 0.385, size: 13, gris: [3],
+      render: {
+        0: (r, x, y, w, h) => { mono(s, r[0], { x, y, w: 0.5, h, fontSize: 12, color: C.accent1, valign: 'middle' }); s.addShape(S.line, { x: x + 0.55, y: y + h / 2, w: 0.5, h: 0, line: Object.assign({}, LINEA[r[3]]) }); },
+      },
+    });
+  return s;
+};
+D['a-rel1'] = relSlide(0, 10, 'R01 a R10.');
+D['a-rel2'] = relSlide(10, 20, 'R11 a R20.');
+
+D['a-cambios'] = () => {
+  const s = contenido('DISEÑO DEL CMI · DECISIONES DEL EQUIPO', 'QUÉ CAMBIÓ', 'frente a la propuesta de 30 relaciones.');
+  tabla(s, [['TEMA', 2.1], ['PROPUESTA PREVIA', 3.0], ['AHORA', 3.3], ['POR QUÉ', CW - 8.4]], [
+    ['F1 · rentabilidad', 'VAN del proyecto', 'Dos etapas: VAN y TIR; luego retorno frente al costo de capital', 'El VAN autoriza invertir, no controla la operación'],
+    ['Financiamiento', 'F3, en la perspectiva financiera', 'Parte de P6, alianzas en procesos', 'Es algo que Lumine hace; el cliente lo percibe como acceso'],
+    ['C3 · confianza', 'Convenios institucionales firmados', 'Opinión del cliente y reclamos', 'La confianza se mide desde el cliente'],
+    ['C4 · captación', 'Proporción de consultas de uso intensivo', 'Conversión de consultas del segmento', 'Un resultado, no una mezcla de consultas'],
+    ['Relaciones', '30, con duplicados', '20, en tres rutas', 'Sin caminos repetidos ni flechas que no cambian decisiones'],
+  ], Y0, { rh: 0.76, size: 15, negrita: [0, 2], gris: [1, 3] });
+  return s;
+};
+
+D['a-estados'] = () => {
+  const s = contenido('SEGUIMIENTO · ESTADOS DEL TABLERO', 'CADA ESTADO', 'tiene una regla.');
+  const st = [['cumple', 'CUMPLE', VERDE, 'Alcanza la meta, con evidencia'], ['alerta', 'ALERTA', AMBAR, 'Indicador proporcional entre 70% y 89%'], ['nocumple', 'NO CUMPLE', ROJO, 'Bajo la meta, o rechazo formal documentado'], ['pend', 'META PENDIENTE', GRIS, 'La meta aún no está aprobada'], ['sin', 'SIN MEDIR', C.text1, 'Falta el dato o el documento: no vale cero']];
+  const rh = 0.6, y0 = Y0;
+  st.forEach(([t, k, color, v], i) => {
+    const y = y0 + i * rh;
+    regla(s, y, M, CW, i ? C.accent5 : C.accent1);
+    forma(s, t, M, y + 0.13, 0.34);
+    mono(s, k, { x: M + 0.55, y, w: 2.6, h: rh, fontSize: 15, bold: true, color, valign: 'middle' });
+    T(s, v, { x: M + 3.2, y, w: CW - 3.2, h: rh, fontSize: 18, valign: 'middle' });
+  });
+  regla(s, y0 + 5 * rh, M, CW);
+  T(s, [{ text: 'Críticos e hitos cumplen solo al 100% o con documento: ', options: { bold: true } }, { text: 'no existe el cumplimiento parcial de un requisito regulatorio.', options: { color: C.text2 } }], { x: M, y: y0 + 5 * rh + 0.2, w: CW, h: 0.8, fontSize: 18, valign: 'top' });
+  return s;
+};
+
+D['a-iniciativas'] = () => {
+  const s = contenido('CMI · INICIATIVAS ESTRATÉGICAS', 'LAS INICIATIVAS', 'que mueven los objetivos.');
+  const ini = [['Plantear al MTT el precedente del gas licuado', 'P1', 'FODA · DO'], ['Homologar primero los modelos más densos del segmento', 'P2', 'FODA · FO'], ['Convenios con aseguradora, planta de revisión y financiera antes del primer kit', 'P6', 'FODA · DA'], ['Cobertura cambiaria y abastecimiento de largo plazo', 'F2', 'FODA · quinto cruce'], ['Protocolo antes y después con línea base del mismo auto', 'A3', 'CMI actualizado'], ['Repositorio versionado de calibraciones con control de acceso', 'A1', 'CMI en red'], ['Ruta de habilitación N1 a N4 en Lumine Habilita', 'A2', 'Lumine Habilita'], ['Encuesta posservicio y registro de reclamos', 'C3', 'Propuesta del equipo']];
+  tabla(s, [['INICIATIVA', 8.0], ['OBJETIVO', 1.4], ['ORIGEN', CW - 9.4]], ini, Y0 - 0.05, {
+    rh: 0.48, size: 16, gris: [2],
+    render: { 1: (id, x, y, w, h) => chip(s, id, x, y + (h - 0.32) / 2, { w: 0.6, h: 0.32, size: 12 }) },
+  });
+  return s;
+};
+
+D['a-foda'] = () => {
+  const s = contenido('DIAGNÓSTICO · FODA', 'EL FODA', 'que alimenta los objetivos.');
+  const q = [['FORTALEZAS', ['Arquitectura en eje trasero y proceso de cinco etapas', 'Segmento definido y estrategia de producto única', 'Riesgos identificados y protocolo de contención']],
+    ['DEBILIDADES', ['Sin ensayo ni homologación; biblioteca vacía', 'Técnicos escasos y sin esquema de retención', 'Inventario en dólares sin cobertura; marca sin casos']],
+    ['OPORTUNIDADES', ['El parque se conserva: 3,5 usados por cada auto nuevo', 'Bencina 93 de $1.149 a $1.541 por litro en la RM', 'Baterías LFP en US$81 por kWh']],
+    ['AMENAZAS', ['Ley N° 21.793 sin reglamento; borrador de 2021 sin vía', 'Dólar cerca de $970 con kit 100% importado', 'Desempleo de 9,5% y no hacer nada cuesta $0']]];
+  const g = 0.3, w = (CW - g) / 2, h = (YF - Y0 - g) / 2;
+  q.forEach(([k, items], i) => {
+    const x = M + (i % 2) * (w + g), y = Y0 + Math.floor(i / 2) * (h + g);
+    caja(s, x, y, w, h, { line: { color: i % 3 === 0 ? C.accent1 : C.text2, width: 0.75 } });
+    mono(s, k, { x: x + 0.22, y: y + 0.12, w: w - 0.4, h: 0.3, fontSize: 13, color: C.accent1 });
+    T(s, items.map((t, j) => ({ text: t, options: { bullet: true, breakLine: j < items.length - 1 } })), { x: x + 0.22, y: y + 0.45, w: w - 0.4, h: h - 0.55, fontSize: 15, valign: 'top', paraSpaceAfter: 4 });
+  });
+  return s;
+};
+
+D['a-cadena'] = () => {
+  const s = contenido('DIAGNÓSTICO · CADENA DE VALOR', 'LA CADENA DE VALOR:', 'el costo y la exclusividad no coinciden.');
+  tabla(s, [['ESLABÓN', 3.0], ['LECTURA', CW - 3.0]], [
+    ['Infraestructura', 'Condición de entrada: sin autorización no opera ningún eslabón'],
+    ['Desarrollo tecnológico', 'Única fuente de exclusividad: la calibración'],
+    ['Operaciones', 'Cuello de botella: homologación por modelo, internación y escasez de técnicos'],
+    ['Adquisiciones', 'Directriz de costo: kit importado, carga Clase 9 y dólar'],
+    ['Externalizable', 'Contabilidad, aduana, transporte peligroso y remuneraciones'],
+  ], Y0, { rh: 0.7, size: 18, negrita: [0] });
+  return s;
+};
+
+D['a-pest'] = () => {
+  const s = contenido('DIAGNÓSTICO · MÉTODO DE LOS INSTRUMENTOS', 'PEST Y CINCO FUERZAS,', 'con su escala.');
+  const lw = 5.6;
+  mono(s, 'PEST · 1 A 5 · 3 = NEUTRO', { x: M, y: Y0, w: lw, h: 0.3, fontSize: 13 });
+  const pest = [['Político-jurídico', '2,67', '2,78'], ['Económico', '2,38', '2,81'], ['Sociocultural', '3,00', '3,00'], ['Tecnológico', '3,23', '3,38'], ['Global', '2,82', '2,99']];
+  mono(s, 'HOY', { x: M + 3.4, y: Y0 + 0.34, w: 1, h: 0.3, fontSize: 12, align: 'right' });
+  mono(s, 'FUTURO', { x: M + 4.5, y: Y0 + 0.34, w: 1.1, h: 0.3, fontSize: 12, align: 'right' });
+  pest.forEach(([k, a, b], i) => {
+    const y = Y0 + 0.68 + i * 0.5;
+    regla(s, y, M, lw, i ? C.accent5 : C.accent1);
+    T(s, k, { x: M, y, w: 3.3, h: 0.5, fontSize: 17, bold: i === 4, valign: 'middle' });
+    numero(s, a, { x: M + 3.4, y, w: 1, h: 0.5, fontSize: 22, align: 'right', valign: 'middle' });
+    numero(s, b, { x: M + 4.5, y, w: 1.1, h: 0.5, fontSize: 22, align: 'right', valign: 'middle', color: C.text2 });
+  });
+  T(s, '20 amenazas, 13 oportunidades y 18 neutros', { x: M, y: Y0 + 3.3, w: lw, h: 0.4, fontSize: 16, color: C.text2 });
+  const rx = M + lw + 0.6, rw = R - rx;
+  mono(s, 'CINCO FUERZAS · 0 A 5 · PONDERACIÓN', { x: rx, y: Y0, w: rw, h: 0.3, fontSize: 13 });
+  [['Sustitutos', '30%', '5,00'], ['Nuevos entrantes', '20%', '3,75'], ['Clientes', '25%', '2,64'], ['Proveedores', '15%', '2,67'], ['Rivalidad', '10%', '1,83'], ['Promedio ponderado', '', '3,49']].forEach(([k, p, v], i) => {
+    const y = Y0 + 0.4 + i * 0.5;
     regla(s, y, rx, rw, i ? C.accent5 : C.accent1);
-    mono(s, k.toUpperCase(), { x: rx, y, w: c1, h: 0.78, fontSize: 13, valign: 'middle' });
-    T(s, a, { x: rx + c1, y, w: c2 - 0.1, h: 0.78, fontSize: 18, color: C.text2, valign: 'middle' });
-    T(s, b, { x: rx + c1 + c2, y, w: c2 - 0.1, h: 0.78, fontSize: 18, bold: true, valign: 'middle' });
+    T(s, k, { x: rx, y, w: 3.2, h: 0.5, fontSize: 17, bold: i === 5, valign: 'middle' });
+    mono(s, p, { x: rx + 3.2, y, w: 1, h: 0.5, fontSize: 14, valign: 'middle', align: 'right' });
+    numero(s, v, { x: rx + 4.3, y, w: rw - 4.3, h: 0.5, fontSize: 22, align: 'right', valign: 'middle', color: i === 5 ? C.accent1 : C.text1 });
   });
-  regla(s, Y0 + 0.9 + 3 * 0.78, rx, rw);
+  marca(s, 'sup', 'ESCALAS NO COMPARABLES CON INTEGRADOR II', rx, Y0 + 3.5, { size: 12, h: 0.36 });
   return s;
 };
 
-D['a-semaforo'] = () => {
-  const s = contenido('CMI · REGLAS DEL SEMÁFORO', 'CADA TIPO DE INDICADOR', 'tiene su regla.');
-  tabla(s, [['TIPO', 2.9], ['INDICADORES', 3.4], ['VERDE', 3.0], ['ROJO', CW - 9.3]], [
-    ['Ratio común', 'C03', '90% o más (ámbar 70% a 89%)', 'Menos de 70%'],
-    ['Ratio o cobertura crítica', 'A01 · A02 · P03 · C01 · F03', '100% (o cobertura completa)', 'Bajo 100%'],
-    ['Hito', 'A03 · P01 · P02 · C02 · F02', 'Cumplido, con documento', 'Pendiente comprobado (críticos)'],
-    ['Valor económico', 'F01', 'EVA mayor que 0', 'EVA de 0 o menos'],
-  ], Y0, { rh: 0.82, size: 18, negrita: [0] });
-  T(s, [{ text: 'Sin dato, cualquier tipo queda en gris: ', options: { bold: true } }, { text: 'sin medir.', options: { color: C.text2 } }], { x: M, y: Y0 + 0.38 + 4 * 0.82 + 0.2, w: CW, h: 0.45, fontSize: TX.cuerpo, valign: 'middle' });
+D['a-identidad'] = () => {
+  const s = contenido('LA ORGANIZACIÓN · TEXTOS LITERALES', 'MISIÓN, VISIÓN Y VALORES', 'completos.');
+  T(s, [{ text: 'MISIÓN  ', options: { fontFace: F_MONO, fontSize: 12, color: C.accent1 } }, { text: '«Reducir el combustible que un vehículo liviano a combustión necesita por kilómetro, mediante la instalación certificada de un sistema de hibridación aditiva sobre el automóvil que el cliente ya tiene, sin reemplazarlo y sin intervenir su motor.»' }], { x: M, y: Y0, w: CW, h: 0.95, fontSize: 16, valign: 'top' });
+  T(s, [{ text: 'VISIÓN  ', options: { fontFace: F_MONO, fontSize: 12, color: C.accent1 } }, { text: '«Ser hacia 2031 el taller de referencia en hibridación de vehículos en uso en Chile, con un procedimiento reconocido por la autoridad, las plantas de revisión técnica y las compañías de seguros.»' }], { x: M, y: Y0 + 1.0, w: CW, h: 0.75, fontSize: 16, valign: 'top' });
+  const w = (CW - 0.4) / 2, y = Y0 + 1.9;
+  [['VALORES ORGANIZACIONALES', ['Verificabilidad antes que afirmación', 'Formalidad como condición de operación', 'Trazabilidad del conocimiento técnico', 'Responsabilidad sobre el ciclo completo del componente']], ['VALORES HUMANOS', ['Honestidad técnica en el diagnóstico', 'Seguridad de quien instala y de quien conduce', 'Responsabilidad individual sobre la instalación ejecutada', 'Reconocimiento del oficio técnico']]].forEach(([k, items], i) => {
+    const x = M + i * (w + 0.4);
+    regla(s, y, x, w, C.accent1);
+    mono(s, k, { x, y: y + 0.08, w, h: 0.3, fontSize: 12, color: C.accent1 });
+    T(s, items.map((t, j) => ({ text: t, options: { bullet: true, breakLine: j < items.length - 1 } })), { x, y: y + 0.45, w, h: 1.85, fontSize: 16, valign: 'top', paraSpaceAfter: 3 });
+  });
+  marca(s, 'no', 'NO ES UN VALOR: INNOVACIÓN', R, YF - 0.36, { size: 11, h: 0.34, alignRight: true });
   return s;
 };
 
-const MATRIZ = [
-  ['A01', 'Calibraciones registradas ÷ generadas', '100%', 'Trimestral', 'Ingeniería de Calibración', 'sin'],
-  ['A02', 'Técnicos habilitados ÷ asignados', '100% antes de abrir', 'Mensual', 'Responsable Técnico', 'sin'],
-  ['A03', 'Primer protocolo comparativo completo', '1 protocolo', 'Por piloto', 'Ingeniería de Calibración', 'crit'],
-  ['P01', 'Autorización sectorial vigente', '1', 'Por evento', 'Gerente General', 'crit'],
-  ['P02', 'Pares modelo-kit homologados', '1 o más antes de vender', 'Trimestral', 'Ingeniería de Calibración', 'crit'],
-  ['P03', 'Órdenes con acta completa ÷ cerradas', '100%', 'Por instalación', 'Responsable Técnico', 'sin'],
-  ['C01', 'Clientes con informe ÷ intervenidos', '100%', 'Por instalación', 'Comercial y Postventa', 'sin'],
-  ['C02', 'Aseguradora y planta de revisión con protocolo', '1 de cada una antes de vender', 'Por evento', 'Gerente General', 'crit'],
-  ['C03', 'Consultas de uso intensivo ÷ clasificadas', 'Más de 50% (orientativa)', 'Mensual', 'Comercial y Postventa', 'sin'],
-  ['F01', 'EVA = NOPAT − capital × WACC', 'Mayor que 0 en régimen', 'Anual', 'Gerente General', 'sin'],
-  ['F02', 'Convenios de financiamiento operativos', '1 o más antes de vender', 'Por evento', 'Comercial y Postventa', 'sin'],
-  ['F03', 'Financiamiento disponible ÷ capital de trabajo', '1 o más', 'Mensual al operar', 'Administración y Personas', 'sin'],
-];
-const matriz = (filas, etiqueta, acento) => () => {
-  const s = contenido('CMI · MATRIZ DE INDICADORES', 'LOS 12 INDICADORES:', acento);
-  leyendaEstados(s, ['sin', 'crit']);
-  tabla(s, [['ID', 1.05], ['INDICADOR', 4.25], ['META', 2.55], ['FRECUENCIA', 1.95], ['RESPONSABLE', CW - 9.8]],
-    filas.map(f => f.slice(0, 5)), Y0, { rh: 0.62, size: 16, codigo: true, estados: filas.map(f => f[5]), gris: [3] });
-  return s;
-};
-D['a-matriz1'] = matriz(MATRIZ.slice(0, 6), 'APRENDIZAJE Y PROCESOS', 'aprendizaje y procesos.');
-D['a-matriz2'] = matriz(MATRIZ.slice(6), 'CLIENTES Y FINANCIERA', 'clientes y financiera.');
-
-D['a-cmi'] = () => {
-  const s = contenido('RETROALIMENTACIÓN · TRES VERSIONES', 'LO QUE SE CONSERVÓ', 'y lo que cambió.');
-  tabla(s, [['', 1.9], ['CMI ORIGINAL', 3.3], ['CMI ACTUALIZADO', 3.3], ['SOLEMNE 2', CW - 8.5]], [
-    ['Financiera', 'Rentabilidad sobre el costo de capital, con VAN, TIR y WACC', 'Convenios de financiamiento y expansión', 'Rentabilidad sobre el costo de capital, medida con EVA'],
-    ['Clientes', 'Convenios gremiales, aseguradoras y penetración', 'Reconocimiento institucional y tipo de consulta', 'Informe individual antes y después al centro'],
-    ['Mapa', 'Flechas solo verticales', 'Perspectivas ordenadas, sin relaciones', 'Flechas con mecanismo e indicador'],
-  ], Y0, { rh: 1.15, size: 17, negrita: [0, 3], gris: [1, 2] });
-  return s;
-};
-
-D['a-ahorro'] = () => {
-  const s = contenido('PROPUESTA DE VALOR · MEDICIÓN DEL AHORRO', 'EL 20% SOLO SE PRUEBA', 'con un ensayo comparable.');
-  T(s, 'Hasta 20% menos bencina en ciudad', { x: M, y: Y0, w: 6.5, h: 0.5, fontSize: TX.cuerpoL, bold: true, valign: 'middle' });
-  marca(s, 'est', 'ESTIMACIÓN, NO MEDICIÓN', M + 6.6, Y0 + 0.05);
-  mono(s, 'EL ENSAYO DEBE CONTROLAR', { x: M, y: Y0 + 0.85, w: 8, h: 0.3 });
-  const items = ['Consumo base del mismo auto', 'Recorrido', 'Forma de conducir', 'Condiciones de la prueba', 'Método de medición'];
-  const g = 0.2, w = (CW - 4 * g) / 5, y = Y0 + 1.25, h = 1.35;
-  items.forEach((t, i) => {
+D['a-origen'] = () => {
+  const s = contenido('TRANSPARENCIA · ORIGEN DE CADA AFIRMACIÓN', 'DATO, PROPUESTA, ESTIMACIÓN O FALTA:', 'cada cifra dice qué es.');
+  const cols = [['DATO', ['Lumine es preoperativa', 'Ley N° 21.793 sin reglamento', 'Sin ventas, homologaciones ni convenios'], { color: C.accent1, width: 1.25 }],
+    ['PROPUESTA DEL EQUIPO', ['17 objetivos y 20 relaciones', 'Metas de 100% y umbrales 90/70', 'Responsables e iniciativas'], { color: GRIS, width: 1, dashType: 'sysDot' }],
+    ['ESTIMACIÓN', ['Hasta 20% menos bencina en ciudad', 'Orden de atributos (3 entrevistas)'], { color: GRIS, width: 1, dashType: 'dash' }],
+    ['SIN DATO HOY', ['VAN, TIR y tasa', 'Margen y costos unitarios', 'Ahorro real, clientes y permisos'], { color: C.text1, width: 1.25, dashType: 'dash' }]];
+  const g = 0.25, w = (CW - 3 * g) / 4, h = YF - Y0 - 0.06;
+  cols.forEach(([k, items, ln], i) => {
     const x = M + i * (w + g);
-    caja(s, x, y, w, h, { line: { color: C.accent1, width: 1 } });
-    tag(s, String(i + 1), x + 0.18, y + 0.18, { off: true, w: 0.42, h: 0.38, size: 16 });
-    T(s, t, { x: x + 0.18, y: y + 0.64, w: w - 0.3, h: 0.66, fontSize: 18, bold: true, valign: 'top', lineSpacingMultiple: 0.95 });
-  });
-  const by = y + h + 0.3, rh = 0.6;
-  [['A03 · Primer protocolo comparativo completo', 'crit'], ['Tolerancia de error aceptable', 'pen']].forEach(([t, st], i) => {
-    const yy = by + i * rh;
-    regla(s, yy, M, CW, i ? C.accent5 : C.accent1);
-    T(s, t, { x: M, y: yy, w: CW - 3.5, h: rh, fontSize: TX.cuerpo, valign: 'middle' });
-    if (st === 'crit') estado(s, 'crit', R, yy + 0.1, { alignRight: true });
-    else marca(s, 'pen', 'POR DEFINIR', R, yy + 0.1, { alignRight: true });
-  });
-  return s;
-};
-
-D['a-apoyo'] = () => {
-  const s = contenido('CLIENTES · APOYO', 'CONVENIOS Y FOCO COMERCIAL', 'apoyan la promesa.');
-  leyendaEstados(s, ['sin', 'crit']);
-  const g = 0.4, w = (CW - g) / 2, y = Y0, h = 3.5;
-  [['C02 · CONFIANZA', 'Protocolo con al menos una aseguradora y una planta de revisión técnica', 'Antes de vender', 'crit'],
-    ['C03 · FOCO COMERCIAL', 'Más de 50% de consultas de uso intensivo', 'Sin excluir particulares ni flotas', 'sin']].forEach(([k, t, a, st], i) => {
-    const x = M + i * (w + g);
-    caja(s, x, y, w, h, { line: borde(st) });
-    mono(s, k, { x: x + 0.3, y: y + 0.26, w: w - 0.6, h: 0.3, fontSize: 14, color: C.accent1 });
-    T(s, t, { x: x + 0.3, y: y + 0.72, w: w - 0.6, h: 1.5, fontSize: TX.sub, bold: true, valign: 'top' });
-    regla(s, y + h - 0.95, x + 0.3, w - 0.6);
-    T(s, a, { x: x + 0.3, y: y + h - 0.85, w: w - 0.6, h: 0.6, fontSize: TX.cuerpo, color: C.text2, valign: 'middle' });
-  });
-  marca(s, 'sup', 'META ORIENTATIVA', R - 0.3, Y0 + 0.2, { alignRight: true, size: 12, h: 0.36 });
-  return s;
-};
-
-D['a-financia'] = () => {
-  const s = contenido('FINANCIERA · APOYO', 'EL FINANCIAMIENTO', 'tiene metas, pero aún no cifras.');
-  marca(s, 'pen', 'PLAN FINANCIERO POR CONFIRMAR', R, Y0 - 0.08, { alignRight: true });
-  const g = 0.4, w = (CW - g) / 2, y = Y0 + 0.5, h = 3.2;
-  [['F02 · PAGO DEL CLIENTE', 'Al menos un convenio de financiamiento antes de la primera venta', 'El financiamiento verde para el kit no está confirmado'],
-    ['F03 · CAPITAL DE TRABAJO', 'Financiamiento disponible igual o mayor que el capital de trabajo requerido', 'Sin asumir aportes que no existen']].forEach(([k, t, a], i) => {
-    const x = M + i * (w + g);
-    caja(s, x, y, w, h, { line: borde('sin') });
-    mono(s, k, { x: x + 0.3, y: y + 0.26, w: w - 0.6, h: 0.3, fontSize: 14, color: C.accent1 });
-    T(s, t, { x: x + 0.3, y: y + 0.72, w: w - 0.6, h: 1.4, fontSize: TX.sub, bold: true, valign: 'top' });
-    regla(s, y + h - 0.95, x + 0.3, w - 0.6);
-    T(s, a, { x: x + 0.3, y: y + h - 0.85, w: w - 0.6, h: 0.6, fontSize: TX.cuerpo, color: C.text2, valign: 'middle' });
-  });
-  return s;
-};
-
-D['a-naturaleza'] = () => {
-  const s = contenido('TRANSPARENCIA · ORIGEN DE CADA CIFRA', 'DATO, DISEÑO O EJEMPLO:', 'cada cifra dice qué es.');
-  const g = 0.35, w = (CW - 2 * g) / 3, y = Y0, h = YF - Y0 - 0.06;
-  [['DATO', ['Lumine es preoperativa', 'Ley N° 21.793 sin reglamento', 'Ninguna venta ni homologación'], { color: C.accent1, width: 1.25 }],
-    ['DISEÑO O ESTIMACIÓN', ['Metas de 100% y umbrales 90/70', 'C03: más de 50%', 'Hasta 20% menos bencina'], { color: GRIS, width: 1, dashType: 'dash' }],
-    ['EJEMPLO, NO LUMINE', ['EVA de US$30.000 (módulo 4)', 'Caso 8 de 10 informes'], { color: C.text1, width: 1.25, dashType: 'dash' }]].forEach(([k, items, ln], i) => {
-    const x = M + i * (w + g);
-    caja(s, x, y, w, h, { line: ln });
-    mono(s, k, { x: x + 0.3, y: y + 0.26, w: w - 0.6, h: 0.3, fontSize: 14, color: ln.color === C.accent1 ? C.accent1 : C.text1, bold: true });
+    caja(s, x, Y0, w, h, { line: ln });
+    mono(s, k, { x: x + 0.22, y: Y0 + 0.2, w: w - 0.4, h: 0.5, fontSize: 13, bold: true, color: ln.color === C.accent1 ? C.accent1 : C.text1 });
     items.forEach((t, j) => {
-      const yy = y + 0.8 + j * 0.95;
-      regla(s, yy, x + 0.3, w - 0.6);
-      T(s, t, { x: x + 0.3, y: yy + 0.08, w: w - 0.6, h: 0.8, fontSize: TX.cuerpo, valign: 'middle' });
+      const yy = Y0 + 0.85 + j * 0.95;
+      regla(s, yy, x + 0.22, w - 0.44);
+      T(s, t, { x: x + 0.22, y: yy + 0.06, w: w - 0.44, h: 0.82, fontSize: 17, valign: 'middle' });
     });
   });
   return s;
@@ -799,7 +1043,7 @@ G.ANEXO.forEach(a => {
   ANEXO_ACTUAL = a;
   CLAVE = a.d;
   if (!D[a.d]) throw new Error('Falta la diapositiva ' + a.d);
-  D[a.d]().addNotes(`ANEXO ${a.codigo} · Solo si preguntan.\n\n${a.apoyo}`);
+  D[a.d]().addNotes(`ANEXO ${a.codigo}${a.parte ? ' · ' + a.parte : ''} · Solo si preguntan.\n\n${a.apoyo}`);
 });
 ANEXO_ACTUAL = null;
 

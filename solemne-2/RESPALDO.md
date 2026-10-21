@@ -1,77 +1,95 @@
 # Respaldo para la defensa · Solemne 2 · Control de Gestión
 
-Lo que hay que saber para defender `Lumine_Solemne2_CMI_Control_de_Gestion.pptx`: qué es dato y qué no, qué contradicciones
-aparecieron entre los materiales del paquete y qué riesgos o datos faltan. Las preguntas probables tienen su lámina en el
-anexo (13 a 22). Los archivos del paquete (dossier, guion original, anexos y Excel) **no se suben al repositorio**, que es público.
+Versión de coautoría del 20-10-2026 de `Lumine_Solemne2_CMI_Control_de_Gestion.pptx`: presentación oral de máximo 15 minutos.
+Recorre la estrategia de la presentación anterior del curso y termina en un CMI en red revisado. Los archivos del paquete
+(dossiers, guiones, Excel, módulos del curso) **no se suben al repositorio**, que es público.
 
-## 1. Versión aprobada (20-10-2026)
+## 1. Estructura y tiempos
 
-- 12 láminas de exposición y un anexo de 9 temas con índice enlazado, ordenado por las preguntas más probables.
-- Guion reescrito a 130 palabras por minuto: 1.556 palabras, unos 12:00 (máximo 15). Diego 1–4, Benjamín 5–8 y
-  Lukas 9–12, unos 4:00 cada uno, con traspasos al final de las láminas 4 y 8.
-- Cada titular es el mensaje de la lámina. Nada se dice dos veces: la meta de C01 se dice en la lámina 3 y se muestra en la
-  ficha; el riesgo externo (ley sin reglamento) aparece solo en la 5.
-- Respecto de la primera versión: salió la lámina del negocio (repetía la presentación anterior del curso); se fusionaron
-  las dos de clientes (C02 y C03 pasaron al anexo); se separaron la ficha y el semáforo; se agregó el código QR a la demo de
-  Lumine Habilita como prueba de que A02 se puede medir.
-- No hay rúbrica con ponderaciones, solo los tres temas del comunicado. Se supuso igual peso: plan y desviaciones 200 s,
-  indicadores 215 s y EVA con CMI 230 s.
+- 15 láminas, 1.793 palabras: unos **13:48 a 130 palabras por minuto**, con algo más de un minuto de margen bajo los 15:00.
+  Los traspasos están dentro del texto, al final de las láminas 5 y 10. Hay que cronometrar el ensayo completo, contando
+  los cambios de expositor.
+- Diego 1–5 (negocio, identidad, cliente y entorno; 4:37), Benjamín 6–10 (interno, estrategia, ejes, clientes y mapa;
+  4:42), Lukas 11–15 (las tres rutas, ficha y cierre; 4:28).
+- Anexo de 15 láminas con índice enlazado (lámina 16), en el orden de las preguntas más probables.
 
-## 2. Qué es cada cifra
+## 2. Decisiones del equipo incorporadas (cambian la propuesta de 17 objetivos y 30 relaciones)
 
-| Lámina | Cifra o afirmación | Naturaleza | Cómo se ve |
+| Tema | Propuesta previa | Ahora | Por qué |
 |---|---|---|---|
-| 3, A6 | Hasta 20% menos bencina en ciudad | Estimación de ingeniería, no medida en autos chilenos | «ESTIMACIÓN, NO MEDICIÓN» |
-| 4, 5 | P01, P02, A03 y C02 pendientes | Hecho comprobado: ley sin reglamento; sin homologación, protocolo comparativo ni convenios | Borde rojo grueso (hito crítico pendiente) |
-| 3, 4, A3, A4 | Indicadores que dependen de datos (A01, A02, P03, C01, C03, F01 a F03) | Sin datos: Lumine es preoperativa | Borde gris punteado (sin medir) |
-| 3, 8, A3, A4 | Metas de 100%, «1 par», más de 50% en C03 | Metas de diseño del paquete, por aprobar | Fuente al pie y «META ORIENTATIVA» en C03 |
-| 6 | 39 competencias y 4 niveles | Datos de la app Lumine Habilita (la demo usa datos ficticios) | «DEMO CON DATOS FICTICIOS» |
-| 7, A1 | NOPAT US$150.000, capital US$1.000.000, WACC 12%, EVA US$30.000 | Ejemplo del módulo 4 (empresa genérica) | «EJEMPLO DE CLASE · NO LUMINE» |
-| 9, A2 | Verde ≥90%, ámbar 70% a 89%, rojo <70%; críticos solo verdes al 100% | Umbrales de diseño propuestos | Fuente al pie |
-| 10, 11 | 8 de 10 informes, 80%, −20 pp | Ejercicio didáctico | «EJERCICIO HIPOTÉTICO» |
+| F1 · rentabilidad | VAN del proyecto | Dos etapas: VAN > 0 y TIR > tasa exigida antes de invertir; retorno sobre el capital empleado frente a su costo, una vez operando | El VAN autoriza invertir; no controla la operación período a período |
+| Financiamiento al cliente | F3, en la perspectiva financiera | Parte de P6 «Alianzas que destraban la compra» (aseguradora, planta de revisión técnica y financiera) | Es algo que Lumine hace; el cliente lo percibe como acceso. Coincide con el cruce DA del FODA |
+| C3 · confianza | Convenios institucionales firmados | Confianza declarada por el cliente después del servicio y reclamos (meta pendiente) | La confianza se mide desde el cliente |
+| C4 · captación | Proporción de consultas de uso intensivo | Conversión de consultas del segmento en instalaciones (meta pendiente) | Un resultado del cliente, no una mezcla de consultas |
+| Relaciones | 30, con duplicados (por ejemplo, R09 repetía R08 + R10) | 20, en tres rutas | Más flechas no es más estrategia |
+| F4 | Expansión y licencias | Pasa a llamarse F3 (se liberó el código) | Numeración continua |
+| Ejercicios | EVA del módulo 4 y caso 8 de 10 | Fuera de la exposición | Presentación oral confirmada; sin cálculos financieros |
 
-No se usan las cifras del CMI antiguo (VAN a 10 años y otras), ni los rangos ICCT 9%–29% o SEG 25%–27%, ni sindicatos
-como clientes.
+Los ocho objetivos de los tres ejes de la presentación anterior siguen en el CMI (lámina 8). Hay cinco objetivos nuevos o
+recuperados por la retroalimentación: C1, C3, P3, F2 y F1 (este último viene del CMI original). La brecha cambiaria, que
+la presentación anterior dejó sin eje, se cubre con una iniciativa en F2.
 
-## 3. Contradicciones encontradas (señaladas, no corregidas en silencio)
+## 3. Contradicciones entre fuentes (señaladas, no corregidas en silencio)
 
-Regla del encargo: si las fuentes se contradicen, manda el contexto vigente de Lumine.
+1. **Química de la batería:** la presentación anterior y CLAUDE.md dicen LFP; el informe de la Fase 3 dice litio-titanato.
+   Las láminas dicen «banco de baterías», sin química. El FODA del anexo conserva «baterías LFP a US$81 por kWh» porque
+   es la cifra de la presentación anterior.
+2. **Responsables:** el Excel del CMI en red usa áreas que no existen en la estructura de la Fase 3 («Operaciones»,
+   «Calidad y Postventa», «Marketing y Comercial», «Finanzas»). Se usan las de la Fase 3: Responsable Técnico,
+   Ingeniería de Calibración, Comercial y Postventa, Administración y Personas, y Gerente General.
+3. **Nombres de los estados:** el guion 08 decía «cumplido, atención, crítico» y el Excel «cumple, alerta, no cumple, meta
+   pendiente». Se usan los del Excel, más «sin medir».
+4. **CMI actualizado de las Fases 1 y 2:** su indicador de ahorro usa el rango 25%–27% de SEG. No se usa.
+5. **CMI antiguo:** trae sindicatos, el segmento Tri-Fuel, ventas de 120 a 425 unidades y un VAN de $248 millones.
+   Nada de eso aparece.
+6. **Duración del guion 08:** decía 13:40, pero son 1.615 palabras, unos 12:25 a 130 palabras por minuto.
+7. **Escalas:** el PEST (2,82) y las cinco fuerzas (3,49) son instrumentos de Control de Gestión con escalas propias; no
+   se comparan con los puntajes de Integrador II (lámina A9).
 
-1. **Duración y guion.** El paquete planificaba 14:15 con su guion íntegro en las notas, pero ese guion dura 10:34 a 130
-   palabras por minuto. Con el visto bueno del equipo se reescribió a 12:00, sin datos nuevos y sin repeticiones.
-2. **«Exactamente 12 diapositivas».** Lo pedía el encargo del paquete. Se mantienen 12 de exposición y se suma un anexo
-   que no se expone.
-3. **Responsables del Excel (hoja MATRIZ_CMI) frente a la estructura de la Fase 3.** El Excel dice «Gerencia / Personas»
-   (A02), «Operaciones / Técnicos habilitados» (P03), «Gerencia General / Finanzas» (F01) y «Administración y Finanzas»
-   (F03). En las láminas se usan las áreas de la Fase 3: Responsable Técnico (A02 y P03), Gerente General (F01) y
-   Administración y Personas (F03). La nota al pie de A3 y A4 lo dice. Conviene corregir el Excel antes de mostrarlo.
-4. **Semáforo de C03.** El dossier usa la regla general (verde ≥90% de cumplimiento), pero la fórmula del Excel pone verde
-   solo sobre la meta (>50%) y ámbar desde 70% de ella. Está anotado al pie de A2.
-5. **Redondeo en CASO_SIMULADO.** La celda de la desviación muestra −19,999999999999996. Usar `=ROUND((B8-B5)*100;0)`.
-6. **Informe «antes y después en condiciones comparables» (C01)** frente a la Fase 3, que acepta una línea base «medida o
-   declarada». Si el consumo previo es declarado, el informe no es comparable. Hay que decidir cuál vale.
-7. **C02 y A03 son hitos críticos.** El Excel los define así (C02, antes de vender; A03, primer protocolo). La primera versión
-   los mostraba en gris; ahora van en rojo, como P01 y P02.
-8. **Colores del encargo** (#000000, #12AAE9) frente a la paleta de la marca (#020304, #22B8F0): se usó la de la marca.
-9. **Modalidad.** El comunicado diurno habla de «evaluación de aplicación práctica»; el equipo fue informado de una
-   exposición de 15 minutos. La presentación trae los cálculos (EVA y 8 de 10) por si la evaluación es práctica.
+## 4. Riesgos de la defensa y cómo responder
 
-## 4. Riesgos y datos que faltan
+- **«¿El VAN mide la rentabilidad sobre el costo de capital?»** Solo en la decisión de invertir. Una vez operando se mide
+  el retorno sobre el capital empleado frente a su costo, cada período. Hoy no hay cifra: faltan flujos, inversión y una
+  tasa sustentada (A1).
+- **«¿Por qué no calcularon el EVA?»** Lumine no tiene NOPAT, capital empleado ni costo de capital propios. El concepto
+  (rendir más que el costo del capital) está en F1; un cálculo con números de otra empresa no prueba nada sobre Lumine.
+- **«¿Cómo saben que una flecha es causal?»** No lo sabemos todavía. Cada flecha dice su tipo (habilitante, condición
+  externa o hipótesis), su mecanismo y cómo se comprobaría (A3).
+- **«¿Por qué el financiamiento no está en la perspectiva financiera?»** Porque es una alianza que Lumine gestiona (proceso)
+  y su efecto es en el cliente (acceso). Su costo sí llega a F2.
+- **«¿Cómo miden la confianza?»** Desde el cliente: confianza declarada después del servicio y reclamos. La meta se fija
+  con la primera muestra; hoy no hay número.
+- **«¿Por qué 17 objetivos?»** No es un número buscado: cada uno tiene dueño, evidencia y decisión, y los ocho de la
+  estrategia están ahí. Si alguno no cambia decisiones, se puede retirar.
+- **«¿Cuál es la ventaja competitiva sostenible?»** La biblioteca de calibraciones, potencial: hoy está vacía y solo sería
+  sostenible si se protege como secreto empresarial.
+- **«¿Qué pasa si no sale el reglamento?»** P1 es una compuerta: sin vía legal no se vende ni se instala, ni se licencia
+  a otros talleres. El escenario sin vía legal es el E4.
+- **«¿Las entrevistas validan el cliente?»** No: fueron tres, el orden de atributos es tentativo y está marcado así.
 
-- **Aprobar los KPI y sus metas:** el Excel indica que los KPI complementarios, los umbrales y los ejemplos son propuestas
-  de diseño que el equipo debe aprobar.
-- **WACC de Lumine** y **tolerancia de error del ahorro:** no existen; se dicen como pendientes.
-- **Química de la batería y número de motores:** siguen abiertos (LFP frente a LTO); las láminas no los nombran.
-- **Licencia SEC del instalador:** sin confirmar (no aparece en las láminas).
-- **Profesor y fecha:** la portada dice «Octubre 2026» y no nombra al profesor.
-- **Código QR (lámina 6):** lleva a la demo pública de Habilita; probarlo con un teléfono antes de exponer. Si el profesor
-  lo ve fuera de tema, se puede quitar y dar sus 40 s a la lámina 5.
+## 5. Decisiones abiertas
 
-## 5. Cálculos para responder en vivo
+- Aprobar formalmente los 17 objetivos, las metas propuestas y los responsables antes de presentarlos como del equipo.
+- Fijar con antecedentes la tasa exigida, los flujos y la inversión (Plan Financiero) y la tolerancia de error del ahorro.
+- Definir las metas de C3 y C4 con la primera muestra de clientes.
+- Iniciativas: están en el anexo sin presupuesto. Confirmar si el alcance de la Solemne pide presupuesto estratégico.
+- Probar el código QR de la lámina 6 con un teléfono antes de exponer.
+- Faltan la pauta o rúbrica de la Solemne 2 y el archivo `2_Contexto_Lumine_Motors.md`; si llegan, revisar pesos y datos.
 
-- **EVA (módulo 4, no Lumine):** 150.000 − 1.000.000 × 12% = 150.000 − 120.000 = **US$30.000**.
-  Equivale a (ROIC − WACC) × capital = (15% − 12%) × 1.000.000 = 30.000.
-- **Caso 8 de 10 (hipotético):** real = 80%; desviación = 80% − 100% = **−20 pp**; cumplimiento = 80%. Regla general:
-  ámbar. Control crítico (informe obligatorio): rojo.
+## 6. Fuentes usadas
 
-Las 20 preguntas del paquete, con sus respuestas, están en el Word de anexos.
+- Presentación «Análisis estratégico» de Control de Gestión (octubre de 2026; en `control-de-gestion/` del repositorio).
+- CMI original, CMI actualizado de las Fases 1 y 2, Excel «04_CMI_Red_Causal_y_Control» y dossier del CMI corregido.
+- Material del curso: módulos 1 a 6, «Sistemas de Control de Gestión: Indicadores» y el plan estratégico de ejemplo.
+- Lumine Habilita, versión de demostración (datos ficticios).
+
+## 7. Preguntas para ensayar (uno pregunta, otro responde sin mirar)
+
+1. ¿Qué compra el cliente de Lumine y cómo se mide cada cosa?
+2. Recorre la ruta de evidencia, de A3 a C4, y di qué flecha es hipótesis.
+3. ¿Qué indicador de F1 usarían hoy y cuál dentro de tres años?
+4. ¿Qué pasa con el tablero si mañana sale un reglamento acotado (E2)?
+5. ¿Qué diferencia hay entre «sin medir» y «no cumple»?
+6. ¿Qué objetivo de la estrategia anterior quedó en P6 y por qué?
+7. Explica la ficha de C2 completa y qué se hace si hay brecha.
+8. ¿Qué datos faltan y quién debería producirlos?
