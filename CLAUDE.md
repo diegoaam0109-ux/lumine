@@ -122,15 +122,17 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   cuál es la **ventaja competitiva sostenible** (la biblioteca de calibraciones, activo intangible), sin confundirla con la
   estrategia; el FODA no va en la presentación final.
 
-**Solemne 2 de Control de Gestión** (20-10-2026):
-- 12 láminas, sin anexo ni animaciones; guion del paquete íntegro en las notas (1.373 palabras: ~13 min a 105 palabras por
-  minuto). Reparto equilibrado: Diego 1–4, Benjamín 5–8, Lukas 9–12 (el paquete proponía 1–5, 6–9 y 10–12).
-- Responde a las observaciones del profesor: se conserva «Rentabilidad por sobre el costo de capital» medida con EVA; la
-  perspectiva de clientes gira en torno a C01 (informe individual antes y después); el mapa tiene flechas rotuladas A → P → C → F.
-- Estados: SIN MEDIR (gris), HITO CRÍTICO PENDIENTE (rojo, solo comprobado: P01, P02 y reglamento) y COMPLETADO (verde,
-  ninguno). Es la única presentación con rojo, ámbar y verde, porque el semáforo es el tema. Rótulos visibles
-  «EJEMPLO DE CLASE · NO LUMINE» (EVA del módulo 4) y «EJERCICIO HIPOTÉTICO» (8 de 10).
-- Tipografía de la marca (juego A: Archivo SemiExpanded, serif itálica y mono), como la presentación anterior del curso.
+**Solemne 2 de Control de Gestión** (20-10-2026, versión aprobada con el método «la lámina apoya al que habla»):
+- 12 láminas + anexo de 9 con índice enlazado (orden de preguntas probables). Guion reescrito a 130 palabras por minuto:
+  1.556 palabras, ~12:00, ~4:00 c/u (Diego 1–4, Benjamín 5–8, Lukas 9–12), traspasos en las láminas 4 y 8. Titular =
+  mensaje; un protagonista y hasta tres datos de apoyo; nada se repite. Sin rúbrica ponderada: los tres temas del
+  comunicado (plan y desviaciones, indicadores, EVA y CMI) se suponen de igual peso.
+- Responde al profesor: se conserva «Rentabilidad por sobre el costo de capital» con EVA; C01 (informe individual antes y
+  después) es el centro de clientes; el mapa tiene flechas rotuladas A → P → C → F.
+- Estados por forma y color: gris punteado = sin medir; rojo grueso = hito crítico pendiente comprobado (A03, P01, P02, C02).
+  Rótulos de texto solo para «EJEMPLO DE CLASE · NO LUMINE» (EVA del módulo 4) y «EJERCICIO HIPOTÉTICO» (8 de 10).
+  Única presentación con verde, ámbar y rojo, porque el semáforo es el tema. Lámina 6: QR a la demo de Habilita.
+- Responsables según la estructura de la Fase 3 (el Excel del paquete nombra otras áreas). Tipografía de la marca (juego A).
 
 ## Pendientes y preguntas abiertas
 

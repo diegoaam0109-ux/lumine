@@ -147,35 +147,51 @@ pres.defineSlideMaster({
   slideNumber: { x: R - 0.8, y: 7.02, w: 0.8, h: 0.26, fontFace: F_MONO, fontSize: 12, color: HEX.accent1, align: 'right', margin: 0 },
 });
 
-// Fuente al pie de cada diapositiva. Solo se citan los materiales del paquete de la Solemne y del curso.
-const PAQ = 'dossier y Excel de la Solemne 2';
+// Fuente al pie de cada diapositiva. Solo se citan los materiales del paquete de la Solemne, del curso y del proyecto.
+const PAQ = 'Excel de la Solemne 2';
 const FUENTES = {
-  negocio: 'Fuente: contexto vigente de Lumine Motors (17-10-2026). El ahorro es una estimación de ingeniería, no medida en autos chilenos. Imagen ilustrativa del kit.',
   correccion: 'Fuentes: CMI de Lumine, versión original y versión actualizada a las Fases 1 y 2; retroalimentación del profesor, transcrita por el equipo.',
-  valor: `Fuente: elaboración propia (${PAQ}, indicador C01). Meta de diseño propuesta; sin clientes no hay dato real.`,
-  mapa: `Fuentes: CMI de Lumine actualizado (Fases 1 y 2); ${PAQ}; módulos 2 y 3 del curso. Cada flecha es una hipótesis de causa y efecto por verificar.`,
-  capacidades: `Fuente: elaboración propia (${PAQ}, hoja MATRIZ_CMI: A01, A02, P02 y P03). Metas de diseño propuestas.`,
-  clientes: `Fuente: elaboración propia (${PAQ}, hoja MATRIZ_CMI: C01, C02 y C03). La meta de C03 es orientativa.`,
-  eva: 'Fuentes: módulo 4 del curso (empresa genérica en US$, no Lumine); Excel de la Solemne 2, hoja EVA.',
-  ficha: 'Fuentes: material del curso «Sistemas de Control de Gestión: Indicadores»; Excel de la Solemne 2, hojas MATRIZ_CMI y SEGUIMIENTO. Umbrales propuestos.',
-  desviacion: 'Fuente: Excel de la Solemne 2, hoja CASO_SIMULADO. Ejercicio didáctico: no son datos de Lumine.',
-  ciclo: 'Fuentes: material del curso «Sistemas de Control de Gestión: Indicadores» (ciclo de seguimiento); Excel de la Solemne 2, hoja CASO_SIMULADO.',
-  conclusion: `Fuente: elaboración propia (${PAQ}). El WACC y la tolerancia de error del ahorro quedan por definir con antecedentes.`,
+  valor: `Fuentes: contexto vigente de Lumine Motors (17-10-2026); ${PAQ}, indicador C01. El ahorro es una estimación de ingeniería, no medida en autos chilenos.`,
+  mapa: `Fuentes: CMI de Lumine actualizado (Fases 1 y 2); ${PAQ}, hoja MATRIZ_CMI; módulos 2 y 3 del curso. Cada flecha es una hipótesis por verificar.`,
+  hitos: `Fuentes: Ley N° 21.793 (publicada el 14-01-2026, sin reglamento); ${PAQ}, hoja MATRIZ_CMI (P01, P02 y P03).`,
+  habilita: `Fuentes: Lumine Habilita, versión de demostración publicada por el equipo (datos ficticios); ${PAQ}, indicador A02.`,
+  eva: `Fuentes: módulo 4 del curso (empresa genérica en US$, no Lumine); ${PAQ}, hoja EVA.`,
+  ficha: `Fuente: ${PAQ}, hoja MATRIZ_CMI (C01). Responsable según la estructura de la Fase 3.`,
+  semaforo: `Fuentes: material del curso «Sistemas de Control de Gestión: Indicadores»; ${PAQ}, hoja SEGUIMIENTO. Umbrales propuestos por el equipo.`,
+  desviacion: `Fuente: ${PAQ}, hoja CASO_SIMULADO. Ejercicio didáctico: no son datos de Lumine.`,
+  ciclo: `Fuentes: material del curso «Sistemas de Control de Gestión: Indicadores» (ciclo de seguimiento); ${PAQ}, hoja CASO_SIMULADO.`,
+  conclusion: 'Fuente: elaboración propia. El WACC y la tolerancia de error del ahorro quedan por definir con antecedentes.',
+  indice: 'Las fuentes de cada tema están al pie de su diapositiva.',
+  'a-eva': `Fuentes: módulo 4 del curso (empresa genérica en US$, no Lumine); ${PAQ}, hoja EVA.`,
+  'a-semaforo': `Fuente: ${PAQ}, hojas MATRIZ_CMI y SEGUIMIENTO. En el Excel, C03 usa otra regla: verde solo sobre la meta y ámbar desde 70% de ella.`,
+  'a-matriz1': `Fuente: ${PAQ}, hoja MATRIZ_CMI. Responsables según la estructura de la Fase 3 (el Excel nombra otras áreas para A02 y P03).`,
+  'a-matriz2': `Fuente: ${PAQ}, hoja MATRIZ_CMI. Responsables según la estructura de la Fase 3 (el Excel nombra otras áreas para F01 y F03).`,
+  'a-cmi': 'Fuentes: CMI de Lumine, versión original y versión actualizada a las Fases 1 y 2; dossier de la Solemne 2.',
+  'a-ahorro': 'Fuentes: contexto vigente de Lumine Motors (17-10-2026); dossier de la Solemne 2. El ahorro es una estimación de ingeniería, no medida en autos chilenos.',
+  'a-apoyo': `Fuente: ${PAQ}, hoja MATRIZ_CMI (C02 y C03). La meta de C03 es orientativa.`,
+  'a-financia': `Fuente: ${PAQ}, hoja MATRIZ_CMI (F02 y F03). El Plan Financiero de Lumine aún no existe.`,
+  'a-naturaleza': 'Fuentes: contexto vigente de Lumine Motors (17-10-2026); dossier y Excel de la Solemne 2; módulo 4 del curso.',
 };
 
-let SEC = null, CLAVE = null, NUM = 0;
+let SEC = null, CLAVE = null, NUM = 0, ANEXO_ACTUAL = null, INDICE_ANEXO = null;
 const abrirSeccion = t => { pres.addSection({ title: t }); SEC = t; };
 function contenido(etiqueta, titulo, acento) {
   const s = pres.addSlide({ masterName: 'CONTENIDO', sectionTitle: SEC });
-  const n = String(++NUM).padStart(2, '0');
+  let n;
+  if (ANEXO_ACTUAL) {
+    n = ANEXO_ACTUAL.codigo; etiqueta = 'ANEXO · ' + etiqueta;
+    s.addText('VOLVER AL ÍNDICE DEL ANEXO', { x: 7.7, y: 0.7, w: R - 7.7, h: 0.26, align: 'right', valign: 'middle', fontFace: F_MONO, fontSize: 12, color: C.accent1, charSpacing: 1, margin: 0, hyperlink: { slide: INDICE_ANEXO, tooltip: 'Volver al índice del anexo' } });
+  } else n = CLAVE === 'indice' ? 'A' : String(++NUM).padStart(2, '0');
   s.addText([{ text: n, options: { color: C.accent1 } }, { text: '  —— ', options: { color: C.accent5 } }, { text: etiqueta }], { placeholder: 'etiqueta' });
-  s.addText([{ text: titulo + ' ' }, { text: acento, options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: TX.acento } }], { placeholder: 'title' });
+  // si titular y acento no caben en una línea, el acento pasa entero a la segunda (nunca se corta a la mitad)
+  const unaLinea = titulo.length * 0.345 + acento.length * 0.18 <= CW - 0.6;
+  s.addText([{ text: unaLinea ? titulo + ' ' : titulo, options: { breakLine: !unaLinea } }, { text: acento, options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: TX.acento } }], { placeholder: 'title' });
   const f = FUENTES[CLAVE];
   if (!f) throw new Error('Falta la fuente de la diapositiva ' + CLAVE);
   T(s, f, { x: M, y: 6.94, w: R - M - 1.0, h: 0.42, valign: 'top', fontSize: TX.inst, color: C.text2 });
   return s;
 }
-// leyenda de estados en la esquina superior derecha (a la altura de la etiqueta)
+// leyenda de estados (forma y color) en la esquina superior derecha, a la altura de la etiqueta
 function leyendaEstados(s, tipos) {
   let x = R;
   [...tipos].reverse().forEach(t => {
@@ -183,10 +199,13 @@ function leyendaEstados(s, tipos) {
     const w = text.length * (12 * 0.6 + 0.5) / 72 + 0.2;
     x -= w;
     mono(s, text, { x, y: 0.92, w, h: 0.3, fontSize: 12, color, valign: 'middle', charSpacing: 0.5 });
-    s.addShape(S.ellipse, { x: x - 0.24, y: 0.99, w: 0.15, h: 0.15, fill: { color }, line: { type: 'none' } });
-    x -= 0.6;
+    if (t === 'sin') s.addShape(S.rect, { x: x - 0.34, y: 0.98, w: 0.24, h: 0.18, fill: { color: C.background1, transparency: 100 }, line: { color: GRIS, width: 1, dashType: 'dash' } });
+    else s.addShape(S.rect, { x: x - 0.34, y: 0.98, w: 0.24, h: 0.18, fill: { color: C.background1, transparency: 100 }, line: { color, width: 1.75 } });
+    x -= 0.65;
   });
 }
+// borde de una caja según su estado: gris punteado = sin medir; rojo grueso = hito crítico pendiente
+const borde = st => st === 'crit' ? { color: ROJO, width: 1.75 } : { color: GRIS, width: 1, dashType: 'dash' };
 
 // =====================================================================
 // 1 · PORTADA · la pregunta y la premisa preoperativa
@@ -199,7 +218,6 @@ D.portada = () => {
     { text: '¿CÓMO CONTROLAR', options: { breakLine: true } },
     { text: 'una empresa que aún no opera?', options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: 46 } },
   ], { placeholder: 'title' });
-  // premisa: lo que el tablero puede y no puede mostrar hoy
   linea(s, M, 3.0, 0.06, 0.86, C.accent1, 3);
   T(s, [{ text: 'Lumine es preoperativa: ', options: { bold: true } }, { text: 'el tablero mide lo que falta demostrar, no logros.', options: { color: C.text2 } }],
     { x: M + 0.3, y: 2.98, w: 5.6, h: 0.9, fontSize: 22, valign: 'middle', lineSpacingMultiple: 1.05 });
@@ -210,7 +228,6 @@ D.portada = () => {
     { text: 'Sección 500 · NRC 4118 · UNAB', options: { breakLine: true } },
     { text: 'Diego Alarcón · Benjamín Torres · Lukas Verdugo' },
   ], { x: M, y: iy + 0.16, w: 3.75, h: 1.2, fontSize: 12, color: C.text2, lineSpacingMultiple: 1.15 });
-  // anotación de ingeniería sobre el auto de portada-premium.jpg (mismas coordenadas que en la Fase 3)
   const by = 6.74;
   const puntos = [[5.48, 4.97, 'MOTOR ORIGINAL', 'intacto'], [7.58, 5.58, 'BATERÍA', 'bajo el piso'], [10.18, 5.51, 'TRACCIÓN ELÉCTRICA', 'eje trasero']];
   linea(s, puntos[0][0], by, puntos[2][0] - puntos[0][0], 0, C.text2, 0.75);
@@ -225,136 +242,102 @@ D.portada = () => {
 };
 
 // =====================================================================
-// 2 · EL NEGOCIO Y SUS CONDICIONES · qué es el kit y qué falta demostrar
-// =====================================================================
-D.negocio = () => {
-  const s = contenido('CONTEXTO · EL NEGOCIO', 'EL NEGOCIO', 'y sus condiciones.');
-  const iw = 4.9, ih = iw * 1065 / 1257;
-  s.addImage({ path: A('producto-kit.jpg'), x: M, y: Y0, w: iw, h: ih, altText: 'Ilustración del kit: batería bajo el piso y motor eléctrico en el eje trasero' });
-  s.addShape(S.rect, { x: M, y: Y0, w: iw, h: ih, fill: { color: C.background1, transparency: 100 }, line: { color: C.accent5, width: 0.75 } });
-  mono(s, 'IMAGEN ILUSTRATIVA', { x: M + 0.18, y: Y0 + 0.14, w: 3, h: 0.26, fontSize: 12 });
-  const x = M + iw + 0.5, w = R - x, rh = 0.7;
-  const filas = [
-    ['Asistencia eléctrica en el eje trasero, sin enchufe.', null],
-    ['El motor original se mantiene.', null],
-    ['Hasta 20% menos bencina en ciudad', ['est', 'ESTIMACIÓN, NO MEDICIÓN']],
-    ['Reglamento y homologación', ['crit']],
-    ['Ventas, clientes e instalaciones', ['sin', 'AÚN NO EXISTEN']],
-  ];
-  filas.forEach(([t, st], i) => {
-    const y = Y0 + i * rh;
-    if (i) regla(s, y, x, w);
-    let pw = 0;
-    if (st) {
-      pw = st[0] === 'est' ? marca(s, 'est', st[1], R, y + (rh - 0.4) / 2, { alignRight: true })
-        : estado(s, st[0], R, y + (rh - 0.4) / 2, { alignRight: true, text: st[1] });
-    }
-    T(s, t, { x, y, w: w - pw - 0.2, h: rh, fontSize: TX.cuerpo, valign: 'middle', bold: i < 2, color: i < 2 ? C.text1 : C.text1 });
-  });
-  const by = Y0 + 5 * rh;
-  regla(s, by, x, w, C.accent1);
-  T(s, [{ text: 'Cliente: ', options: { bold: true } }, { text: 'uso intensivo primero, sin excluir particulares ni flotas.', options: { color: C.text2 } }],
-    { x, y: by + 0.12, w, h: 0.62, fontSize: 18, valign: 'top' });
-  return s;
-};
-
-// =====================================================================
-// 3 · LO QUE CORRIGIÓ EL CMI · observación del profesor → corrección
+// 2 · EL CMI CONSERVA EL RETORNO Y CORRIGE LO CRITICADO · tres filas antes → después
 // =====================================================================
 D.correccion = () => {
-  const s = contenido('RETROALIMENTACIÓN · CMI ORIGINAL Y ACTUALIZADO', 'LO QUE CORRIGIÓ', 'el CMI.');
-  const lw = 5.9, rx = M + lw + 0.75, rw = R - rx;
-  mono(s, 'OBSERVACIÓN DEL PROFESOR', { x: M, y: Y0, w: lw, h: 0.3 });
-  mono(s, 'CORRECCIÓN', { x: rx, y: Y0, w: rw, h: 0.3, color: C.accent1 });
+  const s = contenido('RETROALIMENTACIÓN · CMI ORIGINAL Y ACTUALIZADO', 'EL CMI CONSERVA EL RETORNO', 'y corrige lo criticado.');
+  // leyenda de forma: punto lleno = destacado; anillo = criticado
+  const lx = R - 3.6;
+  s.addShape(S.ellipse, { x: lx, y: 0.99, w: 0.16, h: 0.16, fill: { color: C.accent1 }, line: { type: 'none' } });
+  mono(s, 'DESTACADO', { x: lx + 0.26, y: 0.92, w: 1.2, h: 0.3, fontSize: 12, color: C.text1, valign: 'middle' });
+  s.addShape(S.ellipse, { x: lx + 1.7, y: 0.99, w: 0.16, h: 0.16, fill: { color: C.background1, transparency: 100 }, line: { color: C.text1, width: 1.5 } });
+  mono(s, 'CRITICADO', { x: lx + 1.96, y: 0.92, w: 1.3, h: 0.3, fontSize: 12, color: C.text1, valign: 'middle' });
+  const lw = 5.6, rx = M + lw + 0.95, rw = R - rx;
+  mono(s, 'LO QUE DIJO EL PROFESOR', { x: M, y: Y0, w: lw, h: 0.3 });
+  mono(s, 'LO QUE CAMBIAMOS', { x: rx, y: Y0, w: rw, h: 0.3, color: C.accent1 });
   const filas = [
-    ['Rentabilidad por sobre el costo de capital', 'DESTACADO', 'Se conserva y se mide con EVA'],
-    ['Clientes descritos como canales y convenios', 'CRÍTICA', 'La propuesta de valor al centro, medida'],
-    ['Objetivos poco coordinados entre sí', 'CRÍTICA', 'Flechas de causa y efecto con KPI y evidencia'],
+    [true, 'Rentabilidad sobre el costo de capital', 'Se conserva y se mide con EVA'],
+    [false, 'Clientes descritos como canales y convenios', 'El informe al cliente pasa al centro'],
+    [false, 'Objetivos sin relación de causa y efecto', 'Flechas con mecanismo e indicador'],
   ];
-  const rh = 0.98, g = 0.18;
-  filas.forEach(([o, k, c], i) => {
-    const y = Y0 + 0.45 + i * (rh + g);
+  const rh = 1.0, g = 0.22;
+  filas.forEach(([ok, o, c], i) => {
+    const y = Y0 + 0.48 + i * (rh + g);
     caja(s, M, y, lw, rh);
-    const mw = k === 'DESTACADO'
-      ? marca(s, 'est', k, M + lw - 0.2, y + (rh - 0.4) / 2, { alignRight: true })
-      : marca(s, 'no', k, M + lw - 0.2, y + (rh - 0.4) / 2, { alignRight: true });
-    T(s, o, { x: M + 0.25, y, w: lw - mw - 0.6, h: rh, fontSize: TX.cuerpo, color: C.text2, valign: 'middle' });
-    flecha(s, M + lw + 0.12, y + rh / 2, 0.5, 0);
-    if (i === 0) { cajaHot(s, rx, y, rw, rh); } else caja(s, rx, y, rw, rh, { line: { color: C.accent1, width: 1 } });
-    T(s, c, { x: rx + 0.25, y, w: rw - 0.4, h: rh, fontSize: TX.cuerpoL, bold: true, valign: 'middle' });
+    const d = 0.3;
+    if (ok) s.addShape(S.ellipse, { x: M + 0.28, y: y + (rh - d) / 2, w: d, h: d, fill: { color: C.accent1 }, line: { type: 'none' } });
+    else s.addShape(S.ellipse, { x: M + 0.28, y: y + (rh - d) / 2, w: d, h: d, fill: { color: C.background1, transparency: 100 }, line: { color: C.text1, width: 2 } });
+    T(s, o, { x: M + 0.85, y, w: lw - 1.05, h: rh, fontSize: TX.cuerpo, color: C.text2, valign: 'middle' });
+    flecha(s, M + lw + 0.15, y + rh / 2, 0.65, 0);
+    if (i === 0) { brillo(s, rx, y, rw, rh, 0.4); cajaHot(s, rx, y, rw, rh); } else caja(s, rx, y, rw, rh, { line: { color: C.accent1, width: 1 } });
+    T(s, c, { x: rx + 0.3, y, w: rw - 0.45, h: rh, fontSize: TX.cuerpoL, bold: true, valign: 'middle' });
   });
-  T(s, 'Las cifras financieras del CMI original no se reutilizan sin conciliarlas.', { x: M, y: Y0 + 0.45 + 3 * (rh + g) + 0.04, w: CW, h: 0.4, fontSize: 18, color: C.text2 });
   return s;
 };
 
 // =====================================================================
-// 4 · LA PROPUESTA DE VALOR SE DEBE MEDIR · qué compra el cliente y el KPI C01
+// 3 · EL CLIENTE COMPRA EVIDENCIA, NO UNA PROMESA DE 20% · fracción del indicador C01
 // =====================================================================
 D.valor = () => {
-  const s = contenido('PERSPECTIVA DE CLIENTES · PROPUESTA DE VALOR', 'LA PROPUESTA DE VALOR', 'se debe medir.');
-  const lw = 5.7;
-  mono(s, 'LO QUE COMPRA EL CLIENTE', { x: M, y: Y0, w: lw, h: 0.3 });
-  ['Modernizar su propio auto', 'Un procedimiento seguro y trazable', 'Evidencia de su consumo'].forEach((t, i) => {
-    const y = Y0 + 0.5 + i * 0.86;
-    tag(s, String(i + 1), M, y + 0.1, { off: i < 2, w: 0.5, h: 0.5, size: 20 });
-    T(s, t, { x: M + 0.75, y, w: lw - 0.75, h: 0.7, fontSize: TX.cuerpoL, bold: i === 2, color: i === 2 ? C.accent1 : C.text1, valign: 'middle' });
+  const s = contenido('PERSPECTIVA DE CLIENTES · PROPUESTA DE VALOR', 'EL CLIENTE COMPRA EVIDENCIA,', 'no una promesa de 20%.');
+  leyendaEstados(s, ['sin']);
+  const lw = 5.0;
+  mono(s, 'LO QUE COMPRA', { x: M, y: Y0, w: lw, h: 0.3 });
+  ['Modernizar su propio auto', 'Un procedimiento seguro y trazable'].forEach((t, i) => {
+    const y = Y0 + 0.5 + i * 0.9;
+    tag(s, String(i + 1), M, y + 0.1, { off: true, w: 0.5, h: 0.5, size: 20 });
+    T(s, t, { x: M + 0.75, y, w: lw - 0.75, h: 0.7, fontSize: TX.cuerpoL, valign: 'middle' });
   });
-  // tarjeta del indicador C01
-  const cx = M + lw + 0.6, cw = R - cx, cy = Y0, ch = 3.2;
+  // lo que NO compra: la cifra estimada, marcada como tal
+  const ny = Y0 + 2.5;
+  regla(s, ny, M, lw);
+  mono(s, 'LO QUE NO SE PROMETE', { x: M, y: ny + 0.14, w: lw, h: 0.3 });
+  T(s, 'Hasta 20% menos bencina', { x: M, y: ny + 0.5, w: lw, h: 0.5, fontSize: TX.cuerpoL, color: C.text2, valign: 'middle' });
+  marca(s, 'est', 'ESTIMACIÓN, NO MEDICIÓN', M, ny + 1.06);
+  // protagonista: la fracción del indicador
+  const cx = M + lw + 0.7, cw = R - cx, cy = Y0, ch = YF - Y0 - 0.1;
   brillo(s, cx, cy, cw, ch, 0.6);
   cajaHot(s, cx, cy, cw, ch);
-  mono(s, 'C01 · INDICADOR PROPUESTO', { x: cx + 0.3, y: cy + 0.2, w: cw - 0.6, h: 0.3, color: C.accent1 });
-  T(s, 'Clientes con informe antes y después', { x: cx + 0.3, y: cy + 0.6, w: cw - 0.6, h: 0.42, fontSize: TX.cuerpo, bold: true, align: 'center', valign: 'middle' });
-  linea(s, cx + 0.5, cy + 1.08, cw - 1.0, 0, C.accent1, 1.5);
-  T(s, 'Clientes intervenidos', { x: cx + 0.3, y: cy + 1.14, w: cw - 0.6, h: 0.42, fontSize: TX.cuerpo, align: 'center', valign: 'middle' });
-  regla(s, cy + 1.78, cx + 0.3, cw - 0.6);
-  const hw = (cw - 0.6) / 2;
-  mono(s, 'META', { x: cx + 0.3, y: cy + 1.92, w: hw, h: 0.28, fontSize: 14 });
-  numero(s, '100%', { x: cx + 0.3, y: cy + 2.18, w: 1.7, h: 0.72, fontSize: TX.cifra, color: C.accent1 });
-  marca(s, 'sup', 'DISEÑO', cx + 2.0, cy + 2.42, { size: 12, h: 0.34 });
-  mono(s, 'REAL', { x: cx + 0.3 + hw + 0.1, y: cy + 1.92, w: hw, h: 0.28, fontSize: 14 });
-  estado(s, 'sin', cx + 0.3 + hw + 0.1, cy + 2.38, { size: 16, h: 0.46 });
-  const by = Y0 + ch + 0.42;
-  regla(s, by, M, CW, C.accent1);
-  T(s, [{ text: 'Entregar evidencia ', options: { bold: true } }, { text: 'no es lo mismo que prometer 20% de ahorro.', options: { bold: true, color: C.accent1 } }],
-    { x: M, y: by + 0.14, w: CW, h: 0.5, fontSize: TX.sub, valign: 'middle' });
+  s.addShape(S.rect, { x: cx + cw - 0.62, y: cy + 0.26, w: 0.3, h: 0.22, fill: { color: C.background1, transparency: 100 }, line: { color: GRIS, width: 1, dashType: 'dash' } });
+  mono(s, 'C01 · INDICADOR CENTRAL DE CLIENTES', { x: cx + 0.35, y: cy + 0.24, w: cw - 1.2, h: 0.3, color: C.accent1 });
+  T(s, 'Clientes con informe de consumo antes y después', { x: cx + 0.4, y: cy + 0.85, w: cw - 0.8, h: 1.1, fontSize: 28, bold: true, align: 'center', valign: 'middle' });
+  linea(s, cx + 0.6, cy + 2.08, cw - 1.2, 0, C.accent1, 2.5);
+  T(s, 'Clientes intervenidos', { x: cx + 0.4, y: cy + 2.22, w: cw - 0.8, h: 0.6, fontSize: 28, align: 'center', valign: 'middle' });
+  T(s, 'en condiciones comparables', { x: cx + 0.4, y: cy + 3.2, w: cw - 0.8, h: 0.5, fontFace: F_SER, italic: true, fontSize: 24, color: C.accent1, align: 'center', valign: 'middle' });
   return s;
 };
 
 // =====================================================================
-// 5 · CUATRO PERSPECTIVAS, UNA CADENA CAUSAL · mapa estratégico con flechas rotuladas
+// 4 · CADA OBJETIVO CAUSA EL SIGUIENTE · mapa estratégico con flechas rotuladas
 // =====================================================================
 D.mapa = () => {
-  const s = contenido('MAPA ESTRATÉGICO · CAUSA Y EFECTO', 'CUATRO PERSPECTIVAS,', 'una cadena causal.');
+  const s = contenido('MAPA ESTRATÉGICO · CAUSA Y EFECTO', 'CADA OBJETIVO CAUSA EL SIGUIENTE:', 'del técnico al EVA.');
   leyendaEstados(s, ['sin', 'crit']);
   const col = [2.55, 5.18, 7.81, 10.44], cw = 2.29, nh = 0.6, g = 0.32;
   const fila = { F: Y0 - 0.04 }; fila.K = fila.F + nh + g; fila.C = fila.K + nh + g; fila.P = fila.C + nh + g; fila.A = fila.P + nh + g;
-  // nombres de las perspectivas
   [['FINANCIERA', fila.F, nh], ['CLIENTES', fila.K, 2 * nh + g], ['PROCESOS', fila.P, nh], ['APRENDIZAJE', fila.A, nh]].forEach(([t, y, h]) => {
     linea(s, M, y, 0, h, C.accent1, 2);
     mono(s, t, { x: M + 0.16, y, w: 1.8, h, fontSize: 14, color: C.text1, valign: 'middle' });
   });
   const nodo = (code, text, x, y, w, tipo) => {
     if (tipo === 'hot') { brillo(s, x, y, w, nh, 0.4); cajaHot(s, x, y, w, nh); }
-    else caja(s, x, y, w, nh, { line: { color: tipo === 'crit' ? ROJO : GRIS, width: tipo === 'crit' ? 1.5 : 0.75 } });
+    else caja(s, x, y, w, nh, { line: borde(tipo) });
     let tx = x + 0.14;
     if (code) { tag(s, code, x + 0.12, y + (nh - 0.32) / 2, { w: 0.58, h: 0.32, size: 13, off: tipo !== 'hot' }); tx = x + 0.82; }
     T(s, text, { x: tx, y, w: x + w - tx - 0.08, h: nh, fontSize: 16, bold: tipo === 'hot', valign: 'middle', lineSpacingMultiple: 0.88 });
   };
   const ancho = (a, b) => col[b] + cw - col[a];
   nodo('F01', 'EVA > 0: rentabilidad sobre el costo de capital', col[1], fila.F, ancho(1, 2), 'hot');
-  // confianza: el resultado de la propuesta de valor en la perspectiva de clientes
   caja(s, col[0], fila.K, ancho(0, 3), nh, { line: { color: C.accent1, width: 1 } });
   T(s, 'Confianza: el cliente valora el resultado', { x: col[0], y: fila.K, w: ancho(0, 3), h: nh, fontSize: 18, bold: true, align: 'center', valign: 'middle' });
   nodo('C01', 'Informe individual antes y después', col[0], fila.C, ancho(0, 1), 'sin');
-  nodo('C02', 'Respaldo de aseguradora y planta de revisión técnica', col[2], fila.C, ancho(2, 3), 'sin');
+  nodo('C02', 'Respaldo de aseguradora y planta de revisión técnica', col[2], fila.C, ancho(2, 3), 'crit');
   nodo('P03', 'Actas de seguridad', col[1], fila.P, cw, 'sin');
   nodo('P02', 'Kit homologado', col[2], fila.P, cw, 'crit');
   nodo('P01', 'Autorización sectorial', col[3], fila.P, cw, 'crit');
-  nodo('A03', 'Medición comparativa', col[0], fila.A, cw, 'sin');
+  nodo('A03', 'Medición comparativa', col[0], fila.A, cw, 'crit');
   nodo('A02', 'Técnicos habilitados', col[1], fila.A, cw, 'sin');
   nodo('A01', 'Biblioteca de calibraciones', col[2], fila.A, cw, 'sin');
-  // flechas de causa y efecto, siempre hacia arriba, con su rótulo a la derecha
   const sube = (c, de, a, texto, yt) => {
     const x = col[c] + 0.36;
     flecha(s, x, fila[de], 0, fila[a] + nh - fila[de]);
@@ -373,230 +356,220 @@ D.mapa = () => {
 };
 
 // =====================================================================
-// 6 · LAS CAPACIDADES SOSTIENEN PROCESOS SEGUROS · dos pares causa → efecto
+// 5 · SIN AUTORIZACIÓN NI HOMOLOGACIÓN NO SE OPERA · la compuerta
 // =====================================================================
-D.capacidades = () => {
-  const s = contenido('APRENDIZAJE Y PROCESOS · INDICADORES', 'LAS CAPACIDADES', 'sostienen procesos seguros.');
-  leyendaEstados(s, ['sin', 'crit']);
-  const lw = 5.25, gx = 1.1, rx = M + lw + gx, rw = R - rx, rh = 1.35, g = 0.2;
-  mono(s, 'APRENDIZAJE', { x: M, y: Y0, w: lw, h: 0.3 });
-  mono(s, 'PROCESOS', { x: rx, y: Y0, w: rw, h: 0.3 });
-  const tarjeta = (code, text, meta, st, x, y, w) => {
-    caja(s, x, y, w, rh, { line: { color: st === 'crit' ? ROJO : GRIS, width: st === 'crit' ? 1.5 : 0.75 } });
-    tag(s, code, x + 0.22, y + 0.22, { w: 0.7, h: 0.4, size: 16, off: true });
-    T(s, text, { x: x + 1.1, y: y + 0.12, w: w - 1.3, h: 0.66, fontSize: TX.cuerpo, bold: true, valign: 'middle', lineSpacingMultiple: 0.92 });
-    mono(s, 'META', { x: x + 0.22, y: y + rh - 0.5, w: 0.7, h: 0.36, fontSize: 14, valign: 'middle' });
-    numero(s, meta, { x: x + 0.92, y: y + rh - 0.58, w: 1.6, h: 0.5, fontSize: TX.cifraS, valign: 'middle' });
-    estado(s, st, x + w - 0.22, y + rh - 0.55, { alignRight: true });
-  };
-  [
-    ['A02', 'Técnicos habilitados antes de intervenir', '100%', 'sin', 'P03', 'Órdenes cerradas con actas de seguridad', '100%', 'sin', 'habilita el control'],
-    ['A01', 'Calibraciones registradas en la biblioteca', '100%', 'sin', 'P02', 'Primer par modelo-kit homologado', '1 par', 'crit', 'permite homologar'],
-  ].forEach(([c1, t1, m1, s1, c2, t2, m2, s2, rot], i) => {
-    const y = Y0 + 0.42 + i * (rh + g);
-    tarjeta(c1, t1, m1, s1, M, y, lw);
-    tarjeta(c2, t2, m2, s2, rx, y, rw);
-    flecha(s, M + lw + 0.12, y + rh / 2, gx - 0.24, 0);
-    serif(s, rot, { x: M + lw, y: y + rh / 2 - 0.5, w: gx, h: 0.42, fontSize: 16, align: 'center', valign: 'bottom' });
+D.hitos = () => {
+  const s = contenido('PROCESOS · HITOS CRÍTICOS', 'SIN AUTORIZACIÓN NI HOMOLOGACIÓN', 'no se opera, aunque todo esté verde.');
+  leyendaEstados(s, ['crit']);
+  const y = Y0 + 0.05, h = 2.5;
+  // lo demás, aunque estuviera listo
+  const lw = 2.95;
+  caja(s, M, y, lw, h, { line: { color: GRIS, width: 1, dashType: 'dash' } });
+  mono(s, 'AUNQUE ESTÉN LISTOS', { x: M + 0.25, y: y + 0.24, w: lw - 0.5, h: 0.3, fontSize: 13 });
+  T(s, 'Técnicos, biblioteca y clientes', { x: M + 0.25, y: y + 0.7, w: lw - 0.45, h: 1.4, fontSize: TX.cuerpoL, color: C.text2, valign: 'top' });
+  // la compuerta: los dos hitos
+  const gx = M + lw + 0.85, gw = 4.45, gh = (h - 0.24) / 2;
+  flecha(s, M + lw + 0.12, y + h / 2, 0.6, 0, C.text2);
+  [['P01', 'Autorización sectorial'], ['P02', 'Primer par modelo-kit homologado']].forEach(([k, t], i) => {
+    const yy = y + i * (gh + 0.24);
+    caja(s, gx, yy, gw, gh, { fill: { color: '1A0E10' }, line: { color: ROJO, width: 2 } });
+    tag(s, k, gx + 0.25, yy + (gh - 0.44) / 2, { w: 0.72, h: 0.44, size: 18, off: true });
+    T(s, t, { x: gx + 1.2, y: yy, w: gw - 1.35, h: gh, fontSize: TX.sub, bold: true, valign: 'middle', lineSpacingMultiple: 0.95 });
   });
-  const by = Y0 + 0.42 + 2 * (rh + g) + 0.04;
-  regla(s, by, M, CW, C.accent1);
-  T(s, [{ text: 'Un hito crítico no se compensa: ', options: { bold: true } }, { text: 'si falta, no se opera.', options: { bold: true, color: C.accent1 } }],
-    { x: M, y: by + 0.12, w: CW, h: 0.5, fontSize: TX.sub, valign: 'middle' });
+  // lo que queda bloqueado
+  const ox = gx + gw + 0.85, ow = R - ox;
+  flecha(s, gx + gw + 0.12, y + h / 2, 0.6, 0, ROJO);
+  caja(s, ox, y, ow, h, { fill: { color: C.background1 }, line: { color: ROJO, width: 1.25, dashType: 'dash' } });
+  T(s, 'Vender e instalar', { x: ox + 0.2, y: y + 0.5, w: ow - 0.4, h: 1.0, fontSize: TX.sub, bold: true, color: C.text2, align: 'center', valign: 'middle' });
+  linea(s, ox + 0.35, y + 1.0, ow - 0.7, 0, ROJO, 2.5);
+  // apoyo: el riesgo externo (única vez) y las actas
+  const ay = y + h + 0.35, rh = 0.62;
+  [['Ley N° 21.793 publicada, sin reglamento', ['pen', 'RIESGO EXTERNO']], ['Actas de seguridad completas en cada orden', ['sin']]].forEach(([t, st], i) => {
+    const yy = ay + i * rh;
+    regla(s, yy, M, CW, i ? C.accent5 : C.accent1);
+    T(s, t, { x: M, y: yy, w: CW - 3, h: rh, fontSize: TX.cuerpo, valign: 'middle' });
+    if (st[0] === 'pen') marca(s, 'pen', st[1], R, yy + 0.11, { alignRight: true });
+    else s.addShape(S.rect, { x: R - 0.4, y: yy + 0.2, w: 0.4, h: 0.24, fill: { color: C.background1, transparency: 100 }, line: { color: GRIS, width: 1, dashType: 'dash' } });
+  });
   return s;
 };
 
 // =====================================================================
-// 7 · CLIENTES: EL VALOR LLEGA AL USUARIO · C01 al centro; C02 y C03 lo acompañan
+// 6 · LA HABILITACIÓN DE TÉCNICOS YA SE PUEDE MEDIR · código QR a la demo de Lumine Habilita
 // =====================================================================
-D.clientes = () => {
-  const s = contenido('PERSPECTIVA DE CLIENTES · INDICADORES', 'CLIENTES:', 'el valor llega al usuario.');
-  leyendaEstados(s, ['sin']);
-  const lw = 6.2, ch = 3.3, cy = Y0;
-  brillo(s, M, cy, lw, ch, 0.6);
-  cajaHot(s, M, cy, lw, ch);
-  mono(s, 'C01 · VALOR ENTREGADO', { x: M + 0.3, y: cy + 0.22, w: lw - 0.6, h: 0.3, color: C.accent1 });
-  T(s, 'Informe individual de ahorro, antes y después, en condiciones comparables', { x: M + 0.3, y: cy + 0.62, w: lw - 0.6, h: 1.2, fontSize: TX.cuerpoL, bold: true, valign: 'top', lineSpacingMultiple: 1.0 });
-  T(s, 'Si el ahorro difiere, se revisan el dato base y la calibración, y se explica al cliente.', { x: M + 0.3, y: cy + 1.62, w: lw - 0.6, h: 0.62, fontSize: 18, color: C.text2 });
-  mono(s, 'META', { x: M + 0.3, y: cy + ch - 0.66, w: 0.8, h: 0.46, fontSize: 14, valign: 'middle' });
-  numero(s, '100%', { x: M + 1.05, y: cy + ch - 0.74, w: 1.5, h: 0.6, fontSize: TX.cifraM, valign: 'middle', color: C.accent1 });
-  estado(s, 'sin', M + lw - 0.3, cy + ch - 0.68, { alignRight: true, size: 16, h: 0.46 });
-  // tarjetas de apoyo
-  const rx = M + lw + 0.5, rw = R - rx, sh = (ch - 0.3) / 2;
-  [
-    ['C02 · CONFIANZA', 'Protocolo con una aseguradora y una planta de revisión técnica', ['sin']],
-    ['C03 · FOCO COMERCIAL', 'Más de 50% de consultas de uso intensivo, sin excluir particulares ni flotas', ['sup', 'ORIENTATIVA']],
-  ].forEach(([k, t, st], i) => {
-    const y = cy + i * (sh + 0.3);
-    caja(s, rx, y, rw, sh, { line: { color: GRIS, width: 0.75 } });
-    mono(s, k, { x: rx + 0.25, y: y + 0.18, w: rw - 0.5, h: 0.3, fontSize: 14 });
-    if (st[0] === 'sin') estado(s, 'sin', rx + rw - 0.2, y + 0.12, { alignRight: true, size: 12, h: 0.36 });
-    else marca(s, 'sup', st[1], rx + rw - 0.2, y + 0.12, { alignRight: true, size: 12, h: 0.36 });
-    T(s, t, { x: rx + 0.25, y: y + 0.56, w: rw - 0.5, h: sh - 0.68, fontSize: 18, valign: 'top' });
+D.habilita = () => {
+  const s = contenido('APRENDIZAJE · PRUEBA CONCRETA', 'LA HABILITACIÓN DE TÉCNICOS', 'ya se puede medir.');
+  const q = 3.55, qx = M + 0.2, qy = Y0 + 0.05;
+  brillo(s, qx, qy, q, q, 0.7);
+  s.addImage({ path: A('qr-habilita.png'), x: qx, y: qy, w: q, h: q, altText: 'Código QR a la demostración de Lumine Habilita' });
+  visor(s, qx, qy, q, q);
+  mono(s, 'ESCANEA PARA ABRIR LA DEMO', { x: qx - 0.2, y: qy + q + 0.14, w: q + 0.4, h: 0.3, fontSize: 12, align: 'center', color: C.text1 });
+  const x = qx + q + 0.85, w = R - x;
+  T(s, 'Lumine Habilita', { x, y: Y0, w, h: 0.62, fontFace: F_TIT, fontSize: 30, valign: 'middle' });
+  T(s, 'Habilitación por competencias del técnico instalador', { x, y: Y0 + 0.66, w, h: 0.45, fontSize: TX.cuerpo, color: C.text2, valign: 'middle' });
+  regla(s, Y0 + 1.3, x, w, C.accent1);
+  [['39', 'competencias'], ['4', 'niveles']].forEach(([v, k], i) => {
+    const xx = x + i * 2.3;
+    numero(s, v, { x: xx, y: Y0 + 1.38, w: 2.1, h: 0.9, fontSize: TX.cifraXL + 6, valign: 'middle', color: C.accent1 });
+    T(s, k, { x: xx, y: Y0 + 2.26, w: 2.1, h: 0.36, fontSize: 18, color: C.text2 });
   });
-  const by = cy + ch + 0.36;
-  regla(s, by, M, CW, C.accent1);
-  T(s, [{ text: 'El centro es lo que recibe el cliente, ', options: { bold: true } }, { text: 'no los canales ni los convenios.', options: { bold: true, color: C.accent1 } }],
-    { x: M, y: by + 0.14, w: CW, h: 0.5, fontSize: TX.sub, valign: 'middle' });
+  regla(s, Y0 + 2.8, x, w);
+  tag(s, 'A02', x, Y0 + 3.0, { w: 0.72, h: 0.42, size: 16, off: true });
+  T(s, 'Técnicos habilitados ÷ técnicos asignados', { x: x + 0.9, y: Y0 + 2.92, w: w - 0.9, h: 0.58, fontSize: TX.cuerpo, bold: true, valign: 'middle' });
+  marca(s, 'sup', 'DEMO CON DATOS FICTICIOS', x, Y0 + 3.66);
   return s;
 };
 
 // =====================================================================
-// 8 · ¿LA RENTABILIDAD SUPERA EL COSTO DE CAPITAL? · EVA con el ejemplo del módulo 4
+// 7 · UNA UTILIDAD POSITIVA PUEDE NO PAGAR EL CAPITAL · EVA con el ejemplo del módulo 4
 // =====================================================================
 D.eva = () => {
-  const s = contenido('PERSPECTIVA FINANCIERA · EVA', '¿LA RENTABILIDAD SUPERA', 'el costo de capital?');
-  // fórmula
+  const s = contenido('PERSPECTIVA FINANCIERA · EVA', 'UNA UTILIDAD POSITIVA', 'puede no pagar el capital: por eso el EVA.');
   numero(s, [{ text: 'EVA', options: { color: C.accent1 } }, { text: '  =  NOPAT  −  CAPITAL INVERTIDO  ×  WACC' }], { x: M, y: Y0 - 0.06, w: CW, h: 0.7, fontSize: 40, valign: 'middle' });
   T(s, [{ text: 'NOPAT: ', options: { bold: true, color: C.text1 } }, { text: 'resultado operativo después de impuestos   ·   ' }, { text: 'WACC: ', options: { bold: true, color: C.text1 } }, { text: 'costo promedio ponderado del capital' }],
     { x: M, y: Y0 + 0.66, w: CW, h: 0.36, fontSize: 18, color: C.text2, valign: 'middle' });
-  const cy = Y0 + 1.3, ch = YF - cy - 0.06, lw = 7.1;
-  // ejemplo del curso
+  const cy = Y0 + 1.3, ch = YF - cy - 0.06, lw = 7.6;
   cajaHot(s, M, cy, lw, ch);
   noLumine(s, 'EJEMPLO DE CLASE · NO LUMINE', M + 0.3, cy + 0.24);
   const fila = (k, v, y, o = {}) => {
-    T(s, k, { x: M + 0.3, y, w: 4.2, h: 0.5, fontSize: o.k || TX.cuerpo, bold: !!o.b, valign: 'middle', color: o.kc || C.text1 });
-    numero(s, v, { x: M + 3.6, y, w: lw - 3.9, h: 0.5, fontSize: o.size || TX.cifraS, align: 'right', valign: 'middle', color: o.color || C.text1 });
+    T(s, k, { x: M + 0.3, y, w: 4.4, h: 0.5, fontSize: o.k || TX.cuerpo, bold: !!o.b, valign: 'middle', color: o.kc || C.text1 });
+    numero(s, v, { x: M + 3.8, y, w: lw - 4.1, h: 0.5, fontSize: o.size || TX.cifraS, align: 'right', valign: 'middle', color: o.color || C.text1 });
   };
   fila('NOPAT', 'US$ 150.000', cy + 0.86);
   fila('Cargo por capital: 1.000.000 × 12%', '− US$ 120.000', cy + 1.4, { k: 18, kc: C.text2 });
   regla(s, cy + 2.0, M + 0.3, lw - 0.6, C.accent1);
   fila('EVA', 'US$ 30.000', cy + 2.12, { b: true, size: TX.cifra, color: C.accent1 });
-  // Lumine hoy
   const rx = M + lw + 0.5, rw = R - rx;
-  caja(s, rx, cy, rw, ch, { line: { color: GRIS, width: 0.75 } });
-  mono(s, 'LUMINE HOY', { x: rx + 0.3, y: cy + 0.28, w: rw - 0.6, h: 0.3, color: C.text1 });
-  estado(s, 'sin', rx + 0.3, cy + 0.72, { text: 'SIN DATOS', size: 16, h: 0.46 });
-  T(s, 'NOPAT, capital y WACC aún no existen.', { x: rx + 0.3, y: cy + 1.34, w: rw - 0.6, h: 0.7, fontSize: TX.cuerpo });
-  regla(s, cy + 2.12, rx + 0.3, rw - 0.6);
-  T(s, [{ text: 'VAN y TIR ', options: { bold: true, color: C.text1 } }, { text: 'evalúan el proyecto; ' }, { text: 'EVA ', options: { bold: true, color: C.text1 } }, { text: 'mide cada período.' }],
-    { x: rx + 0.3, y: cy + 2.22, w: rw - 0.6, h: 0.7, fontSize: 18, color: C.text2 });
+  caja(s, rx, cy, rw, ch, { line: { color: GRIS, width: 1, dashType: 'dash' } });
+  mono(s, 'LUMINE HOY', { x: rx + 0.3, y: cy + 0.3, w: rw - 0.6, h: 0.3, color: C.text1 });
+  T(s, 'Sin NOPAT, capital invertido ni WACC respaldado', { x: rx + 0.3, y: cy + 0.8, w: rw - 0.6, h: 1.3, fontSize: TX.cuerpoL, bold: true, valign: 'top' });
+  T(s, 'La fórmula queda definida; la cifra, pendiente.', { x: rx + 0.3, y: cy + 2.1, w: rw - 0.6, h: 0.7, fontSize: 18, color: C.text2, valign: 'top' });
   return s;
 };
 
 // =====================================================================
-// 9 · EL INDICADOR NECESITA RESPONSABLE Y EVIDENCIA · ficha de C01 y semáforo
+// 8 · UN INDICADOR SIN RESPONSABLE NI EVIDENCIA NO CONTROLA NADA · ficha de C01
 // =====================================================================
 D.ficha = () => {
-  const s = contenido('CMI · FICHA DEL INDICADOR Y SEMÁFORO', 'EL INDICADOR NECESITA', 'responsable y evidencia.');
-  const lw = 7.5;
-  mono(s, 'FICHA · C01 INFORME AL CLIENTE', { x: M, y: Y0, w: lw, h: 0.3, color: C.accent1 });
-  const filas = [
-    ['FÓRMULA', 'Clientes con informe ÷ clientes intervenidos'],
-    ['META', '100%, cuando existan clientes'],
-    ['FRECUENCIA', 'Por instalación'],
-    ['RESPONSABLE', 'Comercial y Postventa'],
-    ['EVIDENCIA', 'Informe antes y después, con acuse de entrega'],
-    ['SI SE DESVÍA', 'Completar el informe y contactar al cliente'],
-  ];
-  const rh = 0.6, y0 = Y0 + 0.4;
-  filas.forEach(([k, v], i) => {
-    const y = y0 + i * rh;
-    regla(s, y, M, lw, i ? C.accent5 : C.accent1);
-    mono(s, k, { x: M, y, w: 2.0, h: rh, fontSize: 14, valign: 'middle' });
-    T(s, v, { x: M + 2.05, y, w: lw - 2.05, h: rh, fontSize: 19, bold: k === 'RESPONSABLE' || k === 'EVIDENCIA', valign: 'middle' });
+  const s = contenido('CMI · FICHA DEL INDICADOR', 'SIN RESPONSABLE NI EVIDENCIA,', 'un indicador no controla nada.');
+  const cy = Y0, ch = YF - Y0 - 0.06;
+  caja(s, M, cy, CW, ch, { line: { color: C.accent5, width: 0.75 } });
+  // cabecera de la ficha: indicador y fórmula
+  mono(s, 'FICHA · C01 INFORME AL CLIENTE', { x: M + 0.35, y: cy + 0.26, w: 6, h: 0.3, color: C.accent1 });
+  T(s, [{ text: 'Clientes con informe', options: { bold: true } }, { text: '  ÷  ', options: { color: C.accent1 } }, { text: 'clientes intervenidos' }],
+    { x: M + 0.35, y: cy + 0.62, w: CW - 0.7, h: 0.6, fontSize: 26, valign: 'middle' });
+  regla(s, cy + 1.42, M + 0.35, CW - 0.7);
+  // protagonistas: las tres casillas que convierten un objetivo en control
+  const cols = [['RESPONSABLE', 'Comercial y Postventa'], ['EVIDENCIA', 'Informe con sus límites y acuse firmado'], ['SI SE DESVÍA', 'Completar el informe y contactar al cliente']];
+  const g = 0.3, w = (CW - 0.7 - 2 * g) / 3, yy = cy + 1.7, hh = ch - 1.95;
+  cols.forEach(([k, v], i) => {
+    const x = M + 0.35 + i * (w + g);
+    if (i === 0) { brillo(s, x, yy, w, hh, 0.4); cajaHot(s, x, yy, w, hh); } else caja(s, x, yy, w, hh, { fill: { color: C.background1 }, line: { color: C.accent1, width: 1 } });
+    mono(s, k, { x: x + 0.25, y: yy + 0.24, w: w - 0.5, h: 0.3, fontSize: 14, color: C.accent1 });
+    T(s, v, { x: x + 0.25, y: yy + 0.7, w: w - 0.45, h: hh - 0.9, fontSize: TX.sub, bold: true, valign: 'top', lineSpacingMultiple: 1.0 });
   });
-  regla(s, y0 + filas.length * rh, M, lw);
-  // semáforo
-  const rx = M + lw + 0.55, rw = R - rx;
-  mono(s, 'SEMÁFORO', { x: rx, y: Y0, w: rw, h: 0.3, color: C.accent1 });
-  const luces = [
-    [GRIS, 'SIN MEDIR', 'celda vacía: no es incumplido'],
-    [VERDE, 'VERDE', '90% o más'],
-    [AMBAR, 'ÁMBAR', '70% a 89%'],
-    [ROJO, 'ROJO', 'menos de 70%'],
-  ];
-  const lh = 0.56;
-  luces.forEach(([color, k, v], i) => {
-    const y = y0 + i * lh;
-    s.addShape(S.ellipse, { x: rx, y: y + (lh - 0.3) / 2, w: 0.3, h: 0.3, fill: { color }, line: { type: 'none' } });
-    mono(s, k, { x: rx + 0.45, y, w: 1.6, h: lh, fontSize: 15, bold: true, color, valign: 'middle' });
-    T(s, v, { x: rx + 1.95, y, w: rw - 1.95, h: lh, fontSize: 17, color: C.text2, valign: 'middle' });
-  });
-  const hy = y0 + 4 * lh + 0.2, hh = y0 + filas.length * rh - hy;
-  cajaHot(s, rx, hy, rw, hh);
-  T(s, [{ text: 'Hito crítico o de seguridad: ', options: { breakLine: true, color: C.text2 } }, { text: 'verde solo al 100%.', options: { bold: true } }],
-    { x: rx + 0.25, y: hy, w: rw - 0.5, h: hh, fontSize: TX.cuerpo, valign: 'middle' });
   return s;
 };
 
 // =====================================================================
-// 10 · CUANDO LA META SE INCUMPLE: 8 DE 10 · ejercicio hipotético
+// 9 · SIN MEDIR NO ES ROJO · semáforo con el gris aparte
+// =====================================================================
+D.semaforo = () => {
+  const s = contenido('CMI · LECTURA DEL RESULTADO', 'SIN MEDIR', 'no es rojo.');
+  const d = 1.45, y = Y0 + 0.35, g = 0.55;
+  [[VERDE, 'VERDE', '90% o más'], [AMBAR, 'ÁMBAR', '70% a 89%'], [ROJO, 'ROJO', 'menos de 70%']].forEach(([color, k, v], i) => {
+    const x = M + 0.1 + i * (d + g);
+    s.addShape(S.ellipse, { x, y, w: d, h: d, fill: { color }, line: { type: 'none' } });
+    mono(s, k, { x: x - 0.3, y: y + d + 0.16, w: d + 0.6, h: 0.3, fontSize: 15, bold: true, color, align: 'center' });
+    T(s, v, { x: x - 0.3, y: y + d + 0.5, w: d + 0.6, h: 0.4, fontSize: TX.cuerpo, align: 'center' });
+  });
+  // separador y el gris, protagonista
+  const sx = M + 0.1 + 3 * (d + g) + 0.1;
+  linea(s, sx, Y0, 0, 3.3, C.accent5, 1);
+  const gd = 2.35, gx = sx + 0.75, gy = Y0 + 0.05;
+  brillo(s, gx, gy, gd, gd, 0.5);
+  s.addShape(S.ellipse, { x: gx, y: gy, w: gd, h: gd, fill: { color: '2A3034' }, line: { color: GRIS, width: 2.5, dashType: 'dash' } });
+  T(s, 'SIN MEDIR', { x: gx, y: gy, w: gd, h: gd, fontFace: F_MONO, fontSize: 20, bold: true, color: C.text1, align: 'center', valign: 'middle' });
+  T(s, [{ text: 'Celda vacía: ', options: { bold: true } }, { text: 'falta el dato, no se incumplió.', options: { color: C.text2 } }],
+    { x: gx + gd + 0.4, y: gy + 0.5, w: R - gx - gd - 0.4, h: 1.4, fontSize: TX.cuerpoL, valign: 'middle' });
+  const by = Y0 + 3.55;
+  regla(s, by, M, CW, C.accent1);
+  T(s, [{ text: 'Control crítico: ', options: { bold: true } }, { text: 'verde solo al 100%.', options: { bold: true, color: C.accent1 } }],
+    { x: M, y: by + 0.12, w: CW, h: 0.5, fontSize: TX.sub, valign: 'middle' });
+  return s;
+};
+
+// =====================================================================
+// 10 · 8 DE 10 ES ROJO, NO ÁMBAR · ejercicio hipotético
 // =====================================================================
 D.desviacion = () => {
-  const s = contenido('CONTROL · DESVIACIÓN DE UNA META', 'CUANDO LA META SE INCUMPLE:', '8 de 10.');
+  const s = contenido('CONTROL · DESVIACIÓN DE UNA META', '8 DE 10 ES ROJO, NO ÁMBAR:', 'el informe es obligatorio.');
   noLumine(s, 'EJERCICIO HIPOTÉTICO', R, Y0 - 0.08, { alignRight: true });
-  mono(s, 'INFORMES ENTREGADOS · 10 CLIENTES INTERVENIDOS', { x: M, y: Y0, w: 8, h: 0.3 });
-  // diez clientes: ocho con informe, dos sin informe
-  const n = 10, g = 0.16, q = (CW - (n - 1) * g) / n, qy = Y0 + 0.5, qh = 0.78;
+  mono(s, 'INFORMES ENTREGADOS A 10 CLIENTES', { x: M, y: Y0, w: 8, h: 0.3 });
+  const n = 10, g = 0.16, q = (CW - (n - 1) * g) / n, qy = Y0 + 0.5, qh = 0.9;
   for (let i = 0; i < n; i++) {
     const x = M + i * (q + g), ok = i < 8;
     if (ok) s.addShape(S.rect, { x, y: qy, w: q, h: qh, fill: { color: C.accent1 }, line: { type: 'none' } });
-    else s.addShape(S.rect, { x, y: qy, w: q, h: qh, fill: { color: C.background1, transparency: 100 }, line: { color: ROJO, width: 1.5, dashType: 'dash' } });
-    T(s, ok ? String(i + 1) : 'FALTA', { x, y: qy, w: q, h: qh, fontFace: F_MONO, fontSize: ok ? 18 : 14, bold: true, align: 'center', valign: 'middle', color: ok ? C.background1 : ROJO });
+    else s.addShape(S.rect, { x, y: qy, w: q, h: qh, fill: { color: '1A0E10' }, line: { color: ROJO, width: 2, dashType: 'dash' } });
+    T(s, String(i + 1), { x, y: qy, w: q, h: qh, fontFace: F_MONO, fontSize: 18, bold: true, align: 'center', valign: 'middle', color: ok ? C.background1 : ROJO });
   }
-  // las tres cifras
-  const ny = qy + qh + 0.3, nw = CW / 3;
-  [['REAL', '80%', C.text1], ['META', '100%', C.text1], ['DESVIACIÓN', '−20 pp', C.accent1]].forEach(([k, v, color], i) => {
-    const x = M + i * nw;
-    if (i === 2) brillo(s, x + 0.2, ny + 0.2, 2.6, 0.7, 0.5);
-    mono(s, k, { x, y: ny, w: nw, h: 0.3, fontSize: 14 });
-    numero(s, v, { x, y: ny + 0.3, w: nw - 0.2, h: 0.8, fontSize: TX.cifraXL, valign: 'middle', color });
+  const ny = qy + qh + 0.28;
+  [['REAL', '80%', C.text1], ['DESVIACIÓN', '−20 pp', C.accent1]].forEach(([k, v, color], i) => {
+    const x = M + i * 3.6;
+    mono(s, k, { x, y: ny, w: 3.4, h: 0.3, fontSize: 14 });
+    numero(s, v, { x, y: ny + 0.3, w: 3.4, h: 0.8, fontSize: TX.cifraXL, valign: 'middle', color });
   });
-  // dos lecturas del mismo 80%
-  const cy = ny + 1.32, ch = YF - cy, cw = (CW - 0.4) / 2;
-  caja(s, M, cy, cw, ch, { line: { color: AMBAR, width: 1 } });
-  mono(s, 'REGLA GENERAL', { x: M + 0.25, y: cy + 0.16, w: cw - 0.5, h: 0.3, fontSize: 14 });
-  T(s, 'Entre 70% y 89%', { x: M + 0.25, y: cy + 0.5, w: cw - 2.2, h: 0.5, fontSize: TX.cuerpo, valign: 'middle' });
-  estado(s, 'amb', M + cw - 0.25, cy + 0.52, { alignRight: true, size: 16, h: 0.46 });
-  const x2 = M + cw + 0.4;
-  cajaHot(s, x2, cy, cw, ch);
-  mono(s, 'CONTROL CRÍTICO', { x: x2 + 0.25, y: cy + 0.16, w: cw - 0.5, h: 0.3, fontSize: 14, color: C.accent1 });
-  T(s, 'El informe es obligatorio', { x: x2 + 0.25, y: cy + 0.5, w: cw - 2.0, h: 0.5, fontSize: TX.cuerpo, bold: true, valign: 'middle' });
-  estado(s, 'rojo', x2 + cw - 0.25, cy + 0.52, { alignRight: true, size: 16, h: 0.46 });
+  // dos lecturas del mismo 80%: protagonista el veredicto crítico
+  const cx = M + 7.3, cw = R - cx, half = 0.82;
+  caja(s, cx, ny, cw, half, { fill: { color: C.background1 }, line: { color: AMBAR, width: 1, dashType: 'dash' } });
+  T(s, 'Regla general', { x: cx + 0.25, y: ny, w: cw - 2.0, h: half, fontSize: TX.cuerpo, color: C.text2, valign: 'middle' });
+  estado(s, 'amb', cx + cw - 0.22, ny + (half - 0.44) / 2, { alignRight: true, size: 16, h: 0.44 });
+  const y2 = ny + half + 0.2, h2 = YF - y2;
+  cajaHot(s, cx, y2, cw, h2);
+  T(s, 'Control crítico', { x: cx + 0.25, y: y2, w: cw - 2.0, h: h2, fontSize: TX.cuerpoL, bold: true, valign: 'middle' });
+  estado(s, 'rojo', cx + cw - 0.22, y2 + (h2 - 0.5) / 2, { alignRight: true, size: 18, h: 0.5 });
   return s;
 };
 
 // =====================================================================
-// 11 · MEDIR, EXPLICAR, CORREGIR, VERIFICAR · ciclo cerrado sobre los 2 informes que faltan
+// 11 · LA DESVIACIÓN SE CIERRA CON EVIDENCIA · ciclo medir → explicar → corregir → verificar
 // =====================================================================
 D.ciclo = () => {
-  const s = contenido('CONTROL · ACCIÓN CORRECTIVA', 'MEDIR, EXPLICAR,', 'corregir y verificar.');
+  const s = contenido('CONTROL · ACCIÓN CORRECTIVA', 'LA DESVIACIÓN SE CIERRA', 'con evidencia, no cambiando el color.');
   noLumine(s, 'EJERCICIO HIPOTÉTICO', R, Y0 - 0.08, { alignRight: true });
   mono(s, 'LOS 2 INFORMES QUE FALTAN', { x: M, y: Y0, w: 8, h: 0.3 });
   const pasos = [
-    ['MEDIR', 'Corte: 8 de 10 informes'],
+    ['MEDIR', 'El corte mensual detecta la brecha'],
     ['EXPLICAR', '¿Faltó medir, validar o entregar?'],
     ['CORREGIR', 'Responsable y plazo para cerrarlos'],
     ['VERIFICAR', 'Informe firmado, entrega y acuse'],
   ];
-  const g = 0.5, pw = (CW - 3 * g) / 4, py = Y0 + 0.58, ph = 1.85;
+  const g = 0.5, pw = (CW - 3 * g) / 4, py = Y0 + 0.58, ph = 1.95;
   pasos.forEach(([k, v], i) => {
     const x = M + i * (pw + g), hot = i === 3;
-    if (hot) cajaHot(s, x, py, pw, ph); else caja(s, x, py, pw, ph, { line: { color: C.text2, width: 0.75 } });
+    if (hot) { brillo(s, x, py, pw, ph, 0.4); cajaHot(s, x, py, pw, ph); } else caja(s, x, py, pw, ph, { line: { color: C.text2, width: 0.75 } });
     tag(s, String(i + 1).padStart(2, '0'), x + 0.22, py + 0.22, { off: !hot, w: 0.6, h: 0.4, size: 16 });
     T(s, k, { x: x + 0.22, y: py + 0.72, w: pw - 0.44, h: 0.44, fontSize: TX.sub, bold: true, valign: 'middle', color: hot ? C.accent1 : C.text1 });
     T(s, v, { x: x + 0.22, y: py + 1.18, w: pw - 0.4, h: 0.7, fontSize: 18, color: C.text2, valign: 'top' });
     if (i < 3) flecha(s, x + pw + 0.08, py + ph / 2, g - 0.16, 0);
   });
-  // vuelta: nueva medición en el siguiente corte
-  const ly = py + ph + 0.3, x1 = M + pw / 2, x4 = M + 3 * (pw + g) + pw / 2;
+  const ly = py + ph + 0.32, x1 = M + pw / 2, x4 = M + 3 * (pw + g) + pw / 2;
   linea(s, x4, py + ph, 0, ly - py - ph, C.accent1, 1.75);
   linea(s, x1, ly, x4 - x1, 0, C.accent1, 1.75);
   flecha(s, x1, ly, 0, py + ph - ly);
   serif(s, 'nueva medición en el siguiente corte', { x: x1 + 0.3, y: ly + 0.04, w: 6, h: 0.4, fontSize: 18 });
-  const by = ly + 0.54;
+  const by = ly + 0.62;
   regla(s, by, M, CW, C.accent1);
-  T(s, [{ text: 'Sin evidencia de cierre, la desviación sigue abierta. ', options: { bold: true } }, { text: 'Si la falla se repite, se rediseña el protocolo; no se culpa al último técnico.', options: { color: C.text2 } }],
-    { x: M, y: by + 0.12, w: CW, h: YF - by - 0.1, fontSize: TX.cuerpo, valign: 'top' });
+  T(s, [{ text: 'Si la falla se repite: ', options: { bold: true } }, { text: 'se rediseña el protocolo, no se culpa al técnico.', options: { color: C.text2 } }],
+    { x: M, y: by + 0.12, w: CW, h: 0.5, fontSize: TX.cuerpoL, valign: 'middle' });
   return s;
 };
 
 // =====================================================================
-// 12 · EL CMI PERMITE DECIDIR CUÁNDO AVANZAR · escalera de la cadena causal y pendientes
+// 12 · EL CMI DICE CUÁNDO AVANZAR · escalera, pendientes y la pregunta que sigue
 // =====================================================================
 D.conclusion = () => {
-  const s = contenido('CONCLUSIÓN', 'EL CMI PERMITE DECIDIR', 'cuándo avanzar.');
+  const s = contenido('CONCLUSIÓN', 'EL CMI DICE CUÁNDO AVANZAR;', 'faltan el WACC y la tolerancia.');
   const lw = 7.3, gap = 0.16, sw = (lw - 3 * gap) / 4, base = YF - 0.05;
   [['APRENDIZAJE', 'Capacidades verificables'], ['PROCESOS', 'Procesos formales'], ['CLIENTES', 'Valor demostrado al cliente'], ['FINANCIERA', 'EVA mayor que cero']].forEach(([k, t], i) => {
     const x = M + i * (sw + gap), h = 1.75 + i * 0.8, y = base - h, hot = i === 3;
@@ -616,16 +589,201 @@ D.conclusion = () => {
   });
   const ny = Y0 + 2.14;
   regla(s, ny, rx, rw, C.accent1);
-  numero(s, '0', { x: rx, y: ny + 0.08, w: 0.8, h: 0.9, fontSize: 60, valign: 'middle', color: C.accent1 });
-  T(s, 'ventas, homologaciones o EVA presentados como logros', { x: rx + 0.85, y: ny + 0.08, w: rw - 0.85, h: 1.0, fontSize: 18, valign: 'middle' });
+  mono(s, 'LO QUE SIGUE', { x: rx, y: ny + 0.14, w: rw, h: 0.3, color: C.accent1 });
+  serif(s, '¿Qué iniciativas y presupuesto necesita cada hito?', { x: rx, y: ny + 0.5, w: rw, h: 1.0, fontSize: 24, color: C.text1 });
   regla(s, YF - 0.62, rx, rw);
   mono(s, 'GRACIAS · ¿PREGUNTAS?', { x: rx, y: YF - 0.5, w: rw, h: 0.45, fontSize: 18, color: C.text1, valign: 'middle' });
   return s;
 };
 
-// ---------- orden de la exposición (guion.js) con notas del orador ----------
-// Notas: orador, tiempo estimado (y el del plan del paquete), texto íntegro del guion y transición sugerida.
-const nota = x => `${x.quien.toUpperCase()} · ${G.mmss(G.segundos(x.texto))} estimados a ${G.PALABRAS_POR_MINUTO} palabras por minuto (plan del paquete: ${x.tiempoPaquete})\n\n${x.texto}\n\nTransición sugerida: ${x.transicion}`;
+// =====================================================================
+// ANEXO · índice con enlaces y nueve temas, en el orden de las preguntas más probables
+// =====================================================================
+D.indice = (primera) => {
+  const s = contenido('MATERIAL DE APOYO', 'ANEXO', 'para preguntas.');
+  T(s, 'No se presenta: clic en la pregunta para saltar a la respuesta.', { x: M, y: Y0 - 0.06, w: CW, h: 0.4, fontSize: 18, color: C.text2 });
+  const rowH = 0.42, y0 = Y0 + 0.36;
+  G.ANEXO.forEach((a, i) => {
+    const y = y0 + i * rowH, n = primera + i;
+    regla(s, y, M, CW);
+    tag(s, a.codigo, M, y + 0.06, { w: 0.6, h: 0.32, size: 14 });
+    s.addText(a.titulo, { x: M + 0.8, y, w: CW - 2.0, h: rowH, valign: 'middle', fontFace: F_BODY, fontSize: 19, color: C.text1, margin: 0, isTextBox: true, hyperlink: { slide: n, tooltip: 'Ir a ' + a.titulo } });
+    s.addText('LÁM. ' + n, { x: R - 1.1, y, w: 1.1, h: rowH, valign: 'middle', align: 'right', fontFace: F_MONO, fontSize: 14, color: C.accent1, charSpacing: 1, margin: 0, isTextBox: true, hyperlink: { slide: n, tooltip: 'Ir a ' + a.titulo } });
+  });
+  regla(s, y0 + G.ANEXO.length * rowH, M, CW);
+  return s;
+};
+
+// tabla simple del anexo: encabezado mono y filas con regla fina
+function tabla(s, cols, filas, y0, o = {}) {
+  const rh = o.rh || 0.6, size = o.size || 17;
+  let x = M;
+  cols.forEach(([k, w]) => { mono(s, k, { x, y: y0, w, h: 0.32, fontSize: 13, color: C.accent1 }); x += w; });
+  filas.forEach((f, i) => {
+    const y = y0 + 0.38 + i * rh;
+    regla(s, y, M, CW, i ? C.accent5 : C.accent1);
+    let xx = M;
+    f.forEach((v, j) => {
+      const w = cols[j][1];
+      if (o.codigo && j === 0) {
+        tag(s, v, xx, y + (rh - 0.32) / 2, { w: 0.56, h: 0.32, size: 13, off: true });
+        if (o.estados) {
+          const st = o.estados[i];
+          s.addShape(S.rect, { x: xx + 0.64, y: y + (rh - 0.18) / 2, w: 0.2, h: 0.18, fill: { color: C.background1, transparency: 100 }, line: st === 'crit' ? { color: ROJO, width: 1.75 } : { color: GRIS, width: 1, dashType: 'dash' } });
+        }
+      } else T(s, v, { x: xx, y, w: w - 0.15, h: rh, fontSize: size, valign: 'middle', bold: !!(o.negrita && o.negrita.includes(j)), color: o.gris && o.gris.includes(j) ? C.text2 : C.text1, lineSpacingMultiple: 0.92 });
+      xx += w;
+    });
+  });
+  regla(s, y0 + 0.38 + filas.length * rh, M, CW);
+}
+
+D['a-eva'] = () => {
+  const s = contenido('PERSPECTIVA FINANCIERA', 'EL EVA,', 'en dos fórmulas equivalentes.');
+  noLumine(s, 'EJEMPLO DE CLASE · NO LUMINE', R, Y0 - 0.08, { alignRight: true });
+  const lw = 6.6;
+  numero(s, 'EVA = NOPAT − CAPITAL × WACC', { x: M, y: Y0 + 0.5, w: lw, h: 0.6, fontSize: TX.cifraS, valign: 'middle' });
+  numero(s, [{ text: 'EVA = ', options: {} }, { text: '(ROIC − WACC) × CAPITAL' }], { x: M, y: Y0 + 1.15, w: lw, h: 0.6, fontSize: TX.cifraS, valign: 'middle' });
+  regla(s, Y0 + 1.95, M, lw, C.accent1);
+  numero(s, '(15% − 12%) × 1.000.000', { x: M, y: Y0 + 2.05, w: lw, h: 0.6, fontSize: TX.cifraS, valign: 'middle', color: C.text2 });
+  numero(s, '= US$ 30.000', { x: M, y: Y0 + 2.65, w: lw, h: 0.75, fontSize: TX.cifra, valign: 'middle', color: C.accent1 });
+  const rx = M + lw + 0.5, rw = R - rx, c1 = 1.4, c2 = (rw - c1) / 2;
+  mono(s, 'VAN Y TIR', { x: rx + c1, y: Y0 + 0.5, w: c2, h: 0.32, fontSize: 14 });
+  mono(s, 'EVA', { x: rx + c1 + c2, y: Y0 + 0.5, w: c2, h: 0.32, fontSize: 14, color: C.accent1 });
+  [['Evalúa', 'El proyecto completo', 'Cada período'], ['Cuándo', 'Antes de invertir', 'Durante la operación'], ['Con qué', 'Flujos descontados', 'Resultado y capital']].forEach(([k, a, b], i) => {
+    const y = Y0 + 0.9 + i * 0.78;
+    regla(s, y, rx, rw, i ? C.accent5 : C.accent1);
+    mono(s, k.toUpperCase(), { x: rx, y, w: c1, h: 0.78, fontSize: 13, valign: 'middle' });
+    T(s, a, { x: rx + c1, y, w: c2 - 0.1, h: 0.78, fontSize: 18, color: C.text2, valign: 'middle' });
+    T(s, b, { x: rx + c1 + c2, y, w: c2 - 0.1, h: 0.78, fontSize: 18, bold: true, valign: 'middle' });
+  });
+  regla(s, Y0 + 0.9 + 3 * 0.78, rx, rw);
+  return s;
+};
+
+D['a-semaforo'] = () => {
+  const s = contenido('CMI · REGLAS DEL SEMÁFORO', 'CADA TIPO DE INDICADOR', 'tiene su regla.');
+  tabla(s, [['TIPO', 2.9], ['INDICADORES', 3.4], ['VERDE', 3.0], ['ROJO', CW - 9.3]], [
+    ['Ratio común', 'C03', '90% o más (ámbar 70% a 89%)', 'Menos de 70%'],
+    ['Ratio o cobertura crítica', 'A01 · A02 · P03 · C01 · F03', '100% (o cobertura completa)', 'Bajo 100%'],
+    ['Hito', 'A03 · P01 · P02 · C02 · F02', 'Cumplido, con documento', 'Pendiente comprobado (críticos)'],
+    ['Valor económico', 'F01', 'EVA mayor que 0', 'EVA de 0 o menos'],
+  ], Y0, { rh: 0.82, size: 18, negrita: [0] });
+  T(s, [{ text: 'Sin dato, cualquier tipo queda en gris: ', options: { bold: true } }, { text: 'sin medir.', options: { color: C.text2 } }], { x: M, y: Y0 + 0.38 + 4 * 0.82 + 0.2, w: CW, h: 0.45, fontSize: TX.cuerpo, valign: 'middle' });
+  return s;
+};
+
+const MATRIZ = [
+  ['A01', 'Calibraciones registradas ÷ generadas', '100%', 'Trimestral', 'Ingeniería de Calibración', 'sin'],
+  ['A02', 'Técnicos habilitados ÷ asignados', '100% antes de abrir', 'Mensual', 'Responsable Técnico', 'sin'],
+  ['A03', 'Primer protocolo comparativo completo', '1 protocolo', 'Por piloto', 'Ingeniería de Calibración', 'crit'],
+  ['P01', 'Autorización sectorial vigente', '1', 'Por evento', 'Gerente General', 'crit'],
+  ['P02', 'Pares modelo-kit homologados', '1 o más antes de vender', 'Trimestral', 'Ingeniería de Calibración', 'crit'],
+  ['P03', 'Órdenes con acta completa ÷ cerradas', '100%', 'Por instalación', 'Responsable Técnico', 'sin'],
+  ['C01', 'Clientes con informe ÷ intervenidos', '100%', 'Por instalación', 'Comercial y Postventa', 'sin'],
+  ['C02', 'Aseguradora y planta de revisión con protocolo', '1 de cada una antes de vender', 'Por evento', 'Gerente General', 'crit'],
+  ['C03', 'Consultas de uso intensivo ÷ clasificadas', 'Más de 50% (orientativa)', 'Mensual', 'Comercial y Postventa', 'sin'],
+  ['F01', 'EVA = NOPAT − capital × WACC', 'Mayor que 0 en régimen', 'Anual', 'Gerente General', 'sin'],
+  ['F02', 'Convenios de financiamiento operativos', '1 o más antes de vender', 'Por evento', 'Comercial y Postventa', 'sin'],
+  ['F03', 'Financiamiento disponible ÷ capital de trabajo', '1 o más', 'Mensual al operar', 'Administración y Personas', 'sin'],
+];
+const matriz = (filas, etiqueta, acento) => () => {
+  const s = contenido('CMI · MATRIZ DE INDICADORES', 'LOS 12 INDICADORES:', acento);
+  leyendaEstados(s, ['sin', 'crit']);
+  tabla(s, [['ID', 1.05], ['INDICADOR', 4.25], ['META', 2.55], ['FRECUENCIA', 1.95], ['RESPONSABLE', CW - 9.8]],
+    filas.map(f => f.slice(0, 5)), Y0, { rh: 0.62, size: 16, codigo: true, estados: filas.map(f => f[5]), gris: [3] });
+  return s;
+};
+D['a-matriz1'] = matriz(MATRIZ.slice(0, 6), 'APRENDIZAJE Y PROCESOS', 'aprendizaje y procesos.');
+D['a-matriz2'] = matriz(MATRIZ.slice(6), 'CLIENTES Y FINANCIERA', 'clientes y financiera.');
+
+D['a-cmi'] = () => {
+  const s = contenido('RETROALIMENTACIÓN · TRES VERSIONES', 'LO QUE SE CONSERVÓ', 'y lo que cambió.');
+  tabla(s, [['', 1.9], ['CMI ORIGINAL', 3.3], ['CMI ACTUALIZADO', 3.3], ['SOLEMNE 2', CW - 8.5]], [
+    ['Financiera', 'Rentabilidad sobre el costo de capital, con VAN, TIR y WACC', 'Convenios de financiamiento y expansión', 'Rentabilidad sobre el costo de capital, medida con EVA'],
+    ['Clientes', 'Convenios gremiales, aseguradoras y penetración', 'Reconocimiento institucional y tipo de consulta', 'Informe individual antes y después al centro'],
+    ['Mapa', 'Flechas solo verticales', 'Perspectivas ordenadas, sin relaciones', 'Flechas con mecanismo e indicador'],
+  ], Y0, { rh: 1.15, size: 17, negrita: [0, 3], gris: [1, 2] });
+  return s;
+};
+
+D['a-ahorro'] = () => {
+  const s = contenido('PROPUESTA DE VALOR · MEDICIÓN DEL AHORRO', 'EL 20% SOLO SE PRUEBA', 'con un ensayo comparable.');
+  T(s, 'Hasta 20% menos bencina en ciudad', { x: M, y: Y0, w: 6.5, h: 0.5, fontSize: TX.cuerpoL, bold: true, valign: 'middle' });
+  marca(s, 'est', 'ESTIMACIÓN, NO MEDICIÓN', M + 6.6, Y0 + 0.05);
+  mono(s, 'EL ENSAYO DEBE CONTROLAR', { x: M, y: Y0 + 0.85, w: 8, h: 0.3 });
+  const items = ['Consumo base del mismo auto', 'Recorrido', 'Forma de conducir', 'Condiciones de la prueba', 'Método de medición'];
+  const g = 0.2, w = (CW - 4 * g) / 5, y = Y0 + 1.25, h = 1.35;
+  items.forEach((t, i) => {
+    const x = M + i * (w + g);
+    caja(s, x, y, w, h, { line: { color: C.accent1, width: 1 } });
+    tag(s, String(i + 1), x + 0.18, y + 0.18, { off: true, w: 0.42, h: 0.38, size: 16 });
+    T(s, t, { x: x + 0.18, y: y + 0.64, w: w - 0.3, h: 0.66, fontSize: 18, bold: true, valign: 'top', lineSpacingMultiple: 0.95 });
+  });
+  const by = y + h + 0.3, rh = 0.6;
+  [['A03 · Primer protocolo comparativo completo', 'crit'], ['Tolerancia de error aceptable', 'pen']].forEach(([t, st], i) => {
+    const yy = by + i * rh;
+    regla(s, yy, M, CW, i ? C.accent5 : C.accent1);
+    T(s, t, { x: M, y: yy, w: CW - 3.5, h: rh, fontSize: TX.cuerpo, valign: 'middle' });
+    if (st === 'crit') estado(s, 'crit', R, yy + 0.1, { alignRight: true });
+    else marca(s, 'pen', 'POR DEFINIR', R, yy + 0.1, { alignRight: true });
+  });
+  return s;
+};
+
+D['a-apoyo'] = () => {
+  const s = contenido('CLIENTES · APOYO', 'CONVENIOS Y FOCO COMERCIAL', 'apoyan la promesa.');
+  leyendaEstados(s, ['sin', 'crit']);
+  const g = 0.4, w = (CW - g) / 2, y = Y0, h = 3.5;
+  [['C02 · CONFIANZA', 'Protocolo con al menos una aseguradora y una planta de revisión técnica', 'Antes de vender', 'crit'],
+    ['C03 · FOCO COMERCIAL', 'Más de 50% de consultas de uso intensivo', 'Sin excluir particulares ni flotas', 'sin']].forEach(([k, t, a, st], i) => {
+    const x = M + i * (w + g);
+    caja(s, x, y, w, h, { line: borde(st) });
+    mono(s, k, { x: x + 0.3, y: y + 0.26, w: w - 0.6, h: 0.3, fontSize: 14, color: C.accent1 });
+    T(s, t, { x: x + 0.3, y: y + 0.72, w: w - 0.6, h: 1.5, fontSize: TX.sub, bold: true, valign: 'top' });
+    regla(s, y + h - 0.95, x + 0.3, w - 0.6);
+    T(s, a, { x: x + 0.3, y: y + h - 0.85, w: w - 0.6, h: 0.6, fontSize: TX.cuerpo, color: C.text2, valign: 'middle' });
+  });
+  marca(s, 'sup', 'META ORIENTATIVA', R - 0.3, Y0 + 0.2, { alignRight: true, size: 12, h: 0.36 });
+  return s;
+};
+
+D['a-financia'] = () => {
+  const s = contenido('FINANCIERA · APOYO', 'EL FINANCIAMIENTO', 'tiene metas, pero aún no cifras.');
+  marca(s, 'pen', 'PLAN FINANCIERO POR CONFIRMAR', R, Y0 - 0.08, { alignRight: true });
+  const g = 0.4, w = (CW - g) / 2, y = Y0 + 0.5, h = 3.2;
+  [['F02 · PAGO DEL CLIENTE', 'Al menos un convenio de financiamiento antes de la primera venta', 'El financiamiento verde para el kit no está confirmado'],
+    ['F03 · CAPITAL DE TRABAJO', 'Financiamiento disponible igual o mayor que el capital de trabajo requerido', 'Sin asumir aportes que no existen']].forEach(([k, t, a], i) => {
+    const x = M + i * (w + g);
+    caja(s, x, y, w, h, { line: borde('sin') });
+    mono(s, k, { x: x + 0.3, y: y + 0.26, w: w - 0.6, h: 0.3, fontSize: 14, color: C.accent1 });
+    T(s, t, { x: x + 0.3, y: y + 0.72, w: w - 0.6, h: 1.4, fontSize: TX.sub, bold: true, valign: 'top' });
+    regla(s, y + h - 0.95, x + 0.3, w - 0.6);
+    T(s, a, { x: x + 0.3, y: y + h - 0.85, w: w - 0.6, h: 0.6, fontSize: TX.cuerpo, color: C.text2, valign: 'middle' });
+  });
+  return s;
+};
+
+D['a-naturaleza'] = () => {
+  const s = contenido('TRANSPARENCIA · ORIGEN DE CADA CIFRA', 'DATO, DISEÑO O EJEMPLO:', 'cada cifra dice qué es.');
+  const g = 0.35, w = (CW - 2 * g) / 3, y = Y0, h = YF - Y0 - 0.06;
+  [['DATO', ['Lumine es preoperativa', 'Ley N° 21.793 sin reglamento', 'Ninguna venta ni homologación'], { color: C.accent1, width: 1.25 }],
+    ['DISEÑO O ESTIMACIÓN', ['Metas de 100% y umbrales 90/70', 'C03: más de 50%', 'Hasta 20% menos bencina'], { color: GRIS, width: 1, dashType: 'dash' }],
+    ['EJEMPLO, NO LUMINE', ['EVA de US$30.000 (módulo 4)', 'Caso 8 de 10 informes'], { color: C.text1, width: 1.25, dashType: 'dash' }]].forEach(([k, items, ln], i) => {
+    const x = M + i * (w + g);
+    caja(s, x, y, w, h, { line: ln });
+    mono(s, k, { x: x + 0.3, y: y + 0.26, w: w - 0.6, h: 0.3, fontSize: 14, color: ln.color === C.accent1 ? C.accent1 : C.text1, bold: true });
+    items.forEach((t, j) => {
+      const yy = y + 0.8 + j * 0.95;
+      regla(s, yy, x + 0.3, w - 0.6);
+      T(s, t, { x: x + 0.3, y: yy + 0.08, w: w - 0.6, h: 0.8, fontSize: TX.cuerpo, valign: 'middle' });
+    });
+  });
+  return s;
+};
+
+// ---------- orden de la exposición (guion.js), notas del orador y anexo ----------
+const nota = x => `${x.quien.toUpperCase()} · ${G.mmss(G.segundos(x.texto))} a ${G.PALABRAS_POR_MINUTO} palabras por minuto (${G.palabras(x.texto)} palabras)\n\n${x.texto}`;
 let quienAnterior = null, parte = 0;
 G.PRINCIPAL.forEach(x => {
   if (x.quien !== quienAnterior) { abrirSeccion(`${++parte} · ${x.quien}`); quienAnterior = x.quien; }
@@ -633,6 +791,17 @@ G.PRINCIPAL.forEach(x => {
   CLAVE = x.d;
   D[x.d]().addNotes(nota(x));
 });
+abrirSeccion('Anexo');
+INDICE_ANEXO = G.PRINCIPAL.length + 1;
+CLAVE = 'indice';
+D.indice(INDICE_ANEXO + 1).addNotes('ANEXO · No se presenta. Cada pregunta tiene un enlace a su respuesta; cada lámina del anexo tiene un enlace de vuelta a este índice.');
+G.ANEXO.forEach(a => {
+  ANEXO_ACTUAL = a;
+  CLAVE = a.d;
+  if (!D[a.d]) throw new Error('Falta la diapositiva ' + a.d);
+  D[a.d]().addNotes(`ANEXO ${a.codigo} · Solo si preguntan.\n\n${a.apoyo}`);
+});
+ANEXO_ACTUAL = null;
 
 // pptxgenjs escribe la paleta de Office: se reemplaza por la de Lumine en ppt/theme/theme1.xml
 async function aplicarTema(archivo, tema) {
@@ -732,5 +901,5 @@ async function incrustarFuentes(archivo) {
   await pres.writeFile({ fileName: OUT });
   await aplicarTema(OUT, THEME);
   console.log('tipografías incrustadas:', await incrustarFuentes(OUT));
-  console.log('listo', OUT, '·', G.PRINCIPAL.length, 'diapositivas');
+  console.log('listo', OUT, '·', G.PRINCIPAL.length, 'diapositivas +', G.ANEXO.length + 1, 'de anexo');
 })();
