@@ -4,14 +4,14 @@ Control de Gestión · ICMA901 · Sección 500 · NRC 4118 · UNAB. Profesor Leo
 
 Puntos 3 a 6 del instructivo: introducción, comprensión del negocio, declaraciones estratégicas compartidas y análisis estratégico. La formulación de la estrategia y el Cuadro de Mando Integral son el Avance 2.
 
-Exposición de máximo 15 minutos: 13 láminas y 1.796 palabras, unos 13:49 a 130 palabras por minuto. El anexo de 11 láminas no se expone. Diego abre y cierra; los cambios de expositor están escritos en el texto.
+Exposición de máximo 15 minutos: 13 láminas y 1.798 palabras, unos 13:50 a 130 palabras por minuto. El anexo de 11 láminas no se expone. Diego abre y cierra; los cambios de expositor están escritos en el texto.
 
 | Integrante | Láminas | Palabras | Tiempo | Objetivo |
 |---|---|---|---|---|
-| Diego Alarcón | 1, 2, 3, 4, 5, 13 | 606 | 4:40 | 4:42 |
-| Benjamín Torres | 6, 7, 8 | 587 | 4:31 | 4:30 |
-| Lukas Verdugo | 9, 10, 11, 12 | 603 | 4:38 | 4:38 |
-| **Total** | 13 | 1.796 | 13:49 | 15:00 máx. |
+| Diego Alarcón | 1, 2, 3, 4, 5, 13 | 610 | 4:42 | 4:42 |
+| Benjamín Torres | 6, 7, 8 | 591 | 4:33 | 4:30 |
+| Lukas Verdugo | 9, 10, 11, 12 | 597 | 4:36 | 4:38 |
+| **Total** | 13 | 1.798 | 13:50 | 15:00 máx. |
 
 | Lámina | Expositor | Apartado del informe | Tiempo |
 |---|---|---|---|
@@ -21,9 +21,9 @@ Exposición de máximo 15 minutos: 13 láminas y 1.796 palabras, unos 13:49 a 13
 | 4 · El cliente compra ahorro sin cambiar de auto, si confía | Diego | 4. Comprensión del negocio | 1:05 |
 | 5 · Misión, visión y valores que orientan decisiones | Diego | 5. Declaraciones estratégicas | 0:55 |
 | 6 · PEST 2,82: el freno es económico y regulatorio | Benjamín | 6.2 Entorno general: PEST | 1:30 |
-| 7 · La vía legal decide si el negocio existe | Benjamín | 6.2 Entorno general: PEST (regulación) | 1:20 |
+| 7 · La vía legal decide si el negocio existe | Benjamín | 6.2 Entorno general: PEST (regulación) | 1:25 |
 | 8 · Porter 3,49: el rival principal es posponer la inversión | Benjamín | 6.3 Industria: cinco fuerzas | 1:40 |
-| 9 · Recursos y factores críticos: la diferenciación es potencial | Lukas | 6.4 Capacidades internas | 1:15 |
+| 9 · Recursos y factores críticos: la diferenciación es potencial | Lukas | 6.4 Capacidades internas | 1:10 |
 | 10 · Cadena de valor: la exclusividad nace en la calibración y se juega en operaciones | Lukas | 6.4 Capacidades internas y cadena de valor | 1:10 |
 | 11 · FODA: fortalezas de diseño frente a amenazas externas decisivas | Lukas | 6.5 Síntesis FODA | 1:15 |
 | 12 · Tres brechas prioritarias | Lukas | 6.6 Diagnóstico integrado | 1:00 |
@@ -31,7 +31,7 @@ Exposición de máximo 15 minutos: 13 láminas y 1.796 palabras, unos 13:49 a 13
 
 ## Diego Alarcón · abre · láminas 1 a 5
 
-Unos 4:08 (537 palabras).
+Unos 4:10 (541 palabras).
 
 ### 1 · Portada · Control 3 · Avance 1 del TIG · 0:15
 
@@ -49,7 +49,7 @@ Partamos por el contexto. En todo el mundo, la transición energética suele pen
 
 *Informe: 4. Comprensión del negocio*
 
-Lumine Motors Chile es un proyecto, todavía sin operación, que instalaría un kit de hibridación aditiva en autos a combustión de tracción delantera. El motor original, la transmisión y la alimentación quedan como están. El kit suma tres piezas: una unidad de control, que decide cuándo asistir y corta ante fallas; un banco de baterías, que guarda la energía que hoy se pierde al frenar; y un motor eléctrico en el eje trasero, que ayuda al auto a moverse. No se enchufa, y el freno, el ABS y el control de estabilidad originales siempre mandan sobre el kit. Todavía es un diseño: falta probarlo, homologarlo y documentarlo antes de ofrecerlo. Por eso hoy no hablamos de resultados, sino de condiciones.
+Lumine Motors Chile es un proyecto, todavía sin operación, que instalaría un kit de hibridación aditiva en autos a combustión de tracción delantera. El motor original, la transmisión y la alimentación quedan como están. El kit suma tres piezas: una unidad de control, que decide cuándo asistir y corta ante fallas; un banco de baterías, que guarda la energía que hoy se pierde al frenar; y un motor eléctrico en el eje trasero, que ayuda al auto a moverse. No se enchufa, y el diseño deja que el freno, el ABS y el control de estabilidad originales siempre manden sobre el kit. Todavía es un diseño: falta probarlo, homologarlo y documentarlo antes de ofrecerlo. Por eso hoy no hablamos de resultados, sino de condiciones.
 
 ### 4 · El cliente compra ahorro sin cambiar de auto, si confía · 1:05
 
@@ -65,35 +65,35 @@ Esa propuesta descansa en una identidad declarada. La misión es reducir el comb
 
 ## Benjamín Torres · láminas 6 a 8
 
-Unos 4:31 (587 palabras).
+Unos 4:33 (591 palabras).
 
 ### 6 · PEST 2,82: el freno es económico y regulatorio · 1:30
 
 *Informe: 6.2 Entorno general: PEST*
 
-Gracias, Diego. Para el entorno general usamos la matriz PEST del curso. Cada factor se califica de uno a cinco, donde tres es neutro; bajo tres, el entorno juega en contra. El resultado global es dos coma ochenta y dos: un entorno moderadamente desfavorable. De cincuenta y un factores, trece son oportunidades, dieciocho son neutros y veinte son amenazas. Pero la lectura no es solo el número, sino su composición: lo importante es dónde está el freno. La dimensión económica es la más baja, con dos coma treinta y ocho: el ingreso disponible de los hogares cayó con el alza de los combustibles, el desempleo llegó a nueve coma seis por ciento y el kit es cien por ciento importado, con un dólar sobre novecientos setenta pesos. La segunda más baja es la político-jurídica, con dos coma sesenta y siete, por la regulación que explico enseguida. En cambio, la tecnológica es la más favorable, con tres coma veintitrés: los componentes son maduros y las baterías LFP llegaron a ochenta y un dólares por kilowatt hora, según BloombergNEF. Es decir: la tecnología existe; lo que falta es que el cliente pueda pagarla y que la ley permita instalarla.
+Gracias, Diego. Para el entorno general usamos la matriz PEST del curso. Cada factor se califica de uno a cinco, donde tres es neutro; bajo tres, el entorno juega en contra. El resultado global es dos coma ochenta y dos: un entorno moderadamente desfavorable. De cincuenta y un factores, trece son oportunidades, dieciocho son neutros y veinte son amenazas. Pero lo importante es dónde está el freno. La dimensión económica es la más baja, con dos coma treinta y ocho: el ingreso de los hogares cayó con el alza de los combustibles, el desempleo llegó a nueve coma seis por ciento y el kit es cien por ciento importado, con un dólar sobre novecientos setenta pesos. La segunda más baja es la político-jurídica, con dos coma sesenta y siete, por la regulación. En cambio, la tecnológica es la más favorable, con tres coma veintitrés: los componentes son maduros y el precio promedio mundial de los paquetes de baterías LFP llegó a ochenta y un dólares por kilowatt hora, según BloombergNEF. Es decir: la tecnología existe; lo que falta es que el cliente pueda pagarla y que la ley permita instalarla.
 
-### 7 · La vía legal decide si el negocio existe · 1:20
+### 7 · La vía legal decide si el negocio existe · 1:25
 
 *Informe: 6.2 Entorno general: PEST (regulación)*
 
-La regulación merece una lámina propia, porque decide si el negocio existe. La Ley veintiún mil setecientos noventa y tres, publicada el catorce de enero de este año, facultó al Ministerio de Transportes para autorizar talleres que transformen la propulsión de vehículos en uso. Pero todavía no tiene reglamento. La única referencia es un borrador de diciembre de dos mil veintiuno, anterior a la ley, que define la transformación como reemplazar el motor por uno eléctrico y excluye autos con ABS, airbag o control de estabilidad. Con esas dos preguntas armamos cuatro escenarios. Si el reglamento acepta conservar el motor y no excluye esos sistemas, hay una vía amplia que protege al primero que homologa. Si los excluye, la vía queda acotada. Si no acepta conservar el motor, queda una vía alternativa, por alteración de características, o ninguna, y entonces el negocio no opera. Con el borrador actual, Lumine está en la rama de los escenarios tres o cuatro. No es una amenaza que se promedie con otras: es una condición de entrada.
+La regulación decide si el negocio existe. La Ley veintiún mil setecientos noventa y tres, publicada el catorce de enero de este año, facultó al Ministerio de Transportes para autorizar talleres que transformen la propulsión de vehículos en uso. Pero todavía no tiene reglamento. La única referencia es un borrador de diciembre de dos mil veintiuno, anterior a la ley, que define la transformación como reemplazar el motor por uno eléctrico y excluye autos con ABS, airbag o control de estabilidad. Con esas dos preguntas armamos cuatro escenarios. Si el reglamento acepta conservar el motor y no excluye esos sistemas, hay una vía amplia, en la que el primero que homologa gana una ventaja temporal. Si los excluye, la vía queda acotada. Si no acepta conservar el motor, queda una vía alternativa, por alteración de características, o ninguna, y entonces el negocio no opera. Si el reglamento sigue al borrador, Lumine quedaría en la rama de los escenarios tres o cuatro; la vía aplicable está sin confirmar. No es una amenaza que se promedie con otras: es una condición de entrada.
 
 ### 8 · Porter 3,49: el rival principal es posponer la inversión · 1:40
 
 *Informe: 6.3 Industria: cinco fuerzas*
 
-Para la industria usamos las cinco fuerzas de Porter. Cada fuerza se califica de cero a cinco según su intensidad, y el modelo pondera su importancia. El resultado ponderado es tres coma cuarenta y nueve: una industria moderadamente poco atractiva. La fuerza más intensa son los sustitutos, con el máximo de cinco. Y el sustituto principal no es otro taller: es posponer la inversión. Si el cliente no compra el kit, se ahorra ese desembolso, pero sigue pagando toda su bencina. También compiten el híbrido usado y otras formas de reconversión. Le siguen los nuevos entrantes, con tres coma setenta y cinco: hoy la regulación bloquea a todos por igual, pero cuando se abra la vía, cualquiera con presupuesto podría homologar. Los clientes, con dos coma sesenta y cuatro, y los proveedores, con dos coma sesenta y siete, presionan menos, y la rivalidad es baja, uno coma ochenta y tres, porque hoy nadie ofrece este servicio. Ojo con una cifra: sustitutos y clientes suman cincuenta y cinco por ciento de la ponderación del modelo; eso es peso dentro del instrumento, no probabilidad de amenaza. Lo que Lumine sí puede influir es la barrera de entrada, la sensibilidad al precio y la inercia del cliente, con evidencia de ahorro. Lukas sigue con lo que Lumine tiene hacia adentro.
+Para la industria usamos las cinco fuerzas de Porter. Cada fuerza se califica de cero a cinco según su intensidad, y el modelo pondera su importancia. El resultado ponderado es tres coma cuarenta y nueve: una industria moderadamente poco atractiva. La fuerza más intensa son los sustitutos, con el máximo de cinco. Y el sustituto principal no es otro taller: es posponer la inversión; el propio Porter cuenta como sustituto la opción de prescindir del producto o comprar usado. Quien no compra se ahorra el kit, pero sigue pagando toda su bencina. También compiten el híbrido usado y otras formas de reconversión. Le siguen los nuevos entrantes, con tres coma setenta y cinco: hoy la regulación bloquea a todos por igual, pero cuando se abra la vía, cualquiera con presupuesto podría homologar. Los clientes, con dos coma sesenta y cuatro, y los proveedores, con dos coma sesenta y siete, presionan menos, y la rivalidad es baja, uno coma ochenta y tres, porque nuestro análisis no identifica competidores directos en hibridación aditiva. Ojo: sustitutos y clientes suman cincuenta y cinco por ciento de la ponderación del modelo; eso es peso dentro del instrumento, no probabilidad de amenaza. Lo que Lumine sí puede mover es la inercia del cliente, con evidencia de ahorro. Lukas sigue con lo que Lumine tiene hacia adentro.
 
 ## Lukas Verdugo · láminas 9 a 12
 
-Unos 4:38 (603 palabras).
+Unos 4:36 (597 palabras).
 
-### 9 · Recursos y factores críticos: la diferenciación es potencial · 1:15
+### 9 · Recursos y factores críticos: la diferenciación es potencial · 1:10
 
 *Informe: 6.4 Capacidades internas*
 
-Gracias, Benjamín. Hacia adentro, Lumine tiene una fortaleza de diseño, no de ejecución. En el análisis de recursos y capacidades evaluamos quince elementos con cuatro filtros: valioso, raro, costoso de imitar e insustituible. Solo dos pasan los cuatro: la biblioteca de calibraciones por marca y modelo y la ingeniería de integración. Pero hay que leerlo con cuidado: son ventajas potencialmente sostenibles, no efectivas, porque la biblioteca está vacía y solo sería sostenible si se protege como secreto empresarial. Seis elementos dan ventajas temporales y siete solo igualdad. Esto importa porque una ventaja que no se protege ni se demuestra no sostiene un precio. Los factores críticos de éxito muestran lo mismo: la ingeniería de integración y la estandarización del taller tienen habilidad cuatro de cinco, pero como diseño; la gestión regulatoria y el talento en alta tensión están en dos, y el financiamiento en el punto de venta no tiene convenio. Dos de ellos son condiciones de entrada.
+Gracias, Benjamín. Hacia adentro, Lumine tiene una fortaleza de diseño, no de ejecución. En el análisis de recursos y capacidades evaluamos quince elementos con cuatro filtros: valioso, raro, costoso de imitar e insustituible. Solo dos pasan los cuatro: la biblioteca de calibraciones por marca y modelo y la ingeniería de integración. Pero hay que leerlo con cuidado: son ventajas potencialmente sostenibles, no efectivas, porque la biblioteca está vacía y solo sería sostenible si se protege como secreto empresarial. Seis elementos dan ventajas temporales y siete solo igualdad. Los factores críticos de éxito muestran lo mismo: la ingeniería de integración y la estandarización del taller tienen habilidad cuatro de cinco, pero como diseño; la gestión regulatoria y el talento en alta tensión están en dos, y el financiamiento en el punto de venta no tiene convenio. La gestión regulatoria es una condición de entrada; el financiamiento, un facilitador clave de la compra.
 
 ### 10 · Cadena de valor: la exclusividad nace en la calibración y se juega en operaciones · 1:10
 
@@ -105,7 +105,7 @@ La cadena de valor explica dónde se gana y dónde se arriesga. La exclusividad 
 
 *Informe: 6.5 Síntesis FODA*
 
-El FODA ordena todo lo anterior, separando lo interno de lo externo. Las fortalezas son de diseño: una arquitectura en el eje trasero que conserva el motor, un proceso de taller de cinco etapas y un segmento definido. Las debilidades son de ejecución: sin ensayo ni homologación, una biblioteca vacía, técnicos escasos, inventario en dólares sin cobertura y una marca sin casos. Cuidamos no repetir factores: el dólar aparece como amenaza externa y su efecto interno, el inventario sin cobertura, como debilidad. Afuera, las oportunidades son reales y medibles: el parque se conserva, la bencina subió y las baterías se abaratan. Pero las amenazas son decisivas: la ley sin reglamento, el dólar alto con un kit importado, el menor ingreso disponible de los hogares y la opción del cliente de posponer la compra. La lectura es clara: el entorno ofrece una necesidad, pero el negocio todavía no tiene cómo demostrar que la resuelve de forma legal, segura y conveniente para el cliente.
+El FODA ordena todo lo anterior, separando lo interno de lo externo. Las fortalezas son de diseño: una arquitectura en el eje trasero que conserva el motor, un proceso de taller de cinco etapas y un segmento definido. Las debilidades son de ejecución: sin ensayo ni homologación, una biblioteca vacía, sin técnicos habilitados, compras en dólares sin cobertura y una marca sin casos. Cuidamos no repetir factores: el dólar aparece como amenaza externa y su efecto interno, las compras sin cobertura, como debilidad. Afuera, las oportunidades son reales y medibles: el parque se conserva, la bencina subió y las baterías se abaratan. Pero las amenazas son decisivas: la ley sin reglamento, el dólar alto con un kit importado, el menor ingreso disponible de los hogares y la opción del cliente de posponer la compra. La lectura es clara: el entorno ofrece una necesidad, pero el negocio todavía no tiene cómo demostrar que la resuelve de forma legal, segura y conveniente para el cliente.
 
 ### 12 · Tres brechas prioritarias · 1:00
 
@@ -130,7 +130,7 @@ La lámina índice (14) tiene un enlace a cada pregunta; cada lámina del anexo 
 - **A1 · ¿Qué hay detrás del 2,82 del PEST?** Los cuatro puntajes de hoy y a futuro, con los factores que más pesan en cada dimensión.
 - **A2 · ¿Cómo se calcula el 3,49 de las cinco fuerzas?** Suma de peso por intensidad de cada fuerza: 1,50 + 0,75 + 0,66 + 0,40 + 0,18 = 3,49.
 - **A3 · ¿Qué recursos y capacidades se evaluaron?** Quince elementos con los filtros valioso, raro, costoso de imitar e insustituible.
-- **A4 · ¿Cuáles son los factores críticos de éxito?** Seis factores con su habilidad y su riesgo, de 1 a 5; dos son condiciones de entrada.
+- **A4 · ¿Cuáles son los factores críticos de éxito?** Seis factores con su habilidad y su riesgo, de 1 a 5; la gestión regulatoria es condición de entrada.
 - **A5 · ¿Cómo se compara Lumine con sus competidores?** Promedios del instrumento 06; el líder es el máximo de cada área, no un competidor real.
 - **A6 · FODA completo, con su evidencia.** Cada factor con la cifra o el hallazgo que lo sostiene.
 - **A7 · Misión, visión y valores literales.** Los ocho valores, organizacionales y humanos.

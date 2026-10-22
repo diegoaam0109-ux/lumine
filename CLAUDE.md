@@ -161,7 +161,8 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   Detalle en `solemne-2/RESPALDO.md`.
 - Control 3: el informe del Avance 1 ya tiene los 10 ajustes, el formato TIG, 5 tablas APA y 2 anexos
   (`Avance1_TIG_Lumine_Motors.docx`, local, no se sube); falta que el equipo lo revise, subirlo e imprimirlo y confirmar si se
-  expone. Puntos 3–6 ocupan 9 páginas: en el informe final (máx. 20, con 9–12 ≥ 50%) habrá que resumir.
+  expone. Puntos 3–6 ocupan 9 páginas: en el informe final (máx. 20, con 9–12 ≥ 50%) habrá que resumir. Auditoría externa del
+  22-10-2026 aplicada (sin «VRIO», vía legal en condicional, financiamiento como facilitador): ver `control-3/RESPALDO.md`.
 - TIG, informe final (22-10-2026, local, no se sube): `Informe_Final_TIG_Lumine_Motors.docx` (puntos 1–13, 17 páginas + 3 de
   anexos, 9–12 ≈ 53%) y `TIG_Lumine_Motors_Datos_y_Calculos.xlsx` (10 hojas con fórmulas). Decisiones del equipo: el CMI es el
   de la Solemne 2 (17 objetivos, 20 relaciones); el punto 10 usa solo información real (línea base «sin medir», solidez de
@@ -169,7 +170,7 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   equipo apruebe objetivos, metas y responsables.
 - TIG, presentación final (22-10-2026, `tig-final/`): 15 láminas, ~12:00 a 130 ppm. Diego 1–5 y 15 (abre y cierra), Benjamín
   6–9 (diagnóstico, brechas, estrategia, objetivos), Lukas 10–14 (mapa, análisis, escenarios, umbral, recomendaciones).
-  La ficha del indicador va al anexo (A1). Detalle en `tig-final/RESPALDO.md`. Detalle en `control-3/RESPALDO.md`.
+  La ficha del indicador va al anexo (A1). Detalle en `tig-final/RESPALDO.md`.
 - Guion: decidir si la frase "Dos observaciones críticas…" (diapositiva 14) se deja, se reformula o se quita.
 - Fase 3: inconsistencias abiertas para revisar con el informe: química de la batería (informe: litio-titanato;
   identidad: LFP) y motores (informe: dos en las ruedas; render: uno central). Ver `fase-3/REDISENO_PREMIUM.md`.

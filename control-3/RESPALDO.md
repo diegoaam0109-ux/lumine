@@ -35,7 +35,26 @@ Diferencias con el instrumento 03 del equipo:
   española EPA). Se eliminó. El dato chileno comparable es la ocupación informal en transporte: +8,6% (INE n.º 335), que
   no se usa en las láminas.
 
-## 3. Pendientes
+## 3. Auditoría externa de la presentación (22-10-2026)
+
+Se revisó cada hallazgo contra los instrumentos del equipo. Aplicados en láminas, guion, informes, Excel y presentación final:
+
+| Hallazgo | Decisión |
+|---|---|
+| «VRIO» con cuatro criterios que no son VRIO | Aceptado. El instrumento 05 es la detección de competencias centrales (valioso, raro, caro de imitar y un cuarto criterio): se quitó «VRIO» de todas las láminas |
+| El borrador de 2021 no define la situación jurídica | Aceptado: «si el reglamento sigue al borrador, rama E3 o E4; la vía aplicable está sin confirmar» |
+| E1 «protege al primero que homologa» | Aceptado: «ventaja temporal al primero» (coherente con el instrumento 05) |
+| Seguridad del kit como hecho | Aceptado: «por diseño» |
+| Técnicos escasos e inventario en dólares como debilidades | Aceptado: «sin técnicos habilitados ni retención» y «compras sin cobertura cambiaria» |
+| Financiamiento como condición de entrada | Aceptado: solo la gestión regulatoria es condición de entrada; el financiamiento es un facilitador clave de la compra |
+| LFP US$81/kWh, aseguradoras y «nadie ofrece el servicio» | Aceptado: promedio mundial de paquetes; «posibles exclusiones de seguros (por verificar)»; «sin competidores directos identificados» |
+| Letra pequeña en las láminas 7 y 10 | Parcial: los escenarios subieron a 15 pt; la cadena de valor no admite más sin dividir la lámina |
+| Posponer la inversión no es sustituto de Porter | Rechazado con fundamento: el instrumento 02 puntúa «no hacer nada» y el Prius usado, y Porter cuenta como sustituto prescindir del producto o comprar usado. Se agregó al guion |
+| Informe «INFORME FINAL» y referencias 6.x incorrectas | No aplica: el auditor revisó el informe final, no el del Avance 1 (`Avance1_TIG_Lumine_Motors.docx`), cuyos apartados 6.2 a 6.6 coinciden con el guion |
+| Enlaces de vuelta del anexo en el PDF | No aplica al PPTX: LibreOffice los exporta como direcciones; en PowerPoint son saltos internos. Presentar desde el PPTX |
+| Guion largo (13:50) | Se mantiene el reparto pedido (Diego 4:42, Benjamín 4:33, Lukas 4:36); ensayar con cronómetro |
+
+## 4. Pendientes
 
 - Aplicar al Word los 10 ajustes del manual (texto original exacto → reemplazo) y el formato TIG: justificado, interlineado
   1,5, 12 pt en todo el cuerpo y título, número y fuente en las tres tablas.

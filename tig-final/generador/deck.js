@@ -267,7 +267,7 @@ const FUENTES = {
   pest: `Fuentes: ${INST('03')} (PEST, escala 1 a 5); INE (2026), ENE junio-agosto; Banco Central de Chile (2026), dólar observado; BloombergNEF (2025).`,
   regulacion: 'Fuentes: Ley N° 21.793, Diario Oficial (14-01-2026); borrador de reglamento del MTT en consulta (diciembre de 2021); escenarios elaborados por el equipo.',
   porter: `Fuente: ${INST('02')} (cinco fuerzas de Porter): intensidad de 0 a 5 y ponderación propia del modelo; cálculo en el anexo A2.`,
-  recursos: `Fuentes: ${INST('05')} (recursos y capacidades, criterios VRIO) e ${INST('06')} (factores críticos de éxito, escala 1 a 5).`,
+  recursos: `Fuentes: ${INST('05')} (recursos y capacidades, cuatro criterios de competencias centrales) e ${INST('06')} (factores críticos de éxito, escala 1 a 5).`,
   cadena: `Fuente: ${INST('06')} (cadena de valor y comparación con competidores estimada por el equipo, escala 1 a 5).`,
   foda: 'Fuentes: instrumentos 02, 03, 05 y 06 del equipo; CAVEM (2026); CNE (2026); INE (2026); Banco Central de Chile (2026); BloombergNEF (2025).',
   brechas: 'Fuente: elaboración propia a partir del diagnóstico (PEST, cinco fuerzas, recursos y capacidades) y del FODA del informe.',
@@ -417,11 +417,11 @@ D.kit = () => {
     T(s, v, { x, y: ly + 0.6, w: pw - 0.15, h: 0.7, fontSize: 16, color: C.text2 });
   });
   const rx = M + iw + 0.6, rw = R - rx;
-  [['ESTADO', 'Preoperativa: sin taller, personal ni clientes', null], ['SEGURIDAD', 'Freno, ABS y control de estabilidad originales mandan sobre el kit', null], ['DISEÑO', 'Falta probarlo, homologarlo y documentarlo', 'POR VALIDAR']].forEach(([k, v, m], i) => {
+  [['ESTADO', 'Preoperativa: sin taller, personal ni clientes', null], ['SEGURIDAD', 'Por diseño, freno, ABS y estabilidad originales mandan sobre el kit', null], ['DISEÑO', 'Falta probarlo, homologarlo y documentarlo', 'POR VALIDAR']].forEach(([k, v, m], i) => {
     const y = Y0 + i * 1.32;
     regla(s, y, rx, rw, i ? C.accent5 : C.accent1);
     mono(s, k, { x: rx, y: y + 0.1, w: rw, h: 0.3, fontSize: 13, color: C.accent1 });
-    T(s, v, { x: rx, y: y + 0.42, w: rw, h: 0.85, fontSize: 17, valign: 'top' });
+    T(s, v, { x: rx, y: y + 0.42, w: rw, h: 0.85, fontSize: 16, valign: 'top' });
     if (m) marca(s, 'pen', m, R, y + 0.06, { alignRight: true, size: 12, h: 0.32 });
   });
   return s;
@@ -495,7 +495,7 @@ D.pest = () => {
   const lw = 8.2, x0 = M + 2.75, bw = lw - 2.75 - 0.75, sx = v => x0 + (v - 1) / 4 * bw;
   mono(s, 'DIMENSIÓN · ESCALA 1 A 5 · 3 = NEUTRO', { x: M, y: Y0 - 0.05, w: lw, h: 0.3, fontSize: 12 });
   [1, 2, 3, 4, 5].forEach(v => mono(s, String(v), { x: sx(v) - 0.2, y: Y0 + 0.28, w: 0.4, h: 0.25, fontSize: 11, align: 'center', color: v === 3 ? C.text1 : C.text2 }));
-  const dims = [['Económico', 2.38, 2.81, 'Ingreso disponible, desempleo 9,6%, dólar sobre $970'], ['Político-jurídico', 2.67, 2.78, 'Ley 21.793 sin reglamento'], ['Sociocultural', 3.00, 3.00, 'Se conserva el auto; aseguradoras excluyen modificados'], ['Tecnológico', 3.23, 3.38, 'Componentes maduros; LFP a US$81/kWh']];
+  const dims = [['Económico', 2.38, 2.81, 'Ingreso disponible, desempleo 9,6%, dólar sobre $970'], ['Político-jurídico', 2.67, 2.78, 'Ley 21.793 sin reglamento'], ['Sociocultural', 3.00, 3.00, 'Se conserva el auto; posibles exclusiones de seguros'], ['Tecnológico', 3.23, 3.38, 'Componentes maduros; packs LFP a US$81/kWh, promedio mundial']];
   const rh = 0.86, y0 = Y0 + 0.62;
   dims.forEach(([k, hoy, fut, nota], i) => {
     const y = y0 + i * rh, malo = hoy < 3;
@@ -550,7 +550,7 @@ D.regulacion = () => {
   const tx = M + lw + 0.45, bw = 2.15, bh = 0.86, ew = R - (tx + 2 * (bw + 0.55)) + 0.3;
   const q1 = [tx, Y0 + 1.45], q2 = [tx + bw + 0.55, Y0 + 0.35], q3 = [tx + bw + 0.55, Y0 + 2.65];
   const ex = q2[0] + bw + 0.55;
-  const E = [[ex, Y0 - 0.05, 'E1', 'Vía amplia: protege al primero que homologa'], [ex, Y0 + 0.9, 'E2', 'Vía acotada: solo parque sin esos sistemas'], [ex, Y0 + 2.3, 'E3', 'Vía alternativa: alteración de características'], [ex, Y0 + 3.3, 'E4', 'Sin vía legal: el negocio no opera']];
+  const E = [[ex, Y0 - 0.05, 'E1', 'Vía amplia: ventaja temporal al primero'], [ex, Y0 + 0.9, 'E2', 'Vía acotada: solo parque sin esos sistemas'], [ex, Y0 + 2.3, 'E3', 'Vía alternativa: alteración de características'], [ex, Y0 + 3.3, 'E4', 'Sin vía legal: el negocio no opera']];
   const pregunta = ([x, y], t, hot) => { caja(s, x, y, bw, bh, { fill: { color: hot ? HOT : C.background2 }, line: { color: hot ? C.accent1 : C.text2, width: hot ? 1.5 : 0.75 } }); T(s, t, { x: x + 0.12, y, w: bw - 0.24, h: bh, fontSize: 15, bold: true, valign: 'middle', align: 'center', lineSpacingMultiple: 0.92 }); };
   const conector = (a, b, k, hot) => {
     const xm = a[0] + 0.27;
@@ -574,7 +574,7 @@ D.regulacion = () => {
   conector([q2[0] + bw, q2[1] + bh / 2], [ex, E[1][1] + 0.41], 'SÍ', false);
   conector([q3[0] + bw, q3[1] + bh / 2], [ex, E[2][1] + 0.41], 'SÍ', true);
   conector([q3[0] + bw, q3[1] + bh / 2], [ex, E[3][1] + 0.41], 'NO', true);
-  mono(s, 'HOY, CON EL BORRADOR:', { x: tx, y: Y0 + 2.42, w: bw + 0.2, h: 0.28, fontSize: 11, color: C.accent1 });
+  mono(s, 'SI SIGUE EL BORRADOR:', { x: tx, y: Y0 + 2.42, w: bw + 0.2, h: 0.28, fontSize: 11, color: C.accent1 });
   mono(s, 'RAMA E3 O E4', { x: tx, y: Y0 + 2.7, w: bw + 0.2, h: 0.28, fontSize: 11, color: C.accent1, bold: true });
   T(s, [{ text: 'Condición de entrada: ', options: { bold: true } }, { text: 'no se promedia.', options: { color: C.text2 } }], { x: tx, y: Y0 + 3.55, w: bw + 0.3, h: 0.55, fontSize: 15, valign: 'top' });
   return s;
@@ -613,12 +613,12 @@ D.porter = () => {
 };
 
 // =====================================================================
-// 9 · RECURSOS Y FACTORES CRÍTICOS · VRIO y FCE
+// 9 · RECURSOS Y FACTORES CRÍTICOS · cuatro criterios y FCE
 // =====================================================================
 D.recursos = () => {
   const s = contenido('6 · ANÁLISIS ESTRATÉGICO · RECURSOS, CAPACIDADES Y FCE', 'RECURSOS Y FACTORES CRÍTICOS:', 'la diferenciación es potencial.');
   const lw = 4.6;
-  mono(s, 'VRIO · 15 RECURSOS Y CAPACIDADES', { x: M, y: Y0 - 0.05, w: lw, h: 0.3, fontSize: 12 });
+  mono(s, 'CUATRO CRITERIOS · 15 RECURSOS', { x: M, y: Y0 - 0.05, w: lw, h: 0.3, fontSize: 12 });
   const cnt = [['2', 'sostenibles*', C.accent1], ['6', 'temporales', C.text1], ['7', 'igualdad', GRIS], ['0', 'desventaja', GRIS]];
   const cw = lw / 4;
   cnt.forEach(([n, k, color], i) => {
@@ -634,7 +634,7 @@ D.recursos = () => {
   mono(s, 'FACTORES CRÍTICOS DE ÉXITO · 1 A 5', { x: rx, y: Y0 - 0.05, w: rw, h: 0.3, fontSize: 12 });
   mono(s, 'HABILIDAD', { x: R - 2.55, y: Y0 + 0.25, w: 1.3, h: 0.26, fontSize: 11, align: 'center' });
   mono(s, 'RIESGO', { x: R - 1.25, y: Y0 + 0.25, w: 1.25, h: 0.26, fontSize: 11, align: 'center' });
-  const fce = [['Ingeniería de integración y calibración', 4, 2, false], ['Estandarización y tiempo de taller', 4, 3, false], ['Logística de insumos críticos', 3, 2, false], ['Financiamiento en el punto de venta', 3, 2, true], ['Gestión regulatoria e institucional', 2, 2, true], ['Talento certificado en alta tensión', 2, 2, false]];
+  const fce = [['Ingeniería de integración y calibración', 4, 2, false], ['Estandarización y tiempo de taller', 4, 3, false], ['Logística de insumos críticos', 3, 2, false], ['Financiamiento en el punto de venta', 3, 2, false], ['Gestión regulatoria e institucional', 2, 2, true], ['Talento certificado en alta tensión', 2, 2, false]];
   const rh = 0.55, y0 = Y0 + 0.55;
   fce.forEach(([k, h, r, entrada], i) => {
     const y = y0 + i * rh;
@@ -691,8 +691,8 @@ D.foda = () => {
   mono(s, 'EN CONTRA', { x: M + lab + w + g, y: Y0, w, h: 0.3, fontSize: 12, color: C.text1, align: 'center' });
   [['INTERNO', y0], ['EXTERNO', y0 + h + g]].forEach(([k, y]) => T(s, k, { x: M, y, w: 0.4, h, fontFace: F_MONO, fontSize: 12, color: C.text2, align: 'center', valign: 'middle', vert: 'vert270' }));
   const q = [['FORTALEZAS · DE DISEÑO', ['Arquitectura trasera que conserva el motor', 'Proceso de taller en cinco etapas', 'Segmento delimitado: uso intensivo'], C.accent1, false],
-    ['DEBILIDADES · DE EJECUCIÓN', ['Sin ensayo ni homologación; biblioteca vacía', 'Técnicos escasos y sin retención', 'Inventario en dólares; marca sin casos'], C.text1, false],
-    ['OPORTUNIDADES', ['Se conserva el auto: 3,5 usados por cada nuevo', 'La bencina 93 subió $370 por litro en marzo', 'Baterías LFP a US$81 por kWh'], C.accent1, true],
+    ['DEBILIDADES · DE EJECUCIÓN', ['Sin ensayo ni homologación; biblioteca vacía', 'Sin técnicos habilitados ni retención', 'Compras sin cobertura cambiaria; marca sin casos'], C.text1, false],
+    ['OPORTUNIDADES', ['Se conserva el auto: 3,5 usados por cada nuevo', 'La bencina 93 subió $370 por litro en marzo', 'Packs LFP a US$81/kWh, promedio mundial'], C.accent1, true],
     ['AMENAZAS', ['Ley N° 21.793 sin reglamento', 'Dólar sobre $970 y kit 100% importado', 'Menor ingreso y opción de posponer'], C.text1, true]];
   q.forEach(([k, items, color, ext], i) => {
     const x = M + lab + (i % 2) * (w + g), y = y0 + Math.floor(i / 2) * (h + g);
@@ -716,7 +716,7 @@ D.brechas = () => {
   const g = 0.3, w = (CW - 2 * g) / 3, y = Y0, h = 3.55;
   const b = [['1', 'Habilitación formal', ['Vía legal aplicable', 'Aseguradoras y plantas de revisión'], 'PEST · LEY · FCE'],
     ['2', 'Valor frente a posponer', ['Ahorro medido en autos chilenos', 'Forma de pago que el cliente pueda asumir'], 'PORTER · PEST · FODA'],
-    ['3', 'Capacidad de ejecución', ['Biblioteca de calibraciones con datos', 'Técnicos en alta tensión y kit protegido del dólar'], 'VRIO · FCE · CADENA']];
+    ['3', 'Capacidad de ejecución', ['Biblioteca de calibraciones con datos', 'Técnicos en alta tensión y kit protegido del dólar'], 'RECURSOS · FCE · CADENA']];
   b.forEach(([n, k, items, src], i) => {
     const x = M + i * (w + g);
     if (i === 0) { brillo(s, x, y, w, h, 0.4); cajaHot(s, x, y, w, h); } else caja(s, x, y, w, h, { line: { color: C.accent1, width: 1 } });
@@ -779,8 +779,8 @@ D['a-pest'] = () => {
   const s = contenido('PEST · INSTRUMENTO 03', 'EL PEST POR DIMENSIÓN,', 'hoy y a futuro.');
   tabla(s, [['DIMENSIÓN', 2.3], ['HOY', 0.8], ['FUTURO', 1.0], ['A FAVOR', 3.95], ['EN CONTRA', CW - 8.05]], [
     ['Político-jurídico', '2,67', '2,78', 'Ley 21.455 de carbono neutralidad (oportunidad leve)', 'Ley 21.793 sin reglamento (gran amenaza); IVA completo'],
-    ['Económico', '2,38', '2,81', 'Bencina más cara; baterías LFP a US$81/kWh', 'Ingreso disponible (gran amenaza); dólar sobre $970; PIB 2026 de 0,25% a 0,75%; desempleo 9,6%'],
-    ['Sociocultural', '3,00', '3,00', '3,5 usados por cada nuevo (gran oportunidad)', 'Aseguradoras excluyen vehículos modificados; pago por sostenibilidad sesgado por ingreso'],
+    ['Económico', '2,38', '2,81', 'Bencina más cara; packs LFP a US$81/kWh (promedio mundial)', 'Ingreso disponible (gran amenaza); dólar sobre $970; PIB 2026 de 0,25% a 0,75%; desempleo 9,6%'],
+    ['Sociocultural', '3,00', '3,00', '3,5 usados por cada nuevo (gran oportunidad)', 'Posibles exclusiones de modificados en seguros (por verificar); pago por sostenibilidad sesgado por ingreso'],
     ['Tecnológico', '3,23', '3,38', 'Componentes maduros y estandarizados', 'Sin proveedor local de baterías'],
     ['Global', '2,82', '2,99', '13 oportunidades', '20 amenazas · 18 neutros'],
   ], Y0 - 0.05, { rh: 0.78, size: 14, negrita: [0], gris: [3, 4], derecha: [1, 2] });
@@ -794,7 +794,7 @@ D['a-porter'] = () => {
     ['Nuevos entrantes', '20%', '3,75', '0,75', 'La barrera regulatoria hoy bloquea a todos por igual'],
     ['Clientes', '25%', '2,64', '0,66', 'Sensibles al precio por falta de liquidez'],
     ['Proveedores', '15%', '2,67', '0,40', 'Componentes estandarizados e importados'],
-    ['Rivalidad', '10%', '1,83', '0,18', 'Nadie ofrece hoy el servicio'],
+    ['Rivalidad', '10%', '1,83', '0,18', 'Sin competidores directos identificados'],
     ['Total', '100%', '—', '3,49', 'Industria moderadamente poco atractiva'],
   ], Y0 - 0.05, { rh: 0.62, size: 16, negrita: [0], gris: [4], derecha: [1, 2, 3] });
   return s;
@@ -817,10 +817,10 @@ D['a-vrio'] = () => {
 };
 
 D['a-fce'] = () => {
-  const s = contenido('FACTORES CRÍTICOS DE ÉXITO · INSTRUMENTO 06', 'SEIS FACTORES CRÍTICOS,', 'dos son condición de entrada.');
+  const s = contenido('FACTORES CRÍTICOS DE ÉXITO · INSTRUMENTO 06', 'SEIS FACTORES CRÍTICOS,', 'uno es condición de entrada.');
   tabla(s, [['FACTOR · LÍNEA DEL 06', 4.6], ['HAB.', 0.8], ['RIESGO', 1.0], ['ESTADO', CW - 6.4]], [
     ['Gestión regulatoria e institucional · infraestructura', '2', '2', 'Sin interlocución formal con la autoridad · condición de entrada'],
-    ['Financiamiento en el punto de venta · finanzas', '3', '2', 'Sin convenio · condición de entrada'],
+    ['Financiamiento en el punto de venta · finanzas', '3', '2', 'Sin convenio · facilitador clave de la compra'],
     ['Ingeniería de integración y calibración · fabricación', '4', '2', 'Diseñada; riesgo de incompatibilidad con la electrónica original'],
     ['Talento certificado en alta tensión · RR. HH.', '2', '2', 'Perfil escaso; sin esquema de retención'],
     ['Logística de insumos críticos · adquisiciones', '3', '2', 'Protocolo definido; Clase 9 con plazos largos'],
@@ -857,9 +857,9 @@ D['a-competidores'] = () => {
 D['a-foda'] = () => {
   const s = contenido('FODA · CON SU EVIDENCIA', 'EL FODA COMPLETO,', 'factor por factor.');
   const q = [['FORTALEZAS', ['Arquitectura en el eje trasero que conserva el motor (diseño)', 'Proceso de taller en cinco etapas (definido, no probado)', 'Segmento delimitado y estrategia de producto única', 'Riesgos identificados con protocolo de contención']],
-    ['DEBILIDADES', ['Sin ensayo ni homologación; biblioteca de calibraciones vacía', 'Técnicos escasos y sin esquema de retención', 'Patrimonio reducido; inventario en dólares sin cobertura', 'Marca sin casos; validación cualitativa con n = 3']],
-    ['OPORTUNIDADES', ['3,5 usados transferidos por cada nuevo (CAVEM, ene-ago 2026)', 'Bencina 93 en la RM de $1.169 a $1.539 (CNE, marzo de 2026)', 'Baterías LFP a US$81/kWh (BloombergNEF, 2025)', 'Ocupación informal en transporte +8,6% en 12 meses (INE)']],
-    ['AMENAZAS', ['Ley N° 21.793 sin reglamento; borrador de 2021 sin vía', 'Dólar observado sobre $970 con kit importado (Banco Central)', 'PIB 2026 de 0,25% a 0,75%; desempleo 9,6% (BCCh, INE)', 'Posponer la inversión; aseguradoras excluyen modificados']]];
+    ['DEBILIDADES', ['Sin ensayo ni homologación; biblioteca de calibraciones vacía', 'Sin técnicos habilitados ni esquema de retención', 'Patrimonio reducido; compras en dólares sin cobertura', 'Marca sin casos; validación cualitativa con n = 3']],
+    ['OPORTUNIDADES', ['3,5 usados transferidos por cada nuevo (CAVEM, ene-ago 2026)', 'Bencina 93 en la RM de $1.169 a $1.539 (CNE, marzo de 2026)', 'Packs LFP a US$81/kWh, promedio mundial (BloombergNEF, 2025)', 'Ocupación informal en transporte +8,6% en 12 meses (INE)']],
+    ['AMENAZAS', ['Ley N° 21.793 sin reglamento; borrador de 2021 sin vía', 'Dólar observado sobre $970 con kit importado (Banco Central)', 'PIB 2026 de 0,25% a 0,75%; desempleo 9,6% (BCCh, INE)', 'Posponer la inversión; posibles exclusiones de seguros']]];
   const g = 0.25, w = (CW - g) / 2, h = (YF - Y0 - g) / 2;
   q.forEach(([k, items], i) => {
     const x = M + (i % 2) * (w + g), y = Y0 + Math.floor(i / 2) * (h + g);
@@ -904,7 +904,7 @@ D['a-fuentes'] = () => {
 D['a-supuestos'] = () => {
   const s = contenido('TRANSPARENCIA · NATURALEZA DE CADA AFIRMACIÓN', 'DATO, INSTRUMENTO, ESTIMACIÓN', 'o por confirmar.');
   const cols = [['DATO PÚBLICO', ['Usados por cada nuevo', 'Precio de la bencina', 'Dólar, PIB y desempleo', 'Ley N° 21.793 sin reglamento'], { color: C.accent1, width: 1.25 }],
-    ['INSTRUMENTO DEL EQUIPO', ['PEST 2,82 y Porter 3,49', 'VRIO 2 de 15 y FCE', 'Escenarios E1 a E4', 'CMI: 17 objetivos y metas propuestas'], { color: C.text1, width: 1, dashType: 'sysDot' }],
+    ['INSTRUMENTO DEL EQUIPO', ['PEST 2,82 y Porter 3,49', 'Recursos: 2 de 15; FCE', 'Escenarios E1 a E4', 'CMI: 17 objetivos y metas propuestas'], { color: C.text1, width: 1, dashType: 'sysDot' }],
     ['ESTIMACIÓN O INDICIO', ['Hasta 20% menos bencina en ciudad', 'Precio de referencia del kit (Fase 3)', 'Precio decide, confianza atreve (n = 3)'], { color: GRIS, width: 1, dashType: 'dash' }],
     ['POR CONFIRMAR', ['Convenios de financiamiento y seguros', 'Homologación y autorización', 'Precio y costos unitarios'], { color: C.text1, width: 1.25, dashType: 'dash' }]];
   const g = 0.25, w = (CW - 3 * g) / 4, h = YF - Y0 - 0.06;
@@ -991,8 +991,8 @@ D.diagnostico = () => {
   const c = [
     ['ENTORNO · PEST', '2,82', 'de 5 · bajo el neutro 3', 'Frenos: económico (2,38) y político-jurídico (2,67)'],
     ['INDUSTRIA · PORTER', '3,49', 'de 5 · poco atractiva', 'Sustituto principal: posponer la inversión (5,00)'],
-    ['RECURSOS · VRIO', '2 de 15', 'potencialmente sostenibles', 'Biblioteca de calibraciones e ingeniería de integración'],
-    ['VÍA LEGAL', 'E3–E4', 'con el borrador de 2021', 'Ley N° 21.793 sin reglamento: condición de entrada'],
+    ['RECURSOS · 4 CRITERIOS', '2 de 15', 'potencialmente sostenibles', 'Biblioteca de calibraciones e ingeniería de integración'],
+    ['VÍA LEGAL', 'E3–E4', 'si sigue el borrador de 2021', 'Ley N° 21.793 sin reglamento: condición de entrada'],
   ];
   c.forEach(([k, n, sub, t], i) => {
     const x = M + i * (w + g), hot = i === 3;
@@ -1128,7 +1128,7 @@ D.escenarios = () => {
     ['E4 · Sin vía', 'No cumple', 'P2, P3, P5 y lo que depende de ellos', 'Detener; no subir metas comerciales'],
   ], y0, { rh, size: 16, negrita: [0], gris: [2] });
   const by = y0 + 0.34 + 4 * rh + 0.2;
-  mono(s, 'HOY · BORRADOR DE 2021', { x: M, y: by, w: 3.2, h: 0.4, fontSize: 13, color: C.accent1, valign: 'middle' });
+  mono(s, 'SI SIGUE EL BORRADOR', { x: M, y: by, w: 3.2, h: 0.4, fontSize: 13, color: C.accent1, valign: 'middle' });
   T(s, [{ text: 'Rama E3 o E4. ', options: { bold: true } }, { text: 'Actúa por dos relaciones externas: R02 (aprobar cada par) y R06 (réplica en talleres).', options: { color: C.text2 } }], { x: M + 3.2, y: by, w: CW - 3.2, h: 0.4, fontSize: 17, valign: 'middle' });
   return s;
 };

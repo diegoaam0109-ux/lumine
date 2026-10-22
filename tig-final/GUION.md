@@ -4,14 +4,14 @@ Control de Gestión · ICMA901 · Sección 500 · NRC 4118 · UNAB. Profesor Leo
 
 Recorre el informe final: problema y negocio, diagnóstico, estrategia, objetivos, Cuadro de Mando Integral, análisis de la información, recomendaciones y conclusiones. El instructivo da entre 10 y 15 minutos por equipo y califica a cada integrante.
 
-Exposición de máximo 15 minutos: 15 láminas y 1.556 palabras, unos 11:58 a 130 palabras por minuto. El anexo de 18 láminas no se expone. Diego abre y cierra; los cambios de expositor están escritos en el texto.
+Exposición de máximo 15 minutos: 15 láminas y 1.568 palabras, unos 12:04 a 130 palabras por minuto. El anexo de 18 láminas no se expone. Diego abre y cierra; los cambios de expositor están escritos en el texto.
 
 | Integrante | Láminas | Palabras | Tiempo | Objetivo |
 |---|---|---|---|---|
-| Diego Alarcón | 1, 2, 3, 4, 5, 15 | 537 | 4:08 | ≈ 4:00 |
-| Benjamín Torres | 6, 7, 8, 9 | 500 | 3:51 | ≈ 4:00 |
-| Lukas Verdugo | 10, 11, 12, 13, 14 | 519 | 4:00 | ≈ 4:00 |
-| **Total** | 15 | 1.556 | 11:58 | 15:00 máx. |
+| Diego Alarcón | 1, 2, 3, 4, 5, 15 | 541 | 4:10 | ≈ 4:00 |
+| Benjamín Torres | 6, 7, 8, 9 | 503 | 3:52 | ≈ 4:00 |
+| Lukas Verdugo | 10, 11, 12, 13, 14 | 524 | 4:02 | ≈ 4:00 |
+| **Total** | 15 | 1.568 | 12:04 | 15:00 máx. |
 
 | Lámina | Expositor | Apartado del informe | Tiempo |
 |---|---|---|---|
@@ -26,14 +26,14 @@ Exposición de máximo 15 minutos: 15 láminas y 1.556 palabras, unos 11:58 a 13
 | 9 · Los ocho objetivos de la estrategia llegan al CMI | Benjamín | 8. Redacción de objetivos estratégicos | 0:55 |
 | 10 · Diecisiete objetivos y veinte relaciones en tres rutas | Lukas | 9. Desarrollo del Cuadro de Mando Integral | 0:55 |
 | 11 · El tablero está sin medir y la mayoría de las relaciones son hipótesis | Lukas | 10.1 y 10.2 Análisis de la información | 0:55 |
-| 12 · La vía legal es una compuerta del CMI | Lukas | 10.3 Escenarios regulatorios en el CMI | 0:40 |
+| 12 · La vía legal es una compuerta del CMI | Lukas | 10.3 Escenarios regulatorios en el CMI | 0:45 |
 | 13 · Más de 16.000 litros para que el ahorro pague el kit | Lukas | 10.4 Umbral de recuperación | 0:45 |
 | 14 · Cinco decisiones antes de vender el primer kit | Lukas | 12. Recomendaciones | 0:45 |
 | 15 · El CMI decide cuándo avanzar, corregir o detenerse | Diego | 11. Conclusiones | 0:50 |
 
 ## Diego Alarcón · abre · láminas 1 a 5
 
-Unos 3:20 (433 palabras).
+Unos 3:22 (437 palabras).
 
 ### 1 · Portada · TIG · informe final · 0:30
 
@@ -51,7 +51,7 @@ Partamos por el problema. En Chile la gente conserva su auto: este año se han t
 
 *Informe: 4. Comprensión del negocio*
 
-Lumine instalaría un kit de hibridación aditiva en autos a combustión de tracción delantera. El motor original queda intacto. El kit suma una unidad de control, que decide cuándo asistir y corta ante fallas; un banco de baterías, que guarda la energía del frenado, y un motor eléctrico en el eje trasero. No se enchufa, y el freno, el ABS y el control de estabilidad originales siempre mandan. Hoy es un diseño: falta probarlo, homologarlo y documentarlo.
+Lumine instalaría un kit de hibridación aditiva en autos a combustión de tracción delantera. El motor original queda intacto. El kit suma una unidad de control, que decide cuándo asistir y corta ante fallas; un banco de baterías, que guarda la energía del frenado, y un motor eléctrico en el eje trasero. No se enchufa, y el diseño deja que el freno, el ABS y el control de estabilidad originales siempre manden. Hoy es un diseño: falta probarlo, homologarlo y documentarlo.
 
 ### 4 · El cliente compra ahorro sin cambiar de auto, si confía · 0:45
 
@@ -67,13 +67,13 @@ La misión es reducir el combustible que un auto a combustión necesita por kil�
 
 ## Benjamín Torres · láminas 6 a 9
 
-Unos 3:51 (500 palabras).
+Unos 3:52 (503 palabras).
 
 ### 6 · Cuatro números resumen el diagnóstico · 1:10
 
 *Informe: 6.1 a 6.3 Análisis estratégico*
 
-Gracias, Diego. El diagnóstico se resume en cuatro números. Primero, el entorno general: la matriz PEST da dos coma ochenta y dos sobre cinco, bajo el neutro de tres; el freno es económico, por el desempleo de nueve coma seis por ciento y un dólar sobre novecientos setenta pesos con un kit importado, y también regulatorio. Segundo, la industria: las cinco fuerzas dan tres coma cuarenta y nueve, una industria poco atractiva, y el rival principal no es otro taller: es que el cliente posponga la inversión. Tercero, hacia adentro: de quince recursos y capacidades, solo dos son potencialmente sostenibles, la biblioteca de calibraciones y la ingeniería de integración, y la biblioteca hoy está vacía. Cuarto, la Ley veintiún mil setecientos noventa y tres no tiene reglamento; con el borrador de dos mil veintiuno estamos entre la vía alternativa y ninguna. Eso no se promedia: es una condición de entrada.
+Gracias, Diego. El diagnóstico se resume en cuatro números. Primero, el entorno general: la matriz PEST da dos coma ochenta y dos sobre cinco, bajo el neutro de tres; el freno es económico, por el desempleo de nueve coma seis por ciento y un dólar sobre novecientos setenta pesos con un kit importado, y también regulatorio. Segundo, la industria: las cinco fuerzas dan tres coma cuarenta y nueve, una industria poco atractiva, y el rival principal no es otro taller: es que el cliente posponga la inversión. Tercero, hacia adentro: de quince recursos y capacidades, solo dos son potencialmente sostenibles, la biblioteca de calibraciones y la ingeniería de integración, y la biblioteca hoy está vacía. Cuarto, la Ley veintiún mil setecientos noventa y tres no tiene reglamento; si el reglamento sigue al borrador de dos mil veintiuno, quedaríamos entre la vía alternativa y ninguna. Eso no se promedia: es una condición de entrada.
 
 ### 7 · Tres brechas deciden si el negocio funciona · 0:45
 
@@ -95,7 +95,7 @@ Esos tres ejes tenían ocho objetivos, y los ocho llegan al Cuadro de Mando Inte
 
 ## Lukas Verdugo · láminas 10 a 14
 
-Unos 4:00 (519 palabras).
+Unos 4:02 (524 palabras).
 
 ### 10 · Diecisiete objetivos y veinte relaciones en tres rutas · 0:55
 
@@ -109,11 +109,11 @@ Gracias, Benjamín. El mapa se lee de abajo hacia arriba: las capacidades habili
 
 Con esas reglas analizamos la información disponible, sin datos simulados. Hoy, doce indicadores están sin medir y cinco tienen la meta pendiente; ninguno cumple ni incumple, porque la empresa no opera. Pintarlo de rojo o de verde contradiría nuestro primer valor. El segundo hallazgo: de las veinte relaciones, doce son hipótesis, el sesenta por ciento. La ruta de habilitación es sólida, porque son requisitos técnicos y legales; la de valor económico es completamente hipotética. Por eso, al principio, el CMI de Lumine no mide resultados: comprueba hipótesis. Lo que sí se gestiona desde hoy son cuatro hitos previos a la venta: el protocolo de medición, la vía legal, el primer modelo aprobado y las alianzas.
 
-### 12 · La vía legal es una compuerta del CMI · 0:40
+### 12 · La vía legal es una compuerta del CMI · 0:45
 
 *Informe: 10.3 Escenarios regulatorios en el CMI*
 
-El tercer hallazgo es la vía legal. Actúa sobre el mapa por dos relaciones externas: condiciona la aprobación de cada modelo y la réplica en otros talleres. Si el reglamento abre una vía amplia, se avanza modelo por modelo. Si es acotada, se ajusta la meta de captación al parque elegible. Si es alternativa, cambia el indicador de la vía legal y se recalendarizan los hitos. Y si no hay vía, se detiene todo lo que depende de ella y no se suben metas comerciales. Hoy estamos entre los dos últimos.
+El tercer hallazgo es la vía legal. Actúa sobre el mapa por dos relaciones externas: condiciona la aprobación de cada modelo y la réplica en otros talleres. Si el reglamento abre una vía amplia, se avanza modelo por modelo. Si es acotada, se ajusta la meta de captación al parque elegible. Si es alternativa, cambia el indicador de la vía legal y se recalendarizan los hitos. Y si no hay vía, se detiene todo lo que depende de ella y no se suben metas comerciales. Si el reglamento sigue al borrador, estaríamos entre los dos últimos.
 
 ### 13 · Más de 16.000 litros para que el ahorro pague el kit · 0:45
 
@@ -153,7 +153,7 @@ La lámina índice (16) tiene un enlace a cada pregunta; cada lámina del anexo 
 - **A6 · PEST y cinco fuerzas, con su cálculo.** Los cuatro puntajes PEST de hoy y a futuro.
 - **A6 · PEST y cinco fuerzas.** Suma de peso por intensidad: 1,50 + 0,75 + 0,66 + 0,40 + 0,18 = 3,49.
 - **A7 · Recursos, capacidades y factores críticos.** Quince elementos con cuatro filtros.
-- **A7 · Recursos y factores críticos.** Seis factores; dos son condiciones de entrada.
+- **A7 · Recursos y factores críticos.** Seis factores; la gestión regulatoria es condición de entrada.
 - **A8 · ¿Cómo se compara Lumine con sus competidores?** El líder es el máximo de cada área, no un competidor real.
 - **A9 · FODA completo, con su evidencia.** Cada factor con la cifra o el hallazgo que lo sostiene.
 - **A10 · Misión, visión y valores literales.** Los ocho valores, organizacionales y humanos.
