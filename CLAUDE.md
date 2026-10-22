@@ -44,6 +44,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | `fase-3/` | **Presentación de la Fase 3** de Integrador II: Taller de Empresas (ICMA 1001, Grupo 1, profesor Roberto Brito): Capítulo III, Plan de Marketing, Operaciones y RR.HH. | Generador propio copiado del de Control de Gestión: `generador/deck.js` + `guion.js` + `render.sh` (también en Git Bash para Windows). El informe .docx no se sube. |
 | `solemne-2/` | **Solemne 2 de Control de Gestión** (ICMA901): de la estrategia de Lumine a un CMI en red (17 objetivos, 20 relaciones). | `generador/deck.js` + `guion.js` + `render.sh` (mismo sistema que la Fase 3). `RESPALDO.md` tiene contradicciones, riesgos y respuestas para la defensa. El paquete del curso (docx, xlsx) no se sube. |
 | `control-3/` | **Control 3 de Control de Gestión** (ICMA901, Avance 1 del TIG, prof. Leonardo Lizana Contreras): puntos 3 a 6 del instructivo. | `generador/`: `deck.js` + `guion.js` + `guion-docx.js` + `render.sh`. El manual de defensa (`defensa-docx.js` y su .docx) cita el borrador del informe y no se sube, igual que el instructivo y el borrador. |
+| `tig-final/` | **Entrega final del TIG** de Control de Gestión (ICMA901): presentación del informe final (15 láminas + anexo de 19). | Mismo generador que `control-3/` (`deck.js` + `guion.js` + `render.sh`). El informe final (Word) y el Excel no se suben. |
 
 
 ## Artefactos publicados (cuenta de Diego)
@@ -165,7 +166,10 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   anexos, 9–12 ≈ 53%) y `TIG_Lumine_Motors_Datos_y_Calculos.xlsx` (10 hojas con fórmulas). Decisiones del equipo: el CMI es el
   de la Solemne 2 (17 objetivos, 20 relaciones); el punto 10 usa solo información real (línea base «sin medir», solidez de
   las relaciones, escenarios E1–E4 y umbral de litros con precios de referencia de la Fase 3). Falta el PPT final y que el
-  equipo apruebe objetivos, metas y responsables. Detalle en `control-3/RESPALDO.md`.
+  equipo apruebe objetivos, metas y responsables.
+- TIG, presentación final (22-10-2026, `tig-final/`): 15 láminas, ~12:00 a 130 ppm. Diego 1–5 y 15 (abre y cierra), Benjamín
+  6–9 (diagnóstico, brechas, estrategia, objetivos), Lukas 10–14 (mapa, análisis, escenarios, umbral, recomendaciones).
+  La ficha del indicador va al anexo (A1). Detalle en `tig-final/RESPALDO.md`. Detalle en `control-3/RESPALDO.md`.
 - Guion: decidir si la frase "Dos observaciones críticas…" (diapositiva 14) se deja, se reformula o se quita.
 - Fase 3: inconsistencias abiertas para revisar con el informe: química de la batería (informe: litio-titanato;
   identidad: LFP) y motores (informe: dos en las ruedas; render: uno central). Ver `fase-3/REDISENO_PREMIUM.md`.

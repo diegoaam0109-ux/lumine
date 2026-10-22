@@ -1,0 +1,16 @@
+{
+  "name": "lumine-tig-final",
+  "private": true,
+  "description": "Generador de la presentación de la entrega final del TIG de Control de Gestión de Lumine Motors",
+  "scripts": {
+    "build": "node deck.js ../Lumine_TIG_Final_Control_de_Gestion.pptx",
+    "guion": "node guion-md.js > ../GUION.md",
+    "guion-docx": "node guion-docx.js ../Lumine_TIG_Final_Guion.docx",
+    "todo": "bash render.sh"
+  },
+  "dependencies": {
+    "docx": "^9.13.0",
+    "jszip": "^3.10.2",
+    "pptxgenjs": "^4.0.1"
+  }
+}
