@@ -43,6 +43,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada** (UNAB, Grupo 1, NRC 4153): estimador de ahorro con IA, prototipo, informe técnico del modelo matemático y revisión cruzada con varias IA. | Pasos para reproducir en `entrega3/README.md`; resultados de la Entrega 4 en `entrega4/Resultados_mejoras_modelo_E4.md`. |
 | `fase-3/` | **Presentación de la Fase 3** de Integrador II: Taller de Empresas (ICMA 1001, Grupo 1, profesor Roberto Brito): Capítulo III, Plan de Marketing, Operaciones y RR.HH. | Generador propio copiado del de Control de Gestión: `generador/deck.js` + `guion.js` + `render.sh` (también en Git Bash para Windows). El informe .docx no se sube. |
 | `solemne-2/` | **Solemne 2 de Control de Gestión** (ICMA901): de la estrategia de Lumine a un CMI en red (17 objetivos, 20 relaciones). | `generador/deck.js` + `guion.js` + `render.sh` (mismo sistema que la Fase 3). `RESPALDO.md` tiene contradicciones, riesgos y respuestas para la defensa. El paquete del curso (docx, xlsx) no se sube. |
+| `control-3/` | **Control 3 de Control de Gestión** (ICMA901, Avance 1 del TIG, prof. Leonardo Lizana Contreras): puntos 3 a 6 del instructivo. | `generador/`: `deck.js` + `guion.js` + `guion-docx.js` + `render.sh`. El manual de defensa (`defensa-docx.js` y su .docx) cita el borrador del informe y no se sube, igual que el instructivo y el borrador. |
 
 
 ## Artefactos publicados (cuenta de Diego)
@@ -136,6 +137,18 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   objetivos = eje estratégico de origen; estados cumple (círculo), alerta (triángulo), no cumple (cuadrado), meta
   pendiente (cuadrado punteado) y sin medir (anillo a trazos). Responsables según la estructura de la Fase 3.
 
+**Control 3 · Avance 1 del TIG** (22-10-2026; se presenta el martes 27-10-2026 a las 15:00, máximo 15 min):
+- 13 láminas + anexo de 11 con índice enlazado; 1.796 palabras, ~13:49. Diego 1–5 y 13 (abre y cierra, 4:40), Benjamín
+  6–8 (PEST, vía legal, Porter; 4:31), Lukas 9–12 (recursos y factores críticos, cadena de valor, FODA, brechas; 4:38).
+- No se llama «Solemne 2». El CMI y el mapa son el Avance 2: solo van como respaldo rotulado (A11). Sin NOPAT, EVA, VAN ni
+  TIR del negocio. Sin gas licuado en la exposición (solo como categoría del instrumento en A5).
+- Los factores críticos de éxito van en el análisis interno. «No hacer nada» se dice «posponer la inversión». Entrevistas:
+  indicio (n = 3). Biblioteca de calibraciones: diferenciación potencial. Tres brechas: habilitación formal, valor frente
+  a posponer, capacidad de ejecución.
+- Cifras públicas verificadas: CNE (bencina 93 RM $1.168,9 → $1.538,9), CAVEM (3,5 usados por nuevo), Banco Central (PIB
+  0,25%–0,75%; dólar $970,46), INE n.º 335 (desocupación 9,6%), BloombergNEF (LFP US$81/kWh). El «+9,7% de empleo en
+  transporte» del instrumento 03 no tiene fuente chilena y se eliminó.
+
 ## Pendientes y preguntas abiertas
 
 - Datos comerciales reales (precio, % de ahorro, garantía, tiempo de instalación, contacto): en proceso; no inventarlos.
@@ -145,6 +158,8 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - Solemne 2: aprobar los 17 objetivos, metas y responsables; Plan Financiero (tasa, flujos, inversión) y tolerancia del
   ahorro sin definir; metas de C3 y C4 con la primera muestra; faltan la pauta de la Solemne y `2_Contexto_Lumine_Motors.md`.
   Detalle en `solemne-2/RESPALDO.md`.
+- Control 3: aplicar al Word los 10 ajustes y el formato TIG del manual de defensa (local, no está en git);
+  confirmar con el profesor si el Avance 1 se expone. Detalle en `control-3/RESPALDO.md`.
 - Guion: decidir si la frase "Dos observaciones críticas…" (diapositiva 14) se deja, se reformula o se quita.
 - Fase 3: inconsistencias abiertas para revisar con el informe: química de la batería (informe: litio-titanato;
   identidad: LFP) y motores (informe: dos en las ruedas; render: uno central). Ver `fase-3/REDISENO_PREMIUM.md`.

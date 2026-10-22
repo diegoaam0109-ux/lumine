@@ -1,0 +1,17 @@
+{
+  "name": "lumine-control-3",
+  "private": true,
+  "description": "Generador de la presentación del Control 3 (Avance 1 del TIG) de Control de Gestión de Lumine Motors",
+  "scripts": {
+    "build": "node deck.js ../Lumine_Control3_Avance1_TIG.pptx",
+    "guion": "node guion-md.js > ../GUION.md",
+    "guion-docx": "node guion-docx.js ../Lumine_Control3_Guion.docx",
+    "defensa-docx": "node defensa-docx.js ../Lumine_Control3_Defensa_y_Coherencia.docx",
+    "todo": "bash render.sh"
+  },
+  "dependencies": {
+    "docx": "^9.13.0",
+    "jszip": "^3.10.2",
+    "pptxgenjs": "^4.0.1"
+  }
+}

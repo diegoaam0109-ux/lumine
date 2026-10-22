@@ -12,6 +12,7 @@ Equipo: Diego Alarcón, Benjamín Torres y Lukas Verdugo · UNAB.
 | `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada**: estimador de ahorro con IA, prototipo, informes y revisión multi-IA. |
 | `fase-3/` | **Presentación de la Fase 3 de Integrador II** (Capítulo III: marketing, operaciones y RR.HH.): PPT, PDF, guion y generador. |
 | `solemne-2/` | **Solemne 2 de Control de Gestión**: mapa estratégico y CMI de Lumine (PPT, PDF, guion, respaldo y generador). |
+| `control-3/` | **Control 3 de Control de Gestión** (Avance 1 del TIG): comprensión del negocio y análisis estratégico (PPT, PDF, guion, manual de defensa y generador). |
 | `.claude/skills/` | Skills que Claude carga solo: `ui-ux-pro-max` (diseño de interfaces) y `lumine-marca` (sistema visual de Lumine). |
 | `CLAUDE.md` | Contexto del proyecto para Claude: quién es quién, decisiones, preferencias y pendientes. |
 
