@@ -158,8 +158,9 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - Solemne 2: aprobar los 17 objetivos, metas y responsables; Plan Financiero (tasa, flujos, inversión) y tolerancia del
   ahorro sin definir; metas de C3 y C4 con la primera muestra; faltan la pauta de la Solemne y `2_Contexto_Lumine_Motors.md`.
   Detalle en `solemne-2/RESPALDO.md`.
-- Control 3: aplicar al Word los 10 ajustes y el formato TIG del manual de defensa (local, no está en git);
-  confirmar con el profesor si el Avance 1 se expone. Detalle en `control-3/RESPALDO.md`.
+- Control 3: el informe del Avance 1 ya tiene los 10 ajustes, el formato TIG, 5 tablas APA y 2 anexos
+  (`Avance1_TIG_Lumine_Motors.docx`, local, no se sube); falta que el equipo lo revise, subirlo e imprimirlo y confirmar si se
+  expone. Puntos 3–6 ocupan 9 páginas: en el informe final (máx. 20, con 9–12 ≥ 50%) habrá que resumir. Detalle en `control-3/RESPALDO.md`.
 - Guion: decidir si la frase "Dos observaciones críticas…" (diapositiva 14) se deja, se reformula o se quita.
 - Fase 3: inconsistencias abiertas para revisar con el informe: química de la batería (informe: litio-titanato;
   identidad: LFP) y motores (informe: dos en las ruedas; render: uno central). Ver `fase-3/REDISENO_PREMIUM.md`.
