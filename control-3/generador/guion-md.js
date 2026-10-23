@@ -40,4 +40,11 @@ md += '\n## Anexo · solo si preguntan\n\n';
 md += `La lámina índice (${filas.length + 1}) tiene un enlace a cada pregunta; cada lámina del anexo tiene un enlace de vuelta al índice.\n\n`;
 md += g.ANEXO.map(a => `- **${a.codigo} · ${a.titulo}${/[?.)]$/.test(a.titulo) ? '' : '.'}** ${a.apoyo}`).join('\n') + '\n';
 md += '\nManual de defensa, origen de cada cifra, preguntas difíciles y ajustes al informe: `RESPALDO.md` y el manual de defensa (no se sube porque cita el borrador del informe).\n';
+const ga = g.GUION_ANEXO_CMI;
+if (ga) {
+  const pa = g.palabras(ga.bloques.map(b => b.texto).join(' '));
+  md += `\n## Guion del anexo ${ga.codigo} · Cuadro de Mando Integral\n\n`;
+  md += `${ga.cuando} Sugerido: ${ga.quien}. Unos ${min(pa)} (${pa} palabras).\n\n`;
+  md += ga.bloques.map(b => `### ${b.titulo}\n\n*${b.senal}*\n\n${b.texto}`).join('\n\n') + '\n';
+}
 process.stdout.write(md);

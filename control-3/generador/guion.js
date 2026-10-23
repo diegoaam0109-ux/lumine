@@ -48,9 +48,25 @@ const ANEXO = [
   { codigo: 'A11', d: 'a-avance2', titulo: 'Respaldo para el Avance 2 (no se expone)', apoyo: 'Mapa estratégico preliminar: es material de trabajo del siguiente avance.' },
 ];
 
+// Guion del anexo A11 (mapa estratégico preliminar del CMI): solo si el profesor pregunta por el CMI. Sugerido: Lukas.
+const GUION_ANEXO_CMI = {
+  codigo: 'A11', quien: LUKAS,
+  cuando: 'Solo si el profesor pregunta por el Cuadro de Mando Integral o por el Avance 2. Se abre desde el índice del anexo (A11).',
+  bloques: [
+    { titulo: 'Qué es', senal: 'Señalar el título de la lámina.',
+      texto: 'Este mapa no forma parte del Avance 1: es material de trabajo del Avance 2, y lo traemos como respaldo porque muestra hacia dónde nos lleva el diagnóstico. Es una propuesta preliminar del equipo.' },
+    { titulo: 'Cómo se lee', senal: 'Recorrer el mapa de abajo hacia arriba.',
+      texto: 'Se lee de abajo hacia arriba, en las cuatro perspectivas del Cuadro de Mando Integral. Abajo, en aprendizaje, están las capacidades: la biblioteca de calibraciones, los técnicos habilitados, el protocolo de medición y Lumine Habilita. Esas capacidades hacen posibles los procesos: la vía legal, la aprobación de cada par modelo-kit, la instalación segura, la medición y posventa, la réplica en talleres y las alianzas con aseguradoras, plantas de revisión técnica y financieras. Los procesos producen lo que el cliente compra: la promesa técnica cumplida y el ahorro acreditado; de ahí deberían salir la confianza y la captación del segmento. Arriba, en la perspectiva financiera, están el margen por servicio, la expansión con licencias y el objetivo final: obtener rentabilidad por sobre el costo de capital. En total son diecisiete objetivos y veinte relaciones.' },
+    { titulo: 'Qué dicen los colores y las flechas', senal: 'Señalar la leyenda de líneas, arriba a la derecha.',
+      texto: 'La barra de color de cada objetivo indica de qué eje estratégico viene; los que no tienen barra son nuevos. La forma de la flecha dice qué tan sólida es la relación: continua es habilitante; blanca y gruesa es una condición externa, como la vía legal; punteada es una hipótesis que habrá que comprobar con datos. Doce de las veinte relaciones son hipótesis, porque Lumine todavía no opera. Por eso hoy todos los indicadores estarían sin medir, y la vía legal funciona como una compuerta: si no se habilita, se detiene lo que depende de ella.' },
+    { titulo: 'Conexión con el diagnóstico', senal: 'Volver al índice del anexo al terminar.',
+      texto: 'Cada brecha del diagnóstico tiene aquí su respuesta. La habilitación formal, en la vía legal y las alianzas. El valor frente a posponer la compra, en el protocolo de medición, el ahorro acreditado y la forma de pago que aportan las alianzas. Y la capacidad de ejecución, en la biblioteca, los técnicos y el margen por servicio, que incluye cubrir el riesgo del dólar. Los indicadores, las metas y los responsables de cada objetivo los presentaremos en el Avance 2.' },
+  ],
+};
+
 const PALABRAS_POR_MINUTO = 130;
 const palabras = t => t.split(/\s+/).filter(Boolean).length;
 const segundos = t => Math.round(palabras(t) / PALABRAS_POR_MINUTO * 60 / 5) * 5;
 const mmss = x => { const s = Math.round(x); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
 
-module.exports = { PRINCIPAL, ANEXO, DIEGO, BENJA, LUKAS, palabras, segundos, mmss, PALABRAS_POR_MINUTO };
+module.exports = { PRINCIPAL, ANEXO, GUION_ANEXO_CMI, DIEGO, BENJA, LUKAS, palabras, segundos, mmss, PALABRAS_POR_MINUTO };

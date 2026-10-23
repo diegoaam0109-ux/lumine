@@ -642,21 +642,23 @@ D.cadena = () => {
   const s = contenido('6 · ANÁLISIS ESTRATÉGICO · CADENA DE VALOR', 'LA CALIBRACIÓN DA EXCLUSIVIDAD;', 'operaciones, el cuello de botella.');
   const dw = CW, x = M, y = Y0 - 0.05;
   const apoyo = [['Infraestructura de la empresa', 'CONDICIÓN DE ENTRADA', 'ent'], ['Gestión de recursos humanos', '', ''], ['Desarrollo tecnológico', 'EXCLUSIVIDAD: LA CALIBRACIÓN', 'exc'], ['Adquisiciones', '', '']];
-  const ah = 0.42;
+  const ah = 0.36;
   apoyo.forEach(([k, t, tipo], i) => {
     const yy = y + i * (ah + 0.06);
     caja(s, x, yy, dw - 0.6, ah, { fill: { color: tipo === 'exc' ? HOT : C.background2 }, line: { color: tipo === 'exc' ? C.accent1 : tipo === 'ent' ? C.text1 : C.accent5, width: tipo ? 1.25 : 0.75 } });
     T(s, k, { x: x + 0.18, y: yy, w: 4.0, h: ah, fontSize: 15, bold: !!tipo, valign: 'middle' });
     if (t) mono(s, t, { x: x + 4.2, y: yy, w: dw - 0.6 - 4.4, h: ah, fontSize: 12, color: tipo === 'exc' ? C.accent1 : C.text1, valign: 'middle', align: 'right' });
   });
-  const py = y + 4 * (ah + 0.06) + 0.06, ph = 1.58, n = 5, pw = (dw - 0.6) / n;
-  const prim = [['Logística de entrada', 'COSTO', 'Kit importado, Clase 9 y dólar', 'costo'], ['Operaciones', 'CUELLO DE BOTELLA', 'Homologación, internación y técnicos', 'cuello'], ['Logística de salida', '', '', ''], ['Marketing y ventas', '', '', ''], ['Servicio posventa', '', '', '']];
+  const py = y + 4 * (ah + 0.06) + 0.06, ph = 1.75, n = 5, pw = (dw - 0.6) / n;
+  // actividades primarias como tarjetas (referencia del equipo): título, rótulo mono y lectura breve
+  const prim = [['Logística de entrada', 'DIRECTRIZ DE COSTO', 'Kit importado, Clase 9, dólar', 'costo'], ['Operaciones', 'CUELLO DE BOTELLA', 'Aquí se entrega la exclusividad', 'cuello'], ['Logística de salida', '', '', ''], ['Marketing y ventas', '', '', ''], ['Servicio posventa', '', '', '']];
+  const gap = 0.12, tw = pw - gap;
   prim.forEach(([k, t, d, tipo], i) => {
     const xx = x + i * pw;
-    s.addShape(S.chevron, { x: xx, y: py, w: pw + 0.12, h: ph, fill: { color: tipo === 'cuello' ? HOT : C.background2 }, line: { color: tipo === 'cuello' ? C.accent1 : tipo === 'costo' ? C.text1 : C.accent5, width: tipo ? 1.25 : 0.75 } });
-    T(s, k, { x: xx + 0.4, y: py + 0.1, w: pw - 0.6, h: 0.5, fontSize: 14, bold: !!tipo, valign: 'top', lineSpacingMultiple: 0.9 });
-    if (t) mono(s, t, { x: xx + 0.4, y: py + 0.68, w: pw - 0.5, h: 0.26, fontSize: 11, color: tipo === 'cuello' ? C.accent1 : C.text1 });
-    if (d) T(s, d, { x: xx + 0.4, y: py + 0.96, w: pw - 0.55, h: 0.6, fontSize: 13, color: C.text2, valign: 'top', lineSpacingMultiple: 0.9 });
+    caja(s, xx, py, tw, ph, { fill: { color: tipo === 'cuello' ? HOT : C.background2 }, line: { color: tipo === 'cuello' ? C.accent1 : tipo === 'costo' ? C.text1 : C.accent5, width: tipo ? 1.5 : 0.75 } });
+    T(s, k, { x: xx + 0.18, y: py + 0.12, w: tw - 0.3, h: 0.6, fontSize: 16, bold: true, valign: 'top', lineSpacingMultiple: 0.95 });
+    if (t) mono(s, t, { x: xx + 0.18, y: py + 0.76, w: tw - 0.3, h: 0.42, valign: 'top', fontSize: 11, color: tipo === 'cuello' ? C.accent1 : C.text1 });
+    if (d) T(s, d, { x: xx + 0.18, y: py + 1.2, w: tw - 0.3, h: 0.52, fontSize: 14, color: C.text2, valign: 'top', lineSpacingMultiple: 0.95 });
   });
   s.addShape(S.rect, { x: x + dw - 0.55, y, w: 0.55, h: py + ph - y, fill: { color: C.accent6 }, line: { color: C.accent5, width: 0.75 } });
   T(s, 'MARGEN', { x: x + dw - 0.55, y, w: 0.55, h: py + ph - y, fontFace: F_MONO, fontSize: 11, color: C.text2, align: 'center', valign: 'middle', vert: 'vert270' });
@@ -997,7 +999,9 @@ G.ANEXO.forEach(a => {
   ANEXO_ACTUAL = a;
   CLAVE = a.d;
   if (!D[a.d]) throw new Error('Falta la diapositiva ' + a.d);
-  D[a.d]().addNotes(`ANEXO ${a.codigo} · Solo si preguntan.\n\n${a.apoyo}`);
+  const g = G.GUION_ANEXO_CMI && G.GUION_ANEXO_CMI.codigo === a.codigo ? G.GUION_ANEXO_CMI : null;
+  const extra = g ? `\n\nGUION (${g.quien}, unos ${G.mmss(G.palabras(g.bloques.map(b => b.texto).join(' ')) / G.PALABRAS_POR_MINUTO * 60)}):\n\n` + g.bloques.map(b => `${b.titulo.toUpperCase()} · ${b.senal}\n${b.texto}`).join('\n\n') : '';
+  D[a.d]().addNotes(`ANEXO ${a.codigo} · Solo si preguntan.\n\n${a.apoyo}${extra}`);
 });
 ANEXO_ACTUAL = null;
 

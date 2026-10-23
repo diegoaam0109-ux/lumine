@@ -9,6 +9,7 @@ NOMBRE=Lumine_Control3_Avance1_TIG
 node deck.js "../$NOMBRE.pptx"
 node guion-md.js > ../GUION.md
 node guion-docx.js ../Lumine_Control3_Guion.docx
+node guion-anexo-docx.js ../Lumine_Control3_Guion_Anexo_CMI.docx
 # El manual de defensa cita el borrador del informe: su generador queda fuera del repositorio público.
 [ -f defensa-docx.js ] && node defensa-docx.js ../Lumine_Control3_Defensa_y_Coherencia.docx
 SOFFICE=$(command -v soffice || echo "/c/Program Files/LibreOffice/program/soffice.exe")

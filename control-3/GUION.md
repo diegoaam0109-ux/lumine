@@ -140,3 +140,31 @@ La lámina índice (14) tiene un enlace a cada pregunta; cada lámina del anexo 
 - **A11 · Respaldo para el Avance 2 (no se expone)** Mapa estratégico preliminar: es material de trabajo del siguiente avance.
 
 Manual de defensa, origen de cada cifra, preguntas difíciles y ajustes al informe: `RESPALDO.md` y el manual de defensa (no se sube porque cita el borrador del informe).
+
+## Guion del anexo A11 · Cuadro de Mando Integral
+
+Solo si el profesor pregunta por el Cuadro de Mando Integral o por el Avance 2. Se abre desde el índice del anexo (A11). Sugerido: Lukas Verdugo. Unos 2:38 (343 palabras).
+
+### Qué es
+
+*Señalar el título de la lámina.*
+
+Este mapa no forma parte del Avance 1: es material de trabajo del Avance 2, y lo traemos como respaldo porque muestra hacia dónde nos lleva el diagnóstico. Es una propuesta preliminar del equipo.
+
+### Cómo se lee
+
+*Recorrer el mapa de abajo hacia arriba.*
+
+Se lee de abajo hacia arriba, en las cuatro perspectivas del Cuadro de Mando Integral. Abajo, en aprendizaje, están las capacidades: la biblioteca de calibraciones, los técnicos habilitados, el protocolo de medición y Lumine Habilita. Esas capacidades hacen posibles los procesos: la vía legal, la aprobación de cada par modelo-kit, la instalación segura, la medición y posventa, la réplica en talleres y las alianzas con aseguradoras, plantas de revisión técnica y financieras. Los procesos producen lo que el cliente compra: la promesa técnica cumplida y el ahorro acreditado; de ahí deberían salir la confianza y la captación del segmento. Arriba, en la perspectiva financiera, están el margen por servicio, la expansión con licencias y el objetivo final: obtener rentabilidad por sobre el costo de capital. En total son diecisiete objetivos y veinte relaciones.
+
+### Qué dicen los colores y las flechas
+
+*Señalar la leyenda de líneas, arriba a la derecha.*
+
+La barra de color de cada objetivo indica de qué eje estratégico viene; los que no tienen barra son nuevos. La forma de la flecha dice qué tan sólida es la relación: continua es habilitante; blanca y gruesa es una condición externa, como la vía legal; punteada es una hipótesis que habrá que comprobar con datos. Doce de las veinte relaciones son hipótesis, porque Lumine todavía no opera. Por eso hoy todos los indicadores estarían sin medir, y la vía legal funciona como una compuerta: si no se habilita, se detiene lo que depende de ella.
+
+### Conexión con el diagnóstico
+
+*Volver al índice del anexo al terminar.*
+
+Cada brecha del diagnóstico tiene aquí su respuesta. La habilitación formal, en la vía legal y las alianzas. El valor frente a posponer la compra, en el protocolo de medición, el ahorro acreditado y la forma de pago que aportan las alianzas. Y la capacidad de ejecución, en la biblioteca, los técnicos y el margen por servicio, que incluye cubrir el riesgo del dólar. Los indicadores, las metas y los responsables de cada objetivo los presentaremos en el Avance 2.
