@@ -143,28 +143,28 @@ Manual de defensa, origen de cada cifra, preguntas difíciles y ajustes al infor
 
 ## Guion del anexo A11 · Cuadro de Mando Integral
 
-Solo si el profesor pregunta por el Cuadro de Mando Integral o por el Avance 2. Se abre desde el índice del anexo (A11). Sugerido: Lukas Verdugo. Unos 2:38 (343 palabras).
+Solo si el profesor pregunta por el Cuadro de Mando Integral o por el Avance 2. Se abre desde el índice del anexo (A11). Sugerido: Lukas Verdugo. Unos 1:56 (251 palabras).
 
-### Qué es
+### Para empezar
 
-*Señalar el título de la lámina.*
+*Abrir A11 desde el índice del anexo y señalar el título.*
 
-Este mapa no forma parte del Avance 1: es material de trabajo del Avance 2, y lo traemos como respaldo porque muestra hacia dónde nos lleva el diagnóstico. Es una propuesta preliminar del equipo.
+Profesor, esto que ve aquí es el mapa estratégico de Lumine. No es parte de este avance: es lo que vamos a desarrollar en el Avance 2. Lo dejamos en el anexo porque muestra hacia dónde nos lleva todo el diagnóstico.
 
 ### Cómo se lee
 
-*Recorrer el mapa de abajo hacia arriba.*
+*Recorrer el mapa con la mano, de abajo hacia arriba.*
 
-Se lee de abajo hacia arriba, en las cuatro perspectivas del Cuadro de Mando Integral. Abajo, en aprendizaje, están las capacidades: la biblioteca de calibraciones, los técnicos habilitados, el protocolo de medición y Lumine Habilita. Esas capacidades hacen posibles los procesos: la vía legal, la aprobación de cada par modelo-kit, la instalación segura, la medición y posventa, la réplica en talleres y las alianzas con aseguradoras, plantas de revisión técnica y financieras. Los procesos producen lo que el cliente compra: la promesa técnica cumplida y el ahorro acreditado; de ahí deberían salir la confianza y la captación del segmento. Arriba, en la perspectiva financiera, están el margen por servicio, la expansión con licencias y el objetivo final: obtener rentabilidad por sobre el costo de capital. En total son diecisiete objetivos y veinte relaciones.
+El mapa se lee de abajo hacia arriba. Abajo está lo que Lumine tiene que aprender: la biblioteca de calibraciones, los técnicos habilitados y el protocolo para medir el ahorro. Con eso funcionan los procesos: conseguir la vía legal, aprobar cada modelo e instalar de forma segura. Eso le entrega al cliente dos cosas: que el kit cumpla lo que promete y un ahorro que se pueda demostrar. Si lo logramos, viene la confianza, el cliente compra, y arriba, al final, está la meta: que el negocio rinda más de lo que cuesta el capital. En total son diecisiete objetivos, conectados por veinte flechas.
 
-### Qué dicen los colores y las flechas
+### Las flechas
 
 *Señalar la leyenda de líneas, arriba a la derecha.*
 
-La barra de color de cada objetivo indica de qué eje estratégico viene; los que no tienen barra son nuevos. La forma de la flecha dice qué tan sólida es la relación: continua es habilitante; blanca y gruesa es una condición externa, como la vía legal; punteada es una hipótesis que habrá que comprobar con datos. Doce de las veinte relaciones son hipótesis, porque Lumine todavía no opera. Por eso hoy todos los indicadores estarían sin medir, y la vía legal funciona como una compuerta: si no se habilita, se detiene lo que depende de ella.
+Las flechas no son todas iguales. La continua es algo que tiene que pasar sí o sí antes del paso siguiente. La blanca y gruesa es algo que no depende de nosotros, como la ley. Y la punteada es una hipótesis: creemos que funciona, pero hay que probarlo. Y aquí está lo honesto: doce de las veinte flechas son hipótesis. Es lógico, porque Lumine todavía no opera.
 
-### Conexión con el diagnóstico
+### Para cerrar
 
-*Volver al índice del anexo al terminar.*
+*Volver al índice del anexo.*
 
-Cada brecha del diagnóstico tiene aquí su respuesta. La habilitación formal, en la vía legal y las alianzas. El valor frente a posponer la compra, en el protocolo de medición, el ahorro acreditado y la forma de pago que aportan las alianzas. Y la capacidad de ejecución, en la biblioteca, los técnicos y el margen por servicio, que incluye cubrir el riesgo del dólar. Los indicadores, las metas y los responsables de cada objetivo los presentaremos en el Avance 2.
+Por eso el mapa responde a las tres brechas que vimos: la vía legal, demostrar el ahorro y tener la capacidad de ejecutar. Los indicadores y las metas de cada objetivo los vamos a presentar en el Avance 2.
