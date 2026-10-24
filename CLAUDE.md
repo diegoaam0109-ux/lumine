@@ -42,6 +42,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | `.claude/skills/presentaciones/` | Skill con el método de presentaciones del equipo: lámina como apoyo y no como guion, tiempo según la rúbrica, anexo para la defensa y un plan aprobado antes de construir. | Úsala con `lumine-marca` para cualquier presentación nueva. |
 | `.claude/skills/lumine-marca/` | Skill con el sistema visual de Lumine (colores, tipografías, motivos, recursos). | Úsala para cualquier pieza nueva con la marca. |
 | `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada** (UNAB, Grupo 1, NRC 4153): estimador de ahorro con IA, prototipo, informe técnico del modelo matemático y revisión cruzada con varias IA. | Pasos para reproducir en `entrega3/README.md`; resultados de la Entrega 4 en `entrega4/Resultados_mejoras_modelo_E4.md`. |
+| `videos/` | **Videos de la Fase 3** (Remotion): comercial de 20 s (lámina 8) y Lumine Habilita de 18 s (lámina 14), MP4 y portadas en `salida/`. | `bash render.sh`; `npm run studio`. Supuestos y diferencias en `NOTA_PRODUCCION.md`. |
 | `fase-3/` | **Presentación de la Fase 3** de Integrador II: Taller de Empresas (ICMA 1001, Grupo 1, profesor Roberto Brito): Capítulo III, Plan de Marketing, Operaciones y RR.HH. | Generador propio copiado del de Control de Gestión: `generador/deck.js` + `guion.js` + `render.sh` (también en Git Bash para Windows). El informe .docx no se sube. |
 
 
@@ -121,6 +122,16 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   etiquetas de 12 pt o más, cifras grandes; el detalle lo dice el orador o va al anexo. Decir explícitamente
   cuál es la **ventaja competitiva sostenible** (la biblioteca de calibraciones, activo intangible), sin confundirla con la
   estrategia; el FODA no va en la presentación final.
+
+**Videos de la Fase 3** (24-10-2026, `videos/`):
+- Hechos con Claude Code + Remotion a partir de un video de referencia (motion graphics programados) y de dos encargos del
+  equipo. Sin audio; el equipo narra encima. Fundido de 0,5 s entre escenas; tipografías y paleta de la página comercial.
+- Comercial: escenario de 180 km/día, 6 días, 10 km/L y bencina 93 a $1.459 → ahorro $136.457 al mes y $1.637.488 al año,
+  siempre con «Escenario ilustrativo con 20% de ahorro supuesto». Fotos de la página en su versión de mayor resolución.
+- Habilita: visor recreado desde `src/engine3d.js` (`videos/src/kit3d.ts`); tres piezas con C14, C15 y C22; la marca de
+  brecha es una selección ilustrativa; la validación aparece como etapa aparte.
+- Rótulos neutros mientras siga abierta la inconsistencia con el informe: «Banco de baterías» (sin LFP) y «asistencia
+  eléctrica trasera» (sin número de motores).
 
 ## Pendientes y preguntas abiertas
 
