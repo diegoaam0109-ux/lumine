@@ -7,6 +7,7 @@
     "render": "bash render.sh"
   },
   "dependencies": {
+    "@fontsource-variable/archivo": "^5.3.0",
     "@remotion/cli": "^4.0.538",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

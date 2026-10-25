@@ -126,6 +126,10 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 **Videos de la Fase 3** (24-10-2026, `videos/`):
 - Hechos con Claude Code + Remotion a partir de un video de referencia (motion graphics programados) y de dos encargos del
   equipo. Sin audio; el equipo narra encima. Fundido de 0,5 s entre escenas; tipografías y paleta de la página comercial.
+- Comercial **versión 2** (25-10-2026): la versión 1 (fotos con texto) «gusta pero no tanto»; Habilita sí convenció. La v2
+  recrea la página funcionando con el recorrido de la lámina 8 (Conoce → Calcula → Verifica → Agenda): escaneo que revela
+  el kit, deslizadores de la calculadora en movimiento, verificador guiado y agenda con el auto ya ingresado. Lección:
+  mostrar la herramienta en uso, no fotos con texto.
 - Comercial: escenario de 180 km/día, 6 días, 10 km/L y bencina 93 a $1.459 → ahorro $136.457 al mes y $1.637.488 al año,
   siempre con «Escenario ilustrativo con 20% de ahorro supuesto». Fotos de la página en su versión de mayor resolución.
 - Habilita: visor recreado desde `src/engine3d.js` (`videos/src/kit3d.ts`); tres piezas con C14, C15 y C22; la marca de

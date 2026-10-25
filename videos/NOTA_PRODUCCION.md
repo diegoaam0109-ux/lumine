@@ -16,17 +16,22 @@ sin grabar pantalla. Son deterministas: el mismo código produce siempre el mism
 Comprobado con `ffprobe` (duración, resolución, cuadros, sin pista de audio) y `blackdetect` (sin cuadros negros).
 Se revisaron cuadros de cada escena reducidos a la mitad para confirmar que se leen.
 
-## Video 01 · página comercial (20 s)
+## Video 01 · página comercial (20 s) · versión 2
 
-Sigue la revisión de dirección de arte del encargo (20 s con las imágenes de la página), no el guion original de 18 s.
+La versión 1 (fotos con texto encima) gustó pero no convenció: se veía como aviso y no como la página. La versión 2
+**muestra la página funcionando** y sigue el mismo recorrido de la lámina 8, con una barra fija que marca el paso:
+**01 Conoce → 02 Calcula → 03 Verifica → 04 Agenda**. La versión 1 quedó en el historial de git (commit 4e8a0f7).
 
-| Tiempo | Escena | Imagen |
-|---|---|---|
-| 0–4 s | «Tu auto, *ahora híbrido*», con marcadores en motor original, banco de baterías y asistencia eléctrica trasera | `portada` (rayos X) |
-| 4–7 s | Datos de uso: 180 km al día, 6 días a la semana, 10 km/L; bencina 93 a $1.459/L en línea secundaria | `particulares` |
-| 7–12 s | «Hasta 20%», ahorro al mes que sube a **$136.457**, barras «Hoy gastas» y «Con Lumine», ahorro anual | `bencinera` |
-| 12–16 s | Estima tu ahorro → Solicita un diagnóstico → Atención en taller → Instalación y entrega | `taller` |
-| 16–20 s | Cierre: «Estima tu ahorro. *Solicita un diagnóstico.*» | `portada` |
+| Tiempo | Paso | Componente recreado (ventas/src) | Imagen |
+|---|---|---|---|
+| 0–4 s | Conoce | Portada: un escaneo celeste recorre el auto y revela el kit; «Tu auto, *ahora* HÍBRIDO», las tres lecturas y los dos botones (se ilumina «Calcula tu gasto») | `portada` (rayos X) |
+| 4–9,5 s | Calcula | Calculadora: «Mi auto», bencina 93 y los deslizadores que se mueven desde los valores iniciales de la página (40 km, 5 días, 12 km/L) hasta 180, 6 y 10; la lectura en vivo cambia con ellos | `bencinera` |
+| 9,5–14,2 s | Verifica | Verificador guiado: «Toyota Yaris 2016» (el ejemplo de la página), tracción delantera, más de 80 km, para mí → «Buen candidato» y botón «Agendar diagnóstico» | `particulares` |
+| 14,2–17,3 s | Agenda | Formulario «Empieza con un *diagnóstico.*» con el auto ya ingresado desde el verificador; nombre y teléfono vacíos; luego diagnóstico en taller → instalación y entrega | `taller` |
+| 17,3–20 s | Cierre | «Estima tu ahorro. *Solicita un diagnóstico.*» | `portada` |
+
+Transición principal: un barrido celeste de 0,6 s (la misma línea del escaneo de la portada). Grano fino de película
+encima de todo. Tipografía Archivo variable (eje de ancho, como la página: 68% monumental, 75% cifras, 112% titulares).
 
 **Fórmula** (igual a la calculadora de `ventas/`, `ahorroPct: 20`, base de 4,33 semanas al mes):
 
@@ -39,16 +44,18 @@ ahorro_año = ahorro_mes × 12                = $1.637.488,22 → $1.637.488
 ```
 
 Los valores se calculan en `src/Comercial.tsx` (no están escritos a mano) y se redondean a pesos solo al mostrarlos.
-La cifra termina de subir a los 9,0 s: quedan 3 s de lectura antes del cambio de escena.
+La cifra queda estable desde los 6,3 s: hay 3,2 s de lectura antes del cambio de escena. Los valores intermedios
+mientras se mueven los deslizadores también salen de la fórmula (con el paso de 5 km de la página).
 
 **Aclaraciones que aparecen en pantalla**: «Escenario ilustrativo con 20% de ahorro supuesto · estimación, no medición»;
 «precio de ejemplo de la página, no verificado hoy»; «Imagen conceptual»; «Proceso propuesto»; y al cierre
 «Ahorro: estimación de ingeniería con 20% supuesto, no medida en autos chilenos».
 
-**Diferencias con el HTML**: es una adaptación visual, no una captura de la página. Se dejaron solo los tres datos que
-explican el cálculo (sin selector de combustible, ni navegación, ni formularios). Las fotos son las mismas de la página
-en su versión de mayor resolución (`control-de-gestion/generador/assets/lumine-01, 05, 13 y 16`). No hay cursor ni
-clics, ni mensaje de solicitud enviada.
+**Diferencias con el HTML**: es una recreación de los componentes, no una captura. Se agrandaron (alrededor de 2×)
+para leerse en la sala y se dejaron solo los controles que explican el cálculo. El verificador abrevia el saludo del
+bot; las preguntas, las opciones y el resultado son los de la página. El formulario no muestra nombres ni teléfonos
+(quedan los textos de ejemplo) y no se envía nada: lo dice en pantalla. No hay cursor ni mensaje de éxito.
+La unidad de control no se menciona «con IA», como en la versión 1.
 
 ## Video 02 · Lumine Habilita (18 s)
 
