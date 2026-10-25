@@ -53,6 +53,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | Lumine Habilita (demo) | https://claude.ai/artifact/JpdUMVYztFtjQYkcAehELb | `dist/lumine-habilita-demo.html` |
 | Lumine Habilita (real) | https://claude.ai/artifact/KrYbLr84sVrfJoRT2wvhP9 | `dist/lumine-habilita.html` (capacidades `db` con `DB_RULES`, `user` con `profile`, `downloads`) |
 | Guion de la presentación | https://claude.ai/code/artifact/e0db2f29-05e7-42d1-b4a7-9cfcb5d1741b | documento editable |
+| Informe de Habilita (Gestión de Personas) | https://claude.ai/artifact/TjjPEZUvxSV6jx6mubNEJP | documento de Claude Docs; se exporta a Word para entregar |
 
 Para republicar en el mismo link hay que publicar el mismo archivo desde una sesión con permiso de edición sobre el
 artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la versión real.
@@ -65,6 +66,16 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - D13: rotación de duos voluntaria, cada 4 meses como mínimo, por solicitud escrita al Responsable Técnico.
 - Dos técnicos de nivel 1 nunca forman duo (salvo el arranque, bajo el Responsable Técnico).
 - Revalidación del core de seguridad cada 24 meses; período autónomo del nivel 3: 90 días; 392 h si se cursa todo.
+
+**Informe de Habilita para Gestión de Personas** (profesor Esteban Gómez Sotta; revisado el 25-10-2026 con sus comentarios del 16-10):
+- Cuerpo = **alcance, objetivos y marco de procedimiento**; todo lo técnico de la plataforma (enlaces, arquitectura, guía de uso,
+  pruebas) va en **anexos**.
+- El centro es la **correspondencia entre competencias y módulos de capacitación**, explicada con por qué, para qué, cómo, dónde
+  y quiénes. Cada decisión se explica con qué establece, qué significa en la práctica y para qué existe.
+- Escribir como si la empresa ya operara («Lumine instala…»). Usar el temario del curso como guía, no como sección.
+- Todo hecho externo lleva cita con enlace en nota al pie numerada (no APA). Afirmaciones de contexto: parafrasear y llevarlas a
+  oportunidades y restricciones (un FODA dentro del párrafo).
+- Las metas de los 8 indicadores siguen «Por confirmar».
 
 **Página comercial**:
 - Oscuro por defecto, con interruptor claro/oscuro visible; estilo cinematográfico (referencias Lamborghini, Ferrari, AWE y Apple)
