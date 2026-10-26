@@ -11,7 +11,8 @@ Equipo: Diego Alarcón, Benjamín Torres y Lukas Verdugo · UNAB.
 | `integrador-2/` | **Curso Integrador II: Taller de Empresas** (Fase 3): kit de identidad visual (logo, fondos, imágenes, fuentes, paleta) y presentación. |
 | `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada**: estimador de ahorro con IA, prototipo, informes y revisión multi-IA. |
 | `fase-3/` | **Presentación de la Fase 3 de Integrador II** (Capítulo III: marketing, operaciones y RR.HH.): PPT, PDF, guion y generador. |
-| `.claude/skills/` | Skills que Claude carga solo: `ui-ux-pro-max` (diseño de interfaces) y `lumine-marca` (sistema visual de Lumine) y `presentaciones` (método para presentaciones: menos texto, tiempo según la rúbrica, anexo para la defensa). |
+| `.claude/skills/` | Skills del equipo (11): `lumine-reglas`, `lumine-git-entrega`, `lumine-habilita`, `lumine-ventas`, `lumine-generador-ppt`, `lumine-verificacion-visual`, `lumine-entregas-ia`, `lumine-redaccion`, `lumine-marca`, `presentaciones` y `ui-ux-pro-max`. |
+| `AGENTS.md`, `codex/` | Para trabajar con **Codex**: instrucciones, prompt inicial (`codex/PROMPT.md`), lista de revisión y bitácora de traspasos entre agentes. |
 | `CLAUDE.md` | Contexto del proyecto para Claude: quién es quién, decisiones, preferencias y pendientes. |
 
 ### Para empezar una sesión de Claude

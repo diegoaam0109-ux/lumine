@@ -19,8 +19,8 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 ## Cómo trabajar con el equipo
 
 - Escribe siempre en **español** (Chile), directo y sin relleno.
-- **Nunca inventes datos.** Lo que no existe se muestra como **«Por confirmar»** (precio, % de ahorro, garantía, tiempo de
-  instalación, WhatsApp, correo: todos `null` en `ventas/src/lib/datos.ts`). Lo mismo con normas o cifras sin fuente.
+- **Nunca inventes datos.** Lo que no existe se muestra como **«Por confirmar»** (precio, garantía, tiempo de instalación,
+  WhatsApp, correo: `null` en `ventas/src/lib/datos.ts`; el ahorro vale 20 y se presenta como estimación). Lo mismo con normas o cifras sin fuente.
 - Tienes autorización amplia para mejorar diseño y experiencia ("te autorizo a hacer todo, mándate"), pero las decisiones
   de negocio abiertas (abajo) se preguntan.
 - **Al terminar un bloque de trabajo**: actualiza los artefactos publicados **y** entrega el código base actualizado
@@ -41,6 +41,8 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | `.claude/skills/ui-ux-pro-max/` | Skill de diseño de interfaces (MIT). | `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<consulta>" --design-system` |
 | `.claude/skills/presentaciones/` | Skill con el método de presentaciones del equipo: lámina como apoyo y no como guion, tiempo según la rúbrica, anexo para la defensa y un plan aprobado antes de construir. | Úsala con `lumine-marca` para cualquier presentación nueva. |
 | `.claude/skills/lumine-marca/` | Skill con el sistema visual de Lumine (colores, tipografías, motivos, recursos). | Úsala para cualquier pieza nueva con la marca. |
+| `.claude/skills/lumine-*` (reglas, git-entrega, habilita, ventas, generador-ppt, verificacion-visual, entregas-ia, redaccion) | Skills de trabajo por carpeta, escritas para que cualquier agente (Claude o Codex) no se equivoque. | Si creas o cambias una skill, corre `python3 codex/sincronizar-skills.py`. |
+| `AGENTS.md`, `codex/`, `.agents/skills/` | **Codex en el equipo**: instrucciones que Codex lee solo, prompt, lista de revisión y `BITACORA.md` de traspasos entre agentes. `.agents/skills/` se genera. | Lee `codex/BITACORA.md` al empezar y anota tu bloque al terminar. |
 | `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada** (UNAB, Grupo 1, NRC 4153): estimador de ahorro con IA, prototipo, informe técnico del modelo matemático y revisión cruzada con varias IA. | Pasos para reproducir en `entrega3/README.md`; resultados de la Entrega 4 en `entrega4/Resultados_mejoras_modelo_E4.md`. |
 | `fase-3/` | **Presentación de la Fase 3** de Integrador II: Taller de Empresas (ICMA 1001, Grupo 1, profesor Roberto Brito): Capítulo III, Plan de Marketing, Operaciones y RR.HH. | Generador propio copiado del de Control de Gestión: `generador/deck.js` + `guion.js` + `render.sh` (también en Git Bash para Windows). El informe .docx no se sube. |
 
