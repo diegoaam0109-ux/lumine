@@ -44,3 +44,35 @@ si la API no responde, usa la plantilla de respaldo.
 El levantamiento de jornadas reales en Santiago (OE1) no se hizo en esta etapa. El protocolo está en el Anexo G.
 Si el grupo registra jornadas propias (CSV con `velocidad_kmh` por segundo y, si existe, `pendiente_pct` y `dia`),
 la pestaña Diagnóstico del prototipo las procesa directamente.
+
+## Desarrollo y pruebas del prototipo (Python 3.12)
+
+```bash
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -r entrega3/prototipo/requirements.txt
+python entrega3/prototipo/entrenar_ridge.py
+python entrega3/prototipo/construir_app.py
+python -m pytest entrega3/prototipo/tests -q
+```
+
+Las pruebas de paridad con el navegador requieren Node.js 22 o superior. El exportador
+lee `resultados/conductores.csv`, añade `nivel2_ridge` a `app/modelo.json` y conserva el
+GBM de nivel 1 y el GBM histórico de nivel 2. El diagnóstico usa Ridge estandarizado;
+los intervalos se calibran con residuos de GroupKFold (10 particiones por conductor).
+Es una calibración conforme aproximada con residuos fuera de muestra, no una garantía
+empírica de cobertura en conductores chilenos reales.
+
+N1 pasa de 19,6% a 19,7%: el gasto sigue en $806.000 y el plazo conservador en 22 meses,
+pero el nuevo ahorro redondea a $159.000 (antes $158.000). Las respuestas v3.1 son
+fixtures históricos, evaluados contra sus cifras originales; no se reescriben.
+
+`construir_app.py` conserva los resultados por defecto. La opción explícita
+`--actualizar-muestras` permite regenerar `resultados/muestras_app.json` cuando se autorice.
+Los comandos de reproducción completa de arriba sí reescriben resultados: ejecutarlos
+en un clon descartable. Ver `../REPRODUCIBILIDAD.md` para tiempos y límites observados.
+
+GitHub Pages publica el HTML autocontenido mediante `.github/workflows/pages.yml` al
+actualizar `main` o `claude/quirky-darwin-326nn0`, o al ejecutar el workflow manualmente.
+En Settings → Pages debe estar seleccionada la fuente **GitHub Actions**; el entorno
+`github-pages` debe permitir la rama que se publique. El PR por sí solo no publica el sitio.

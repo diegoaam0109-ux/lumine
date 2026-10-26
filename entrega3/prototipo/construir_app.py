@@ -26,7 +26,7 @@ for perfil, cid in ids.items():
     jid = meta[(meta.conductor == cid) & (meta.semana == 1)].jornada.iloc[0]
     v = trazas[jid][0][:3600] * 3.6
     muestras.append({"perfil": perfil, "nombre": nombre[perfil], "desc": f"{desc[perfil]} · {r.km_dia:.0f} km/día",
-                     "vars": {k: float(r[k]) for k in modelo["nivel2"]["vars"]}, "traza": [round(float(x), 1) for x in v],
+                     "vars": {k: float(r[k]) for k in modelo["nivel2_ridge"]["vars"]}, "traza": [round(float(x), 1) for x in v],
                      "conductor": cid})
 casos = {c["id"]: c for c in json.load(open(os.path.join(AQUI, "pruebas", "casos.json")))}
 generadas = []
@@ -39,8 +39,8 @@ for cid, txt in V31.items():
 comp = pd.read_csv(os.path.join(AQUI, "resultados", "comparacion_modelos.csv"), index_col=0)
 nombres = {"M0 Cifra genérica TIG (25%)": "Cifra genérica 25%", "M0b Cifra ICCT eje trasero (15,5%)": "Cifra ICCT 15,5%",
            "M2 Nivel 2 lineal, 2 variables (Entrega 2)": "Lineal de la Entrega 2", "M0c Promedio por perfil": "Promedio por perfil",
-           "M1 Nivel 1 cotización (GBM, declarados)": "Cotización (nivel 1)", "M3 Nivel 2 diagnóstico (GBM, registro GPS)": "Diagnóstico (nivel 2)"}
-errores = [{"nombre": v, "mae": round(float(comp.loc[k, "MAE"]), 2), "sel": k.startswith("M3") or k.startswith("M1")} for k, v in nombres.items()]
+           "M1 Nivel 1 cotización (GBM, declarados)": "Cotización (nivel 1)", "M3 Nivel 2 diagnóstico (GBM, registro GPS)": "GBM histórico (nivel 2)"}
+errores = [{"nombre": v, "mae": round(float(comp.loc[k, "MAE"]), 2), "sel": k.startswith("M1")} for k, v in nombres.items()]
 perfiles = []
 for p, n in [("colectivo", "Colectivo"), ("aplicacion", "Aplicación"), ("particular", "Particular")]:
     g = t[t.perfil == p]
@@ -59,5 +59,6 @@ for d, jid in enumerate(meta[(meta.conductor == ids["aplicacion"]) & (meta.seman
     v, pe = trazas[jid]
     filas.append(pd.DataFrame({"dia": d, "velocidad_kmh": np.round(v * 3.6, 1), "pendiente_pct": np.round(pe * 100, 2)}))
 pd.concat(filas).to_csv(os.path.join(AQUI, "app", "registro_ejemplo.csv"), index=False)
-json.dump({m["perfil"]: m["vars"] for m in muestras}, open(os.path.join(AQUI, "resultados", "muestras_app.json"), "w"))
+if "--actualizar-muestras" in sys.argv:
+    json.dump({m["perfil"]: m["vars"] for m in muestras}, open(os.path.join(AQUI, "resultados", "muestras_app.json"), "w"))
 print("index.html", round(os.path.getsize(os.path.join(AQUI, "app", "index.html")) / 1024), "KB;", ids)

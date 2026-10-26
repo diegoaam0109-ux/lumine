@@ -33,6 +33,13 @@ def _predecir_gbm(m, x):
     return total
 
 
+def _predecir_ridge(m, x):
+    return m["intercepto"] + sum(
+        (v - media) / escala * coef
+        for v, media, escala, coef in zip(x, m["medias"], m["escalas"], m["coeficientes"])
+    )
+
+
 def cargar_modelo():
     with open(os.path.join(AQUI, "app", "modelo.json")) as f:
         return json.load(f)
@@ -57,7 +64,7 @@ def estimar(datos, modelo=None):
         return {"estado": "no_aplica", "motivo": "El kit solo se instala en autos de tracción delantera.",
                 "alertas": ["traccion_no_compatible"], "nivel": nivel, "perfil": perfil}
     if nivel == 2:
-        m = modelo["nivel2"]
+        m = modelo["nivel2_ridge"]
         if datos.get("jornadas_validas", 5) < 3:
             return {"estado": "datos_insuficientes", "nivel": nivel, "perfil": perfil,
                     "motivo": "El registro tiene menos de tres jornadas válidas.", "alertas": ["registro_incompleto"]}
@@ -85,7 +92,7 @@ def estimar(datos, modelo=None):
         x = [datos.get(v, 0) for v in m["vars"]]
         q = m["q80"]
         km = datos["km_declarado"]
-    centro = float(_predecir_gbm(m, x))
+    centro = float(_predecir_ridge(m, x) if nivel == 2 else _predecir_gbm(m, x))
     lo, hi = centro - q, centro + q
     cons = lo * modelo["razon_escenarios"]["conservador"]
     rend = datos.get("rendimiento_kml") or REND_DEFECTO

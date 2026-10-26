@@ -145,6 +145,7 @@ def simular(v_ms, veh: Vehiculo = Vehiculo(), kit: Kit = None, pendiente=None):
         "e_trac_kwh": base[4],
     }
     out["kml_base"] = 100.0 / out["l100_base"] if km > 0 else np.nan
+    out.update({"litros_kit": out["litros_base"], "ahorro_pct": 0.0})
     if kit is not None:
         k = kit
         res = _simular(v, a, p, veh.masa_kg, k.masa_kg, veh.cda_m2, veh.crr, veh.factor_inercia,
