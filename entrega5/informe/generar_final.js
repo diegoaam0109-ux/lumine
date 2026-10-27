@@ -524,7 +524,7 @@ ax(anexo("F", "Instrumentos para el piloto"),
 
 // G
 ax(anexo("G", "Evidencia del prototipo"),
-  P("El prototipo completo está en el repositorio del proyecto. La interfaz (entrega3/prototipo/app/index.html) es un archivo único que funciona sin conexión y corre el modelo en el navegador; un flujo de GitHub Actions la publica en GitHub Pages cuando se habilita esa opción en el repositorio."),
+  P("El prototipo completo está en el repositorio del proyecto. La interfaz (entrega3/prototipo/app/index.html) es un archivo único que funciona sin conexión y corre el modelo en el navegador; un flujo de GitHub Actions la publica en https://diegoaam0109-ux.github.io/lumine/ con cada cambio."),
   tabla(["Archivo", "Función"], [
     ["sim.py · dataset.py · validacion_fastsim.py", "Simulador del vehículo y del kit, datos de conducción y calibración contra FASTSim"],
     ["model.py · estimador.py", "Modelos, intervalos conformes, motor comercial, estados y plantilla de respaldo"],
@@ -607,7 +607,7 @@ ax(anexo("J", "Correspondencia con la pauta del curso"),
 
 // K
 ax(anexo("K", "Trazabilidad y reproducibilidad en GitHub"),
-  P("Repositorio: github.com/diegoaam0109-ux/lumine (rama claude/quirky-darwin-326nn0). El acceso para revisión se entrega al profesor como colaborador de solo lectura. Cada entrega tiene su carpeta (entrega3/, entrega4/ y entrega5/) y cada cambio queda con autor, fecha y propósito."),
+  P("Repositorio: github.com/diegoaam0109-ux/lumine (rama claude/quirky-darwin-326nn0). El repositorio es privado; por eso se entrega comprimido junto a este informe, con su historial completo, y la Tabla K1 resume los commits clave. Cada entrega tiene su carpeta (entrega3/, entrega4/ y entrega5/) y cada cambio queda con autor, fecha y propósito."),
   tabla(["Fecha", "Commit", "Autor", "Cambio"], [
     ["4 oct", "80fbd59", "Claude Code", "Entrega 3: simulador, modelo, prototipo, prompts RAFA y validador"],
     ["9 oct", "c4a0832", "Claude Code", "Validación corregida tras la revisión de ChatGPT y DeepSeek (GroupKFold, 10 particiones, Ridge)"],
@@ -627,7 +627,7 @@ ax(anexo("K", "Trazabilidad y reproducibilidad en GitHub"),
     ["Informe final y presentación", "20 s", "Completado; PDF de 28 páginas frente a 30 por diferencias de fuentes"],
     ["Pruebas automáticas (pytest)", "2 s", "20 de 20 aprobadas; se repitieron al integrar"],
   ], [4560, 1400, 3400], { titulo: "Reproducción independiente realizada por Codex", boldFirst: true,
-    nota: "Elaboración propia a partir de REPRODUCIBILIDAD.md (Codex, 26 y 27 de octubre de 2026). Entorno Linux con Python 3.12 y dependencias fijadas en requirements.txt. Los flujos de GitHub Actions y Pages están configurados; su ejecución remota requiere habilitarlos en la configuración del repositorio." }),
+    nota: "Elaboración propia a partir de REPRODUCIBILIDAD.md (Codex, 26 y 27 de octubre de 2026). Entorno Linux con Python 3.12 y dependencias fijadas en requirements.txt. El prototipo se publica automáticamente en https://diegoaam0109-ux.github.io/lumine/ con cada cambio." }),
   P("**Qué verifican las 20 pruebas.** Que sin kit el ahorro sea cero; que el ahorro en el ciclo WLTC con el kit de referencia esté en el rango esperado; que la energía disponible nunca sea negativa; las fórmulas de gasto, ahorro y plazo del caso N1; los estados no aplica y no conviene; que las 12 salidas v3.1 aprueben el validador; que el validador adversarial reproduzca 8 de 10; que el Ridge exportado coincida con scikit-learn; y que Python y JavaScript entreguen la misma cifra."),
 );
 
