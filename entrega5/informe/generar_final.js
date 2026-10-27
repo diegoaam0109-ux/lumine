@@ -607,7 +607,7 @@ ax(anexo("J", "Correspondencia con la pauta del curso"),
 
 // K
 ax(anexo("K", "Trazabilidad y reproducibilidad en GitHub"),
-  P("Repositorio: github.com/diegoaam0109-ux/lumine (rama claude/quirky-darwin-326nn0). El repositorio es privado; por eso se entrega comprimido junto a este informe, con su historial completo, y la Tabla K1 resume los commits clave. Cada entrega tiene su carpeta (entrega3/, entrega4/ y entrega5/) y cada cambio queda con autor, fecha y propósito."),
+  P("Repositorio: github.com/diegoaam0109-ux/lumine (rama claude/quirky-darwin-326nn0). El repositorio es privado; por eso su contenido se entrega comprimido junto a este informe, y la Tabla K1 resume el historial de cambios. Cada entrega tiene su carpeta (entrega3/, entrega4/ y entrega5/) y cada cambio queda con autor, fecha y propósito."),
   tabla(["Fecha", "Commit", "Autor", "Cambio"], [
     ["4 oct", "80fbd59", "Claude Code", "Entrega 3: simulador, modelo, prototipo, prompts RAFA y validador"],
     ["9 oct", "c4a0832", "Claude Code", "Validación corregida tras la revisión de ChatGPT y DeepSeek (GroupKFold, 10 particiones, Ridge)"],
