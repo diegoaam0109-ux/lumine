@@ -205,6 +205,8 @@ def main():
               "nivel1": exportar_gbm(mf1, VARS_DECL) | {"q80": float(qf1)},
               "razon_escenarios": razones,
               "dominio": {v: [float(t[v].quantile(0.01)), float(t[v].quantile(0.99))] for v in VARS_GPS + ["km_declarado"]}}
+    from entrenar_ridge import entrenar
+    export["nivel2_ridge"] = entrenar(t)
     with open(os.path.join(AQUI, "app", "modelo.json"), "w") as f:
         json.dump(export, f)
     print("q80 final N2:", round(qf3, 2), "N1:", round(qf1, 2), razones)

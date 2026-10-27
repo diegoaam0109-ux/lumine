@@ -267,8 +267,8 @@ footer b{color:var(--fg);font-weight:600}
       <h1 class="t-titulo">Cuánto ahorras <span class="t-serif">tú.</span></h1>
       <p class="bajada">El sitio te da una referencia de <b>20% menos combustible</b>. Aquí calculamos tu caso con tu forma de manejar, te mostramos el margen de error y un técnico revisa la cifra antes de que la veas.</p>
       <div class="cifras">
-        <div class="cifra"><span class="t-label-sm muted">Error medio</span><div class="v t-num">0,95<span class="muted" style="font-size:.45em"> pp</span></div><p class="d">en 90 conductores que el modelo nunca vio; la cifra genérica erra por 7,9.</p></div>
-        <div class="cifra"><span class="t-label-sm muted">Cobertura</span><div class="v t-num">82<span class="muted" style="font-size:.45em">%</span></div><p class="d">de los casos cae dentro del rango que mostramos, con meta de 80%.</p></div>
+        <div class="cifra"><span class="t-label-sm muted">Error GBM histórico</span><div class="v t-num">0,95<span class="muted" style="font-size:.45em"> pp</span></div><p class="d">en 90 conductores que el modelo nunca vio; la cifra genérica erra por 7,9.</p></div>
+        <div class="cifra"><span class="t-label-sm muted">Cobertura GBM histórica</span><div class="v t-num">82<span class="muted" style="font-size:.45em">%</span></div><p class="d">de los casos del GBM histórico cae dentro de su rango; no es una evaluación del nuevo Ridge.</p></div>
         <div class="cifra"><span class="t-label-sm muted">Jornadas</span><div class="v t-num">3.045</div><p class="d">simuladas segundo a segundo: 3.000 calibradas con Santiago y 45 reales.</p></div>
         <div class="cifra"><span class="t-label-sm muted">Pruebas</span><div class="v t-num">12/12</div><p class="d">casos normales, ambiguos y críticos aprobados por el texto de la IA.</p></div>
       </div>
@@ -385,8 +385,8 @@ footer b{color:var(--fg);font-weight:600}
       </div>
       <div class="pasos">
         <div class="paso" style="--k:1"><span class="t-label-sm muted">Paso 1 / 4</span><span class="big t-mono-xl">01</span><h3>Simulador físico</h3><p>Resuelve cada segundo de manejo: cuánto se frena, cuánto recupera el motor trasero y cuánta bencina deja de quemar el motor original.</p><div class="formula">P = (m·a + m·g·Crr + ½ρ·CdA·v² + m·g·i)·v</div><span class="t-label-sm dato">Error de 3,4% frente a FASTSim (NREL)</span></div>
-        <div class="paso" style="--k:2"><span class="t-label-sm muted">Paso 2 / 4</span><span class="big t-mono-xl">02</span><h3>Modelo predictivo</h3><p>Un gradient boosting aprende de 300 conductores qué predice el ahorro: detenciones, tiempo detenido, pendiente, kilómetros y auto.</p><div class="formula">ŷ = f₀ + η·Σ árbolₖ(x)</div><span class="t-label-sm dato">R² = 0,80 · error de 0,95 pp</span></div>
-        <div class="paso" style="--k:3"><span class="t-label-sm muted">Paso 3 / 4</span><span class="big t-mono-xl">03</span><h3>Intervalo conforme</h3><p>El rango se calcula con los errores reales del modelo en datos que no vio, sin suponer una distribución.</p><div class="formula">[ŷ − q₀,₈ ; ŷ + q₀,₈]</div><span class="t-label-sm dato">Cobertura de 82% con meta de 80%</span></div>
+        <div class="paso" style="--k:2"><span class="t-label-sm muted">Paso 2 / 4</span><span class="big t-mono-xl">02</span><h3>Modelo predictivo</h3><p>Ridge con variables estandarizadas estima el diagnóstico de nivel 2; el nivel 1 conserva gradient boosting. Aprende de 300 conductores: detenciones, tiempo detenido, pendiente, kilómetros y auto.</p><div class="formula">ŷ = intercepto + Σ βᵢ·(xᵢ − mediaᵢ)/escalaᵢ</div><span class="t-label-sm dato">Nivel 2 · Ridge · intervalo calibrado por conductor</span></div>
+        <div class="paso" style="--k:3"><span class="t-label-sm muted">Paso 3 / 4</span><span class="big t-mono-xl">03</span><h3>Intervalo conforme</h3><p>El rango se calcula con los errores reales del modelo en datos que no vio, sin suponer una distribución.</p><div class="formula">[ŷ − q₀,₈ ; ŷ + q₀,₈]</div><span class="t-label-sm dato">Meta de cobertura: 80% · calibración fuera de muestra</span></div>
         <div class="paso" style="--k:4"><span class="t-label-sm muted">Paso 4 / 4</span><span class="big t-mono-xl">04</span><h3>Explicación y técnico</h3><p>Claude redacta con cifras ya calculadas y un validador revisa nueve criterios. El técnico aprueba, ajusta ±2 puntos o bloquea.</p><div class="formula">pesos/mes = km·días·4,33 / rend · precio · ahorro</div><span class="t-label-sm dato">12 de 12 casos de prueba aprobados</span></div>
       </div>
     </div>
@@ -435,6 +435,7 @@ const pct = v => v.toFixed(1).replace(".", ",") + "%";
 const clp = v => "$" + (Math.round(v / 1000) * 1000).toLocaleString("es-CL");
 const num = (v, d = 2) => (+v).toLocaleString("es-CL", { maximumFractionDigits: d });
 
+function ridge(m, x) { return m.intercepto + x.reduce((s, v, i) => s + (v - m.medias[i]) / m.escalas[i] * m.coeficientes[i], 0); }
 function gbm(m, x) { let s = m.init; for (const a of m.arboles) { let n = 0; while (a.l[n] !== -1) n = x[a.f[n]] <= a.t[n] ? a.l[n] : a.r[n]; s += m.lr * a.v[n]; } return s; }
 
 function estimar(d) {
@@ -442,14 +443,14 @@ function estimar(d) {
   if (d.traccion && d.traccion !== "delantera") return { estado: "no_aplica", motivo: "El kit solo se instala en autos de tracción delantera.", alertas: ["Vehículo no compatible: requiere tracción delantera."], d };
   let m, x, q, km;
   if (d.nivel === 2) {
-    m = M.nivel2;
+    m = M.nivel2_ridge;
     if ((d.jornadas_validas ?? 5) < 3) return { estado: "datos_insuficientes", motivo: "El registro tiene menos de tres jornadas válidas.", alertas: ["Registro incompleto: se necesitan al menos tres jornadas válidas."], d };
     const fuera = m.vars.filter(v => { const [lo, hi] = M.dominio[v]; const mg = .1 * (hi - lo); return d[v] < lo - mg || d[v] > hi + mg; });
     if (fuera.length) return { estado: "fuera_de_dominio", motivo: "La forma de conducir registrada está fuera del rango con que se entrenó el modelo.", alertas: fuera.map(v => "Fuera de rango: " + NOMBRES[v].toLowerCase()), d };
     x = m.vars.map(v => d[v]); q = m.q80; km = d.km_dia;
     if ((d.jornadas_validas ?? 5) < 5) { q *= 1.5; alertas.push("Registro parcial: el rango se amplió 50%."); }
   } else { m = M.nivel1; x = m.vars.map(v => d[v] ?? 0); q = m.q80; km = d.km_declarado; }
-  const centro = gbm(m, x) + ajuste, lo = centro - q, hi = centro + q, cons = lo * M.razon_escenarios.conservador;
+  const centro = (d.nivel === 2 ? ridge(m, x) : gbm(m, x)) + ajuste, lo = centro - q, hi = centro + q, cons = lo * M.razon_escenarios.conservador;
   const dias = d.dias_semana ?? DIAS_DEF[d.perfil], rend = d.rend ?? 10;
   const gasto = km * dias * SEMANAS / rend * PRECIO_L;
   const r = { estado: "ok", alertas, d, centro, lo, hi, cons, gasto, km, mes: gasto * centro / 100, mesLo: gasto * lo / 100, mesHi: gasto * hi / 100, mesCons: gasto * cons / 100 };
@@ -518,7 +519,7 @@ function render(r) {
 function renderTec(r) {
   const tb = document.querySelector("#tec-vars tbody");
   if (r.d.nivel !== 2) { tb.innerHTML = `<tr><td colspan="3">Cotización con datos declarados: sin variables de registro.</td></tr>`; return; }
-  tb.innerHTML = M.nivel2.vars.map(v => { const [lo, hi] = M.dominio[v], val = r.d[v], mg = .1 * (hi - lo), ok = val >= lo - mg && val <= hi + mg;
+  tb.innerHTML = M.nivel2_ridge.vars.map(v => { const [lo, hi] = M.dominio[v], val = r.d[v], mg = .1 * (hi - lo), ok = val >= lo - mg && val <= hi + mg;
     return `<tr><td>${NOMBRES[v]}</td><td class="${ok ? "in" : "out"}">${num(val)}</td><td>${num(lo)} a ${num(hi)}</td></tr>`; }).join("");
 }
 
