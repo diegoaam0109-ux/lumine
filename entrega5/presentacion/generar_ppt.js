@@ -109,7 +109,7 @@ async function icono(nombre, color, px = 256) {
     { text: "El ahorro depende de cuánto frena cada conductor", options: { bullet: true, breakLine: true } },
     { text: "Una cifra que no se cumple es publicidad engañosa (Ley 19.496)", options: { bullet: true } },
   ], { x: 7.55, y: 4.5, w: 4.8, h: 1.9, fontSize: 15, color: C.background2, paraSpaceAfter: 8, objectName: "Contexto" });
-  s.addNotes("DIEGO (45 s). El problema es la promesa. El sector vende “hasta 25% de ahorro”, pero el ahorro del kit depende de cuánta energía termina en los frenos, y eso cambia con cada conductor. Al comparar esa cifra con el ahorro simulado de 300 conductores de Santiago, se equivoca en promedio por casi 8 puntos, y en el 98% de los casos por más de 3. En las entrevistas, la barrera no fue el precio sino la confianza. Lumine debe decidir si reemplaza esa cifra por una estimación personal y verificable.");
+  s.addNotes("DIEGO (40 s). El problema es la promesa. El sector vende “hasta 25% de ahorro”, pero el ahorro del kit depende de cuánta energía termina en los frenos, y eso cambia con cada conductor. Al comparar esa cifra con el ahorro simulado de 300 conductores de Santiago, se equivoca en promedio por casi 8 puntos, y en el 98% de los casos por más de 3. En las entrevistas, la barrera no fue el precio sino la confianza. Lumine debe decidir si reemplaza esa cifra por una estimación personal y verificable.");
 
   // ---------------------------------------------------------------- 3. Pregunta y objetivos
   s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Problema" });
@@ -165,11 +165,11 @@ async function icono(nombre, color, px = 256) {
   // ---------------------------------------------------------------- 5. Demostración
   s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Herramienta" });
   s.addText("Un colectivo de 213 km diarios, de punta a punta", { placeholder: "title" });
-  s.addImage({ path: path.join(FIG3, "app_diagnostico.png"), x: 0.6, y: 1.5, w: 5.95, h: 5.2, sizing: { type: "contain", w: 5.95, h: 5.2 }, altText: "Captura del prototipo: diagnóstico de un colectivo con 19,6% de ahorro", objectName: "Captura prototipo" });
+  s.addImage({ path: path.join(FIG5, "app_diagnostico_ridge.png"), x: 0.6, y: 1.5, w: 5.95, h: 5.2, sizing: { type: "contain", w: 5.95, h: 5.2 }, altText: "Captura del prototipo: diagnóstico de un colectivo con 19,7% de ahorro", objectName: "Captura prototipo" });
   const pasos = [
     ["1", "Registro de una semana", "3,3 detenciones por km; la ruta se borra"],
-    ["2", "Modelo", "19,6% de ahorro, rango de 18,2% a 21,0%"],
-    ["3", "Motor comercial", "$158.000 al mes; recupera el kit en 22 meses (conservador)"],
+    ["2", "Modelo Ridge", "19,7% de ahorro, rango de 18,4% a 21,0%"],
+    ["3", "Motor comercial", "$159.000 al mes; recupera el kit en 22 meses (conservador)"],
     ["4", "Mensaje", "Claude lo explica; el validador confirma cada cifra"],
   ];
   pasos.forEach(([n, t, d], i) => {
@@ -179,7 +179,7 @@ async function icono(nombre, color, px = 256) {
     txt(s, t, { x: 7.95, y: y, w: 4.75, h: 0.42, fontSize: 17, bold: true, color: C.text2, objectName: "Título paso " + n });
     txt(s, d, { x: 7.95, y: y + 0.43, w: 4.75, h: 0.65, fontSize: 15, color: C.text2, objectName: "Texto paso " + n });
   });
-  s.addNotes("BENJAMÍN (40 s). Este es el prototipo funcionando. Un colectivo registra una semana con su celular; el sistema calcula once variables y borra la ruta. El modelo estima 19,6% de ahorro, con un rango de 18,2% a 21%. El motor comercial lo traduce a lo que entiende el cliente: 158 mil pesos al mes y recuperar el kit en 22 meses con el escenario conservador. Claude escribe el mensaje y el validador confirma cada número. Esta es también la conexión entre el modelo matemático y el prompt que nos pidió explicar mejor.");
+  s.addNotes("BENJAMÍN (40 s). Este es el prototipo funcionando. Un colectivo registra una semana con su celular; el sistema calcula once variables y borra la ruta. El modelo estima 19,7% de ahorro, con un rango de 18,4% a 21%. El motor comercial lo traduce a lo que entiende el cliente: 159 mil pesos al mes y recuperar el kit en 22 meses con el escenario conservador. Claude escribe el mensaje y el validador confirma cada número. Esta es también la conexión entre el modelo matemático y el prompt que nos pidió explicar mejor.");
 
   // ---------------------------------------------------------------- 6. Resultados del modelo
   pres.addSection({ title: "Resultados" });
@@ -234,6 +234,31 @@ async function icono(nombre, color, px = 256) {
     txt(s, d, { x: 8.2, y: y + 0.57, w: 4.3, h: 0.85, fontSize: 12.5, color: C.text2, objectName: "Texto auditoría " + (i + 1) });
   }
   s.addNotes("LUKAS (45 s). La capa generativa se probó con 12 casos fijos. La primera versión no aprobó ninguno: inventaba ahorros anuales y decía que el kit era legal. Con la estructura RAFA, reglas por estado y cifras cerradas, la versión final aprobó los 12. Después la atacamos: Grok escribió diez notas tramposas y ChatGPT las respondió con nuestras instrucciones; resistió las diez. Además, cinco IA auditaron el trabajo, y dos encontraron por separado el mismo error, que corregimos. También aprendimos que exageran e inventan, así que todo se verificó.");
+
+  // ---------------------------------------------------------------- 7b. Cómo lo construimos
+  s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Resultados" });
+  s.addText("Dos agentes en paralelo y todo trazable en GitHub", { placeholder: "title" });
+  const carriles = [
+    ["FaCode", "Claude Code", "Rama claude/…: simulador, modelo, prototipo e informes. 15 commits; cada cifra sale de un script", HEX.accent2],
+    ["FaCodeBranch", "Codex", "Rama codex/…: Ridge en el prototipo, 20 pruebas, GitHub Actions y reproducción desde cero", HEX.accent1],
+    ["FaSearch", "5 IA auditoras", "Gemini, ChatGPT, DeepSeek, Grok y Canva IA revisan sin tocar el código; sus hallazgos entran como commits", HEX.accent3],
+  ];
+  for (let i = 0; i < carriles.length; i++) {
+    const [ic, t, d, col] = carriles[i];
+    const y = 1.6 + i * 1.72;
+    card(s, 0.6, y, 7.3, 1.5, HEX.lt2, "Carril " + (i + 1));
+    await circuloIcono(s, 0.85, y + 0.33, 0.85, ic, col, "FFFFFF", "Ícono " + t);
+    txt(s, t, { x: 1.95, y: y + 0.18, w: 5.7, h: 0.42, fontSize: 17, bold: true, color: C.text2, objectName: "Título " + t });
+    txt(s, d, { x: 1.95, y: y + 0.62, w: 5.7, h: 0.8, fontSize: 14, color: C.text2, objectName: "Texto " + t });
+  }
+  const cifrasGit = [["18", "commits trazables, del 3 al 27 de octubre"], ["20/20", "pruebas automáticas en verde al integrar"], ["14 min", "para regenerar el modelo desde cero, medido por Codex"]];
+  cifrasGit.forEach(([n, l], i) => {
+    const y = 1.6 + i * 1.72;
+    card(s, 8.3, y, 4.4, 1.5, i === 1 ? HEX.dk1 : HEX.lt1, "Cifra GitHub " + (i + 1));
+    txt(s, n, { x: 8.55, y: y + 0.15, w: 3.9, h: 0.65, fontSize: 32, bold: true, color: i === 1 ? C.accent1 : C.accent2, objectName: "Valor GitHub " + (i + 1) });
+    txt(s, l, { x: 8.55, y: y + 0.85, w: 3.9, h: 0.55, fontSize: 14, color: i === 1 ? C.background1 : C.text2, objectName: "Etiqueta GitHub " + (i + 1) });
+  });
+  s.addNotes("LUKAS (30 s). Así lo construimos. Dos agentes de programación trabajaron en paralelo sobre el mismo repositorio: Claude Code hizo el simulador, el modelo y los informes; Codex llevó el modelo Ridge al prototipo, escribió 20 pruebas y reprodujo todo desde cero. Nosotros revisamos e integramos cada cambio. Las cinco IA auditoras nunca tocaron el código: sus hallazgos entraron como cambios con fecha y autor. Por eso cada cifra que les mostramos se puede rastrear hasta su script.");
 
   // ---------------------------------------------------------------- 8. Uso responsable
   pres.addSection({ title: "Implementación" });

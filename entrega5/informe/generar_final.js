@@ -99,6 +99,7 @@ const INDICE = [
   ["Anexo E. Nota técnica del simulador", 1], ["Anexo F. Instrumentos para el piloto", 1],
   ["Anexo G. Evidencia del prototipo", 1], ["Anexo H. Registro de uso de inteligencia artificial", 1],
   ["Anexo I. Registro de supuestos", 1], ["Anexo J. Correspondencia con la pauta del curso", 1],
+  ["Anexo K. Trazabilidad y reproducibilidad en GitHub", 1],
 ];
 const indice = INDICE.map(([t, nivel]) => new Paragraph({
   children: [new TextRun({ text: t, font: FONT, size: nivel ? 18 : 20, bold: !nivel, color: nivel ? C.gray2 : C.ink }),
@@ -139,7 +140,7 @@ const VP = CIF.variacion_por_perfil;
 add(H1("Resumen ejecutivo"),
   P("**Problema.** Lumine Motors instalaría un kit de hibridación en el eje trasero de autos de tracción delantera con más de siete años, un parque que en Chile se conserva y que quedó fuera del gas y del recambio a eléctrico. Su promesa comercial descansaba en una cifra genérica, “hasta 25% de ahorro”, que el cliente no puede evaluar y la empresa no puede sostener ante la Ley N° 19.496. La cifra erra en promedio por 7,9 puntos porcentuales (pp) y supera los 3 pp de error en el 98% de los conductores simulados."),
   P("**Solución.** Un estimador de ahorro en tres piezas. Un simulador físico calcula, segundo a segundo, cuánta energía recuperaría el kit; un modelo predictivo aprende de esas simulaciones a estimar el ahorro de cada conductor con un intervalo de predicción al 80%; y una capa generativa (Claude, con instrucciones RAFA) solo redacta la explicación con cifras que ya vienen calculadas. Un validador de nueve criterios y un técnico humano controlan cada salida."),
-  P(`**Evidencia principal.** En 10 particiones de conductores no vistos, el modelo final (regresión Ridge con 11 variables) erra por ${cm(R11.MAE_mean, 2)} ± ${cm(R11.MAE_std, 2)} pp, con R² = ${cm(R11.R2_mean, 2)} y cobertura de ${cm(R11.cobertura_80_mean, 0)}%: cumple el objetivo de precisión (≤ 3 pp, R² ≥ 0,80). En 45 jornadas reales de 21 vehículos, el error sube a 2,0 pp; al incorporar datos reales al entrenamiento baja a 1,3 pp y la cobertura llega a 78%. Las instrucciones v3.1 aprobaron 12 de 12 casos de prueba y resistieron 10 de 10 ataques adversariales. Cinco IA distintas auditaron el trabajo; dos de ellas detectaron por separado un defecto de validación que se corrigió. Con el kit de referencia, el ahorro mediano es 19,6% en colectivos, 16,1% en conductores de aplicación y 15,3% en particulares.`),
+  P(`**Evidencia principal.** En 10 particiones de conductores no vistos, el modelo final (regresión Ridge con 11 variables) erra por ${cm(R11.MAE_mean, 2)} ± ${cm(R11.MAE_std, 2)} pp, con R² = ${cm(R11.R2_mean, 2)} y cobertura de ${cm(R11.cobertura_80_mean, 0)}%: cumple el objetivo de precisión (≤ 3 pp, R² ≥ 0,80). En 45 jornadas reales de 21 vehículos, el error sube a 2,0 pp; al incorporar datos reales al entrenamiento baja a 1,3 pp y la cobertura llega a 78%. Las instrucciones v3.1 aprobaron 12 de 12 casos de prueba y resistieron 10 de 10 ataques adversariales. Cinco IA distintas auditaron el trabajo; dos de ellas detectaron por separado un defecto de validación que se corrigió. Con el kit de referencia, el ahorro mediano es 19,6% en colectivos, 16,1% en conductores de aplicación y 15,3% en particulares. Todo el desarrollo quedó versionado en GitHub: dos agentes de programación (Claude Code y Codex) trabajaron en ramas paralelas, y 20 pruebas automáticas verifican el prototipo en cada cambio.`),
   P(`**Riesgos.** El ahorro es simulado y no medido: no existe todavía un kit instalado, y el trabajo en terreno se eliminó del alcance por tiempo. El efecto de la estimación personalizada sobre la intención de compra (H3) no se midió. El reglamento de la Ley N° 21.793 sigue en consulta y la Ley N° 21.719 exige consentimiento específico para la geolocalización.`),
   recuadro(`**Recomendación: implementar con ajustes, por fases.** Publicar ya la cotización con intervalo (nivel 1) en lugar del “hasta 25%”; ejecutar un piloto A/B de ${CIF.ab_n_por_grupo} prospectos por grupo para medir H3; y usar el diagnóstico (nivel 2) con fines comerciales solo después de recalibrarlo con telemetría de las primeras instalaciones. El estimador cuesta $${mill(ECO["Base (+5 pp)"].costo_1)} millones el primer año y se paga si eleva el agendamiento en ${cm(100 * CIF.delta_equilibrio)} pp; una regla de suspensión con cinco gatillos lo detiene si la promesa deja de cumplirse.`),
 );
@@ -224,12 +225,12 @@ add(H1("5. Solución y resultados"),
   figura("Diseño funcional del estimador: entradas, procesamiento, salidas y supervisión humana", "fig_diseno_funcional.png", 600,
     "Elaboración propia. H1 a H4 son los puntos de supervisión humana: técnico, asesor, gerencia e ingeniería."),
   H2("5.2. Del modelo matemático al mensaje"),
-  P("La conexión entre la matemática y las instrucciones RAFA sigue una regla: **cada cifra se calcula una sola vez, en la parte matemática, y la IA generativa solo la copia**. La Figura 2 traza el caso N1, un colectivo de 213 km diarios. El registro de una semana se reduce a once variables; el modelo, entrenado con 3.000 jornadas simuladas con física, predice un ahorro de 19,6% con intervalo de 18,2% a 21,0%; el motor comercial lo convierte en pesos y plazo con fórmulas deterministas (gasto de $806.000 al mes, ahorro de $158.000 y recuperación conservadora en 22 meses); y todo llega al prompt como un JSON de “cifras_formateadas”, sin precio del kit ni ubicación. El prompt RAFA traduce esa estructura a lenguaje: el **rol** impide vender, la **acción** ordena copiar y no calcular, el **formato** exige un JSON por esquema y los **antecedentes** fijan las reglas legales. El validador cierra el circuito: comprueba que cada número del mensaje exista en el JSON, y si no, el cliente recibe la plantilla determinista."),
+  P("La conexión entre la matemática y las instrucciones RAFA sigue una regla: **cada cifra se calcula una sola vez, en la parte matemática, y la IA generativa solo la copia**. La Figura 2 traza el caso N1, un colectivo de 213 km diarios. El registro de una semana se reduce a once variables; el modelo, entrenado con 3.000 jornadas simuladas con física, predice un ahorro de 19,6% con intervalo de 18,2% a 21,0%; el motor comercial lo convierte en pesos y plazo con fórmulas deterministas (gasto de $806.000 al mes, ahorro de $158.000 y recuperación conservadora en 22 meses); y todo llega al prompt como un JSON de “cifras_formateadas”, sin precio del kit ni ubicación. El prompt RAFA traduce esa estructura a lenguaje: el **rol** impide vender, la **acción** ordena copiar y no calcular, el **formato** exige un JSON por esquema y los **antecedentes** fijan las reglas legales. El validador cierra el circuito: comprueba que cada número del mensaje exista en el JSON, y si no, el cliente recibe la plantilla determinista. La Figura 2 conserva las cifras de la batería validada; con el modelo Ridge que hoy usa el prototipo, el mismo caso da 19,7% (18,4% a 21,0%) y $159.000 al mes (Anexo G)."),
   figura("Trazabilidad del caso N1: de la física al mensaje al cliente", "fig_conexion_modelo_rafa.png", 624,
     "Elaboración propia. Cifras del prototipo para el caso N1 de la batería de prueba (datos sintéticos). Las fórmulas completas están en el informe técnico del modelo (Anexo E)."),
   H2("5.3. Resultados del modelo"),
   P(`**SP1 y H1.** Con el kit de referencia (23 kW y 1,5 kWh, supuestos S1 y S2), el ahorro mediano es 19,6% en colectivos, 16,1% en conductores de aplicación y 15,3% en particulares. El perfil de uso explica ${cm(100 * CIF.eta2_perfil, 0)}% de la varianza del ahorro; dentro de cada perfil, ocho de cada diez conductores quedan en una franja de unos 3 pp (de ${cm(VP.colectivo.p10)}% a ${cm(VP.colectivo.p90)}% en colectivos). La retroalimentación tiene razón: H1 no se sostiene con datos sintéticos, porque el generador comprime la diversidad real, y las jornadas reales varían mucho más (coeficiente de ${cm(CIF.cv_cmap_pct, 0)}%). Se reformula así: *el ahorro varía sobre todo entre perfiles de uso, y dentro de cada perfil lo suficiente para que la cifra deba ser personal y con intervalo*.`),
-  P(`**SP2 y H2.** La Figura 3a compara los modelos en 10 particiones. La regresión Ridge con las 11 variables erra por ${cm(R11.MAE_mean, 2)} ± ${cm(R11.MAE_std, 2)} pp y supera al gradient boosting de la Entrega 3 (${cm(M3.MAE_mean, 2)} ± ${cm(M3.MAE_std, 2)} pp) en las 10 particiones; con 210 conductores de entrenamiento, el modelo más simple generaliza mejor. Por eso **el nivel 2 pasa a Ridge** en la versión que se implementa (fase F1 del capítulo 7; las capturas del Anexo G muestran aún el GBM de la Entrega 3). Ridge además se explica con coeficientes: más tiempo sobre 60 km/h y más cilindrada bajan el ahorro, y más masa y más subida lo aumentan (Anexo D). El GBM no sobreajusta (100 árboles rinden igual que 300 y la curva de aprendizaje se aplana desde unos 150 conductores), y la variable más influyente es la energía cinética por kilómetro.`),
+  P(`**SP2 y H2.** La Figura 3a compara los modelos en 10 particiones. La regresión Ridge con las 11 variables erra por ${cm(R11.MAE_mean, 2)} ± ${cm(R11.MAE_std, 2)} pp y supera al gradient boosting de la Entrega 3 (${cm(M3.MAE_mean, 2)} ± ${cm(M3.MAE_std, 2)} pp) en las 10 particiones; con 210 conductores de entrenamiento, el modelo más simple generaliza mejor. Por eso **el nivel 2 pasa a Ridge**, y el cambio ya está en el prototipo: Codex lo implementó en una rama paralela, con el intervalo calibrado por conductor (±1,33 pp) y pruebas automáticas que comprueban que Python y JavaScript entreguen la misma cifra (capítulo 5.6). Ridge además se explica con coeficientes: más tiempo sobre 60 km/h y más cilindrada bajan el ahorro, y más masa y más subida lo aumentan (Anexo D). El GBM no sobreajusta (100 árboles rinden igual que 300 y la curva de aprendizaje se aplana desde unos 150 conductores), y la variable más influyente es la energía cinética por kilómetro.`),
   figura("Error en 10 particiones y cobertura del intervalo en datos reales", "fig_validacion_final.png", 624,
     "Elaboración propia. a) Conductores sintéticos no vistos; barras de error = desviación estándar entre particiones. b) 45 jornadas reales de 21 vehículos (NREL, s.f.); “reajuste” agrega dos tercios de los vehículos reales al entrenamiento (30 repeticiones)."),
   P(`**Validación externa.** Entrenado solo con sintéticos, el modelo predice las jornadas reales con un error de ${cm(EXT["a) Por jornada, GroupKFold por conductor"].MAE, 1)} pp, frente a ${cm(EXT["c) Cifra genérica 25%"].MAE, 1)} pp de la cifra genérica, pero su intervalo cubre solo ${cm(EXT["a) Por jornada, GroupKFold por conductor"].cobertura_80, 0)}% de los casos (Figura 3b). Calibrar por conductor apenas mueve esa cifra (de 33% a 36%): la causa no era una fuga de información, sino la distancia entre conductores sintéticos y reales. Al incorporar datos reales con la calibración corregida, el error baja a ${cm(EXT["c) Reajuste ×20, calibración ponderada por vehículo"].MAE, 2)} pp y la cobertura sube a ${cm(EXT["c) Reajuste ×20, calibración ponderada por vehículo"].cobertura_80, 0)}%, cerca del 80% prometido. En una población simulada con más congestión y menos autopista, el error no se degrada (${cm(E4.degradacion_mae_b_pct, 0)}%). La conclusión es directa: el modelo funciona, pero su intervalo solo es confiable después de recalibrarlo con datos reales de Santiago.`),
@@ -253,8 +254,13 @@ add(H1("5. Solución y resultados"),
   ], [1150, 2100, 3410, 2700], { titulo: "Auditoría cruzada del trabajo con cinco IA", boldFirst: true,
     nota: "Elaboración propia. Prompts y respuestas en el Anexo C. Ninguna respuesta de IA se usó como evidencia sin verificarla contra el código o la fuente." }),
   P("Dos IA distintas encontraron por separado el mismo defecto, y el equipo lo corrigió. Esa es la lección de uso responsable: las IA son buenos auditores cuando se les da un rol preciso y su respuesta se contrasta, pero también exageran (ChatGPT calificó como graves supuestos ya declarados) e inventan contexto (Canva ubicó la empresa en Madrid)."),
-  H2("5.6. Limitaciones"),
-  P("El ahorro es simulado y no medido, con parámetros del kit supuestos a falta de una ficha de proveedor; los perfiles sintéticos reproducen las velocidades de Santiago pero no su diversidad; la validación real usa jornadas de otra ciudad; H3 no se midió; y cada prueba de la capa generativa se ejecutó una vez, aunque un modelo de lenguaje varía entre ejecuciones. Por eso el estimador no debe publicar cifras de diagnóstico antes de la recalibración con telemetría, y la batería de 22 pruebas debe repetirse ante cualquier cambio de modelo o de instrucciones."),
+  H2("5.6. Cómo se construyó: GitHub, dos agentes de programación y cinco IA auditoras"),
+  P("El proyecto se desarrolló en un repositorio de GitHub (diegoaam0109-ux/lumine) con una regla de trazabilidad: ninguna cifra del informe se escribe a mano, sino que sale de un script versionado. El equipo trabajó con dos agentes de programación en paralelo, una práctica conocida como programación asistida por IA (*vibe coding*) que aquí se sometió a control de cambios. Claude Code construyó el simulador, el modelo, el prototipo y los informes en una rama; Codex, en otra, implementó el modelo Ridge en el prototipo, escribió 20 pruebas automáticas, configuró GitHub Actions y reprodujo el proyecto desde cero en un clon limpio (Figura 4). El equipo revisó cada cambio antes de integrarlo. Las cinco IA auditoras no tuvieron acceso al repositorio: sus hallazgos entraron como cambios con autor, fecha y propósito, por lo que cada decisión del informe se puede rastrear hasta el commit que la produjo."),
+  figura("Flujo de trabajo del proyecto: dos agentes de programación en paralelo, auditoría externa y control automático", "fig_flujo_trabajo.png", 624,
+    "Elaboración propia a partir del historial del repositorio (18 commits entre el 3 y el 27 de octubre de 2026). Detalle de commits, pruebas y tiempos de reproducción en el Anexo K."),
+  P("La reproducción independiente de Codex fue la prueba más exigente del método. Regeneró la Entrega 3 completa (la simulación tarda 59 segundos y el modelo, 14 minutos) y obtuvo los mismos resultados del validador sobre las respuestas registradas: 0, 4, 11 y 12 de 12 casos. También documentó lo que no salió igual: la validación corregida superó su límite de 40 minutos y el PDF regenerado tuvo 28 páginas en vez de 30 por diferencias de fuentes. Registrar esas diferencias, en lugar de ocultarlas, es parte del rigor."),
+  H2("5.7. Limitaciones"),
+  P("El ahorro es simulado y no medido, con parámetros del kit supuestos a falta de una ficha de proveedor; los perfiles sintéticos reproducen las velocidades de Santiago pero no su diversidad; la validación real usa jornadas de otra ciudad; H3 no se midió; cada prueba de la capa generativa se ejecutó una vez, aunque un modelo de lenguaje varía entre ejecuciones; y la versión exacta de varios modelos auditores no quedó registrada (Anexo H). Por eso el estimador no debe publicar cifras de diagnóstico antes de la recalibración con telemetría, y la batería de 22 pruebas debe repetirse ante cualquier cambio de modelo o de instrucciones."),
 );
 
 // ---------------- 6
@@ -295,12 +301,12 @@ add(H1("6. Ética y gobernanza"),
 
 // ---------------- 7
 add(H1("7. Plan de implementación"),
-  P("La implementación avanza por fases con una decisión explícita en cada hito, de modo que la empresa invierte más solo cuando la evidencia lo justifica (Figura 4)."),
+  P("La implementación avanza por fases con una decisión explícita en cada hito, de modo que la empresa invierte más solo cuando la evidencia lo justifica (Figura 5)."),
   figura("Hoja de ruta de implementación en 12 meses", "fig_hoja_ruta.png", 600,
     "Elaboración propia. Las 10 instalaciones piloto dependen de la disponibilidad del kit según el plan del TIG."),
   tabla(["Fase", "Meses", "Entregables e hitos", "Responsable", "Presupuesto"], [
     ["F0. Preparación", "0 a 1,5", "Consentimiento, política de privacidad y registro de tratamiento; nivel 1 en el sitio en reemplazo del “hasta 25%”", "D. Alarcón", "$2.300.000"],
-    ["F1. Piloto", "1,5 a 4", `A/B con ${CIF.ab_n_por_grupo} prospectos por grupo; nivel 2 con Ridge; 10 instalaciones con telemetría. Decisión: continuar si el efecto supera ${cm(100 * CIF.delta_equilibrio)} pp`, "L. Verdugo y B. Torres", "$3.800.000"],
+    ["F1. Piloto", "1,5 a 4", `A/B con ${CIF.ab_n_por_grupo} prospectos por grupo; 10 instalaciones con telemetría (el nivel 2 con Ridge ya está en el prototipo). Decisión: continuar si el efecto supera ${cm(100 * CIF.delta_equilibrio)} pp`, "L. Verdugo y B. Torres", "$3.800.000"],
     ["F2. Verificación", "4 a 8", "Nivel 3 de verificación posventa; recalibración del intervalo con datos de Santiago; tablero de KPIs", "B. Torres", "$1.700.000"],
     ["F3. Escalamiento", "8 a 12", "Diagnóstico comercial habilitado si la cobertura real está entre 75% y 85%; auditoría trimestral", "D. Alarcón", "$1.200.000"],
   ], [1450, 900, 4060, 1650, 1300], { titulo: "Fases, hitos, responsables y presupuesto", boldFirst: true,
@@ -518,33 +524,39 @@ ax(anexo("F", "Instrumentos para el piloto"),
 
 // G
 ax(anexo("G", "Evidencia del prototipo"),
-  P("El prototipo completo está en el repositorio del proyecto. La interfaz (entrega3/prototipo/app/index.html) es un archivo único que funciona sin conexión y corre el modelo en el navegador; también está publicada como página web."),
+  P("El prototipo completo está en el repositorio del proyecto. La interfaz (entrega3/prototipo/app/index.html) es un archivo único que funciona sin conexión y corre el modelo en el navegador; un flujo de GitHub Actions la publica en GitHub Pages cuando se habilita esa opción en el repositorio."),
   tabla(["Archivo", "Función"], [
     ["sim.py · dataset.py · validacion_fastsim.py", "Simulador del vehículo y del kit, datos de conducción y calibración contra FASTSim"],
     ["model.py · estimador.py", "Modelos, intervalos conformes, motor comercial, estados y plantilla de respaldo"],
     ["prompts/ · validador.py · generador.py", "Instrucciones RAFA, criterios de aceptación y conexión con la API de Claude"],
     ["mejoras_e4.py", "Validación corregida: 10 particiones, Ridge, GroupKFold, calibración ponderada y transferencia"],
+    ["entrenar_ridge.py · app/modelo.json", "Modelo Ridge del nivel 2 con intervalo calibrado por conductor, exportado al prototipo (Codex)"],
+    ["tests/ · requirements.txt", "20 pruebas automáticas y versiones fijadas de las dependencias (Codex)"],
     ["entrega4/redteam/", "Ataques, prompts listos, respuestas de ChatGPT y validador adversarial"],
-    ["entrega5/analisis/analisis_final.py", "Ridge explicable, variación por perfil, tamaño del A/B, evaluación económica y figuras de este informe"],
+    ["entrega5/analisis/ · entrega5/informe/", "Cifras, figuras y generadores de este informe y de la presentación"],
+    [".github/workflows/ · REPRODUCIBILIDAD.md", "Pruebas en cada cambio, publicación en Pages y registro de la reproducción en limpio (Codex)"],
   ], [3600, 5760], { titulo: "Estructura del repositorio", boldFirst: true }),
-  figura("Vista de diagnóstico de un colectivo", "app_diagnostico.png", 360,
-    "Captura del prototipo. Registro sintético de un colectivo de 213 km diarios; texto generado por Claude con v3.1 y aprobado por el validador."),
-  figura("Panel del técnico con un ajuste registrado", "app_tecnico.png", 480,
-    "Captura del prototipo. El técnico aplicó −1,0 punto por uso permanente del aire acondicionado; el ajuste queda registrado."),
+  figura("Vista de diagnóstico de un colectivo con el modelo Ridge", "app_diagnostico_ridge.png", 560,
+    "Captura del prototipo final. Registro sintético de un colectivo de 213 km diarios: 19,7% (18,4% a 21,0%), $159.000 al mes y 22 meses. El texto viene de la plantilla de respaldo, porque las salidas de Claude validadas corresponden a las cifras de la Entrega 3."),
+  figura("Panel del técnico con un ajuste registrado", "app_tecnico_ridge.png", 560,
+    "Captura del prototipo final. El técnico aplicó −1,0 punto por uso permanente del aire acondicionado; la cifra pasa a 18,7% y el ajuste queda en el registro con su motivo."),
 );
 
 // H
 ax(anexo("H", "Registro de uso de inteligencia artificial"),
-  tabla(["Etapa", "Herramienta", "Tarea", "Verificación del equipo"], [
-    ["Entrega 1", "Gemini, Claude y Grok", "Investigación de mercado y entorno", "Contraste con fuentes; afirmaciones no verificables retiradas en la Entrega 2"],
-    ["Entregas 2 y 3", "Claude (con Claude Code)", "Programación del simulador, el modelo, el validador y la interfaz; figuras; redacción", "Código ejecutado y reproducible; cada cifra proviene de los archivos de resultados"],
-    ["Entrega 3", "Claude", "Capa generativa del prototipo (48 salidas)", "Validador de nueve criterios y revisión de cada falla"],
-    ["Final", "Gemini, ChatGPT y DeepSeek", "Auditoría de cálculos, código y validación", "Hallazgos contrastados con el código; dos defectos corregidos"],
-    ["Final", "Grok y ChatGPT", "Ataques adversariales y respuestas con v3.1", "Validador más revisión humana de cada respuesta"],
-    ["Final", "Canva IA", "Infografía para la presentación", "Errores corregidos antes de usarla"],
-    ["Final", "Claude (con Claude Code)", "Análisis final, figuras y redacción de este informe", "Cifras regenerables con mejoras_e4.py y analisis_final.py; referencias revisadas"],
-  ], [1200, 2000, 3080, 3080], { titulo: "Herramientas de IA utilizadas en el proyecto", boldFirst: true,
-    nota: "Elaboración propia. Ninguna respuesta de IA se usó como evidencia sin verificarla: las cifras provienen del simulador, de los datos citados o de cálculos reproducibles." }),
+  tabla(["Tarea", "Herramienta y plan", "Versión", "Verificación del equipo"], [
+    ["E1: investigación de mercado y entorno", "Gemini (premium), Claude (Pro) y Grok (gratuito)", "Vigentes en agosto y septiembre de 2026; no registradas", "Contraste con fuentes; afirmaciones no verificables retiradas en la Entrega 2"],
+    ["E2 a E5: simulador, modelo, prototipo, validador, análisis e informes", "Claude Code (Pro)", "Registrada en cada sesión", "Código ejecutado; 15 commits; cada cifra sale de un script"],
+    ["E3: capa generativa del prototipo (48 salidas)", "API de Claude", "Registrada en generador.py", "Validador de nueve criterios y revisión de cada falla"],
+    ["Verificación manual de tres cálculos", "Gemini (premium)", "3.1 Pro o 4 Argon; no registrada", "Coincidencia con el informe técnico"],
+    ["Revisión de código", "ChatGPT (premium)", "6.1 Sol o Astra 6 Max; no registrada", "Dos hallazgos correctos corregidos; exageraciones descartadas"],
+    ["Auditoría del diseño de validación", "DeepSeek", "Vigente en octubre de 2026; no registrada", "Seis pruebas implementadas en mejoras_e4.py"],
+    ["10 ataques adversariales", "Grok (gratuito)", "Vigente en octubre de 2026; no registrada", "Dos notas ajustadas al contexto chileno"],
+    ["Respuestas a los ataques", "ChatGPT (premium)", "Astra 6 Max", "Validador más revisión humana: 10 de 10"],
+    ["Infografía para la presentación", "Canva IA (Pro para empresas)", "Vigente en octubre de 2026; no registrada", "Errores corregidos antes de usarla"],
+    ["Ridge en el prototipo, 20 pruebas, CI, Pages y reproducción en limpio", "Codex (ChatGPT premium)", "Vigente en octubre de 2026", "Revisión del diff y 20/20 pruebas al integrar (commit e5fc3e1)"],
+  ], [2500, 2100, 2000, 2760], { titulo: "Herramientas y modelos de IA utilizados en el proyecto", boldFirst: true, size: 16,
+    nota: "Elaboración propia. Se anota la versión exacta solo cuando quedó registrada; en los demás casos, el producto, el plan y la fecha. Lección del proyecto: registrar la versión es parte de la reproducibilidad, porque las salidas de un modelo generativo cambian entre versiones. Ninguna respuesta de IA se usó como evidencia sin verificarla." }),
 );
 
 // I
@@ -591,6 +603,32 @@ ax(anexo("J", "Correspondencia con la pauta del curso"),
     ["Responsables, capacidades, costos y plazos de implementación", "Capítulos 7 y 8"],
     ["Recomendación que responde la pregunta y reconoce límites", "Capítulo 9"],
   ], [5160, 4200], { titulo: "Lista de control final", boldFirst: true }),
+);
+
+// K
+ax(anexo("K", "Trazabilidad y reproducibilidad en GitHub"),
+  P("Repositorio: github.com/diegoaam0109-ux/lumine (rama claude/quirky-darwin-326nn0). El acceso para revisión se entrega al profesor como colaborador de solo lectura. Cada entrega tiene su carpeta (entrega3/, entrega4/ y entrega5/) y cada cambio queda con autor, fecha y propósito."),
+  tabla(["Fecha", "Commit", "Autor", "Cambio"], [
+    ["4 oct", "80fbd59", "Claude Code", "Entrega 3: simulador, modelo, prototipo, prompts RAFA y validador"],
+    ["9 oct", "c4a0832", "Claude Code", "Validación corregida tras la revisión de ChatGPT y DeepSeek (GroupKFold, 10 particiones, Ridge)"],
+    ["21 oct", "4e1538e", "Claude Code", "Se elimina el trabajo en terreno y se declara como limitación"],
+    ["24 oct", "0b4b29f", "Claude Code", "Red team completo: 10 de 10 ataques resistidos"],
+    ["24 oct", "892f1e0", "Claude Code", "Informe final con generador y paginación automática"],
+    ["26 oct", "c7e3197", "Codex", "Ridge en el prototipo, 20 pruebas, GitHub Actions y Pages"],
+    ["27 oct", "69be75f", "Codex", "Registro de la reproducción en limpio, con tiempos y límites"],
+    ["27 oct", "e5fc3e1", "Equipo y Claude Code", "Integración de la rama de Codex tras revisar el diff; 20/20 pruebas"],
+  ], [900, 1100, 1900, 5460], { titulo: "Commits clave del proyecto", boldFirst: true }),
+  tabla(["Paso de la reproducción en limpio", "Tiempo", "Resultado"], [
+    ["Simulación de 3.045 jornadas (dataset.py)", "59 s", "Completado"],
+    ["Calibración contra FASTSim", "4 s", "Completado"],
+    ["Modelos, intervalos y validación externa (model.py)", "818 s", "Completado"],
+    ["Validador de la capa generativa", "1 s", "0, 4, 11 y 12 de 12, igual que la Entrega 3"],
+    ["Validación corregida (mejoras_e4.py)", "Más de 40 min", "Superó el límite del supervisor; completó al ejecutarse sin límite"],
+    ["Informe final y presentación", "20 s", "Completado; PDF de 28 páginas frente a 30 por diferencias de fuentes"],
+    ["Pruebas automáticas (pytest)", "2 s", "20 de 20 aprobadas; se repitieron al integrar"],
+  ], [4560, 1400, 3400], { titulo: "Reproducción independiente realizada por Codex", boldFirst: true,
+    nota: "Elaboración propia a partir de REPRODUCIBILIDAD.md (Codex, 26 y 27 de octubre de 2026). Entorno Linux con Python 3.12 y dependencias fijadas en requirements.txt. Los flujos de GitHub Actions y Pages están configurados; su ejecución remota requiere habilitarlos en la configuración del repositorio." }),
+  P("**Qué verifican las 20 pruebas.** Que sin kit el ahorro sea cero; que el ahorro en el ciclo WLTC con el kit de referencia esté en el rango esperado; que la energía disponible nunca sea negativa; las fórmulas de gasto, ahorro y plazo del caso N1; los estados no aplica y no conviene; que las 12 salidas v3.1 aprueben el validador; que el validador adversarial reproduzca 8 de 10; que el Ridge exportado coincida con scikit-learn; y que Python y JavaScript entreguen la misma cifra."),
 );
 
 // ================================================================== DOCUMENTO
