@@ -47,6 +47,14 @@ export function Tiktok() {
     return { from: desde, durationInFrames: hasta - desde }
   }
   const voz = { ini: fr(LINEAS[0].inicio), fin: fr(LINEAS[LINEAS.length - 1].fin) }
+  // la música baja mientras se habla; los puntos se fuerzan crecientes por si la voz parte en el primer cuadro
+  const puntos: [number, number][] = [[0, 0.42], [voz.ini, 0.42], [voz.ini + 12, 0.14], [voz.fin - 6, 0.14], [voz.fin + 10, 0.5], [DURACION_TIKTOK - 30, 0.5], [DURACION_TIKTOK, 0]]
+  const curvaMusica = { cuadros: [] as number[], niveles: [] as number[] }
+  for (const [c, v] of puntos) {
+    const ultimo = curvaMusica.cuadros[curvaMusica.cuadros.length - 1]
+    curvaMusica.cuadros.push(ultimo === undefined ? c : Math.max(c, ultimo + 1))
+    curvaMusica.niveles.push(v)
+  }
   return (
     <AbsoluteFill style={{ background: C.bg }}>
       <Capa3D />
@@ -63,7 +71,7 @@ export function Tiktok() {
       <Grano />
       {/* sonido: voz, base musical (baja mientras se habla) y efectos en los cambios de escena */}
       <Audio src={staticFile('audio/narracion.wav')} />
-      <Audio src={staticFile('audio/musica.wav')} volume={(c) => interpolate(c, [0, voz.ini, voz.ini + 12, voz.fin - 6, voz.fin + 10, DURACION_TIKTOK - 30, DURACION_TIKTOK], [0.42, 0.42, 0.14, 0.14, 0.5, 0.5, 0], { extrapolateRight: 'clamp' })} />
+      <Audio src={staticFile('audio/musica.wav')} volume={(c) => interpolate(c, curvaMusica.cuadros, curvaMusica.niveles, { extrapolateRight: 'clamp' })} />
       {LINEAS.slice(1).map((l) => (
         <Sequence key={'b' + l.escena} from={Math.max(0, inicio(l.escena) - 6)} durationInFrames={20}><Audio src={staticFile('audio/barrido.wav')} volume={0.32} /></Sequence>
       ))}

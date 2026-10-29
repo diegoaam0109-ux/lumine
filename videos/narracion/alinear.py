@@ -150,6 +150,22 @@ def main():
         u = (i - (antes if antes is not None else -1)) / n
         tiempo[i] = (a + (b - a) * u, a + (b - a) * u + 0.15)
 
+    # el reconocedor marca las palabras ~0,1 s antes (y hasta 0,4 s tras una pausa): se ajustan al instante en que
+    # la voz vuelve a sonar después de cada silencio, y el resto se corre 0,06 s
+    ataques = []
+    det = subprocess.run(['ffmpeg', '-hide_banner', '-i', str(salida), '-af', 'silencedetect=n=-40dB:d=0.1', '-f', 'null', '-'],
+                         capture_output=True, text=True).stderr
+    ataques = [float(x) for x in re.findall(r'silence_end: ([0-9.]+)', det)]
+    inicios = [t[0] + 0.06 for t in tiempo]
+    for x in ataques:
+        # la primera palabra que el reconocedor puso hasta 0,45 s antes del ataque es la que empieza ahí
+        candidatas = [i for i, t in enumerate(tiempo) if x - 0.45 <= t[0] <= x + 0.05]
+        if candidatas:
+            inicios[candidatas[0]] = x
+    for i in range(1, len(inicios)):
+        inicios[i] = max(inicios[i], inicios[i - 1] + 0.05)
+    tiempo = [(n, max(t[1], n + 0.08)) for n, t in zip(inicios, tiempo)]
+
     lineas, avisos = [], []
     for li, l in enumerate(guion['lineas']):
         idx = [k for k, g in enumerate(guion_pal) if g[0] == li]
