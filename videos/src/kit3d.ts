@@ -74,7 +74,7 @@ function construir(): Parte[] {
 const PARTES = construir()
 export const ANCLAS: Record<string, V3> = { motor: [1.36, 0.32, 0], regen: [1.36, 0.32, 0.66], bateria: [0.8, 0.62, 0], ecu: [-0.63, 0.84, 0.26], cables: [1.15, 0.44, 0.16], combustion: [-1.55, 0.82, 0], obd: [-0.98, 0.74, 0.36] }
 
-export type Camara = { yaw: number; pitch: number; dist: number; ex: number; xray: number; sel: string | null; t: number; cx?: number; cy?: number; escala?: number }
+export type Camara = { yaw: number; pitch: number; dist: number; ex: number; xray: number; sel: string | string[] | null; t: number; cx?: number; cy?: number; escala?: number }
 
 function proyector(st: Camara, w: number, h: number) {
   const cy = Math.cos(st.yaw), sy = Math.sin(st.yaw), cp = Math.cos(st.pitch), sp = Math.sin(st.pitch)
@@ -135,7 +135,8 @@ export function dibujar(ctx: CanvasRenderingContext2D, w: number, h: number, st:
       if (st.ex > 0.01) alpha = Math.min(alpha, 1 - st.ex * 0.86)
     }
     if (alpha <= 0.01) continue
-    const elegido = !!st.sel && (p.pick === st.sel || p.id === st.sel)
+    const sels = Array.isArray(st.sel) ? st.sel : st.sel ? [st.sel] : []
+    const elegido = sels.includes(p.pick ?? '') || sels.includes(p.id)
     for (let i = 0; i < p.faces.length; i++) {
       const f = p.faces[i].map((v) => [v[0] + off[0], v[1] + off[1], v[2] + off[2]] as V3)
       const pr = f.map(proyectar)

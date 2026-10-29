@@ -102,3 +102,50 @@ bash render.sh        # los dos MP4 y sus portadas en salida/
 
 `remotion.config.ts` usa el Chromium de las sesiones en la nube si existe; en otro equipo Remotion descarga el suyo.
 Para cambiar el escenario de la calculadora, edita `ESCENARIO` en `src/Comercial.tsx`.
+
+## Video 03 · «El kit, para el curioso» (vertical, con narración)
+
+| | |
+|---|---|
+| Archivo | `salida/Video_03_Kit_Lumine_vertical.mp4` |
+| Formato | 1080 × 1920 (9:16, TikTok, Reels y Shorts), 30 fps, H.264 + AAC 192 kb/s |
+| Duración | ~63 s (61 s de narración + cierre) |
+| Portada | `salida/Video_03_Kit_Lumine_vertical_portada.png` (el momento «¿híbrido?») |
+| Fuente editable | `narracion/guion.json` (texto), `src/tiktok/Tiktok.tsx` (imagen), `narracion/narrar.py` y `musica.py` (sonido) |
+
+**Narración**: voz neuronal **Piper `es_MX-claude-high`** (español de México, licencia Apache-2.0), generada sin conexión.
+La versión del modelo viene del espejo de sherpa-onnx en GitHub. Se probaron también `es_AR-daniela-high`, `es_ES-davefx-medium`
+y `es_MX-ald-medium`; se eligió la mexicana por ser latinoamericana neutra y de calidad alta. La inteligibilidad se comprobó
+transcribiendo el audio con Whisper small (sherpa-onnx): se reconocen todas las frases. «ABS» se pronuncia «a be ese» y
+«20%» se lee «veinte por ciento» (marcas `|` en el guion). Si el equipo prefiere su propia voz, basta reemplazar
+`public/audio/narracion.wav` y ajustar los tiempos.
+
+**Subtítulos**: palabra por palabra, en grupos de hasta tres, con la palabra que se dice resaltada en celeste. Los tiempos
+salen de la síntesis: cada frase se genera por separado y dentro de ella el tiempo se reparte según los fonemas de cada
+palabra (aproximación de ±0,1 s).
+
+**Música y efectos**: sintetizados por código (`musica.py`), sin pistas con derechos: base electrónica suave a 100 bpm
+(Am · F · C · G) que baja mientras se habla, un barrido en cada cambio de escena y un golpe grave en «¿híbrido?», «20%» y el cierre.
+
+**Guion** (15 frases, en `narracion/guion.json`): gancho → qué es (motor eléctrico, banco de baterías, unidad de control) →
+cómo funciona (frenar recupera, acelerar empuja) → seguridad y ahorro (el auto sigue mandando; «hasta 20%» como estimación
+de ingeniería no medida en autos chilenos) → ¿tu auto puede? (tracción delantera, diagnóstico primero; si no conviene, no se
+instala) → «Lumine. El mismo auto, ahora híbrido.»
+
+**Imagen**: foto en rayos X recorrida con escaneo (gancho), despiece del kit, los tres renders de piezas de la página,
+el visor 3D de Habilita con el flujo de energía animado (frenar: rueda → baterías; acelerar: baterías → motor), fotos de
+ciudad, bencinera y taller. Barra de cuatro partes arriba, como en el video de referencia. Zonas seguras de TikTok respetadas
+(nada clave arriba de 220 px, bajo 1.500 px ni junto a los botones de la derecha).
+
+**Honestidad en pantalla**: «Estimación de ingeniería», «No medida en autos chilenos», «Imagen conceptual», «Proceso
+propuesto» y al cierre «Lumine Motors · proyecto en desarrollo · ahorro estimado, no medido».
+
+**Cómo regenerarlo** (desde `videos/`, con un entorno de Python que tenga `piper-tts`, `scipy` y las voces descargadas):
+
+```bash
+python narracion/narrar.py --voces <carpeta con vits-piper-es_MX-claude-high>
+python narracion/musica.py
+bash render.sh Tiktok
+```
+
+Las voces se descargan de `https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-piper-<voz>.tar.bz2`.

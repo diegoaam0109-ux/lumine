@@ -42,7 +42,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | `.claude/skills/presentaciones/` | Skill con el método de presentaciones del equipo: lámina como apoyo y no como guion, tiempo según la rúbrica, anexo para la defensa y un plan aprobado antes de construir. | Úsala con `lumine-marca` para cualquier presentación nueva. |
 | `.claude/skills/lumine-marca/` | Skill con el sistema visual de Lumine (colores, tipografías, motivos, recursos). | Úsala para cualquier pieza nueva con la marca. |
 | `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada** (UNAB, Grupo 1, NRC 4153): estimador de ahorro con IA, prototipo, informe técnico del modelo matemático y revisión cruzada con varias IA. | Pasos para reproducir en `entrega3/README.md`; resultados de la Entrega 4 en `entrega4/Resultados_mejoras_modelo_E4.md`. |
-| `videos/` | **Videos de la Fase 3** (Remotion): comercial de 20 s (lámina 8) y Lumine Habilita de 18 s (lámina 14), MP4 y portadas en `salida/`. | `bash render.sh`; `npm run studio`. Supuestos y diferencias en `NOTA_PRODUCCION.md`. |
+| `videos/` | **Videos** (Remotion): comercial de 20 s (lámina 8), Lumine Habilita de 18 s (lámina 14) y «El kit, para el curioso» vertical con narración; MP4 y portadas en `salida/`. | `bash render.sh [Tiktok]`; `npm run studio`; narración en `narracion/`. Detalle en `NOTA_PRODUCCION.md`. |
 | `fase-3/` | **Presentación de la Fase 3** de Integrador II: Taller de Empresas (ICMA 1001, Grupo 1, profesor Roberto Brito): Capítulo III, Plan de Marketing, Operaciones y RR.HH. | Generador propio copiado del de Control de Gestión: `generador/deck.js` + `guion.js` + `render.sh` (también en Git Bash para Windows). El informe .docx no se sube. |
 
 
@@ -136,6 +136,14 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   brecha es una selección ilustrativa; la validación aparece como etapa aparte.
 - Rótulos neutros mientras siga abierta la inconsistencia con el informe: «Banco de baterías» (sin LFP) y «asistencia
   eléctrica trasera» (sin número de motores).
+
+**Video vertical «El kit, para el curioso»** (29-10-2026, `videos/src/tiktok/`):
+- 1080 × 1920, ~63 s, estilo TikTok: narración con voz neuronal Piper `es_MX-claude-high` (sin conexión), subtítulos palabra
+  por palabra con la palabra hablada en celeste, música y efectos sintetizados (sin derechos de terceros), barra de 4 partes.
+- El guion vive en `narracion/guion.json` (con `|` para la pronunciación); `narrar.py` genera la voz y los tiempos de cada
+  palabra, y las escenas se sincronizan solas con la voz. Cierre: «Lumine Motors · proyecto en desarrollo».
+- Trampa: la red bloquea Hugging Face; las voces Piper y Whisper se bajan del espejo de sherpa-onnx en GitHub
+  (`k2-fsa/sherpa-onnx/releases`, `tts-models` y `asr-models`).
 
 ## Pendientes y preguntas abiertas
 
