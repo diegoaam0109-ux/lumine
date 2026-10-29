@@ -41,6 +41,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | `.claude/skills/ui-ux-pro-max/` | Skill de diseño de interfaces (MIT). | `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<consulta>" --design-system` |
 | `.claude/skills/presentaciones/` | Skill con el método de presentaciones del equipo: lámina como apoyo y no como guion, tiempo según la rúbrica, anexo para la defensa y un plan aprobado antes de construir. | Úsala con `lumine-marca` para cualquier presentación nueva. |
 | `.claude/skills/lumine-marca/` | Skill con el sistema visual de Lumine (colores, tipografías, motivos, recursos). | Úsala para cualquier pieza nueva con la marca. |
+| `.claude/skills/tiktok-lumine/` | Skill con el método para videos verticales de la marca (guion, voz de Lukas, sincronización, escenas, render y control de calidad, ideas de próximos videos). | Úsala con `lumine-marca`; `videos/narracion/preparar.sh` instala las herramientas y la skill oficial `remotion-best-practices` (no se sube). |
 | `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada** (UNAB, Grupo 1, NRC 4153): estimador de ahorro con IA, prototipo, informe técnico del modelo matemático y revisión cruzada con varias IA. | Pasos para reproducir en `entrega3/README.md`; resultados de la Entrega 4 en `entrega4/Resultados_mejoras_modelo_E4.md`. |
 | `videos/` | **Videos** (Remotion): comercial de 20 s (lámina 8), Lumine Habilita de 18 s (lámina 14) y «El kit, para el curioso» vertical con narración; MP4 y portadas en `salida/`. | `bash render.sh [Tiktok]`; `npm run studio`; narración en `narracion/`. Detalle en `NOTA_PRODUCCION.md`. |
 | `fase-3/` | **Presentación de la Fase 3** de Integrador II: Taller de Empresas (ICMA 1001, Grupo 1, profesor Roberto Brito): Capítulo III, Plan de Marketing, Operaciones y RR.HH. | Generador propio copiado del de Control de Gestión: `generador/deck.js` + `guion.js` + `render.sh` (también en Git Bash para Windows). El informe .docx no se sube. |
@@ -149,6 +150,8 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   guion revisado de `guion.json`; instrucciones en `narracion/INSTRUCCIONES_NARRACION.md` y en la página con teleprompter.
   Cuando llegue su audio: `alinear.py` (Parakeet, tiempos por palabra) → `musica.py` → `bash render.sh Tiktok`.
 - **La marca se pronuncia «Lumin»** (se escribe Lumine). Vale para toda narración o locución.
+- **Hacer más TikTok para la marca** es el plan (29-10-2026). El equipo manda el audio y **Claude hace toda la edición**.
+  Se pueden pedir skills o herramientas siempre que sean **gratis**. Método: skill `tiktok-lumine`.
 
 ## Pendientes y preguntas abiertas
 

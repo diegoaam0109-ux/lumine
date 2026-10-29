@@ -117,12 +117,14 @@ Para cambiar el escenario de la calculadora, edita `ESCENARIO` en `src/Comercial
 ### Con la voz de Lukas (flujo definitivo)
 
 ```bash
-python narracion/alinear.py narracion_lukas.mp3 --asr <carpeta sherpa-onnx-nemo-parakeet-tdt-0.6b-v3-int8>
-python narracion/musica.py
+bash narracion/preparar.sh
+~/.cache/lumine-voz/venv/bin/python narracion/alinear.py narracion_lukas.mp3
+~/.cache/lumine-voz/venv/bin/python narracion/musica.py
 bash render.sh Tiktok
 ```
 
-`alinear.py` recorta silencios, normaliza a −16 LUFS, reconoce cada palabra con **Parakeet TDT 0.6b v3** (multilingüe,
+`alinear.py` limpia la voz (RNNoise con el modelo «somnolent-hogwash» en `narracion/modelos/`, ecualización, de-esser y
+compresión; `--sin-limpieza` para audio de ElevenLabs), recorta silencios, normaliza a −16 LUFS, reconoce cada palabra con **Parakeet TDT 0.6b v3** (multilingüe,
 con tiempos por palabra, sin conexión) y la alinea con `guion.json`, así los subtítulos muestran el texto del guion en el
 instante en que se dice. Tolera palabras cambiadas e interpola las no reconocidas; avisa las frases que no calzan.
 Probado con una grabación simulada de 72 s del guion nuevo (con ruido de fondo): 91 % de palabras reconocidas y escenas en su lugar.

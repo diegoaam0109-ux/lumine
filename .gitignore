@@ -5,3 +5,6 @@ entrega/
 .work/
 __pycache__/
 *.pyc
+
+# skills de terceros que instala videos/narracion/preparar.sh (no se redistribuyen)
+.claude/skills/remotion-best-practices/

@@ -117,17 +117,18 @@ de estudio y la actuación es tuya.
 
 ---
 
-## 4. Lo que pasa después (lo hace Claude o Diego, no Lukas)
+## 4. Lo que pasa después (lo hace Claude, no Lukas)
 
-Desde `videos/`, con el entorno de Python de la sesión (`piper-tts`, `sherpa-onnx`, `soundfile`, `scipy`):
+Lukas manda el audio y Claude hace la edición completa (método en la skill `tiktok-lumine`). Desde `videos/`:
 
 ```bash
-python narracion/alinear.py narracion_lukas.mp3 --asr <carpeta sherpa-onnx-nemo-parakeet-tdt-0.6b-v3-int8>
-python narracion/musica.py      # la música se ajusta al nuevo largo
-bash render.sh Tiktok           # salida/Video_03_Kit_Lumine_vertical.mp4
+bash narracion/preparar.sh                                   # herramientas gratis, una vez por sesión
+~/.cache/lumine-voz/venv/bin/python narracion/alinear.py narracion_lukas.mp3   # --sin-limpieza si viene de ElevenLabs
+~/.cache/lumine-voz/venv/bin/python narracion/musica.py      # la música se ajusta al nuevo largo
+bash render.sh Tiktok                                        # salida/Video_03_Kit_Lumine_vertical.mp4
 ```
 
-`alinear.py` limpia el audio (recorta silencios y normaliza a −16 LUFS), reconoce cada palabra con Parakeet (sin
-conexión) y la alinea con `guion.json`. Si una frase no calza con el guion, lo avisa. Modelo:
-`https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v3-int8.tar.bz2`.
-Probado con una grabación simulada de 72 s: reconoció el 91 % de las palabras y el resto lo interpoló.
+`alinear.py` limpia la voz del celular (reducción de ruido RNNoise, ecualización, control de las «s» y compresión),
+recorta silencios, normaliza a −16 LUFS, reconoce cada palabra con Parakeet (sin conexión) y la alinea con `guion.json`.
+Si una frase no calza con el guion, lo avisa. Probado con una grabación simulada con ruido de ambiente, zumbido de 50 Hz
+y eco: la relación voz-ruido subió de ~16 a ~32 dB y se reconoció el 91 % de las palabras.

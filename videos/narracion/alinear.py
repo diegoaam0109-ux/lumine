@@ -1,11 +1,12 @@
 """Sincroniza el video vertical con una narración grabada (o generada en ElevenLabs u otro servicio).
 
-Uso (desde videos/):
-    python narracion/alinear.py <audio de Lukas (mp3, wav, m4a…)> --asr <carpeta de Parakeet>
+Uso (desde videos/, después de bash narracion/preparar.sh):
+    ~/.cache/lumine-voz/venv/bin/python narracion/alinear.py <audio (mp3, wav, m4a…)> [--sin-limpieza]
 
 Hace tres cosas:
-  1. Limpia el audio: quita el silencio de los extremos, normaliza el volumen (-16 LUFS) y lo deja en
-     public/audio/narracion.wav.
+  1. Limpia el audio: cadena de voz para celular (RNNoise, ecualización, de-esser y compresión), quita el silencio
+     de los extremos, normaliza el volumen (-16 LUFS) y lo deja en public/audio/narracion.wav. Con --sin-limpieza
+     solo recorta y normaliza (para audio ya limpio, como el de ElevenLabs).
   2. Reconoce la voz con Parakeet TDT 0.6b v3 (multilingüe, con el tiempo de cada palabra; sin conexión).
   3. Alinea lo reconocido con narracion/guion.json y escribe src/tiktok/tiempos.json: así los subtítulos
      muestran el texto del guion (bien escrito) en el momento exacto en que Lukas dice cada palabra.
@@ -46,16 +47,28 @@ def numeros(p: str) -> list[str]:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('audio', help='narración grabada')
-    ap.add_argument('--asr', required=True, help='carpeta sherpa-onnx-nemo-parakeet-tdt-0.6b-v3-int8')
+    ap.add_argument('--asr', default=str(Path.home() / '.cache/lumine-voz/parakeet'), help='carpeta de Parakeet (la deja narracion/preparar.sh)')
     ap.add_argument('--margen', type=float, default=0.35, help='silencio que se deja antes de la primera palabra (s)')
+    ap.add_argument('--sin-limpieza', action='store_true', help='no procesar la voz (para audio ya limpio, p. ej. ElevenLabs)')
     args = ap.parse_args()
 
     guion = json.loads((RAIZ / 'narracion/guion.json').read_text(encoding='utf-8'))
     salida = RAIZ / 'public/audio/narracion.wav'
     with tempfile.TemporaryDirectory() as tmp:
         limpio = Path(tmp) / 'limpio.wav'
+        # cadena de voz para grabaciones de celular: corta graves de manejo, quita ruido de fondo (RNNoise,
+        # modelo «somnolent-hogwash» para voz grabada), resta zumbido residual, saca lo embarrado (200 Hz),
+        # da presencia (3,5 kHz), suaviza las «s» y comprime suave para que todo se entienda parejo
+        voz = '' if args.sin_limpieza else (
+            'aresample=48000,highpass=f=80,'
+            f'arnndn=m={RAIZ / "narracion/modelos/voz-grabada.rnnn"}:mix=0.85,'
+            'afftdn=nr=6:nf=-42,'
+            'equalizer=f=200:t=q:w=1:g=-2,equalizer=f=3500:t=q:w=1:g=2,'
+            'deesser=i=0.35,'
+            'acompressor=threshold=-20dB:ratio=3:attack=8:release=160:makeup=2,'
+        )
         # recorta silencios de los extremos y normaliza; deja un margen al inicio
-        filtro = (
+        filtro = voz + (
             'silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05,'
             'areverse,silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.3,areverse,'
             f'adelay={int(args.margen * 1000)}:all=1,loudnorm=I=-16:TP=-1.5:LRA=11'
