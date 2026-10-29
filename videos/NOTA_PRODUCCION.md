@@ -105,6 +105,36 @@ Para cambiar el escenario de la calculadora, edita `ESCENARIO` en `src/Comercial
 
 ## Video 03 · «El kit, para el curioso» (vertical, con narración)
 
+> **Estado (29-10-2026): esperando la voz de Lukas.** Al equipo no le gustó ninguna voz sintética (Piper ni Kokoro).
+> Lukas graba la narración (o la genera o «tunea» en ElevenLabs) con el **guion revisado**; después `alinear.py`
+> sincroniza solo subtítulos y escenas. El MP4 que está hoy en `salida/` es la versión anterior, con voz Piper y el
+> guion viejo; se reemplaza cuando llegue el audio.
+>
+> - Instrucciones para Lukas: `narracion/INSTRUCCIONES_NARRACION.md` y la página con teleprompter
+>   https://claude.ai/artifact/S3GGUnRgjajA8U7Ya2yLLJ (fuente: `narracion/guion-lukas.html`).
+> - La marca se dice **«Lumin»** (en pantalla se escribe Lumine): en `guion.json` va como `Lumine|Lumin`.
+
+### Con la voz de Lukas (flujo definitivo)
+
+```bash
+python narracion/alinear.py narracion_lukas.mp3 --asr <carpeta sherpa-onnx-nemo-parakeet-tdt-0.6b-v3-int8>
+python narracion/musica.py
+bash render.sh Tiktok
+```
+
+`alinear.py` recorta silencios, normaliza a −16 LUFS, reconoce cada palabra con **Parakeet TDT 0.6b v3** (multilingüe,
+con tiempos por palabra, sin conexión) y la alinea con `guion.json`, así los subtítulos muestran el texto del guion en el
+instante en que se dice. Tolera palabras cambiadas e interpola las no reconocidas; avisa las frases que no calzan.
+Probado con una grabación simulada de 72 s del guion nuevo (con ruido de fondo): 91 % de palabras reconocidas y escenas en su lugar.
+
+### Voces sintéticas probadas (descartadas por el equipo)
+
+- **Piper** `es_MX-claude-high` (usada en la primera versión), `es_AR-daniela-high`, `es_ES-davefx-medium`, `es_MX-ald-medium`.
+- **Kokoro v1.0** `em_alex`, `ef_dora`, `em_santa`: más naturales, pero tampoco convencieron. sherpa-onnx no trae léxico
+  español para Kokoro, así que se ejecutó directo con onnxruntime y la fonética `es-419` de espeak (dice bien «Lumin»).
+- ElevenLabs, OpenAI y Azure no son alcanzables desde la red de la sesión; ElevenLabs se puede habilitar agregando
+  `api.elevenlabs.io` en *Allowed domains* del entorno y una clave como variable de entorno (nunca en el repositorio).
+
 | | |
 |---|---|
 | Archivo | `salida/Video_03_Kit_Lumine_vertical.mp4` |

@@ -1,23 +1,68 @@
 {
-  "nota": "Guion del video vertical «El kit, para el curioso». Cada línea es una frase de la narración. Las palabras se escriben como se ven en el subtítulo; si se pronuncian distinto, se agrega |pronunciación (con _ en vez de espacios). La escena define qué se ve mientras se dice la frase.",
+  "nota": "Guion del video vertical «El kit, para el curioso». Cada línea es una frase de la narración. Las palabras se escriben como se ven en el subtítulo; si se pronuncian distinto, se agrega |pronunciación (con _ en vez de espacios). La marca se escribe Lumine y se dice «Lumin». La escena define qué se ve mientras se dice la frase. Si cambias una frase, conserva la palabra que dispara cada efecto (ver INSTRUCCIONES_NARRACION.md).",
   "voz": "es_MX-claude-high",
   "velocidad": 0.76,
   "pausa": 0.22,
   "lineas": [
-    { "escena": "gancho",     "texto": "¿Tu auto a bencina… pero híbrido? Sin cambiarlo." },
-    { "escena": "kit",        "texto": "Esto es el kit de Lumine. Se suma a tu auto: no reemplaza nada." },
-    { "escena": "motor",      "texto": "Son tres piezas. Atrás, un motor eléctrico en el eje trasero." },
-    { "escena": "bateria",    "texto": "Abajo, un banco de baterías." },
-    { "escena": "control",    "texto": "Y una unidad de control, que decide cuándo ayudar." },
-    { "escena": "ciudad",     "texto": "En la ciudad frenas y aceleras todo el rato." },
-    { "escena": "frenar",     "texto": "Al frenar, el kit recupera energía y la guarda en las baterías." },
-    { "escena": "acelerar",   "texto": "Al acelerar, el motor eléctrico empuja y el de bencina se esfuerza menos." },
-    { "escena": "intacto",    "texto": "Tu motor original y la caja quedan intactos. Y el freno y el ABS|a_be_ese de tu auto siempre mandan." },
-    { "escena": "ahorro",     "texto": "¿Cuánto ahorra? Estimamos hasta un 20%|veinte_por_ciento menos de bencina en ciudad." },
-    { "escena": "aviso",      "texto": "Es una estimación de ingeniería: todavía no está medida en autos chilenos." },
-    { "escena": "quien",      "texto": "Está pensado para quienes manejan mucho, como colectiveros y conductores de aplicación." },
-    { "escena": "puede",      "texto": "¿Tu auto puede? Si es de tracción delantera, puede ser candidato." },
-    { "escena": "diagnostico","texto": "Primero va un diagnóstico. Y si no te conviene, no se instala." },
-    { "escena": "cierre",     "texto": "Lumine. El mismo auto, ahora híbrido." }
+    {
+      "escena": "gancho",
+      "texto": "¿Y si tu auto a bencina fuera híbrido? Sin cambiarlo."
+    },
+    {
+      "escena": "kit",
+      "texto": "Esto es Lumine|Lumin: un kit que se suma a tu auto, sin reemplazar nada."
+    },
+    {
+      "escena": "motor",
+      "texto": "Son tres piezas. Atrás, un motor eléctrico en el eje trasero."
+    },
+    {
+      "escena": "bateria",
+      "texto": "Abajo, un banco de baterías."
+    },
+    {
+      "escena": "control",
+      "texto": "Y una unidad de control que decide cuándo ayudar."
+    },
+    {
+      "escena": "ciudad",
+      "texto": "En la ciudad frenas y aceleras todo el rato."
+    },
+    {
+      "escena": "frenar",
+      "texto": "Cuando frenas, el kit recupera energía y la guarda en las baterías."
+    },
+    {
+      "escena": "acelerar",
+      "texto": "Cuando aceleras, el motor eléctrico empuja, y el de bencina trabaja menos."
+    },
+    {
+      "escena": "intacto",
+      "texto": "Tu motor y tu caja siguen igual. Y el freno y el ABS|a_be_ese de tu auto siempre mandan."
+    },
+    {
+      "escena": "ahorro",
+      "texto": "¿Cuánto ahorras? Estimamos hasta un 20%|veinte_por_ciento menos de bencina en ciudad."
+    },
+    {
+      "escena": "aviso",
+      "texto": "Ojo: es una estimación de ingeniería. Todavía no lo medimos en autos chilenos."
+    },
+    {
+      "escena": "quien",
+      "texto": "Está pensado para quienes manejan harto: colectiveros y conductores de aplicación."
+    },
+    {
+      "escena": "puede",
+      "texto": "¿Tu auto puede? Si es de tracción delantera, puede ser candidato."
+    },
+    {
+      "escena": "diagnostico",
+      "texto": "Primero hacemos un diagnóstico. Y si no te conviene, no lo instalamos."
+    },
+    {
+      "escena": "cierre",
+      "texto": "Lumine|Lumin. El mismo auto, ahora híbrido."
+    }
   ]
 }

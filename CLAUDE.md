@@ -54,6 +54,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | Lumine Habilita (demo) | https://claude.ai/artifact/JpdUMVYztFtjQYkcAehELb | `dist/lumine-habilita-demo.html` |
 | Lumine Habilita (real) | https://claude.ai/artifact/KrYbLr84sVrfJoRT2wvhP9 | `dist/lumine-habilita.html` (capacidades `db` con `DB_RULES`, `user` con `profile`, `downloads`) |
 | Guion de la presentación | https://claude.ai/code/artifact/e0db2f29-05e7-42d1-b4a7-9cfcb5d1741b | documento editable |
+| Guion y teleprompter del video vertical (para Lukas) | https://claude.ai/artifact/S3GGUnRgjajA8U7Ya2yLLJ | `videos/narracion/guion-lukas.html` |
 
 Para republicar en el mismo link hay que publicar el mismo archivo desde una sesión con permiso de edición sobre el
 artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la versión real.
@@ -144,6 +145,10 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   palabra, y las escenas se sincronizan solas con la voz. Cierre: «Lumine Motors · proyecto en desarrollo».
 - Trampa: la red bloquea Hugging Face; las voces Piper y Whisper se bajan del espejo de sherpa-onnx en GitHub
   (`k2-fsa/sherpa-onnx/releases`, `tts-models` y `asr-models`).
+- **La voz sintética no gustó** (Piper ni Kokoro). **Lukas grabará la narración** (o la hará o «tuneará» en ElevenLabs) con el
+  guion revisado de `guion.json`; instrucciones en `narracion/INSTRUCCIONES_NARRACION.md` y en la página con teleprompter.
+  Cuando llegue su audio: `alinear.py` (Parakeet, tiempos por palabra) → `musica.py` → `bash render.sh Tiktok`.
+- **La marca se pronuncia «Lumin»** (se escribe Lumine). Vale para toda narración o locución.
 
 ## Pendientes y preguntas abiertas
 

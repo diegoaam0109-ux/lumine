@@ -1,0 +1,258 @@
+<title>Guion del kit Lumine</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Figtree:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&family=Instrument+Serif:ital@1&display=swap">
+<style>
+/* Plan: escenario negro de Lumine, un solo acento celeste; lectura de guion arriba, teleprompter a pantalla completa encima */
+:root {
+  --bg: #020304; --surface: #0a0d0f; --well: #101417; --line: #1f2427; --line-2: #2e3438;
+  --fg: #ececec; --muted: #8b9598; --dim: #5b6266; --accent: #22B8F0; --accent-text: #22B8F0; --on-accent: #031015; --warn: #F5B94A;
+  --display: "Archivo", "Figtree", system-ui, sans-serif;
+  --text: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --serif: "Instrument Serif", Georgia, serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
+  --bg: #f5f5f7; --surface: #ffffff; --well: #ebecef; --line: #dcdde1; --line-2: #c8cace;
+  --fg: #1d1d1f; --muted: #5f6368; --dim: #8a8f94; --accent: #22B8F0; --accent-text: #0A6F9E; --on-accent: #031015; --warn: #9a5b06; color-scheme: light; } }
+:root[data-theme="light"] {
+  --bg: #f5f5f7; --surface: #ffffff; --well: #ebecef; --line: #dcdde1; --line-2: #c8cace;
+  --fg: #1d1d1f; --muted: #5f6368; --dim: #8a8f94; --accent: #22B8F0; --accent-text: #0A6F9E; --on-accent: #031015; --warn: #9a5b06; color-scheme: light; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--text); font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.wrap { max-width: 860px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 64px; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.label b { color: var(--accent-text); font-weight: 600; }
+h1 { font-family: var(--display); font-stretch: 112%; font-weight: 800; text-transform: uppercase; letter-spacing: -.025em; line-height: .95; font-size: clamp(38px, 8vw, 68px); margin: 14px 0 0; text-wrap: balance; }
+h1 em, h2 em { font-family: var(--serif); font-style: italic; font-weight: 400; text-transform: none; font-stretch: 100%; color: var(--accent-text); letter-spacing: -.01em; font-size: 1.12em; }
+h2 { font-family: var(--display); font-stretch: 112%; font-weight: 800; text-transform: uppercase; letter-spacing: -.02em; font-size: clamp(24px, 4.6vw, 34px); line-height: 1; margin: 0; text-wrap: balance; }
+header.top { padding-block: 40px 28px; display: grid; gap: 18px; }
+.lead { color: var(--muted); max-width: 62ch; margin: 0; }
+.datos { display: flex; flex-wrap: wrap; gap: 10px; }
+.dato { border: 1px solid var(--line-2); padding: 8px 14px; font-family: var(--mono); font-size: 13px; letter-spacing: .06em; }
+.dato strong { color: var(--accent-text); font-weight: 600; }
+nav.secc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-block: 1px solid var(--line); display: flex; gap: 4px; overflow-x: auto; padding-block: 10px; scrollbar-width: none; }
+nav.secc a { flex: none; font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 8px 12px; border: 1px solid transparent; }
+nav.secc a:hover, nav.secc a:focus-visible { color: var(--fg); border-color: var(--line-2); outline: none; }
+section { padding-block: 40px 8px; display: grid; gap: 20px; scroll-margin-top: 70px; }
+.aviso { border: 1px solid var(--accent); background: color-mix(in srgb, var(--accent) 9%, transparent); padding: 14px 18px; display: flex; gap: 14px; align-items: baseline; }
+.aviso .label { color: var(--accent-text); flex: none; }
+.aviso p { margin: 0; }
+ol.frases { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+ol.frases li { display: grid; grid-template-columns: 44px 1fr; gap: 4px 14px; padding-block: 18px; border-bottom: 1px solid var(--line); }
+.num { font-family: var(--mono); font-size: 13px; color: var(--accent-text); padding-top: 5px; font-variant-numeric: tabular-nums; }
+.frase { font-size: 22px; line-height: 1.35; font-weight: 600; min-width: 0; }
+.frase strong { color: var(--accent-text); font-weight: 700; }
+.como { grid-column: 2; color: var(--muted); font-size: 15px; }
+.btn { appearance: none; border: 1px solid var(--line-2); background: var(--surface); color: var(--fg); font-family: var(--mono); font-size: 13px; letter-spacing: .12em; text-transform: uppercase; padding: 14px 20px; cursor: pointer; display: inline-flex; gap: 10px; align-items: center; justify-content: center; }
+.btn:hover { border-color: var(--fg); }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn.primario { background: var(--accent); color: var(--on-accent); border-color: var(--accent); font-weight: 600; }
+.acciones { display: flex; flex-wrap: wrap; gap: 10px; }
+.opciones { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.opcion { border: 1px solid var(--line-2); background: var(--surface); padding: 20px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.opcion.rec { border-color: var(--accent); }
+.opcion h3 { margin: 0; font-family: var(--display); font-stretch: 100%; font-weight: 700; font-size: 20px; }
+.opcion ol, .opcion ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; color: var(--fg); }
+.opcion p { margin: 0; color: var(--muted); }
+pre.pegar { margin: 0; background: var(--well); border: 1px solid var(--line-2); padding: 18px; white-space: pre-wrap; font-family: var(--mono); font-size: 14px; line-height: 1.7; overflow-x: auto; }
+.ajustes { display: grid; grid-template-columns: max-content 1fr; gap: 8px 18px; margin: 0; font-size: 15px; }
+.ajustes dt { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+.ajustes dd { margin: 0; }
+.nota { border: 1px dashed var(--warn); color: var(--fg); padding: 14px 18px; font-size: 15px; }
+.nota .label { color: var(--warn); display: block; margin-bottom: 4px; }
+ul.check { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+ul.check label { display: flex; gap: 14px; align-items: center; padding: 14px 16px; border: 1px solid var(--line-2); background: var(--surface); cursor: pointer; }
+ul.check input { width: 22px; height: 22px; accent-color: var(--accent); flex: none; }
+.claves { display: flex; flex-wrap: wrap; gap: 6px; }
+.claves span { font-family: var(--mono); font-size: 12px; padding: 4px 10px; border: 1px solid var(--line-2); color: var(--fg); }
+footer { padding-block: 40px 0; color: var(--dim); font-size: 14px; }
+
+/* teleprompter */
+#prompter { position: fixed; inset: 0; z-index: 20; background: #000; color: #f2f2f2; display: grid; grid-template-rows: auto 1fr auto;
+  padding: env(safe-area-inset-top, 0px) max(16px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(16px, env(safe-area-inset-left, 0px)); color-scheme: dark; }
+#prompter[hidden] { display: none; }
+#prompter .barra { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: 14px; font-family: var(--mono); font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: #8b9598; }
+#prompter .barra button { background: none; border: 1px solid #2e3438; color: #ececec; font: inherit; padding: 10px 14px; cursor: pointer; }
+#lienzo { overflow: hidden; position: relative; cursor: pointer; }
+#lista { position: absolute; left: 0; right: 0; top: 0; transition: transform .45s cubic-bezier(.2,.7,.2,1); }
+.tp { font-family: var(--text); font-weight: 700; font-size: clamp(30px, 7.4vw, 56px); line-height: 1.22; padding-block: 18px; opacity: .28; transition: opacity .3s; text-wrap: pretty; }
+.tp.on { opacity: 1; }
+.tp strong { color: #22B8F0; }
+.tp small { display: block; font-family: var(--mono); font-weight: 400; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: #8b9598; margin-top: 8px; }
+#lienzo::after { content: ""; position: absolute; inset: auto 0 0; height: 30%; background: linear-gradient(transparent, #000); pointer-events: none; }
+#prompter .pie { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-block: 14px; }
+#prompter .pie button { padding: 18px; font-family: var(--mono); font-size: 14px; letter-spacing: .14em; text-transform: uppercase; border: 1px solid #2e3438; background: #0a0d0f; color: #ececec; cursor: pointer; }
+#prompter .pie button.sig { background: #22B8F0; color: #031015; border-color: #22B8F0; font-weight: 600; }
+@media (prefers-reduced-motion: reduce) { #lista, .tp { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="label"><b>Lumine Motors</b> · video vertical · narración</div>
+    <h1>El kit, <em>para el curioso</em></h1>
+    <p class="lead">El video ya está armado: imágenes, 3D, subtítulos y música. Falta tu voz. La grabas o la generas en ElevenLabs, la entregas, y el video se sincroniza solo con tu audio. No tienes que calzar ningún tiempo.</p>
+    <div class="datos">
+      <span class="dato">Duración <strong>55–70 s</strong></span>
+      <span class="dato">Frases <strong>15</strong></span>
+      <span class="dato">Archivo <strong>narracion_lukas.mp3</strong></span>
+    </div>
+    <div class="acciones">
+      <button class="btn primario" id="abrir" type="button">Abrir teleprompter</button>
+    </div>
+  </header>
+
+  <nav class="secc" aria-label="Secciones">
+    <a href="#guion">Guion</a><a href="#grabar">Cómo hacerlo</a><a href="#elevenlabs">Texto para ElevenLabs</a><a href="#entrega">Entrega</a>
+  </nav>
+
+  <section id="guion">
+    <h2>El <em>guion</em></h2>
+    <div class="aviso"><span class="label">Ojo</span><p>La marca se dice <strong>«Lumin»</strong>, no «Lu-mi-ne». En los subtítulos se sigue escribiendo Lumine.</p></div>
+    <p class="lead">Como si le explicaras el kit a un amigo curioso: cercano, con energía, sin tono de locutor. Media pausa entre frases. Lo destacado lleva el énfasis.</p>
+    <ol class="frases" id="frases"></ol>
+    <div>
+      <div class="label" style="margin-bottom:10px">Palabras que no se cambian sin avisar (disparan animaciones)</div>
+      <div class="claves" id="claves"></div>
+    </div>
+  </section>
+
+  <section id="grabar">
+    <h2>Tres formas <em>de hacerlo</em></h2>
+    <div class="opciones">
+      <article class="opcion rec">
+        <div class="label"><b>A · Recomendada</b></div>
+        <h3>Grabar con tu voz</h3>
+        <ol>
+          <li>Pieza chica con cosas blandas (cama, cortinas). Nada de baño ni cocina. Sin ventilador.</li>
+          <li>Celular en modo avión, grabadora en la mejor calidad, a un palmo de la boca y un poco al lado.</li>
+          <li>3 segundos de silencio al partir.</li>
+          <li>Frase por frase. Si te equivocas: pausa de 2 s y repite la frase entera. Después borras la mala.</li>
+          <li>Sonríe al hablar. Mejor un poco rápido que lento.</li>
+        </ol>
+      </article>
+      <article class="opcion">
+        <div class="label">B · Tu voz mejorada</div>
+        <h3>ElevenLabs · Voice Changer</h3>
+        <p>Grabas como en A, subes el audio a <strong>Voice Changer</strong> y eliges una voz. Conserva tu ritmo, tus pausas y tu entonación; la voz suena de estudio.</p>
+        <ul>
+          <li>Voz en español latino (Voice Library: Spanish, Latin American).</li>
+          <li>Activa <em>Remove background noise</em>.</li>
+        </ul>
+      </article>
+      <article class="opcion">
+        <div class="label">C · Sin grabar</div>
+        <h3>ElevenLabs · Text to Speech</h3>
+        <p>Pega el texto de la sección siguiente, prueba 2 o 3 voces con la primera frase y genera. Si una frase sale rara, regenera solo esa.</p>
+      </article>
+    </div>
+    <div class="opcion">
+      <h3>Ajustes de partida en ElevenLabs</h3>
+      <dl class="ajustes">
+        <dt>Modelo</dt><dd>Eleven Multilingual v2 (o el multilingüe más nuevo)</dd>
+        <dt>Stability</dt><dd>40–50 %</dd>
+        <dt>Similarity</dt><dd>75 %</dd>
+        <dt>Style</dt><dd>0–20 %</dd>
+        <dt>Speed</dt><dd>1,0–1,05</dd>
+        <dt>Descarga</dt><dd>MP3 en la mejor calidad del plan</dd>
+      </dl>
+    </div>
+    <div class="nota"><span class="label">Plan y derechos</span>Revisa las condiciones del plan antes de publicar. El plan gratis tiene un límite mensual (el guion usa unos 900 caracteres) y condiciones de uso y atribución. Si piden mencionar a ElevenLabs, va en la descripción del TikTok.</div>
+  </section>
+
+  <section id="elevenlabs">
+    <h2>Texto para <em>ElevenLabs</em></h2>
+    <p class="lead">Escrito como se pronuncia («Lumin», «a be ese», «veinte por ciento»). Cópialo tal cual.</p>
+    <pre class="pegar" id="pegar"></pre>
+    <div class="acciones"><button class="btn primario" id="copiar" type="button">Copiar texto</button></div>
+  </section>
+
+  <section id="entrega">
+    <h2>Antes de <em>entregar</em></h2>
+    <ul class="check" id="check"></ul>
+    <p class="lead">Mándale el archivo a Diego, o súbelo en el chat de Claude Code del proyecto con el mensaje «sincroniza el video con esta narración». El resto (limpiar el audio, sincronizar subtítulos y escenas, ajustar la música y renderizar) es automático.</p>
+  </section>
+
+  <footer>Instrucciones completas en el repositorio: videos/narracion/INSTRUCCIONES_NARRACION.md</footer>
+</div>
+
+<div id="prompter" hidden role="dialog" aria-label="Teleprompter">
+  <div class="barra"><span id="cuenta">Frase 1 de 15</span><button type="button" id="cerrar">Cerrar</button></div>
+  <div id="lienzo" aria-live="polite"><div id="lista"></div></div>
+  <div class="pie"><button type="button" id="ant">Anterior</button><button type="button" class="sig" id="sig">Siguiente</button></div>
+</div>
+
+<script>
+const FRASES = [
+  ['¿Y si tu auto a bencina fuera **híbrido**? Sin cambiarlo.', 'Gancho: con intriga. «Híbrido» con fuerza; pausa antes de «Sin cambiarlo».'],
+  ['Esto es **Lumin**: un kit que se suma a tu auto, sin reemplazar nada.', 'Presentación, tranquila y segura.'],
+  ['Son **tres** piezas. Atrás, un motor eléctrico en el eje trasero.', 'Contando. Pausa breve después de «piezas».'],
+  ['Abajo, un banco de baterías.', 'Igual que la anterior.'],
+  ['Y una unidad de control que **decide** cuándo ayudar.', 'Cierra la lista.'],
+  ['En la ciudad **frenas** y **aceleras** todo el rato.', 'Ritmo de taco: rápido.'],
+  ['Cuando frenas, el kit **recupera** energía y la guarda en las baterías.', 'Explicando.'],
+  ['Cuando aceleras, el motor eléctrico **empuja**, y el de bencina trabaja **menos**.', 'Explicando.'],
+  ['Tu motor y tu caja siguen igual. Y el freno y el **ABS** de tu auto siempre mandan.', 'Tranquilizador. «ABS» se dice «a-be-ese».'],
+  ['¿Cuánto ahorras? Estimamos hasta un **20 %** menos de bencina en ciudad.', 'La cifra, clara: «veinte por ciento».'],
+  ['Ojo: es una **estimación** de ingeniería. Todavía no lo medimos en autos chilenos.', 'Honesto, un poco más bajo, sin dramatizar.'],
+  ['Está pensado para quienes manejan **harto**: colectiveros y conductores de aplicación.', 'Cercano.'],
+  ['¿Tu auto puede? Si es de tracción **delantera**, puede ser candidato.', 'Pregunta directa al que mira.'],
+  ['Primero hacemos un **diagnóstico**. Y si no te conviene, no lo instalamos.', 'Confianza: la última frase, firme.'],
+  ['**Lumin.** El mismo auto, ahora **híbrido**.', 'Cierre: pausa después de «Lumin».'],
+];
+const PEGAR = FRASES.map(f => f[0].replace(/\*\*/g, '').replace('ABS', 'a be ese').replace('20 %', 'veinte por ciento')).join('\n');
+const CLAVES = ['fuera', 'híbrido', 'suma', 'reemplazar', 'atrás', 'banco', 'decide', 'recupera', 'bencina', 'motor', 'caja', 'ABS', '20 %', 'estimación', 'todavía', 'medimos', 'colectiveros', 'conductores', 'tracción', 'candidato', 'si'];
+const CHECK = ['Dura entre 55 y 70 segundos, con las 15 frases en orden', 'Se dice «Lumin», «a-be-ese» y «veinte por ciento»', 'Sin frases repetidas ni intentos fallidos', 'Se escucha limpio con audífonos: sin eco, ruido ni soplidos', 'El archivo se llama narracion_lukas.mp3 (o .wav / .m4a)'];
+
+const html = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+document.getElementById('frases').innerHTML = FRASES.map((f, i) => `<li><span class="num">${String(i + 1).padStart(2, '0')}</span><span class="frase">${html(f[0])}</span><span class="como">${html(f[1])}</span></li>`).join('');
+document.getElementById('claves').innerHTML = CLAVES.map(c => `<span>${c}</span>`).join('');
+document.getElementById('pegar').textContent = PEGAR;
+
+// lista de revisión: se recuerda solo en este navegador
+let marcadas = [];
+try { marcadas = JSON.parse(localStorage.getItem('lumine-check') || '[]'); } catch (e) {}
+document.getElementById('check').innerHTML = CHECK.map((c, i) => `<li><label for="c${i}"><input type="checkbox" id="c${i}" ${marcadas.includes(i) ? 'checked' : ''}>${c}</label></li>`).join('');
+document.getElementById('check').addEventListener('change', () => {
+  const v = CHECK.map((_, i) => i).filter(i => document.getElementById('c' + i).checked);
+  try { localStorage.setItem('lumine-check', JSON.stringify(v)); } catch (e) {}
+});
+
+const copiar = document.getElementById('copiar');
+copiar.addEventListener('click', () => {
+  const listo = () => { copiar.textContent = 'Copiado'; setTimeout(() => copiar.textContent = 'Copiar texto', 1800); };
+  const seleccionar = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById('pegar')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); copiar.textContent = 'Texto seleccionado: cópialo'; };
+  try { navigator.clipboard.writeText(PEGAR).then(listo, seleccionar); } catch (e) { seleccionar(); }
+});
+
+// teleprompter: una frase a la vez, toca la pantalla o usa las flechas
+const P = document.getElementById('prompter'), lista = document.getElementById('lista'), lienzo = document.getElementById('lienzo');
+lista.innerHTML = FRASES.map(f => `<div class="tp">${html(f[0])}<small>${html(f[1])}</small></div>`).join('');
+let k = 0, bloqueo = null;
+function mostrar() {
+  const items = [...lista.children];
+  items.forEach((el, i) => el.classList.toggle('on', i === k));
+  const el = items[k];
+  lista.style.transform = `translateY(${Math.round(lienzo.clientHeight * 0.18 - el.offsetTop)}px)`;
+  document.getElementById('cuenta').textContent = `Frase ${k + 1} de ${FRASES.length}`;
+}
+const mover = d => { k = Math.max(0, Math.min(FRASES.length - 1, k + d)); mostrar(); };
+document.getElementById('abrir').addEventListener('click', async () => {
+  P.hidden = false; k = 0; mostrar();
+  try { bloqueo = await navigator.wakeLock?.request('screen'); } catch (e) {}
+});
+document.getElementById('cerrar').addEventListener('click', () => { P.hidden = true; try { bloqueo?.release(); } catch (e) {} });
+document.getElementById('sig').addEventListener('click', () => mover(1));
+document.getElementById('ant').addEventListener('click', () => mover(-1));
+lienzo.addEventListener('click', () => mover(1));
+addEventListener('keydown', e => {
+  if (P.hidden) return;
+  if (['ArrowDown', 'ArrowRight', ' ', 'PageDown'].includes(e.key)) { e.preventDefault(); mover(1); }
+  if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); mover(-1); }
+  if (e.key === 'Escape') document.getElementById('cerrar').click();
+});
+addEventListener('resize', () => { if (!P.hidden) mostrar(); });
+</script>

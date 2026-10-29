@@ -20,7 +20,7 @@ const ADELANTO = 0.12 // la imagen entra un poco antes que la voz
 export const DURACION_TIKTOK = fr(tiempos.duracion + 2.4)
 
 const linea = (escena: string) => LINEAS.find((l) => l.escena === escena)!
-const inicio = (escena: string) => fr(linea(escena).inicio - ADELANTO)
+const inicio = (escena: string) => Math.max(0, fr(linea(escena).inicio - ADELANTO))
 /** Momento (en cuadros, relativo al inicio de la escena) en que se dice una palabra. */
 function cuando(escena: string, palabra: string) {
   const l = linea(escena)
@@ -42,7 +42,7 @@ const Serif = ({ children, k = 1.12 }: { children: ReactNode; k?: number }) => (
 /* ---------- composición ---------- */
 export function Tiktok() {
   const tramo = (k: number) => {
-    const desde = inicio(LINEAS[k].escena)
+    const desde = Math.max(0, inicio(LINEAS[k].escena))
     const hasta = k + 1 < LINEAS.length ? inicio(LINEAS[k + 1].escena) + 8 : DURACION_TIKTOK
     return { from: desde, durationInFrames: hasta - desde }
   }
@@ -139,6 +139,8 @@ const GRUPOS: Grupo[] = LINEAS.flatMap((l) => {
   if (cur.length) gs.push(cur)
   return gs.map((g, k) => ({ palabras: g, i: g[0].i, f: k + 1 < gs.length ? gs[k + 1][0].i : l.fin + 0.1 }))
 })
+// un grupo nunca se queda en pantalla cuando ya empezó el siguiente
+GRUPOS.forEach((g, k) => { if (GRUPOS[k + 1]) g.f = Math.min(g.f, GRUPOS[k + 1].i) })
 function Subtitulos() {
   const f = useCurrentFrame()
   const t = f / FPS
@@ -278,7 +280,7 @@ function Flujo({ cam, de, a, f }: { cam: Camara; de: string; a: string; f: numbe
 function Gancho() {
   const f = useCurrentFrame()
   const pan = interpolate(f, [0, 100], [0, 1], { extrapolateRight: 'clamp', easing: Easing.inOut(Easing.cubic) })
-  const scan = avance(f, cuando('gancho', 'pero') - 6, 26, Easing.inOut(Easing.cubic))
+  const scan = avance(f, cuando('gancho', 'fuera') - 6, 26, Easing.inOut(Easing.cubic))
   const hibrido = cuando('gancho', 'híbrido')
   const golpe = spring({ frame: f - hibrido, fps: FPS, config: { damping: 9, mass: 0.6 } })
   // la foto (16:9) se recorre de la parte delantera a la trasera del auto
@@ -294,7 +296,7 @@ function Gancho() {
       {scan > 0 && scan < 1 && <div style={{ position: 'absolute', top: 0, bottom: 0, left: scan * W - 2, width: 4, background: '#9be3ff', boxShadow: '0 0 34px 10px rgba(34,184,240,.7)' }} />}
       <AbsoluteFill style={{ background: 'linear-gradient(180deg, #020304 0%, rgba(2,3,4,.75) 14%, rgba(2,3,4,0) 30%, rgba(2,3,4,0) 62%, rgba(2,3,4,.9) 72%, #020304 100%)' }} />
       <div style={{ position: 'absolute', left: 64, right: 64, top: 290, ...ancho(112, 800), fontSize: 104, lineHeight: 0.98, letterSpacing: '-0.025em', textTransform: 'uppercase', color: C.fg, ...{ opacity: avance(f, 2, 8) } }}>
-        ¿Tu auto<br /><Serif>a bencina…</Serif>
+        ¿Y si tu auto<br /><Serif>a bencina fuera…</Serif>
       </div>
       <div style={{ position: 'absolute', left: 64, right: 64, top: 560, ...ancho(68, 700), fontSize: 300, lineHeight: 0.86, textTransform: 'uppercase', opacity: Math.min(1, golpe * 1.5), transform: `scale(${0.6 + 0.4 * golpe})`, transformOrigin: '0% 50%',
         backgroundImage: 'linear-gradient(180deg, #ffffff 30%, rgba(155,227,255,.7) 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent', filter: 'drop-shadow(0 0 40px rgba(34,184,240,.45))' }}>
@@ -431,7 +433,7 @@ function Aviso() {
         <Chip ambar desde={cuando('aviso', 'estimación')} style={{ fontSize: 40 }}>Estimación de ingeniería</Chip>
         <Chip ambar desde={cuando('aviso', 'todavía')} style={{ fontSize: 34 }}>No medida en autos chilenos</Chip>
       </div>
-      <div style={{ position: 'absolute', left: 64, right: 64, top: 1010, fontFamily: F.texto, fontSize: 40, lineHeight: 1.3, color: '#c3ccd0', opacity: avance(f, cuando('aviso', 'medida'), 10) }}>
+      <div style={{ position: 'absolute', left: 64, right: 64, top: 1010, fontFamily: F.texto, fontSize: 40, lineHeight: 1.3, color: '#c3ccd0', opacity: avance(f, cuando('aviso', 'medimos'), 10) }}>
         Lo confirmamos en el diagnóstico con tu ruta real.
       </div>
     </AbsoluteFill>
@@ -478,7 +480,7 @@ function Diagnostico() {
       <Velo />
       <Titular>Primero,<br /><Serif>un diagnóstico</Serif></Titular>
       <div style={{ position: 'absolute', left: 64, top: 1020, padding: '22px 30px', border: `3px solid ${C.accent}`, background: 'rgba(2,3,4,.85)', transform: `rotate(-3deg) scale(${1.3 - 0.3 * sello})`, opacity: Math.min(1, sello * 1.4), ...MONO, fontSize: 36, fontWeight: 700, color: C.fg }}>
-        Si no te conviene,<br /><span style={{ color: C.accent }}>no se instala</span>
+        Si no te conviene,<br /><span style={{ color: C.accent }}>no lo instalamos</span>
       </div>
       <Nota style={{ top: 1250 }}>Proceso propuesto · imagen conceptual</Nota>
     </AbsoluteFill>
@@ -516,7 +518,7 @@ const ESCENAS: Record<string, () => ReactElement> = {
   control: () => <Pieza n="03" img="control.webp" titulo={<>Unidad de<br /><Serif>control</Serif></>} chip="Decide cuándo ayudar" escena="control" gira={-4} />,
   ciudad: Ciudad,
   frenar: () => <Escena3D titulo={<>Al frenar,<br /><Serif>recupera</Serif></>} chips={[{ t: 'Energía → baterías', en: cuando('frenar', 'recupera') }]} />,
-  acelerar: () => <Escena3D titulo={<>Al acelerar,<br /><Serif>empuja</Serif></>} chips={[{ t: 'La bencina se esfuerza menos', en: cuando('acelerar', 'bencina') }]} />,
+  acelerar: () => <Escena3D titulo={<>Al acelerar,<br /><Serif>empuja</Serif></>} chips={[{ t: 'La bencina trabaja menos', en: cuando('acelerar', 'bencina') }]} />,
   intacto: Intacto,
   ahorro: Ahorro,
   aviso: Aviso,
