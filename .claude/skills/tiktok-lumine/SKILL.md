@@ -14,7 +14,8 @@ vive en `videos/src/tiktok/` y es la plantilla.
 - **La voz es humana.** Las voces sintéticas (Piper y Kokoro, varias) se rechazaron. Graba **Lukas**, o la genera o
   «tunea» él en ElevenLabs. Claude edita, sincroniza y renderiza. Nunca entregues un TikTok final con voz sintética
   salvo que lo pidan.
-- **La marca se dice «Lumin»** y se escribe Lumine. En `guion.json` va como `Lumine|Lumin`.
+- **La pronunciación de la marca no está cerrada**: ni «Lu-mi-ne» ni «Lumin» convencen del todo; el equipo aceptó la del
+  audio que eligió para el primer video. En `guion.json` va `Lumine|Lumin`; pregunta antes de cada video nuevo.
 - **Mostrar la herramienta en uso**, no fotos con texto (lección del comercial: la versión con fotos «gusta pero no
   tanto»; la que muestra la página funcionando sí). El visor 3D del kit es lo que más convence.
 - **Honestidad en pantalla**: el ahorro es «hasta 20% en ciudad, estimación de ingeniería, no medida en autos chilenos»;
@@ -53,6 +54,17 @@ vive en `videos/src/tiktok/` y es la plantilla.
    en `public/img/`; el 3D es el de Habilita (`src/kit3d.ts`). Para el segundo TikTok, separa estas piezas en
    `src/tiktok/kit/` y deja cada video en su carpeta con su guion y sus tiempos.
 7. **Render**: `bash render.sh Tiktok` → `salida/Video_03_Kit_Lumine_vertical.mp4` y su portada.
+
+## Trampas aprendidas
+
+- **El primer cuadro no puede ser negro**: la primera escena parte en el cuadro 0 aunque la voz empiece después
+  (en TikTok el primer cuadro es lo que se ve al deslizar y la miniatura).
+- El reconocedor marca las palabras ~0,1 s antes (hasta 0,4 s tras una pausa); `alinear.py` ya las ancla al ataque
+  real de la voz. Si un subtítulo se ve adelantado, revisa eso primero.
+- Si la voz parte en el cuadro 0, las curvas de volumen con `interpolate` necesitan puntos estrictamente crecientes.
+- El audio que mandan por WhatsApp llega como MP3 mono de 44,1 kHz: sirve igual; mide el ruido de fondo
+  (`astats` → *Noise floor*) y usa `--sin-limpieza` si está bajo −70 dB (audio de ElevenLabs).
+- Elementos que aparecen al final de la voz (lema, logo) deben esperar a que se vaya el último subtítulo (+0,25 s).
 
 ## Control de calidad (antes de entregar)
 

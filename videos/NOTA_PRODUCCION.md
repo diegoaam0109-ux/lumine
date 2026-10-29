@@ -105,10 +105,9 @@ Para cambiar el escenario de la calculadora, edita `ESCENARIO` en `src/Comercial
 
 ## Video 03 · «El kit, para el curioso» (vertical, con narración)
 
-> **Estado (29-10-2026): esperando la voz de Lukas.** Al equipo no le gustó ninguna voz sintética (Piper ni Kokoro).
-> Lukas graba la narración (o la genera o «tunea» en ElevenLabs) con el **guion revisado**; después `alinear.py`
-> sincroniza solo subtítulos y escenas. El MP4 que está hoy en `salida/` es la versión anterior, con voz Piper y el
-> guion viejo; se reemplaza cuando llegue el audio.
+> **Estado (29-10-2026): listo con la voz elegida por el equipo.** De dos audios que mandaron (ambos con el guion
+> revisado), el equipo eligió el segundo (54 s, limpio, sin ruido de fondo: se sincronizó con `--sin-limpieza`).
+> La pronunciación de «Lumine» de ese audio quedó aceptada («se soluciona bastante»). Video final: 56,8 s.
 >
 > - Instrucciones para Lukas: `narracion/INSTRUCCIONES_NARRACION.md` y la página con teleprompter
 >   https://claude.ai/artifact/S3GGUnRgjajA8U7Ya2yLLJ (fuente: `narracion/guion-lukas.html`).

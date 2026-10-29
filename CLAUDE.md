@@ -149,7 +149,9 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - **La voz sintética no gustó** (Piper ni Kokoro). **Lukas grabará la narración** (o la hará o «tuneará» en ElevenLabs) con el
   guion revisado de `guion.json`; instrucciones en `narracion/INSTRUCCIONES_NARRACION.md` y en la página con teleprompter.
   Cuando llegue su audio: `alinear.py` (Parakeet, tiempos por palabra) → `musica.py` → `bash render.sh Tiktok`.
-- **La marca se pronuncia «Lumin»** (se escribe Lumine). Vale para toda narración o locución.
+- **Pronunciación de la marca**: ni «Lu-mi-ne» ni «Lumin» del todo convencen; el equipo aceptó la del segundo audio que
+  mandó (29-10-2026). En guiones para voz se escribe `Lumine|Lumin` hasta que se defina mejor. Pregunta antes de fijarla.
+- **Video vertical terminado** (29-10-2026) con ese audio: 56,8 s, sincronizado con `alinear.py --sin-limpieza`.
 - **Hacer más TikTok para la marca** es el plan (29-10-2026). El equipo manda el audio y **Claude hace toda la edición**.
   Se pueden pedir skills o herramientas siempre que sean **gratis**. Método: skill `tiktok-lumine`.
 

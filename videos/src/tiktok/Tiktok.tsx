@@ -20,7 +20,8 @@ const ADELANTO = 0.12 // la imagen entra un poco antes que la voz
 export const DURACION_TIKTOK = fr(tiempos.duracion + 2.4)
 
 const linea = (escena: string) => LINEAS.find((l) => l.escena === escena)!
-const inicio = (escena: string) => Math.max(0, fr(linea(escena).inicio - ADELANTO))
+// la primera escena parte siempre en el cuadro 0 (en TikTok el primer cuadro es la miniatura al deslizar)
+const inicio = (escena: string) => (escena === LINEAS[0].escena ? 0 : Math.max(0, fr(linea(escena).inicio - ADELANTO)))
 /** Momento (en cuadros, relativo al inicio de la escena) en que se dice una palabra. */
 function cuando(escena: string, palabra: string) {
   const l = linea(escena)
@@ -299,11 +300,11 @@ function Gancho() {
   )
   return (
     <AbsoluteFill style={{ background: C.bg }}>
-      {foto('grayscale(1) brightness(.35) contrast(1.2)')}
+      {foto('grayscale(1) brightness(.55) contrast(1.15)')}
       <AbsoluteFill style={{ clipPath: `inset(0 ${(1 - scan) * 100}% 0 0)` }}>{foto()}</AbsoluteFill>
       {scan > 0 && scan < 1 && <div style={{ position: 'absolute', top: 0, bottom: 0, left: scan * W - 2, width: 4, background: '#9be3ff', boxShadow: '0 0 34px 10px rgba(34,184,240,.7)' }} />}
       <AbsoluteFill style={{ background: 'linear-gradient(180deg, #020304 0%, rgba(2,3,4,.75) 14%, rgba(2,3,4,0) 30%, rgba(2,3,4,0) 62%, rgba(2,3,4,.9) 72%, #020304 100%)' }} />
-      <div style={{ position: 'absolute', left: 64, right: 64, top: 290, ...ancho(112, 800), fontSize: 104, lineHeight: 0.98, letterSpacing: '-0.025em', textTransform: 'uppercase', color: C.fg, ...{ opacity: avance(f, 2, 8) } }}>
+      <div style={{ position: 'absolute', left: 64, right: 64, top: 290, ...ancho(112, 800), fontSize: 104, lineHeight: 0.98, letterSpacing: '-0.025em', textTransform: 'uppercase', color: C.fg }}>
         ¿Y si tu auto<br /><Serif>a bencina fuera…</Serif>
       </div>
       <div style={{ position: 'absolute', left: 64, right: 64, top: 560, ...ancho(68, 700), fontSize: 300, lineHeight: 0.86, textTransform: 'uppercase', opacity: Math.min(1, golpe * 1.5), transform: `scale(${0.6 + 0.4 * golpe})`, transformOrigin: '0% 50%',
@@ -508,7 +509,7 @@ function Cierre() {
         <Emblema style={{ width: 150, height: 150 }} />
         <PalabraLogo style={{ height: 96, width: 96 * (584 / 96) }} />
       </div>
-      <div style={{ position: 'absolute', left: 64, right: 64, top: 1290, textAlign: 'center', ...ancho(112, 800), fontSize: 76, lineHeight: 1, textTransform: 'uppercase', color: C.fg, opacity: avance(f, fr(linea('cierre').fin) - inicio('cierre'), 10) }}>
+      <div style={{ position: 'absolute', left: 64, right: 64, top: 1290, textAlign: 'center', ...ancho(112, 800), fontSize: 76, lineHeight: 1, textTransform: 'uppercase', color: C.fg, opacity: avance(f, fr(linea('cierre').fin + 0.25) - inicio('cierre'), 10) }}>
         El mismo auto,<br /><Serif>ahora híbrido.</Serif>
       </div>
       <div style={{ position: 'absolute', left: 64, right: 64, top: 1560, textAlign: 'center', ...MONO, fontSize: 24, color: '#9aa5a9', opacity: avance(f, 20, 12) }}>
