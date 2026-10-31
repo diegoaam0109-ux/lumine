@@ -43,7 +43,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | `.claude/skills/lumine-marca/` | Skill con el sistema visual de Lumine (colores, tipografías, motivos, recursos). | Úsala para cualquier pieza nueva con la marca. |
 | `.claude/skills/tiktok-lumine/` | Skill con el método para videos verticales de la marca (guion, voz de Lukas, sincronización, escenas, render y control de calidad, ideas de próximos videos). | Úsala con `lumine-marca`; `videos/narracion/preparar.sh` instala las herramientas y la skill oficial `remotion-best-practices` (no se sube). |
 | `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada** (UNAB, Grupo 1, NRC 4153): estimador de ahorro con IA, prototipo, informe técnico del modelo matemático y revisión cruzada con varias IA. | Pasos para reproducir en `entrega3/README.md`; resultados de la Entrega 4 en `entrega4/Resultados_mejoras_modelo_E4.md`. |
-| `material-ia/` | **Plan de material visual con IA**: 8 imágenes en ChatGPT (blanco y negro) y 8 videos de 5 s en Higgsfield, con referencias numeradas y paleta. | `python3 material-ia/construir.py` arma `plan-higgsfield.html` desde la plantilla. Lo que llegue se integra en página, láminas, pitch y TikTok. |
+| `material-ia/` | **Plan de material visual con IA**: imágenes y fotogramas en ChatGPT (blanco y negro) y cuatro tomas héroe en Higgsfield para un film de marca de 30 s, con referencias numeradas y paleta. | `python3 material-ia/construir.py` arma `plan-higgsfield.html` desde la plantilla. Lo que llegue se integra en página, láminas, pitch y TikTok. |
 | `videos/` | **Videos** (Remotion): comercial de 20 s (lámina 8), Lumine Habilita de 18 s (lámina 14) y «El kit, para el curioso» vertical con narración; MP4 y portadas en `salida/`. | `bash render.sh [Tiktok]`; `npm run studio`; narración en `narracion/`. Detalle en `NOTA_PRODUCCION.md`. |
 | `fase-3/` | **Presentación de la Fase 3** de Integrador II: Taller de Empresas (ICMA 1001, Grupo 1, profesor Roberto Brito): Capítulo III, Plan de Marketing, Operaciones y RR.HH. | Generador propio copiado del de Control de Gestión: `generador/deck.js` + `guion.js` + `render.sh` (también en Git Bash para Windows). El informe .docx no se sube. |
 
@@ -161,8 +161,11 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - El equipo tiene una prueba de **Higgsfield** con pocos créditos. En modo claro la página comercial se siente vacía: las fotos
   son todas de fondo negro y quedan como rectángulos oscuros, y «Para quién», «Preguntas» y «Agenda» no tienen imagen.
 - Plan (corregido por el equipo): **las imágenes se hacen en ChatGPT** (gratis, con referencia: C1–C7 en blanco y N1 portada
-  negra para el pitch) y **los créditos de Higgsfield se gastan solo en video** de 5 s desde imágenes ya aprobadas (V1–V6, y
-  V7–V8 si sobran), en pares negro y blanco. Todo en 16:9, en la máxima resolución y sin texto; Claude recompone a 9:16, 1:1 y 4:5.
+  negra para el pitch, más los fotogramas F1–F3) y **los créditos de Higgsfield van a cuatro tomas héroe** que solo un modelo
+  de video hace: H1 transformación (auto negro → rayos X, primer y último fotograma), H2 ensamblaje (las piezas vuelan y
+  encajan), H3 viaje de la energía (cámara FPV de la rueda a la batería) y H4 Santiago de noche frenando y acelerando.
+  Con ellas Claude edita un **film de marca de 30 s** (16:9 para pitch y presentaciones, vertical para TikTok) y la portada
+  animada de la página. V1–V8 quedan como tomas de apoyo si sobran créditos. Todo en 16:9, máxima resolución, sin texto.
 - Cuando lleguen los archivos (`C1.png`, `V1.mp4`…): variantes claras en `ventas/src/lib/fotos.ts` según el tema, láminas,
   pitch y TikTok, siempre rotuladas «imagen conceptual». Revisar si la prueba permite uso comercial.
 

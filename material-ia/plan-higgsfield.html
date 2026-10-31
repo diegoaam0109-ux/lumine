@@ -74,11 +74,11 @@ footer { padding-block: 40px 0; color: var(--dim); font-size: 14px; }
   <header class="top">
     <div class="label"><b>Lumine Motors</b> · material visual con IA · Higgsfield</div>
     <h1>Pocos créditos, <em>máximo jugo</em></h1>
-    <p class="lead">Las imágenes se hacen en <strong>ChatGPT</strong>, que ya las genera y edita con referencia sin gastar créditos. Los créditos de <strong>Higgsfield</strong> se gastan solo en lo que ChatGPT no hace: <strong>video</strong>. Ocho imágenes (fondo blanco y negro) y ocho videos de 5 s para la página comercial (sobre todo el modo claro), las presentaciones académicas, el pitch a inversionistas y TikTok.</p>
+    <p class="lead">Las imágenes se hacen en <strong>ChatGPT</strong>, que las genera y edita con referencia sin gastar créditos. Los créditos de <strong>Higgsfield</strong> van solo a cuatro <strong>tomas héroe</strong> de video que después edito como un film de marca de 30 s (16:9 y vertical) para el pitch a inversionistas, las presentaciones académicas, TikTok y la portada animada de la página. Las imágenes en blanco llenan el modo claro de la página y las láminas claras.</p>
   </header>
 
   <nav class="secc" aria-label="Secciones">
-    <a href="#reglas">Reglas</a><a href="#p1">1 · Imágenes en ChatGPT</a><a href="#p2">2 · Videos en Higgsfield</a><a href="#p3">Si sobran</a><a href="#entrega">Entrega</a>
+    <a href="#reglas">Reglas</a><a href="#p1">1 · Imágenes en ChatGPT</a><a href="#p2">2 · Tomas héroe en Higgsfield</a><a href="#p3">Si sobran</a><a href="#entrega">Entrega</a>
   </nav>
 
   <section id="reglas">
@@ -101,14 +101,14 @@ footer { padding-block: 40px 0; color: var(--dim); font-size: 14px; }
   </section>
 
   <section id="p2">
-    <h2>Paso 2 · videos <em>en Higgsfield</em></h2>
-    <p class="lead">Imagen a video, 5 segundos, 1080p si se puede, sin audio. Carguen la imagen aprobada del paso 1 (o la referencia original en las versiones negras). Movimiento lento y estable: yo los alargo, los dejo en bucle y los meto en la página, el pitch y TikTok. Hagan primero el V1 para ver cuánto cobra y cómo sale.</p>
+    <h2>Paso 2 · tomas héroe <em>en Higgsfield</em></h2>
+    <p class="lead">Cuatro tomas que solo un modelo de video puede hacer: una transformación, piezas que vuelan y encajan, una cámara que entra al auto y la ciudad de noche. Cada una parte de un fotograma hecho en ChatGPT (F1–F3). Con ellas edito un <strong>film de marca de 30 s</strong> en 16:9 para el pitch y las presentaciones, su corte vertical para TikTok y los fondos animados de la página, con la tipografía, las cifras y la música de Lumine. Hagan primero la H1: si sale bien, todo lo demás vale la pena.</p>
     <div id="p2-fichas" style="display:grid;gap:14px"></div>
   </section>
 
   <section id="p3">
     <h2>Si sobran <em>créditos</em></h2>
-    <p class="lead">Más videos, en este orden, mientras queden créditos.</p>
+    <p class="lead">Tomas de apoyo, más simples, en este orden mientras queden créditos.</p>
     <div id="p3-fichas" style="display:grid;gap:14px"></div>
   </section>
 
@@ -136,6 +136,12 @@ const REF = {"01": {"archivo": "01_rayos-x.jpg", "src": "data:image/jpeg;base64,
 const NO = 'Avoid: text, letters, numbers, watermark, logo, brand emblem, license plate, recognizable faces, purple, green, rainbow gradient, distorted car, extra wheels, melted parts.';
 const FICHAS = {
   'p1-fichas': [
+    { cod: 'F1', titulo: 'Fotograma: el auto sin rayos X', fondo: 'Para la toma H1 · negro', ref: '01', usos: ['Fotograma inicial de la transformación (H1)'],
+      prompt: `Same car, same angle, same framing, same studio lighting and same black glossy floor as the reference, but the body is fully opaque glossy black paint: no x-ray, no visible internal parts, no blue glow from the kit. Everything else identical, so this image and the reference can be the first and last frame of the same shot. 16:9, maximum resolution.` },
+    { cod: 'F2', titulo: 'Fotograma: el auto esperando el kit', fondo: 'Para la toma H2 · negro', ref: '01', usos: ['Fotograma inicial del ensamblaje (H2)'],
+      prompt: `The same sedan raised on a two-post lift in a dark premium studio, low rear three-quarter angle, the rear axle area clearly visible and empty (no electric motor, no battery, no cables yet), thin cyan #22B8F0 rim light on the bodywork, black glossy floor with soft reflections, generous empty space around the car for parts to fly in. Cinematic, supercar-launch mood. 16:9, maximum resolution.` },
+    { cod: 'F3', titulo: 'Fotograma: la rueda trasera, de cerca', fondo: 'Para la toma H3 · negro', ref: '01', usos: ['Fotograma inicial del viaje de la energía (H3)'],
+      prompt: `Extreme low close-up of the rear wheel and rear axle of the same sedan in the dark x-ray style of the reference: translucent body, the compact cyan-glowing electric motor visible behind the wheel, an orange high-voltage cable running forward under the floor toward the battery. Black background, glossy floor, cinematic depth of field. 16:9, maximum resolution.` },
     { cod: 'C1', titulo: 'El auto en rayos X, en blanco', fondo: 'Fondo blanco', clara: true, ref: '01', usos: ['Portada de la página en modo claro', 'Portada del pitch y de láminas claras', 'TikTok'],
       prompt: `Use the reference image as the exact composition: same sedan, same rear three-quarter angle, same framing and the same hybrid kit inside (flat battery pack under the floor, compact electric motor on the rear axle, small control unit, orange high-voltage cables). Turn the scene into a bright premium white photo studio: pure white seamless background (#FFFFFF), soft diffused daylight from above, gentle contact shadow and a faint reflection on a glossy white floor. Render the car body as a translucent light-silver x-ray shell with crisp thin graphite outlines, so the internal kit glows in cyan #22B8F0 and the cables stay orange. High-key, clean, minimal, Apple-style automotive advertising, ultra-detailed, sharp focus. Leave generous empty white space around the car. 16:9, maximum resolution.` },
     { cod: 'C2', titulo: 'El kit completo, en blanco', fondo: 'Fondo blanco', clara: true, ref: '02', usos: ['Explorador del kit (modo claro)', 'Lámina «cómo funciona»', 'Pitch: el producto'],
@@ -154,6 +160,16 @@ const FICHAS = {
       prompt: `Hero key visual on pure black (#020304): the same sedan from the reference, seen from a low front three-quarter angle, translucent x-ray body revealing the cyan #22B8F0 glowing hybrid kit (battery under the floor, motor on the rear axle, orange cables), a thin cyan rim light along the roofline, soft reflection on a black glossy floor, a faint fine grid fading into darkness. Car on the right third; the left half stays empty black for a title. Cinematic, premium, keynote mood. 16:9, maximum resolution.` },
   ],
   'p2-fichas': [
+    { cod: 'H1', titulo: 'La transformación', fondo: 'Toma héroe · negro', ref: 'F1', usos: ['Gancho de TikTok', 'Apertura del pitch y de la presentación', 'Portada animada de la página'],
+      prompt: `A thin, bright cyan scanning line sweeps across the parked car from front to back. As it passes, the glossy black body turns into a translucent x-ray shell and reveals the glowing hybrid kit inside: the flat battery under the floor, the electric motor on the rear axle and orange high-voltage cables, all pulsing softly in cyan #22B8F0. Very slow push-in, steady camera. The car never changes shape, only its surface. 5 seconds.`, camara: 'Imagen inicial: F1 (auto negro). Imagen final: 01 (rayos X). Usen un modelo que acepte primer y último fotograma; si no hay, solo F1 con este prompt.' },
+    { cod: 'H2', titulo: 'El ensamblaje', fondo: 'Toma héroe · negro', ref: 'F2', usos: ['Pitch: el producto', 'Presentación: «cómo funciona»', 'TikTok: «son tres piezas»'],
+      prompt: `The hybrid kit assembles itself under the raised car in one choreographed motion: the compact electric motor glides in and locks onto the rear axle, the flat battery pack slides under the floor, the control unit clicks into place and orange high-voltage cables snap into their connectors with small flashes of cyan light. The camera arcs slowly around the rear of the car. Precise, mechanical, premium, like a supercar launch film. The car body stays unchanged. 5 seconds.`, camara: 'Imagen inicial: F2. Arco lento de cámara alrededor de la parte trasera.' },
+    { cod: 'H3', titulo: 'El viaje de la energía', fondo: 'Toma héroe · negro', ref: 'F3', usos: ['TikTok: «al frenar, recupera»', 'Presentación: cómo funciona', 'Pitch: la tecnología'],
+      prompt: `FPV camera move: starting at the braking rear wheel, the camera dives inside the translucent car and follows a pulse of cyan energy that travels from the electric motor along the orange high-voltage cable into the battery under the floor; the battery glows brighter, then the camera pulls back out to reveal the whole car glowing in cyan. Smooth, fast but readable, no shaking. 5 seconds.`, camara: 'Imagen inicial: F3. Si hay preset de dron o FPV, úsenlo.' },
+    { cod: 'H4', titulo: 'Santiago: frenar y acelerar', fondo: 'Toma héroe · noche', ref: '04', usos: ['TikTok: «en la ciudad frenas y aceleras»', 'Pitch: el mercado de uso laboral', 'Página: «Para quién»'],
+      prompt: `Night on a Santiago avenue, the black colectivo from the reference brakes at a red traffic light and thin cyan light trails flow from its rear wheels toward the battery under the floor; when the light turns green it pulls away smoothly and the cyan energy flows back to the rear wheels. Realistic city lights, wet asphalt reflections, cinematic tracking shot alongside the car. No readable text or plates. 5 seconds.`, camara: 'Imagen inicial: 04. Seguimiento lateral. Es la más ambiciosa: pruébenla una vez y, si sale rara, no insistan.' },
+  ],
+  'p3-fichas': [
     { cod: 'V1', titulo: 'Rayos X en negro, órbita lenta', fondo: 'Video · negro', ref: '01', usos: ['Fondo animado de la portada (modo oscuro)', 'Apertura del pitch', 'Gancho de TikTok'],
       prompt: `Slow, smooth cinematic camera orbit of about 20 degrees around the car, steady, no shake. The car stays still and keeps its exact shape. The cyan hybrid kit pulses softly and light flows along the orange cables from the battery to the rear motor. Subtle moving reflections on the glossy floor. Calm, premium. 5 seconds.`, camara: 'Si hay preset de cámara: órbita o arco lento. Evitar zooms bruscos.' },
     { cod: 'V2', titulo: 'Rayos X en blanco, órbita lenta', fondo: 'Video · blanco', clara: true, ref: 'C1', usos: ['Fondo animado de la portada (modo claro)', 'Láminas claras', 'TikTok'],
@@ -166,8 +182,6 @@ const FICHAS = {
       prompt: `Slow macro camera orbit around the compact electric motor on a pure black background; rings of cyan #22B8F0 light pulse softly along the housing, orange high-voltage cable ends, shallow depth of field, premium product film. The motor keeps its exact design. 5 seconds.`, camara: 'Recorten antes el motor de la referencia 03 (o de C3) para que sea la única pieza. Órbita macro lenta.' },
     { cod: 'V6', titulo: 'El colectivo en la ciudad', fondo: 'Video · claro', clara: true, ref: 'C4', usos: ['Relleno visual (b-roll) para TikTok', 'Apertura de la sección de mercado del pitch'],
       prompt: `The colectivo drives slowly from left to right along the avenue, camera tracking alongside at the same speed, morning light, Andes in the background, subtle cyan glow under the rear. Realistic motion, stable shot. 5 seconds.`, camara: 'Desde la imagen C4 ya aprobada. Seguimiento lateral (tracking).' },
-  ],
-  'p3-fichas': [
     { cod: 'V7', titulo: 'El taller luminoso, en movimiento', fondo: 'Video · claro', clara: true, ref: 'C5', usos: ['«Proceso» (modo claro)', 'Pitch: cómo operamos', 'TikTok'],
       prompt: `Slow dolly-in through the bright white workshop toward the sedan on the lift; technicians work calmly on the rear axle, faces not visible; daylight from the windows, subtle cyan accents on the kit. Stable, realistic motion. 5 seconds.`, camara: 'Desde la imagen C5 ya aprobada. Dolly lento hacia adelante.' },
     { cod: 'V8', titulo: 'Alta tensión en manos certificadas', fondo: 'Video · claro', clara: true, ref: 'C7', usos: ['«Confianza» (modo claro)', 'Láminas de RR.HH. y Habilita', 'TikTok'],
