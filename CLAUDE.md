@@ -43,6 +43,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | `.claude/skills/lumine-marca/` | Skill con el sistema visual de Lumine (colores, tipografías, motivos, recursos). | Úsala para cualquier pieza nueva con la marca. |
 | `.claude/skills/tiktok-lumine/` | Skill con el método para videos verticales de la marca (guion, voz de Lukas, sincronización, escenas, render y control de calidad, ideas de próximos videos). | Úsala con `lumine-marca`; `videos/narracion/preparar.sh` instala las herramientas y la skill oficial `remotion-best-practices` (no se sube). |
 | `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada** (UNAB, Grupo 1, NRC 4153): estimador de ahorro con IA, prototipo, informe técnico del modelo matemático y revisión cruzada con varias IA. | Pasos para reproducir en `entrega3/README.md`; resultados de la Entrega 4 en `entrega4/Resultados_mejoras_modelo_E4.md`. |
+| `material-ia/` | **Plan de material visual con IA (Higgsfield)**: 12 encargos priorizados (imágenes en blanco y negro, videos de 5 s), referencias numeradas y paleta. | `python3 material-ia/construir.py` arma `plan-higgsfield.html` desde la plantilla. Lo que llegue se integra en página, láminas, pitch y TikTok. |
 | `videos/` | **Videos** (Remotion): comercial de 20 s (lámina 8), Lumine Habilita de 18 s (lámina 14) y «El kit, para el curioso» vertical con narración; MP4 y portadas en `salida/`. | `bash render.sh [Tiktok]`; `npm run studio`; narración en `narracion/`. Detalle en `NOTA_PRODUCCION.md`. |
 | `fase-3/` | **Presentación de la Fase 3** de Integrador II: Taller de Empresas (ICMA 1001, Grupo 1, profesor Roberto Brito): Capítulo III, Plan de Marketing, Operaciones y RR.HH. | Generador propio copiado del de Control de Gestión: `generador/deck.js` + `guion.js` + `render.sh` (también en Git Bash para Windows). El informe .docx no se sube. |
 
@@ -56,6 +57,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | Lumine Habilita (real) | https://claude.ai/artifact/KrYbLr84sVrfJoRT2wvhP9 | `dist/lumine-habilita.html` (capacidades `db` con `DB_RULES`, `user` con `profile`, `downloads`) |
 | Guion de la presentación | https://claude.ai/code/artifact/e0db2f29-05e7-42d1-b4a7-9cfcb5d1741b | documento editable |
 | Guion y teleprompter del video vertical (para Lukas) | https://claude.ai/artifact/S3GGUnRgjajA8U7Ya2yLLJ | `videos/narracion/guion-lukas.html` |
+| Plan de Higgsfield (prompts y referencias) | https://claude.ai/artifact/Nq6uqk9UnivYbTB97AaCAF | `material-ia/plan-higgsfield.html` |
 
 Para republicar en el mismo link hay que publicar el mismo archivo desde una sesión con permiso de edición sobre el
 artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la versión real.
@@ -154,6 +156,14 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - **Video vertical terminado** (29-10-2026) con ese audio: 56,8 s, sincronizado con `alinear.py --sin-limpieza`.
 - **Hacer más TikTok para la marca** es el plan (29-10-2026). El equipo manda el audio y **Claude hace toda la edición**.
   Se pueden pedir skills o herramientas siempre que sean **gratis**. Método: skill `tiktok-lumine`.
+
+**Material visual con IA** (31-10-2026, `material-ia/`):
+- El equipo tiene una prueba de **Higgsfield** con pocos créditos. En modo claro la página comercial se siente vacía: las fotos
+  son todas de fondo negro y quedan como rectángulos oscuros, y «Para quién», «Preguntas» y «Agenda» no tienen imagen.
+- Plan: imágenes primero (C1–C5 en blanco, N1 portada negra para el pitch), videos de 5 s solo desde imágenes aprobadas
+  (V1–V3), y C6, C7 y V4 si sobran. Todo en 16:9, en la máxima resolución, con referencia y sin texto; Claude recompone a 9:16, 1:1 y 4:5.
+- Cuando lleguen los archivos (`C1.png`, `V1.mp4`…): variantes claras en `ventas/src/lib/fotos.ts` según el tema, láminas,
+  pitch y TikTok, siempre rotuladas «imagen conceptual». Revisar si la prueba permite uso comercial.
 
 ## Pendientes y preguntas abiertas
 
