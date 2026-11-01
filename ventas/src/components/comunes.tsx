@@ -61,8 +61,16 @@ export function Encabezado({ n, etiqueta, titulo, bajada, id, centro, apilado }:
 }
 
 /** Foto conceptual de Lumine: carga diferida y recorte con object-cover */
-export function Imagen({ foto, className, prioridad }: { foto: { src: string; alt: string }; className?: string; prioridad?: boolean }) {
-  return <img src={foto.src} alt={foto.alt} loading={prioridad ? 'eager' : 'lazy'} decoding="async" className={cn('block h-full w-full object-cover', className)} />
+export function Imagen({ foto, className, prioridad }: { foto: { src: string; alt: string; claro?: string }; className?: string; prioridad?: boolean }) {
+  const clases = cn('block h-full w-full object-cover', className)
+  if (!foto.claro) return <img src={foto.src} alt={foto.alt} loading={prioridad ? 'eager' : 'lazy'} decoding="async" className={clases} />
+  // dos versiones: el CSS muestra la oscura o la clara según el tema (ver .foto-oscura en index.css)
+  return (
+    <>
+      <img src={foto.src} alt={foto.alt} loading={prioridad ? 'eager' : 'lazy'} decoding="async" className={cn(clases, 'foto-oscura')} />
+      <img src={foto.claro} alt={foto.alt} loading={prioridad ? 'eager' : 'lazy'} decoding="async" className={cn(clases, 'foto-clara')} />
+    </>
+  )
 }
 
 /** Flecha que se desplaza al pasar el cursor */

@@ -68,13 +68,17 @@ export function Hero() {
   const yTexto = useTransform(scrollYProgress, [0, 1], [0, 120])
   const ocultar = useTransform(scrollYProgress, [0, 0.7], [1, 0])
   return (
-    <section ref={ref} className="escena-oscura grano relative flex min-h-[100svh] flex-col overflow-hidden bg-bg pt-[72px]" aria-labelledby="hero-t">
+    <section ref={ref} className="grano relative flex min-h-[100svh] flex-col overflow-hidden bg-bg pt-[72px]" aria-labelledby="hero-t">
       {/* foto: banda superior en teléfono, fondo completo desde tablet */}
       <div className="relative h-[46svh] min-h-[300px] overflow-hidden md:absolute md:inset-0 md:h-auto">
         <motion.img src={FOTOS.portada.src} alt={FOTOS.portada.alt} decoding="async" fetchPriority="high"
           initial={quieto ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
           style={quieto ? undefined : { scale: escala, y: yFoto }}
-          className="absolute inset-0 h-full w-full object-cover object-[64%_50%] md:object-[70%_55%] lg:left-[18%] lg:w-[82%]" />
+          className="foto-oscura absolute inset-0 h-full w-full object-cover object-[64%_50%] md:object-[70%_55%] lg:left-[18%] lg:w-[82%]" />
+        <motion.img src={FOTOS.portada.claro} alt={FOTOS.portada.alt} decoding="async"
+          initial={quieto ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
+          style={quieto ? undefined : { scale: escala, y: yFoto }}
+          className="foto-clara absolute inset-0 h-full w-full object-cover object-[64%_50%] md:object-[70%_55%] lg:left-[18%] lg:w-[82%]" />
         {/* velos para que el texto se lea siempre */}
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-bg via-bg/70 to-transparent" aria-hidden="true" />
         <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-bg/90 to-transparent" aria-hidden="true" />

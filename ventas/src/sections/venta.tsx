@@ -44,7 +44,7 @@ export function ParaQuien() {
               <Etiqueta n={'0' + (pi + 1)}>{P.l}</Etiqueta>
             </Aparecer>
             <h3 id={'pq-' + P.k} className="t-titulo relative mt-8 max-w-[16ch] text-[clamp(30px,3.6vw,54px)]">{P.titulo}</h3>
-            <figure className="escena-oscura relative mt-10 overflow-hidden border border-line bg-bg">
+            <figure className={cn('relative mt-10 overflow-hidden border border-line bg-bg', !(P.foto as Foto).claro && 'escena-oscura')}>
               <Imagen foto={P.foto} className="aspect-[3/2] transition-transform duration-[1.2s] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.03]" />
               <figcaption className="t-label-sm absolute bottom-0 left-0 flex items-center gap-2 bg-bg/70 px-3 py-2 text-fg backdrop-blur-sm"><i className="size-1.5 bg-accent" aria-hidden="true" />{P.pie}</figcaption>
             </figure>
@@ -187,14 +187,14 @@ export function Explorador() {
         <Aparecer><Etiqueta n="01·b">En detalle</Etiqueta></Aparecer>
         <Aparecer i={1}><h2 id="kit-t" className="t-titulo text-[clamp(32px,4.4vw,64px)]">Conoce el kit <span className="t-serif normal-case text-accent-text">pieza por pieza.</span></h2></Aparecer>
       </div>
-      <Aparecer className="escena-oscura visor border border-line bg-bg">
+      <Aparecer className="visor border border-line bg-bg">
         <i className="esq a" /><i className="esq b" /><i className="esq c" /><i className="esq d" />
         <div className="flex items-center justify-between gap-4 border-b border-line px-4 py-2.5 md:px-6">
           <span className="t-label-sm flex items-center gap-2 text-muted"><i className="parpadeo size-1.5 bg-accent" />Explorador de componentes</span>
           <span className="t-label-sm text-dim max-sm:hidden">Reconversión híbrida aditiva · vista conceptual</span>
         </div>
         <div className="grid lg:grid-cols-[1.45fr_1fr]">
-          <div className="relative aspect-[16/9] overflow-hidden border-line bg-black max-lg:border-b lg:border-r" id="pz-panel" role="tabpanel" aria-labelledby={'pz-tab-' + i}>
+          <div className="relative aspect-[16/9] overflow-hidden border-line bg-bg max-lg:border-b lg:border-r" id="pz-panel" role="tabpanel" aria-labelledby={'pz-tab-' + i}>
             <AnimatePresence mode="wait" initial={false}>
               <motion.div key={i} initial={{ opacity: 0, scale: 1.03 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} className="absolute inset-0">
                 <Imagen foto={P.foto} className={P.ajuste === 'contener'

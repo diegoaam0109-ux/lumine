@@ -73,7 +73,7 @@ export function Calculadora() {
     <section id="ahorro" className="relative scroll-mt-20 border-t border-line bg-bg py-24 md:py-36" aria-labelledby="ah-t">
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
         <Encabezado n="03" etiqueta="Ahorro" id="ah-t" titulo={<>Calcula lo que <span className="t-serif normal-case text-accent-text">dejas de gastar.</span></>} bajada={<>Con tus datos y el precio de hoy. Estimamos un <b className="font-semibold text-fg">{Math.round(AHORRO * 100)}% menos de combustible</b> con el kit; el cálculo es solo tuyo, no se guarda ni se envía.</>} />
-        <Aparecer className="escena-oscura mb-6 grid overflow-hidden border border-line bg-surface md:grid-cols-[1.2fr_1fr]">
+        <Aparecer className="mb-6 grid overflow-hidden border border-line bg-surface md:grid-cols-[1.2fr_1fr]">
           <div className="relative aspect-[16/7] overflow-hidden md:aspect-auto md:min-h-[200px]">
             <Imagen foto={FOTOS.bencinera} className="absolute inset-0 object-[60%_55%]" />
             <div className="absolute inset-0 bg-gradient-to-t from-surface/80 to-transparent md:bg-gradient-to-l md:from-surface md:via-surface/10" aria-hidden="true" />

@@ -166,8 +166,10 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   encajan), H3 viaje de la energía (cámara FPV de la rueda a la batería) y H4 Santiago de noche frenando y acelerando.
   Con ellas Claude edita un **film de marca de 30 s** (16:9 para pitch y presentaciones, vertical para TikTok) y la portada
   animada de la página. V1–V8 quedan como tomas de apoyo si sobran créditos. Todo en 16:9, máxima resolución, sin texto.
-- Cuando lleguen los archivos (`C1.png`, `V1.mp4`…): variantes claras en `ventas/src/lib/fotos.ts` según el tema, láminas,
-  pitch y TikTok, siempre rotuladas «imagen conceptual». Revisar si la prueba permite uso comercial.
+- **C1–C7 recibidas e integradas** (01-11-2026): originales en `material-ia/recibido/`; en la página, `FOTOS.*.claro` y
+  `<Imagen>` muestran la versión clara solo en modo claro (CSS `.foto-clara`/`.foto-oscura`). Las secciones con foto clara ya no
+  usan `escena-oscura`; la foto de flotas no tiene versión clara y sigue oscura. Motor, baterías y control se recortaron de C3.
+- Pendientes de material: F1–F3, N1 y las tomas H1–H4 en Higgsfield. Revisar si la prueba permite uso comercial.
 
 ## Pendientes y preguntas abiertas
 

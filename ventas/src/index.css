@@ -84,7 +84,11 @@
   color: var(--fg);
   color-scheme: dark;
 }
-/* en modo claro la barra de navegación siempre lleva fondo: arriba hay una foto oscura */
+/* fotos con versión clara: se muestra una u otra según el tema */
+.foto-clara { display: none !important; }
+:root[data-tema="claro"] .foto-clara { display: block !important; }
+:root[data-tema="claro"] .foto-oscura { display: none !important; }
+/* en modo claro la barra de navegación siempre lleva fondo */
 :root[data-tema="claro"] .nav-sitio { background: rgba(245, 245, 247, 0.86); border-bottom-color: var(--line); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
 html, html body {
   margin: 0 !important;

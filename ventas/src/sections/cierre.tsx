@@ -22,7 +22,7 @@ export function Proceso() {
     <section id="proceso" className="relative scroll-mt-20 border-t border-line bg-bg py-24 md:py-36" aria-labelledby="pr-t">
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
         <Encabezado n="05" etiqueta="El proceso" id="pr-t" titulo={<>De tu auto de siempre<br />a <span className="t-serif normal-case text-accent-text">tu auto híbrido.</span></>} />
-        <Aparecer className="escena-oscura mb-10 grid overflow-hidden border border-line bg-surface md:mb-14 lg:grid-cols-[1.5fr_1fr]">
+        <Aparecer className="mb-10 grid overflow-hidden border border-line bg-surface md:mb-14 lg:grid-cols-[1.5fr_1fr]">
           <div className="relative aspect-[16/9] overflow-hidden lg:aspect-auto lg:min-h-[320px]">
             <Imagen foto={FOTOS.taller} className="absolute inset-0" />
           </div>
@@ -77,7 +77,7 @@ export function Confianza() {
         </div>
         <div className="relative flex flex-col items-center [perspective:1400px] lg:block lg:pb-44">
           <div className="foco absolute -inset-20" aria-hidden="true" />
-          <Aparecer className="escena-oscura visor relative w-full overflow-hidden border border-line-2 bg-bg lg:w-[90%]">
+          <Aparecer className="visor relative w-full overflow-hidden border border-line-2 bg-bg lg:w-[90%]">
             <i className="esq a" /><i className="esq b" /><i className="esq c" /><i className="esq d" />
             <Imagen foto={FOTOS.seguridad} className="aspect-[4/3]" />
             <span className="t-label-sm absolute left-0 top-0 flex items-center gap-2 bg-bg/75 px-3 py-2 text-fg backdrop-blur-sm"><i className="size-1.5 bg-accent" aria-hidden="true" />Equipo dieléctrico</span>
