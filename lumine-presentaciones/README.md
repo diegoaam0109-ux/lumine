@@ -35,11 +35,11 @@ fase3/video/*.mp4     videos que se reproducen sobre la lámina
 Importante: si se agregan o quitan láminas, renumerar las imágenes y ajustar `deck-data.js`
 (y `mainSlides`, que es el número de láminas antes del anexo).
 
-## Cómo agregar un video (por ejemplo, el del kit en la lámina 9)
+## Cómo agregar o cambiar un video
 
-1. Copiar el archivo a `fase3/video/kit.mp4` (H.264, idealmente menos de 20 MB).
-2. En `fase3/deck-data.js`, en la lámina 9, cambiar `"src": ""` por `"src": "video/kit.mp4"`.
-   El campo `box` ya tiene la posición del recuadro. Las posiciones están en % del ancho y alto de la lámina.
+1. Copiar el archivo a `fase3/video/` (H.264, idealmente menos de 20 MB).
+2. En `fase3/deck-data.js`, en la lámina que corresponda, poner `"video": { "src": "video/archivo.mp4", "box": {...} }`.
+   `box` es la posición del recuadro. Las posiciones están en % del ancho y alto de la lámina.
 
 Los videos parten solos al llegar a la lámina, sin sonido y en bucle. Clic sobre el video lo pausa.
 
