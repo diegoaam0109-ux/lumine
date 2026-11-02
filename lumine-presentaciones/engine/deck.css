@@ -54,3 +54,6 @@ body.home { overflow: auto; display: grid; place-items: center; min-height: 100v
 .home a.card:hover { border-color: var(--cyan); }
 .home a.card b { color: var(--cyan); letter-spacing: .1em; font-size: 12px; display: block; margin-bottom: 6px; }
 .home a.card.off { opacity: .45; pointer-events: none; }
+
+/* Video sobre la lámina: mismo marco que las tarjetas de la presentación */
+#frame video { border-radius: 4px; box-shadow: 0 0 0 1px rgba(18, 170, 233, .45), 0 10px 30px rgba(0, 0, 0, .45); }
