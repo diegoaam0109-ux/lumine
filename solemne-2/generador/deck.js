@@ -256,28 +256,28 @@ function chip(s, id, x, y, o = {}) {
 }
 
 // Fuente al pie de cada diapositiva. Solo materiales del proyecto, del curso y del paquete de la Solemne.
-const PREV = 'presentación «Análisis estratégico» (Control de Gestión, octubre de 2026)';
-const CMI = 'CMI en red revisado (propuesta del equipo para la Solemne 2)';
+const PREV = 'elaboración propia con los instrumentos del curso';
+const CMI = 'elaboración propia con base en Kaplan y Norton (2008)';
 const FUENTES = {
-  negocio: `Fuentes: contexto vigente de Lumine Motors; ${PREV}. El ahorro es una estimación de ingeniería, no medida en autos chilenos.`,
+  negocio: `Fuentes: ${PREV}. El ahorro es una estimación de ingeniería, no medida en autos chilenos.`,
   identidad: `Fuente: ${PREV}, misión, visión y valores (texto resumido; versión literal en el anexo).`,
   cliente: `Fuente: ${PREV}, relaciones de valor con los clientes. Entrevistas (n = 3): resultado indicativo, no representativo.`,
   entorno: `Fuentes: ${PREV}, cinco fuerzas (instrumento 02, escala 0 a 5) y escenarios regulatorios; Ley N° 21.793 (14-01-2026), sin reglamento.`,
   interno: `Fuentes: ${PREV}, competencias (instrumento 05) y FODA cruzado; Lumine Habilita, versión de demostración (datos ficticios).`,
   estrategia: `Fuente: ${PREV}, declaración de la estrategia y ejes estratégicos.`,
-  ejes: `Fuentes: ${PREV} (ejes y objetivos); CMI actualizado de las Fases 1 y 2; ${CMI}.`,
+  ejes: `Fuentes: ${PREV} (ejes y objetivos); ${CMI}.`,
   clientes: `Fuentes: ${PREV} (atributos que valora el cliente); ${CMI}. Las metas de C3 y C4 se fijan con la primera muestra de clientes.`,
   mapa: `Fuente: ${CMI}: 17 objetivos y 20 relaciones. Las flechas son condiciones o hipótesis por comprobar, no causalidad demostrada.`,
   ruta1: `Fuentes: ${CMI}, relaciones R01 a R06; ${PREV}, FODA cruzado (iniciativas).`,
   ruta2: `Fuente: ${CMI}, relaciones R07 a R14. El ahorro es una estimación de ingeniería, no medida en autos chilenos.`,
-  ruta3: `Fuentes: ${CMI}, relaciones R15 a R20; CMI original de Lumine (objetivo destacado por el profesor); módulo 4 del curso. Sin cifras: el Plan Financiero no existe aún.`,
+  ruta3: `Fuentes: ${CMI}, relaciones R15 a R20; módulo 4 del curso. Sin cifras: el Plan Financiero no existe aún.`,
   ficha: `Fuentes: ${CMI}, ficha de C2 y estados del tablero; material del curso «Sistemas de Control de Gestión: Indicadores».`,
   cierre: `Fuentes: ${CMI}, ciclo de decisión; material del curso «Sistemas de Control de Gestión: Indicadores».`,
   indice: 'Las fuentes de cada tema están al pie de su diapositiva.',
   'a-f1': 'Fuentes: CMI original de Lumine; módulo 4 del curso (creación de valor sobre el costo de capital). Sin cifras de Lumine.',
-  'a-cmiA': `Fuente: ${CMI}. Responsables según la estructura de la Fase 3; metas propuestas por el equipo.`,
-  'a-cmiP': `Fuente: ${CMI}. Responsables según la estructura de la Fase 3; metas propuestas por el equipo.`,
-  'a-cmiC': `Fuente: ${CMI}. Responsables según la estructura de la Fase 3; metas propuestas por el equipo.`,
+  'a-cmiA': `Fuente: ${CMI}. Responsables propuestos por el equipo; metas propuestas por el equipo.`,
+  'a-cmiP': `Fuente: ${CMI}. Responsables propuestos por el equipo; metas propuestas por el equipo.`,
+  'a-cmiC': `Fuente: ${CMI}. Responsables propuestos por el equipo; metas propuestas por el equipo.`,
   'a-cmiF': `Fuente: ${CMI}. Sin cifras: el Plan Financiero no existe aún.`,
   'a-rel1': `Fuente: ${CMI}. Relaciones habilitantes, condiciones externas e hipótesis; ninguna es una correlación medida.`,
   'a-rel2': `Fuente: ${CMI}. Relaciones habilitantes, condiciones externas e hipótesis; ninguna es una correlación medida.`,
@@ -288,7 +288,7 @@ const FUENTES = {
   'a-cadena': `Fuente: ${PREV}, cadena de valor (instrumento 06).`,
   'a-pest': `Fuente: ${PREV}, instrumentos 02 (cinco fuerzas) y 03 (PEST). Escalas propias, no comparables con las del informe de Integrador II.`,
   'a-identidad': `Fuente: ${PREV}, presentación de la organización.`,
-  'a-origen': `Fuentes: contexto vigente de Lumine Motors; ${CMI}.`,
+  'a-origen': `Fuente: ${CMI}.`,
 };
 
 let SEC = null, CLAVE = null, NUM = 0, ANEXO_ACTUAL = null, INDICE_ANEXO = null;
@@ -939,8 +939,8 @@ D['a-foda'] = () => {
   const s = contenido('DIAGNÓSTICO · FODA', 'EL FODA', 'que alimenta los objetivos.');
   const q = [['FORTALEZAS', ['Arquitectura en eje trasero y proceso de cinco etapas', 'Segmento definido y estrategia de producto única', 'Riesgos identificados y protocolo de contención']],
     ['DEBILIDADES', ['Sin ensayo ni homologación; biblioteca vacía', 'Técnicos escasos y sin esquema de retención', 'Inventario en dólares sin cobertura; marca sin casos']],
-    ['OPORTUNIDADES', ['El parque se conserva: 3,5 usados por cada auto nuevo', 'Bencina 93 de $1.149 a $1.541 por litro en la RM', 'Baterías LFP en US$81 por kWh']],
-    ['AMENAZAS', ['Ley N° 21.793 sin reglamento; borrador de 2021 sin vía', 'Dólar cerca de $970 con kit 100% importado', 'Desempleo de 9,5% y no hacer nada cuesta $0']]];
+    ['OPORTUNIDADES', ['El parque se conserva: 3,5 usados por cada auto nuevo', 'Bencina 93 en la RM de $1.168,9 a $1.538,9 por litro', 'Baterías LFP en US$81 por kWh']],
+    ['AMENAZAS', ['Ley N° 21.793 sin reglamento; borrador de 2021 sin vía', 'Dólar cerca de $970 con kit 100% importado', 'Desocupación de 9,6% y menor ingreso disponible']]];
   const g = 0.3, w = (CW - g) / 2, h = (YF - Y0 - g) / 2;
   q.forEach(([k, items], i) => {
     const x = M + (i % 2) * (w + g), y = Y0 + Math.floor(i / 2) * (h + g);

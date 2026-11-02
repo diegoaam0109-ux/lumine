@@ -4,160 +4,168 @@ Control de Gestión · ICMA901 · Sección 500 · NRC 4118 · UNAB. Profesor Leo
 
 Recorre el informe final: problema y negocio, diagnóstico, estrategia, objetivos, Cuadro de Mando Integral, análisis de la información, recomendaciones y conclusiones. El instructivo da entre 10 y 15 minutos por equipo y califica a cada integrante.
 
-Exposición de máximo 15 minutos: 15 láminas y 1.568 palabras, unos 12:04 a 130 palabras por minuto. El anexo de 18 láminas no se expone. Diego abre y cierra; los cambios de expositor están escritos en el texto.
+Exposición de máximo 15 minutos: 17 láminas y 1.527 palabras, unos 11:45 a 130 palabras por minuto. El anexo de 12 láminas no se expone. Diego abre y cierra; los cambios de expositor están escritos en el texto.
 
 | Integrante | Láminas | Palabras | Tiempo | Objetivo |
 |---|---|---|---|---|
-| Diego Alarcón | 1, 2, 3, 4, 5, 15 | 541 | 4:10 | ≈ 4:00 |
-| Benjamín Torres | 6, 7, 8, 9 | 503 | 3:52 | ≈ 4:00 |
-| Lukas Verdugo | 10, 11, 12, 13, 14 | 524 | 4:02 | ≈ 4:00 |
-| **Total** | 15 | 1.568 | 12:04 | 15:00 máx. |
+| Diego Alarcón | 1, 2, 3, 4, 5, 6, 17 | 516 | 3:58 | ≈ 4:00 |
+| Benjamín Torres | 7, 8, 9, 10, 11 | 510 | 3:55 | ≈ 4:00 |
+| Lukas Verdugo | 12, 13, 14, 15, 16 | 501 | 3:51 | ≈ 4:00 |
+| **Total** | 17 | 1.527 | 11:45 | 15:00 máx. |
 
 | Lámina | Expositor | Apartado del informe | Tiempo |
 |---|---|---|---|
-| 1 · Portada · TIG · informe final | Diego | 1. Portada | 0:30 |
-| 2 · El parque se conserva y usarlo cuesta cada vez más | Diego | 3. Introducción | 0:45 |
-| 3 · Un kit que se suma, no reemplaza | Diego | 4. Comprensión del negocio | 0:35 |
-| 4 · El cliente compra ahorro sin cambiar de auto, si confía | Diego | 4. Comprensión del negocio | 0:45 |
-| 5 · Misión, visión y valores que orientan decisiones | Diego | 5. Declaraciones estratégicas | 0:50 |
-| 6 · Cuatro números resumen el diagnóstico | Benjamín | 6.1 a 6.3 Análisis estratégico | 1:10 |
-| 7 · Tres brechas deciden si el negocio funciona | Benjamín | 6.4 Síntesis FODA y diagnóstico integrado | 0:45 |
-| 8 · Diferenciación enfocada: competir con evidencia, no con precio | Benjamín | 7. Formulación de estrategia | 1:00 |
-| 9 · Los ocho objetivos de la estrategia llegan al CMI | Benjamín | 8. Redacción de objetivos estratégicos | 0:55 |
-| 10 · Diecisiete objetivos y veinte relaciones en tres rutas | Lukas | 9. Desarrollo del Cuadro de Mando Integral | 0:55 |
-| 11 · El tablero está sin medir y la mayoría de las relaciones son hipótesis | Lukas | 10.1 y 10.2 Análisis de la información | 0:55 |
-| 12 · La vía legal es una compuerta del CMI | Lukas | 10.3 Escenarios regulatorios en el CMI | 0:45 |
-| 13 · Más de 16.000 litros para que el ahorro pague el kit | Lukas | 10.4 Umbral de recuperación | 0:45 |
-| 14 · Cinco decisiones antes de vender el primer kit | Lukas | 12. Recomendaciones | 0:45 |
-| 15 · El CMI decide cuándo avanzar, corregir o detenerse | Diego | 11. Conclusiones | 0:50 |
+| 1 · Portada | Diego | 1. Portada | 0:25 |
+| 2 · Usar el auto cuesta más y nadie lo cambia | Diego | 3. Introducción | 0:40 |
+| 3 · E1 es el escenario base | Diego | 4.1 Supuesto de partida | 0:45 |
+| 4 · Cada frustración tiene su aliviador | Diego | 4.2 Propuesta de valor | 0:40 |
+| 5 · Taller propio primero, licencias después | Diego | 4.2 Modelo de negocio (Anexo A del informe) | 0:25 |
+| 6 · Misión con alcance, visión con cifra y plazo | Diego | 5. Declaraciones estratégicas | 0:35 |
+| 7 · Hay oportunidades, pero hoy no las aprovechamos | Benjamín | 6.1 Entorno, oportunidades y amenazas | 0:50 |
+| 8 · La inercia pasó de sustitutos a clientes | Benjamín | 6.2 Cinco fuerzas | 0:45 |
+| 9 · La ventaja es un sistema que acumula conocimiento | Benjamín | 6.3 Análisis interno y ventaja competitiva | 0:50 |
+| 10 · Hoy defensivos; ofensivos cuando se cumplan los hitos | Benjamín | 6.4 Cruces del FODA y postura | 0:45 |
+| 11 · Diferenciación enfocada: competir con evidencia | Benjamín | 7 y 8. Formulación y objetivos | 0:45 |
+| 12 · Diecisiete objetivos y veinte relaciones | Lukas | 9. Cuadro de Mando Integral | 0:55 |
+| 13 · El tablero está sin medir, no en rojo | Lukas | 10.1 y 10.2 Línea base y solidez | 0:45 |
+| 14 · El reglamento marca el paso a la ofensiva | Lukas | 10.3 Cuándo cambia la postura | 0:50 |
+| 15 · Más de 16.000 litros para pagar el kit | Lukas | 10.5 Umbral y recuperación | 0:40 |
+| 16 · Cuatro acciones que parten sin esperar el reglamento | Lukas | 12. Recomendaciones | 0:45 |
+| 17 · ¿Qué falta? El primer auto del piloto | Diego | 11. Conclusiones | 0:35 |
 
-## Diego Alarcón · abre · láminas 1 a 5
+## Diego Alarcón · abre · láminas 1 a 6
 
-Unos 3:22 (437 palabras).
+Unos 3:23 (440 palabras).
 
-### 1 · Portada · TIG · informe final · 0:30
+### 1 · Portada · 0:25
 
 *Informe: 1. Portada*
 
-Buenos días, profesor y compañeros. Somos Diego Alarcón, Benjamín Torres y Lukas Verdugo, y presentamos el informe final de nuestro trabajo de Control de Gestión: el sistema de control de Lumine Motors, una empresa que todavía no opera. No vamos a mostrar ventas ni ahorros que no existen; vamos a mostrar cómo una estrategia se convierte en objetivos, indicadores y decisiones.
+Buenos días, profesor. Somos Diego Alarcón, Benjamín Torres y Lukas Verdugo, y presentamos el informe final de nuestro trabajo: el sistema de control de gestión de Lumine Motors, una empresa que todavía no opera. Van a ver cómo una propuesta de valor se convierte en objetivos, indicadores y decisiones, sin inventar resultados.
 
-### 2 · El parque se conserva y usarlo cuesta cada vez más · 0:45
+### 2 · Usar el auto cuesta más y nadie lo cambia · 0:40
 
 *Informe: 3. Introducción*
 
-Partamos por el problema. En Chile la gente conserva su auto: este año se han transferido tres coma cinco autos usados por cada auto nuevo inscrito. Y usarlo cuesta más: en marzo, la bencina de noventa y tres en la Región Metropolitana subió unos trescientos setenta pesos por litro, y el Banco Central recortó su proyección de crecimiento. Quien depende de su auto paga cada vez más por usarlo y no puede cambiarlo. Nuestro objetivo fue diseñar el sistema de control que le diga a Lumine cuándo avanzar, cuándo corregir y cuándo detenerse frente a ese problema.
+Partamos por el problema. En marzo, la bencina de noventa y tres en la Región Metropolitana subió de mil ciento sesenta y ocho a mil quinientos treinta y ocho pesos el litro. Y la gente conserva su auto: se transfieren tres coma cinco usados por cada nuevo. Quien trabaja con su auto paga cada vez más por kilómetro y no tiene el capital para cambiarlo. Ahí entra Lumine, con un kit de hibridación aditiva que se suma al auto que ya tiene.
 
-### 3 · Un kit que se suma, no reemplaza · 0:35
+### 3 · E1 es el escenario base · 0:45
 
-*Informe: 4. Comprensión del negocio*
+*Informe: 4.1 Supuesto de partida*
 
-Lumine instalaría un kit de hibridación aditiva en autos a combustión de tracción delantera. El motor original queda intacto. El kit suma una unidad de control, que decide cuándo asistir y corta ante fallas; un banco de baterías, que guarda la energía del frenado, y un motor eléctrico en el eje trasero. No se enchufa, y el diseño deja que el freno, el ABS y el control de estabilidad originales siempre manden. Hoy es un diseño: falta probarlo, homologarlo y documentarlo.
+Partimos de un supuesto explícito. La Ley veintiún mil setecientos noventa y tres autoriza talleres de transformación «y otras adaptaciones», pero no tiene reglamento. Dos preguntas ordenan el futuro: ¿el reglamento aceptará conservar el motor?, ¿mantendrá las exclusiones de autos con ABS o airbag? Salen cuatro escenarios. Tomamos E1, la vía amplia, como escenario base, porque la ley es posterior al borrador de dos mil veintiuno y amplía su objeto. No es un hecho: se mide en el objetivo P1 y tiene contingencia. Con ese supuesto, la pregunta pasa a ser por qué un conductor nos elegiría.
 
-### 4 · El cliente compra ahorro sin cambiar de auto, si confía · 0:45
+### 4 · Cada frustración tiene su aliviador · 0:40
 
-*Informe: 4. Comprensión del negocio*
+*Informe: 4.2 Propuesta de valor*
 
-¿Qué compra el cliente? Ahorro sin cambiar de auto. La propuesta tiene cuatro partes: ahorrar combustible, un respaldo técnico verificable, seguir usando el mismo vehículo y transparencia sobre compatibilidad y costos. La estimación es de hasta veinte por ciento menos bencina en ciudad, todavía no medida en autos chilenos. En tres entrevistas apareció una pista: el precio decide si se compra y la confianza, si uno se atreve. El negocio tendría un taller propio y, como segunda línea potencial, licencias de calibración con la plataforma Lumine Habilita, cuya demostración pueden abrir con este código.
+Para responderla usamos el lienzo de propuesta de valor de Osterwalder. El cliente es el conductor de uso intensivo. Sus frustraciones salieron de entrevistas exploratorias: la bencina sube, cambiar de auto exige un capital que no tiene, teme perder el seguro o la revisión técnica y no sabe cuánto ahorraría. Cada frustración tiene su aliviador, y el más fuerte es que el kit no reemplaza el auto. Además, la calibración hecha para su modelo crea una alegría de exclusividad. El veinte por ciento es una estimación de ingeniería.
 
-### 5 · Misión, visión y valores que orientan decisiones · 0:50
+### 5 · Taller propio primero, licencias después · 0:25
+
+*Informe: 4.2 Modelo de negocio (Anexo A del informe)*
+
+El lienzo alimenta el Canvas. La primera línea es el taller propio, que diagnostica, instala, calibra y mide. La segunda, desde el segundo año, licencia el método a otros talleres a cambio de los datos de cada instalación. El costo pesa en un kit importado que se paga en dólares.
+
+### 6 · Misión con alcance, visión con cifra y plazo · 0:35
 
 *Informe: 5. Declaraciones estratégicas*
 
-La misión es reducir el combustible que un auto a combustión necesita por kilómetro, instalando un sistema de hibridación en el auto que el cliente ya tiene, sin reemplazarlo ni intervenir su motor. La visión es ser hacia 2031 el taller de referencia en hibridación de vehículos en uso en Chile, reconocido por la autoridad, las plantas de revisión técnica y las aseguradoras. En nuestro sistema de control, los valores son reglas: verificabilidad antes que afirmación, por eso un dato sin medir no vale cero; y formalidad como condición de operación, por eso hay compuertas que no se saltan. Benjamín sigue con el diagnóstico.
+La misión dice qué y dónde: reducir el combustible por kilómetro, en Chile y partiendo por la Región Metropolitana, sobre el auto que el cliente ya tiene. La visión pone cifra y plazo: hacia dos mil treinta y uno, dos mil setecientas quince instalaciones al año y cuarenta y dos talleres certificados. Los fines son rentar sobre el costo del capital y crecer con la red. Benjamín sigue con el diagnóstico.
 
-## Benjamín Torres · láminas 6 a 9
+## Benjamín Torres · láminas 7 a 11
 
-Unos 3:52 (503 palabras).
+Unos 3:55 (510 palabras).
 
-### 6 · Cuatro números resumen el diagnóstico · 1:10
+### 7 · Hay oportunidades, pero hoy no las aprovechamos · 0:50
 
-*Informe: 6.1 a 6.3 Análisis estratégico*
+*Informe: 6.1 Entorno, oportunidades y amenazas*
 
-Gracias, Diego. El diagnóstico se resume en cuatro números. Primero, el entorno general: la matriz PEST da dos coma ochenta y dos sobre cinco, bajo el neutro de tres; el freno es económico, por el desempleo de nueve coma seis por ciento y un dólar sobre novecientos setenta pesos con un kit importado, y también regulatorio. Segundo, la industria: las cinco fuerzas dan tres coma cuarenta y nueve, una industria poco atractiva, y el rival principal no es otro taller: es que el cliente posponga la inversión. Tercero, hacia adentro: de quince recursos y capacidades, solo dos son potencialmente sostenibles, la biblioteca de calibraciones y la ingeniería de integración, y la biblioteca hoy está vacía. Cuarto, la Ley veintiún mil setecientos noventa y tres no tiene reglamento; si el reglamento sigue al borrador de dos mil veintiuno, quedaríamos entre la vía alternativa y ninguna. Eso no se promedia: es una condición de entrada.
+Gracias, Diego. El diagnóstico va de afuera hacia adentro. La matriz PEST da dos coma ochenta y dos sobre cinco: moderadamente desfavorable. Ayuda la tecnología, con baterías LFP a ochenta y un dólares el kilowatt hora; frena la economía, con un crecimiento bajo y un desempleo de nueve coma seis por ciento. El dólar pesa, pero es un riesgo cíclico que se cubre. Numeramos el FODA de afuera hacia adentro, siete oportunidades y nueve amenazas, y lo evaluamos con la matriz de factores externos de David. Da dos coma cero tres, bajo el promedio de dos coma cinco: las oportunidades existen, pero hoy Lumine no está en condiciones de aprovecharlas.
 
-### 7 · Tres brechas deciden si el negocio funciona · 0:45
+### 8 · La inercia pasó de sustitutos a clientes · 0:45
 
-*Informe: 6.4 Síntesis FODA y diagnóstico integrado*
+*Informe: 6.2 Cinco fuerzas*
 
-El FODA cruza esos hallazgos y deja tres brechas. La primera es la habilitación formal: una vía legal y el reconocimiento de aseguradoras y plantas de revisión técnica. La segunda es demostrar valor frente a posponer la compra: medir el ahorro en autos chilenos y ofrecer una forma de pago que el cliente pueda asumir. La tercera es la capacidad de ejecución: llenar la biblioteca, formar técnicos en alta tensión y proteger el costo del kit frente al dólar. Si cualquiera falla, el negocio no funciona; por eso son el puente entre el diagnóstico y la estrategia.
+En la industria corregimos la calificación de los sustitutos. Antes les poníamos cinco porque incluíamos no hacer nada, pero no hacer nada no es un producto: es inercia del cliente. La pasamos a la fuerza de los clientes. Los sustitutos quedan con lo que resuelve la misma necesidad: el gas, que solo admite autos de hasta siete años; el híbrido usado, desde nueve millones y medio, y el eléctrico nuevo, desde casi catorce. Sustitutos bajan a tres coma sesenta y siete, clientes suben a dos coma ochenta y tres, y la intensidad total queda en tres coma catorce: media.
 
-### 8 · Diferenciación enfocada: competir con evidencia, no con precio · 1:00
+### 9 · La ventaja es un sistema que acumula conocimiento · 0:50
 
-*Informe: 7. Formulación de estrategia*
+*Informe: 6.3 Análisis interno y ventaja competitiva*
 
-Con ese diagnóstico elegimos la diferenciación enfocada. Lumine no puede competir por costo: su kit es importado y su principal rival, posponer la compra, no tiene precio. Por eso compite con evidencia, en el segmento donde el ahorro vale más: los conductores de alto kilometraje. La declaración es un servicio certificado que reduce el combustible del auto que el cliente ya tiene, sostenido por un conocimiento de calibración que un competidor no puede comprar. Elegir es renunciar: no competimos por precio y no ofrecemos inmediatez, porque cada instalación depende de un diagnóstico y de un modelo aprobado. La ventaja que buscamos es la biblioteca de calibraciones; hoy es potencial, y no hay que confundirla con la estrategia, que es el camino para construirla. La estrategia tiene tres ejes, uno por brecha.
+Hacia adentro aplicamos los cuatro criterios de Hitt: valioso, raro, costoso de imitar e insustituible. La ingeniería de integración no pasa, porque cualquiera con ingenieros la contrata. Lo que no se compra hecho es el conocimiento que el negocio acumula. De ahí salen dos competencias centrales: el conocimiento de calibración y medición, y el método Lumine Habilita. La ventaja es un sistema de actividades, como plantea Porter: cada auto instalado agrega una calibración y una medición, la medición mejora el estimador, lo aprendido entra a Habilita y la red devuelve sus datos. Un competidor puede comprar el kit; esa historia de datos, no. La matriz interna da dos coma treinta y dos.
 
-### 9 · Los ocho objetivos de la estrategia llegan al CMI · 0:55
+### 10 · Hoy defensivos; ofensivos cuando se cumplan los hitos · 0:45
 
-*Informe: 8. Redacción de objetivos estratégicos*
+*Informe: 6.4 Cruces del FODA y postura*
 
-Esos tres ejes tenían ocho objetivos, y los ocho llegan al Cuadro de Mando Integral. Habilitación formal queda en la vía legal, la aprobación de cada par modelo-kit y las alianzas con aseguradoras y plantas. Acceso comercial, en la captación del segmento y en el financiamiento, que se gestiona dentro de esas alianzas. Conocimiento y escala, en la biblioteca, la medición del ahorro y la expansión. Agregamos cinco objetivos que la formulación no cubría: la instalación segura, la promesa técnica cumplida, la confianza medida desde el cliente, el margen por servicio y la rentabilidad por sobre el costo de capital. En total son diecisiete, cada uno con un verbo, un resultado verificable, un indicador y un responsable. Lukas muestra cómo se conectan.
+Con las dos matrices cruzamos el FODA: once estrategias numeradas, cada una amarrada a un objetivo del cuadro de mando. ¿Defensivos u ofensivos? Las dos matrices están bajo dos coma cinco, así que hoy somos defensivos: primero van las estrategias DO y DA, como preparar el expediente, medir el ahorro y cubrir el dólar. Cuando el reglamento resulte en E1 y el piloto mida el ahorro, las matrices suben a dos coma setenta y cinco y dos coma noventa y seis. Ahí se justifica la ofensiva en el nicho, con las estrategias FO.
 
-## Lukas Verdugo · láminas 10 a 14
+### 11 · Diferenciación enfocada: competir con evidencia · 0:45
 
-Unos 4:02 (524 palabras).
+*Informe: 7 y 8. Formulación y objetivos*
 
-### 10 · Diecisiete objetivos y veinte relaciones en tres rutas · 0:55
+La estrategia es la diferenciación enfocada. No podemos competir por costo: el kit es importado y el gas cuesta una fracción. Competimos con evidencia donde el ahorro vale más, en el alto kilometraje. Elegir es renunciar: no competimos por precio ni ofrecemos inmediatez. Tres ejes ordenan la estrategia, uno por brecha: habilitación formal, con la autorización y el primer par modelo-kit; acceso comercial, con la captación y el financiamiento, y conocimiento y escala, con la biblioteca, la medición y la red. Se traducen en diecisiete objetivos con verbo y resultado verificable. Lukas muestra cómo se conectan.
 
-*Informe: 9. Desarrollo del Cuadro de Mando Integral*
+## Lukas Verdugo · láminas 12 a 16
 
-Gracias, Benjamín. El mapa se lee de abajo hacia arriba: las capacidades habilitan los procesos, los procesos producen la propuesta de valor, y de ahí salen la confianza, la captación y, al final, la rentabilidad por sobre el costo de capital. Las flechas tienen tres formas: continua, una condición habilitante; blanca y gruesa, una condición externa, como la vía legal; y punteada, una hipótesis que habrá que comprobar. Las veinte relaciones forman tres rutas: habilitación, que lleva a la promesa técnica; evidencia, que lleva de la medición a la confianza y la compra; y valor económico, que lleva al margen y a la rentabilidad. Cada indicador tiene ficha y cinco estados posibles: cumple, alerta, no cumple, meta pendiente y sin medir.
+Unos 3:51 (501 palabras).
 
-### 11 · El tablero está sin medir y la mayoría de las relaciones son hipótesis · 0:55
+### 12 · Diecisiete objetivos y veinte relaciones · 0:55
 
-*Informe: 10.1 y 10.2 Análisis de la información*
+*Informe: 9. Cuadro de Mando Integral*
 
-Con esas reglas analizamos la información disponible, sin datos simulados. Hoy, doce indicadores están sin medir y cinco tienen la meta pendiente; ninguno cumple ni incumple, porque la empresa no opera. Pintarlo de rojo o de verde contradiría nuestro primer valor. El segundo hallazgo: de las veinte relaciones, doce son hipótesis, el sesenta por ciento. La ruta de habilitación es sólida, porque son requisitos técnicos y legales; la de valor económico es completamente hipotética. Por eso, al principio, el CMI de Lumine no mide resultados: comprueba hipótesis. Lo que sí se gestiona desde hoy son cuatro hitos previos a la venta: el protocolo de medición, la vía legal, el primer modelo aprobado y las alianzas.
+Gracias, Benjamín. El mapa del cuadro de mando integral, de Kaplan y Norton, se lee de abajo hacia arriba: el aprendizaje habilita los procesos, los procesos producen la propuesta de valor, y de ahí salen la confianza, la captación y la rentabilidad sobre el costo de capital. Las veinte relaciones forman tres rutas: habilitación, evidencia y valor económico. Las líneas continuas son habilitantes, la gruesa es una condición externa, la vía legal, y las punteadas son hipótesis. Cada objetivo tiene indicador, meta, responsable e iniciativa, y cada iniciativa viene de un cruce del FODA: por ejemplo, la calibración para tu modelo, del cruce FO1, alimenta la captación. Así la estrategia queda medida, no solo escrita.
 
-### 12 · La vía legal es una compuerta del CMI · 0:45
+### 13 · El tablero está sin medir, no en rojo · 0:45
 
-*Informe: 10.3 Escenarios regulatorios en el CMI*
+*Informe: 10.1 y 10.2 Línea base y solidez*
 
-El tercer hallazgo es la vía legal. Actúa sobre el mapa por dos relaciones externas: condiciona la aprobación de cada modelo y la réplica en otros talleres. Si el reglamento abre una vía amplia, se avanza modelo por modelo. Si es acotada, se ajusta la meta de captación al parque elegible. Si es alternativa, cambia el indicador de la vía legal y se recalendarizan los hitos. Y si no hay vía, se detiene todo lo que depende de ella y no se suben metas comerciales. Si el reglamento sigue al borrador, estaríamos entre los dos últimos.
+¿Qué dice la información disponible? Doce indicadores están sin medir y cinco tienen la meta pendiente: ninguno cumple ni incumple, porque la empresa no opera. Pintarlo de rojo contradiría nuestro primer valor, la verificabilidad. Y doce de las veinte relaciones, el sesenta por ciento, son hipótesis. Por eso, al comienzo, el cuadro de mando comprueba hipótesis, y para cada una definimos con qué dato se prueba y qué decidimos si falla. Los objetivos se activan en cuatro etapas: preparación, piloto, taller propio y red de talleres. Cada etapa tiene una condición para pasar a la siguiente.
 
-### 13 · Más de 16.000 litros para que el ahorro pague el kit · 0:45
+### 14 · El reglamento marca el paso a la ofensiva · 0:50
 
-*Informe: 10.4 Umbral de recuperación*
+*Informe: 10.3 Cuándo cambia la postura*
 
-El cuarto hallazgo usa solo cifras existentes: el precio de referencia del kit Plus, cuatro millones novecientos noventa mil pesos; el ahorro estimado de veinte por ciento, y el precio actual de la bencina. Para que el ahorro pague el kit, el auto tendría que consumir unos dieciséis mil doscientos litros. El alza de marzo bajó ese umbral en veinticuatro por ciento. Pero si el ahorro real fuera la mitad, el umbral se duplicaría. Dos conclusiones: el foco en el alto kilometraje está bien puesto, y medir el ahorro es la información más valiosa del negocio.
+El hallazgo más importante es cuándo cambia la postura. De los cero coma setenta y dos puntos que sube la matriz externa, cero coma cuarenta y dos dependen del reglamento. Sin E1, aun con un piloto exitoso, llegaría a dos coma treinta y cuatro y seguiríamos defensivos. La matriz interna, en cambio, sube por hitos propios: el expediente, la medición y la primera calibración. La conclusión para la gestión es doble: la ofensiva la marca la publicación del reglamento, no el calendario, y mientras tanto el trabajo útil está en los hitos propios, que además preparan el expediente que el reglamento va a pedir.
 
-### 14 · Cinco decisiones antes de vender el primer kit · 0:45
+### 15 · Más de 16.000 litros para pagar el kit · 0:40
+
+*Informe: 10.5 Umbral y recuperación*
+
+Para el cliente usamos cifras existentes. Con el precio de referencia del Plus y veinte por ciento de ahorro, el auto debe consumir más de dieciséis mil doscientos litros para pagar el kit. Por eso el foco es el alto kilometraje. Según el plan, se recupera en veintisiete a treinta y cuatro meses, dentro del ciclo de cuatro años de un conductor. Pero si el ahorro real fuera la mitad, el umbral se duplica: medir el ahorro es la información más valiosa del negocio.
+
+### 16 · Cuatro acciones que parten sin esperar el reglamento · 0:45
 
 *Informe: 12. Recomendaciones*
 
-De ahí salen cinco recomendaciones. Uno, no comprometer inversión comercial antes de documentar una vía legal. Dos, aprobar el protocolo y medir el primer auto antes de comunicar cualquier ahorro. Tres, elaborar el Plan Financiero con una tasa sustentada, para poder medir la rentabilidad sobre el costo de capital. Cuatro, cerrar convenios con aseguradora, planta de revisión y financiera antes del primer kit. Y cinco, proteger cada calibración como secreto empresarial desde la primera. Mientras la empresa no opere, el tablero se revisa cada mes, centrado en los cuatro hitos previos a la venta. Diego cierra.
+Recomendamos cuatro acciones que pueden partir hoy: preparar el expediente técnico y aportar antecedentes al ministerio; aprobar el protocolo de medición y hacer el piloto con el modelo más frecuente; elaborar el Plan Financiero con una tasa sustentada, y firmar convenios con una aseguradora, una planta de revisión y una financiera. El informe agrega cuatro más: validar el precio y la cuota con la encuesta, cubrir el tipo de cambio, proteger las calibraciones dentro de la unidad de control y revisar cada mes el avance del reglamento. Mientras no operemos, el tablero se revisa mensualmente, centrado en los cuatro hitos. Diego cierra.
 
-## Diego Alarcón · cierre · lámina 15
+## Diego Alarcón · cierre · lámina 17
 
-Unos 0:48 (104 palabras).
+Unos 0:35 (76 palabras).
 
-### 15 · El CMI decide cuándo avanzar, corregir o detenerse · 0:50
+### 17 · ¿Qué falta? El primer auto del piloto · 0:35
 
 *Informe: 11. Conclusiones*
 
-Gracias, Lukas. Cerramos con tres conclusiones. Primero, Lumine responde a una necesidad real con una estrategia coherente con su diagnóstico: diferenciación enfocada en el alto kilometraje. Segundo, en una empresa que todavía no opera, el Cuadro de Mando Integral no sirve para mostrar resultados, sino para ordenar decisiones: qué debe cumplirse antes de vender, qué relaciones son hipótesis y cuándo corresponde detenerse. Tercero, lo que falta demostrar es claro: la vía legal, el ahorro medido en autos chilenos y la rentabilidad por sobre el costo de capital, que hoy no tiene cifra y no vamos a inventar. Muchas gracias; quedamos atentos a sus preguntas.
+Gracias, Lukas. Cerramos con tres ideas. Lumine responde a una necesidad documentada con un concepto simple: el mismo auto, ahora híbrido. La ventaja es un sistema que acumula conocimiento que nadie puede comprar hecho. Y en una empresa que no opera, el cuadro de mando ordena decisiones: qué cumplir antes de vender y cuándo pasar a la ofensiva. ¿Qué falta para que el tablero deje de estar sin medir? El primer auto del piloto. Muchas gracias.
 
 ## Anexo · solo si preguntan
 
-La lámina índice (16) tiene un enlace a cada pregunta; cada lámina del anexo tiene un enlace de vuelta al índice.
+La lámina índice (18) tiene un enlace a cada pregunta; cada lámina del anexo tiene un enlace de vuelta al índice.
 
-- **A1 · ¿Cómo es la ficha de un indicador y qué estados usa?** Ficha de C2, ahorro acreditado, y los cinco estados del tablero.
-- **A2 · El CMI completo: indicador, meta, responsable e iniciativa.** Metas propuestas por el equipo; responsables según la estructura de la Fase 3.
-- **A2 · El CMI completo.** P6 reúne las alianzas: aseguradora, planta de revisión técnica y financiera.
-- **A2 · El CMI completo.** C3 y C4 sin meta numérica: se fijan con la primera muestra de clientes.
-- **A2 · El CMI completo.** F2 y F3 sin meta numérica hasta el Plan Financiero.
-- **A3 · Las 20 relaciones, con mecanismo y prueba.** Continua: habilitante. Blanca gruesa: condición externa. Punteada: hipótesis por comprobar.
-- **A3 · Las 20 relaciones.** 
-- **A4 · ¿Por qué la rentabilidad se mide en dos etapas?** VAN y TIR deciden si invertir; el retorno sobre el capital empleado frente a su costo controla la operación.
-- **A5 · ¿Qué tan sensible es el umbral al ahorro real?** Litros de umbral para ahorros de 5% a 25%, con el precio actual de la bencina. Mismo cálculo que el Excel.
-- **A6 · PEST y cinco fuerzas, con su cálculo.** Los cuatro puntajes PEST de hoy y a futuro.
-- **A6 · PEST y cinco fuerzas.** Suma de peso por intensidad: 1,50 + 0,75 + 0,66 + 0,40 + 0,18 = 3,49.
-- **A7 · Recursos, capacidades y factores críticos.** Quince elementos con cuatro filtros.
-- **A7 · Recursos y factores críticos.** Seis factores; la gestión regulatoria es condición de entrada.
-- **A8 · ¿Cómo se compara Lumine con sus competidores?** El líder es el máximo de cada área, no un competidor real.
-- **A9 · FODA completo, con su evidencia.** Cada factor con la cifra o el hallazgo que lo sostiene.
-- **A10 · Misión, visión y valores literales.** Los ocho valores, organizacionales y humanos.
-- **A11 · ¿De dónde sale cada cifra?** Fuentes públicas en formato APA y el informe de la Fase 3 para los precios de referencia.
-- **A12 · ¿Qué es dato, estimación o supuesto?** Cada afirmación dice qué es.
+- **A1 · ¿Qué pasa si el reglamento no resulta en E1?** Señal temprana y respuesta para E2, E3 y E4; efecto de cada escenario en el CMI.
+- **A2 · MEFE completa: oportunidades y amenazas numeradas.** Peso = relevancia ÷ suma. Calificación 1 a 4, hoy y con hitos. Total 2,03 → 2,75.
+- **A3 · MEFI completa: fortalezas y debilidades numeradas.** Total 2,32 → 2,96. Pesan D1 (sin gestión iniciada) y D2 (ahorro sin medir).
+- **A4 · ¿Cómo se recalificaron las cinco fuerzas?** Factores de sustitutos y clientes con su justificación; C.a.6 inercia es nuevo.
+- **A5 · Los 17 recursos y capacidades con los criterios de Hitt.** 3 potencialmente sostenibles, 7 temporales y 7 de igualdad.
+- **A6 · Las 11 estrategias de los cruces del FODA.** Cada una con el objetivo del CMI que alimenta.
+- **A7 · CMI completo: indicador, meta y responsable.** Metas propuestas por el equipo; responsables según la estructura del plan.
+- **A7 · CMI completo.** C3, C4, F2 y F3 con meta pendiente hasta tener el dato.
+- **A8 · Las 20 relaciones causa-efecto y su plan de comprobación.** 6 habilitantes, 2 externas y 12 hipótesis, ordenadas por el momento en que habrá datos.
+- **A9 · ¿Cómo es la ficha de un indicador?** Fichas de C2 (ahorro acreditado) y P2 (primer par modelo-kit).
+- **A10 · ¿Qué tan sensible es el umbral?** Litros de umbral con 10%, 15% y 20% de ahorro, antes y después del alza; gasto mensual del cliente.
+- **A11 · ¿Qué es dato, estimación o supuesto?** Naturaleza de cada afirmación, entrevistas realizadas y la demo de Lumine Habilita.
 
 Decisiones y pendientes: `RESPALDO.md`.

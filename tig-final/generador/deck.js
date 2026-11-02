@@ -1,46 +1,31 @@
-// TIG · entrega final · Control de Gestión (ICMA901, UNAB) · Lumine Motors (22-10-2026)
-// Recorre el informe final: problema y negocio, diagnóstico, estrategia, objetivos, CMI, análisis de la información,
-// recomendaciones y conclusiones. Sin datos simulados: Lumine es preoperativa.
-// Mismo sistema visual que las presentaciones de Control de Gestión y de la Fase 3: escenario negro, un solo acento
-// celeste, titulares anchos en mayúsculas con acento en serif itálica, etiquetas mono y cifras condensadas.
-//
-// Reglas de esta presentación:
-// - Lumine es preoperativa: ningún indicador tiene dato real. Se usa un solo sistema de estados:
-//   SIN MEDIR (gris), HITO CRÍTICO PENDIENTE (rojo, solo cuando está comprobado que falta) y COMPLETADO (verde, con evidencia).
-// - El ejemplo de EVA es del módulo 4 del curso («EJEMPLO DE CLASE · NO LUMINE») y el caso 8 de 10 es didáctico
-//   («EJERCICIO HIPOTÉTICO»). Ambos rótulos quedan a la vista.
-// - Escala de legibilidad de la Fase 3 (sala grande, alguien miope al fondo): titulares de 34 pt, cuerpo de 18 a 24 pt,
-//   etiquetas de 12 pt o más, cifras de 30 a 48 pt. Si algo no cabe, se quita texto; nunca se achica la letra.
-// - Sin animaciones ni transiciones.
+// TIG · entrega final · Control de Gestión (ICMA901, UNAB) · Lumine Motors (versión posterior a la retroalimentación, 31-10-2026)
+// Concepto visual: «cuaderno de ingeniería». Cada lámina es una hoja de plano: papel cuadriculado claro, marco con marcas de
+// centrado y un cajetín abajo a la derecha con el número de lámina. Los datos se anotan como en un plano: cotas, reglas
+// graduadas para las matrices, fotos pegadas con su rótulo y notas al margen en serif itálica azul.
+// Reglas: fondo claro (pedido del profesor); titulares de 32 a 34 pt, cuerpo de 16 a 24 pt, etiquetas de 12 pt o más;
+// escenario base E1; nada de datos simulados; ninguna fuente interna del equipo al pie; bibliografía antes del anexo.
 const path = require('path');
 const pptxgen = require('pptxgenjs');
 const fs = require('fs');
 const JSZip = require('jszip');
 
 const G = require('./guion.js');
-const D = {}; // una función por diapositiva; el orden lo pone guion.js
+const D = {};
 const OUT = process.argv[2] || 'Lumine_TIG_Final.pptx';
-const A = f => path.join(__dirname, 'assets', f);
+const A = f => path.join(__dirname, 'assets', 'claro', f);
+const AQ = f => path.join(__dirname, 'assets', f);
 
 // ---------- tema ----------
-// Tipografía de la marca (juego A, el de la presentación anterior de Control de Gestión)
 const [F_TIT, F_CON, F_BODY, F_MONO, F_SER] = ['Archivo SemiExpanded ExtraBold', 'Archivo Condensed', 'Figtree', 'IBM Plex Mono', 'Instrument Serif'];
 const THEME = {
-  name: 'Lumine',
-  headFontFace: F_TIT,
-  bodyFontFace: F_BODY,
+  name: 'Lumine cuaderno',
   colors: {
-    dk1: 'ECECEC', lt1: '020304', dk2: '8B9598', lt2: '0A0D0F',
-    accent1: '22B8F0', accent2: '8B9598', accent3: '4A5257', accent4: 'ECECEC',
-    accent5: '2E3438', accent6: '101417', hlink: '22B8F0', folHlink: '0A6F9E',
+    dk1: '1F2A30', lt1: 'FFFFFF', dk2: '5F6B70', lt2: 'FAFAF7',
+    accent1: '1E9BD7', accent2: '0A6F9E', accent3: 'C9D6DE', accent4: 'EAF4FA', accent5: '8FA3AE', accent6: 'E8EEF1',
+    hlink: '0A6F9E', folHlink: '5F6B70',
   },
 };
-const HEX = THEME.colors;
-const HOT = '0B1A22';   // relleno de la caja destacada
-// colores de estado de la paleta de Lumine (solo para el semáforo)
-const GRIS = '8B9598', ROJO = 'F87171', VERDE = '4ADE80', AMBAR = 'F5B94A';
-
-const TX = { tit: 34, acento: 40, sub: 24, cuerpo: 20, cuerpoL: 22, etq: 16, marca: 14, inst: 11, cifra: 44, cifraXL: 48, cifraM: 36, cifraS: 30 };
+const K = { tx: '1F2A30', gris: '5F6B70', cel: '1E9BD7', azul: '0A6F9E', linea: 'C9D6DE', suave: 'EAF4FA', papel: 'FAFAF7', blanco: 'FFFFFF', medio: '8FA3AE' };
 
 const pres = new pptxgen();
 pres.layout = 'LAYOUT_WIDE'; // 13,333 × 7,5 in
@@ -49,1319 +34,769 @@ pres.company = 'Lumine Motors';
 pres.title = 'TIG · Informe final · Lumine Motors';
 pres.subject = 'Control de Gestión · ICMA901 · Sección 500 · NRC 4118 · UNAB';
 pres.theme = { headFontFace: F_TIT, bodyFontFace: F_BODY };
-const C = pres.SchemeColor;
 const S = pres.ShapeType;
 
-const W = 13.333, M = 0.6, CW = W - 2 * M, R = W - M;
-const LOGO_H = 0.22, LOGO_W = LOGO_H * (127.25 / 26);
-const CURSO = 'CONTROL DE GESTIÓN · ICMA901 · TIG · ENTREGA FINAL';
-const Y0 = 2.62;   // inicio del contenido, bajo el titular
-const YF = 6.82;   // fin del contenido, sobre la fuente al pie
+const W = 13.333, M = 0.75, R = W - M, CW = R - M;
+const Y0 = 2.2, YF = 6.55;
 
-// ---------- piezas del sistema visual ----------
+// ---------- piezas ----------
 function T(s, text, o = {}) {
-  s.addText(text, Object.assign({ isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: TX.cuerpo, color: C.text1, valign: 'top', lang: 'es-CL', paraSpaceAfter: 0 }, o));
+  s.addText(text, Object.assign({ isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 20, color: K.tx, valign: 'top', lang: 'es-CL', paraSpaceAfter: 0 }, o));
 }
-const mono = (s, text, o = {}) => T(s, text, Object.assign({ fontFace: F_MONO, fontSize: TX.etq, color: C.text2, charSpacing: 1 }, o));
-const serif = (s, text, o = {}) => T(s, text, Object.assign({ fontFace: F_SER, italic: true, fontSize: 18, color: C.accent1 }, o));
-function linea(s, x, y, w, h, color = C.accent5, width = 0.75, o = {}) {
-  s.addShape(S.line, Object.assign({ x, y, w, h, line: { color, width } }, o));
-}
-function flecha(s, x, y, w, h, color = C.accent1, width = 1.75, dash) {
-  s.addShape(S.line, { x, y, w, h, line: { color, width, endArrowType: 'triangle', dashType: dash || 'solid' } });
-}
-function visor(s, x, y, w, h, color = C.accent1, k = 0.17, d = 0.06) {
-  const L = (a, b, c, e) => linea(s, a, b, c, e, color, 1.25);
-  x -= d; y -= d; w += 2 * d; h += 2 * d;
-  L(x, y, k, 0); L(x, y, 0, k);
-  L(x + w - k, y, k, 0); L(x + w, y, 0, k);
-  L(x, y + h, k, 0); L(x, y + h - k, 0, k);
-  L(x + w - k, y + h, k, 0); L(x + w, y + h - k, 0, k);
+const mono = (s, text, o = {}) => T(s, text, Object.assign({ fontFace: F_MONO, fontSize: 13, color: K.gris, charSpacing: 1 }, o));
+const serif = (s, text, o = {}) => T(s, text, Object.assign({ fontFace: F_SER, italic: true, fontSize: 22, color: K.azul }, o));
+const num = (s, text, o = {}) => T(s, text, Object.assign({ fontFace: F_CON, bold: true, fontSize: 48, color: K.tx, valign: 'bottom' }, o));
+const linea = (s, x, y, w, h, color = K.tx, width = 1, o = {}) => s.addShape(S.line, Object.assign({ x, y, w, h, line: { color, width } }, o));
+function flecha(s, x1, y1, x2, y2, color = K.cel, width = 1.75, o = {}) {
+  const fh = x2 < x1, fv = y2 < y1;
+  s.addShape(S.line, { x: Math.min(x1, x2), y: Math.min(y1, y2), w: Math.abs(x2 - x1), h: Math.abs(y2 - y1), flipH: fh, flipV: fv,
+    line: { color, width, endArrowType: 'triangle', beginArrowType: o.doble ? 'triangle' : undefined, dashType: o.dash || 'solid' } });
 }
 function caja(s, x, y, w, h, o = {}) {
-  s.addShape(S.rect, Object.assign({ x, y, w, h, fill: { color: C.background2 }, line: { color: C.accent5, width: 0.75 } }, o));
+  s.addShape(S.rect, Object.assign({ x, y, w, h, fill: { color: K.blanco }, line: { color: K.tx, width: 1 } }, o));
 }
-const cajaHot = (s, x, y, w, h) => { caja(s, x, y, w, h, { fill: { color: HOT }, line: { color: C.accent1, width: 1.25 } }); visor(s, x, y, w, h); };
-function tag(s, n, x, y, o = {}) {
-  const w = o.w || 0.62, h = o.h || 0.38, on = !o.off;
-  s.addShape(S.rect, { x, y, w, h, fill: { color: on ? C.accent1 : C.accent5 }, line: { type: 'none' } });
-  T(s, n, { x, y, w, h, fontFace: F_MONO, fontSize: o.size || TX.etq, bold: true, color: on ? C.background1 : C.text1, align: 'center', valign: 'middle' });
-}
-// rótulos de naturaleza del dato: est = estimación (raya), sup = supuesto o meta propuesta (puntos),
-// pen = pendiente de definir (línea), no = ejemplo o ejercicio que NO es de Lumine (blanco, raya)
-const MARCA = {
-  est: { color: C.text2, dash: 'dash' },
-  sup: { color: C.text2, dash: 'sysDot' },
-  pen: { color: C.text2, dash: 'solid' },
-  no: { color: C.text1, dash: 'dash' },
-};
-const anchoMarca = (t, size = TX.marca) => 0.34 + t.length * (size * 0.6 + 1) / 72;
-function marca(s, tipo, text, x, y, o = {}) {
-  const st = MARCA[tipo], size = o.size || TX.marca, h = o.h || 0.4, w = o.w || anchoMarca(text, size);
-  const xx = o.alignRight ? x - w : x;
-  s.addShape(S.rect, { x: xx, y, w, h, fill: { color: C.background1, transparency: 100 }, line: { color: st.color, width: o.grueso ? 1.5 : 1, dashType: st.dash } });
-  mono(s, text, { x: xx + 0.12, y, w: w - 0.24, h, fontSize: size, color: st.color, bold: !!o.bold, valign: 'middle', align: 'center', charSpacing: 1 });
+const cajaAzul = (s, x, y, w, h) => caja(s, x, y, w, h, { fill: { color: K.suave }, line: { color: K.cel, width: 1.75 } });
+// rótulo de naturaleza del dato (estimación, supuesto, pendiente): marco a trazos, texto mono
+const anchoMono = (t, size) => 0.36 + t.length * size * 0.68 / 72;
+function marca(s, text, x, y, o = {}) {
+  const size = o.size || 12, h = o.h || 0.34, w = o.w || anchoMono(text, size), xx = o.derecha ? x - w : x;
+  s.addShape(S.rect, { x: xx, y, w, h, fill: { color: K.blanco }, line: { color: o.color || K.gris, width: 1, dashType: o.dash || 'dash' } });
+  mono(s, text, { x: xx, y, w, h, fontSize: size, color: o.color || K.gris, bold: true, align: 'center', valign: 'middle', charSpacing: 0.5 });
   return w;
 }
-// rótulo bien visible para lo que no es de Lumine (ejemplo de clase o ejercicio hipotético)
-const noLumine = (s, text, x, y, o = {}) => marca(s, 'no', text, x, y, Object.assign({ size: 16, h: 0.46, bold: true, grueso: true }, o));
-// estado de un indicador: punto de color y texto (el color nunca va solo)
-const ESTADO = {
-  sin: [GRIS, 'SIN MEDIR'],
-  crit: [ROJO, 'HITO CRÍTICO PENDIENTE'],
-  ok: [VERDE, 'COMPLETADO'],
-  amb: [AMBAR, 'ÁMBAR'],
-  rojo: [ROJO, 'ROJO'],
-};
-function estado(s, tipo, x, y, o = {}) {
-  const [color, def] = ESTADO[tipo], text = o.text || def, size = o.size || TX.marca, h = o.h || 0.4;
-  const w = anchoMarca(text, size) + 0.26, xx = o.alignRight ? x - w : x;
-  s.addShape(S.rect, { x: xx, y, w, h, fill: { color: C.background1, transparency: 100 }, line: { color, width: 1.25 } });
-  const d = Math.min(0.16, h * 0.4);
-  s.addShape(S.ellipse, { x: xx + 0.15, y: y + (h - d) / 2, w: d, h: d, fill: { color }, line: { type: 'none' } });
-  mono(s, text, { x: xx + 0.4, y, w: w - 0.5, h, fontSize: size, color, bold: true, valign: 'middle', charSpacing: 1 });
-  return w;
+// foto pegada en el cuaderno: marco blanco, sombra suave y rótulo
+function foto(s, archivo, x, y, w, h, rotulo = 'IMAGEN ILUSTRATIVA') {
+  s.addShape(S.rect, { x, y, w, h, fill: { color: K.blanco }, line: { color: K.linea, width: 0.75 }, shadow: { type: 'outer', blur: 8, offset: 2, angle: 90, color: '000000', opacity: 0.14 } });
+  s.addImage({ path: A(archivo), x: x + 0.08, y: y + 0.08, w: w - 0.16, h: h - 0.16, altText: rotulo });
+  mono(s, rotulo, { x, y: y + h + 0.05, w, h: 0.26, fontSize: 11, align: 'right' });
 }
-const brillo = (s, x, y, w, h, k = 0.9) => s.addImage({ path: A('brillo.png'), x: x - k, y: y - 0.7 * k, w: w + 2 * k, h: h + 1.4 * k, altText: '' });
-const numero = (s, text, o = {}) => T(s, text, Object.assign({ fontFace: F_CON, bold: true, fontSize: TX.cifra, color: C.text1, valign: 'bottom' }, o));
-const regla = (s, y, x = M, w = CW, color = C.accent5) => linea(s, x, y, w, 0, color, 0.75);
+// cota: línea de medida con flechas en ambos extremos y su valor encima
+function cota(s, x1, x2, y, texto, o = {}) {
+  linea(s, x1, y - 0.14, 0, 0.28, o.color || K.azul, 1); linea(s, x2, y - 0.14, 0, 0.28, o.color || K.azul, 1);
+  flecha(s, x1, y, x2, y, o.color || K.azul, 1.25, { doble: true });
+  mono(s, texto, { x: x1, y: y - 0.42, w: x2 - x1, h: 0.28, fontSize: o.size || 14, bold: true, color: o.color || K.azul, align: 'center' });
+}
+// regla graduada para las matrices de David (1 a 4, promedio 2,5)
+function regla(s, x, y, w, marcas, o = {}) {
+  const v0 = 1, v1 = 4, X = v => x + (v - v0) / (v1 - v0) * w;
+  linea(s, x, y, w, 0, K.tx, 1.5);
+  for (let v = v0; v <= v1 + 1e-9; v += 0.25) {
+    const may = Math.abs(v * 2 - Math.round(v * 2)) < 1e-9;
+    linea(s, X(v), y, 0, may ? 0.2 : 0.1, K.tx, may ? 1.25 : 0.75);
+    if (may) mono(s, v.toFixed(1).replace('.', ','), { x: X(v) - 0.3, y: y + 0.22, w: 0.6, h: 0.26, fontSize: 12, align: 'center', color: K.gris });
+  }
+  linea(s, X(2.5), y - (o.alto || 1.1), 0, (o.alto || 1.1) + 0.2, K.medio, 1.25, { line: { color: K.medio, width: 1.25, dashType: 'dash' } });
+  mono(s, 'PROMEDIO', { x: X(2.5) - 0.6, y: y + 0.44, w: 1.2, h: 0.22, fontSize: 11, color: K.gris, align: 'center' });
+  marcas.forEach(m => {
+    const xx = X(m.v), col = m.color || K.tx;
+    s.addShape(S.triangle, { x: xx - 0.12, y: y - 0.26, w: 0.24, h: 0.22, rotate: 180, fill: { color: m.hueco ? K.blanco : col }, line: { color: col, width: 1.25, dashType: m.dash || 'solid' } });
+    const lx = m.izq ? xx - 2.2 : xx - 1.1;
+    num(s, m.n, { x: lx, y: y - 0.95 - (m.alto || 0), w: 2.2, h: 0.62, fontSize: m.size || 34, color: col, align: m.izq ? 'right' : 'center' });
+    mono(s, m.t, { x: lx, y: y - 0.33 - 0.03 - (m.alto || 0) - 0.62 - 0.26, w: 2.2, h: 0.26, fontSize: 12, color: col, bold: true, align: m.izq ? 'right' : 'center' });
+  });
+}
+const fuente = (s, t) => { if (t.length > 84) console.warn('Fuente en dos líneas:', t); mono(s, t, { x: M, y: 6.78, w: 8.2, h: 0.3, fontSize: 11, valign: 'middle', charSpacing: 0 }); };
 
-// ---------- marcos (layouts) ----------
-const logo = { image: { path: A('logo.png'), x: M, y: 0.42, w: LOGO_W, h: LOGO_H, altText: 'Lumine Motors' } };
+// ---------- marcos ----------
 pres.defineSlideMaster({
   title: 'PORTADA',
-  background: { path: A('portada-premium.jpg') },
-  objects: [
-    logo,
-    { placeholder: { options: { name: 'title', type: 'title', x: M, y: 1.42, w: 9.6, h: 1.9, fontFace: F_TIT, fontSize: 54, color: C.text1, align: 'left', valign: 'top', margin: 0, lineSpacingMultiple: 0.9 }, text: '' } },
-  ],
+  background: { path: A('papel.png') },
+  objects: [],
 });
+const CAJ_X = 9.05, CAJ_Y = 6.73, CAJ_H = 0.47;
 pres.defineSlideMaster({
   title: 'CONTENIDO',
-  background: { color: C.background1 },
+  background: { path: A('papel.png') },
   margin: [0.5, M, 0.6, M],
   objects: [
-    logo,
-    { text: { text: CURSO, options: { x: 6.2, y: 0.4, w: R - 6.2, h: 0.26, align: 'right', valign: 'middle', fontFace: F_MONO, fontSize: TX.inst, color: C.text2, charSpacing: 1.5, margin: 0 } } },
-    { placeholder: { options: { name: 'etiqueta', type: 'body', x: M, y: 0.92, w: 7.6, h: 0.3, fontFace: F_MONO, fontSize: 12, color: C.text2, charSpacing: 1.5, margin: 0, valign: 'middle' }, text: '' } },
-    { placeholder: { options: { name: 'title', type: 'title', x: M, y: 1.36, w: CW, h: 1.2, fontFace: F_TIT, fontSize: TX.tit, color: C.text1, align: 'left', margin: 0, valign: 'top', lineSpacingMultiple: 0.86 }, text: '' } },
+    { rect: { x: CAJ_X, y: CAJ_Y, w: 13.03 - CAJ_X, h: CAJ_H, fill: { color: K.blanco }, line: { color: K.tx, width: 1 } } },
+    { line: { x: CAJ_X + 1.45, y: CAJ_Y, w: 0, h: CAJ_H, line: { color: K.tx, width: 1 } } },
+    { line: { x: CAJ_X + 3.05, y: CAJ_Y, w: 0, h: CAJ_H, line: { color: K.tx, width: 1 } } },
+    { text: { text: 'LUMINE MOTORS', options: { x: CAJ_X, y: CAJ_Y, w: 1.45, h: CAJ_H, fontFace: F_MONO, fontSize: 11, bold: true, color: K.tx, align: 'center', valign: 'middle', margin: 0 } } },
+    { text: { text: 'TIG · ICMA901 · UNAB', options: { x: CAJ_X + 1.45, y: CAJ_Y, w: 1.6, h: CAJ_H, fontFace: F_MONO, fontSize: 11, color: K.gris, align: 'center', valign: 'middle', margin: 0 } } },
+    { text: { text: 'LÁM.', options: { x: CAJ_X + 3.1, y: CAJ_Y, w: 0.45, h: CAJ_H, fontFace: F_MONO, fontSize: 11, color: K.gris, valign: 'middle', margin: 0 } } },
+    { placeholder: { options: { name: 'etiqueta', type: 'body', x: M, y: 0.52, w: 9.0, h: 0.3, fontFace: F_MONO, fontSize: 13, color: K.azul, charSpacing: 1.5, margin: 0, valign: 'middle', bold: true }, text: '' } },
+    { placeholder: { options: { name: 'title', type: 'title', x: M, y: 0.86, w: CW, h: 1.2, fontFace: F_TIT, fontSize: 32, color: K.tx, align: 'left', margin: 0, valign: 'top', lineSpacingMultiple: 0.9 }, text: '' } },
   ],
-  slideNumber: { x: R - 0.8, y: 7.02, w: 0.8, h: 0.26, fontFace: F_MONO, fontSize: 12, color: HEX.accent1, align: 'right', margin: 0 },
+  slideNumber: { x: CAJ_X + 3.5, y: CAJ_Y + 0.08, w: 0.45, h: 0.32, fontFace: F_MONO, fontSize: 13, bold: true, color: K.azul, align: 'center', margin: 0 },
 });
 
-// ---------- CMI en red revisado: una sola fuente para el mapa, las rutas y el anexo ----------
-// eje: 1 Habilitación formal, 2 Acceso comercial, 3 Conocimiento y escala (presentación anterior); [] = nuevo o recuperado.
-const OBJ = {
-  A1: { n: 'Biblioteca de calibraciones', ind: 'Calibraciones registradas y controladas ÷ generadas', meta: '100% antes de reutilizar', regla: 'Crítico', resp: 'Ingeniería de Calibración', ini: 'Repositorio versionado con control de acceso', eje: [3] },
-  A2: { n: 'Técnicos habilitados', ind: 'Técnicos con validación vigente ÷ asignados', meta: '100% antes de tareas críticas', regla: 'Crítico', resp: 'Responsable Técnico', ini: 'Ruta de habilitación en Lumine Habilita', eje: [3] },
-  A3: { n: 'Protocolo de medición', ind: 'Protocolos de prueba aprobados', meta: '1 antes del primer piloto', regla: 'Hito', resp: 'Ingeniería de Calibración', ini: 'Protocolo antes y después con línea base del mismo auto', eje: [3] },
-  A4: { n: 'Lumine Habilita', ind: 'Componentes de habilitación documentados ÷ definidos', meta: '100% del paquete mínimo antes de licenciar', regla: 'Crítico', resp: 'Responsable Técnico', ini: 'Paquete mínimo de formación y evaluación', eje: [3] },
-  P1: { n: 'Vía legal', ind: 'Vía sectorial aplicable documentada', meta: '1 antes de la actividad comercial', regla: 'Hito', resp: 'Gerente General', ini: 'Plantear al MTT los precedentes de conversiones ya reguladas', eje: [1] },
-  P2: { n: 'Par modelo-kit aprobado', ind: 'Pares modelo-kit formalmente aprobados', meta: '1 o más antes de instalar ese par', regla: 'Hito', resp: 'Ingeniería de Calibración', ini: 'Homologar primero los modelos más densos', eje: [1] },
-  P3: { n: 'Instalación segura', ind: 'Órdenes con control técnico completo ÷ cerradas', meta: '100% de las órdenes', regla: 'Crítico', resp: 'Responsable Técnico', ini: 'Checklist técnico y acta de liberación', eje: [] },
-  P4: { n: 'Medición y posventa', ind: 'Expedientes de medición y entrega completos ÷ exigibles', meta: '100% de los exigibles', regla: 'Crítico', resp: 'Ingeniería de Calibración', ini: 'Expediente único por vehículo', eje: [3] },
-  P5: { n: 'Réplica en talleres', ind: 'Paquete de licencia validado', meta: 'Hito; fecha por definir', regla: 'Meta pendiente', resp: 'Gerente General', ini: 'Manual técnico y selección de talleres', eje: [3] },
-  P6: { n: 'Alianzas que destraban', ind: 'Convenios vigentes: aseguradora, planta de revisión y financiera', meta: '1 de cada una antes del primer kit', regla: 'Hito', resp: 'Gerente General', ini: 'Convenios del cruce DA del FODA', eje: [1, 2] },
-  C1: { n: 'Promesa técnica cumplida', ind: 'Servicios conformes ÷ entregas verificadas', meta: '100% de las entregas', regla: 'Crítico', resp: 'Responsable Técnico', ini: 'Acta de conformidad firmada', eje: [] },
-  C2: { n: 'Ahorro acreditado', ind: 'Reportes comparativos completos ÷ exigibles', meta: '100% de los exigibles', regla: 'Crítico', resp: 'Comercial y Postventa', ini: 'Reporte con método, límites y acuse', eje: [3] },
-  C3: { n: 'Confianza del cliente', ind: 'Confianza declarada después del servicio; reclamos por servicio', meta: 'Por definir con la primera muestra', regla: 'Meta pendiente', resp: 'Comercial y Postventa', ini: 'Encuesta posservicio y registro de reclamos', eje: [] },
-  C4: { n: 'Segmento captado', ind: 'Consultas del segmento convertidas en instalaciones', meta: 'Por definir con la primera muestra', regla: 'Meta pendiente', resp: 'Comercial y Postventa', ini: 'Clasificar consultas por uso y seguir su conversión', eje: [2] },
-  F1: { n: 'Rentabilidad sobre el costo de capital', ind: 'Antes de invertir: VAN > 0 y TIR > tasa exigida. Operando: retorno sobre el capital empleado frente a su costo', meta: 'Superar el costo de capital', regla: 'Retorno', resp: 'Gerente General', ini: 'Plan Financiero con tasa sustentada', eje: [] },
-  F2: { n: 'Margen por servicio', ind: 'Margen de contribución unitario', meta: 'Por definir en el Plan Financiero', regla: 'Meta pendiente', resp: 'Gerente General', ini: 'Cobertura cambiaria y abastecimiento de largo plazo', eje: [] },
-  F3: { n: 'Expansión y licencias', ind: 'Evaluación incremental por alternativa (taller o licencias)', meta: 'Umbral por definir en el Plan Financiero', regla: 'Meta pendiente', resp: 'Gerente General', ini: 'Evaluar cada alternativa antes de abrir', eje: [3] },
-};
-// tipo: hab = habilitante · ext = condición externa · hip = hipótesis por comprobar
-const REL = [
-  ['R01', 'A1', 'P2', 'hab', 'Calibraciones versionadas respaldan el expediente del par', 'El expediente usa una calibración aprobada', 1],
-  ['R02', 'P1', 'P2', 'ext', 'La vía formal define los requisitos de aprobación del kit', 'Norma o criterio habilitante confirmado', 1],
-  ['R03', 'P2', 'P3', 'hab', 'Solo pares aprobados se instalan comercialmente', 'La orden identifica un par aprobado', 1],
-  ['R04', 'A2', 'P3', 'hab', 'Personal habilitado sostiene la ejecución segura', 'Asignaciones y checklists validados', 1],
-  ['R05', 'P3', 'C1', 'hab', 'El control final verifica la promesa técnica', 'Acta de conformidad', 1],
-  ['R06', 'P1', 'P5', 'ext', 'La réplica también exige viabilidad regulatoria', 'Aplicabilidad a terceros verificada', 1],
-  ['R07', 'A3', 'P4', 'hab', 'Datos comparables permiten informes defendibles', 'Expedientes con línea base común', 2],
-  ['R08', 'P3', 'P4', 'hip', 'Una instalación trazable permite el seguimiento', 'Componentes y línea base identificados', 2],
-  ['R09', 'P4', 'C2', 'hab', 'Datos revisados habilitan un reporte confiable', 'Informe con método, límites y acuse', 2],
-  ['R10', 'C1', 'C3', 'hip', 'Cumplir la promesa técnica reforzaría la confianza', 'Opinión posservicio y reclamos', 2],
-  ['R11', 'C2', 'C3', 'hip', 'Evidencia comprensible del ahorro sumaría confianza', 'Opinión posservicio y reclamos', 2],
-  ['R12', 'P6', 'C3', 'hip', 'El respaldo de aseguradoras y plantas suma confianza', 'Confianza con y sin respaldo', 2],
-  ['R13', 'C3', 'C4', 'hip', 'Más confianza mejoraría la conversión de consultas', 'Conversión segmentada antes y después', 2],
-  ['R14', 'P6', 'C4', 'hip', 'La cuota disponible destrabaría la compra', 'Conversión con y sin financiamiento', 2],
-  ['R15', 'C4', 'F2', 'hip', 'Más volumen aporta solo con precio y costo controlados', 'Margen real y contribución total', 3],
-  ['R16', 'P3', 'F2', 'hip', 'Menos retrabajo contendría el costo variable', 'Costo por orden y reprocesos', 3],
-  ['R17', 'F2', 'F1', 'hip', 'El margen alimenta flujos descontables', 'Conciliación de costos, ventas y flujo', 3],
-  ['R18', 'A4', 'P5', 'hip', 'Un método documentado hace replicable el servicio', 'Paquete de formación revisado', 3],
-  ['R19', 'P5', 'F3', 'hip', 'El paquete permite evaluar la línea de licencias', 'Modelo de ingresos y costos aprobado', 3],
-  ['R20', 'F3', 'F1', 'hip', 'Expandirse crea valor solo con evaluación positiva', 'VAN incremental por alternativa', 3],
-];
-// nombres cortos solo para el mapa completo (los nodos son angostos)
-const CORTO = { A1: 'Biblioteca', P2: 'Par aprobado', C1: 'Promesa cumplida' };
-const EJE = { 1: HEX.dk1, 2: HEX.accent1, 3: '0A6F9E' };
-const EJE_NOMBRE = { 1: 'Habilitación formal', 2: 'Acceso comercial', 3: 'Conocimiento y escala' };
-const LINEA = {
-  hab: { color: C.accent1, width: 2 },
-  ext: { color: C.text1, width: 3.25 },
-  hip: { color: C.accent1, width: 1.5, dashType: 'dash' },
-};
-// polilínea con flecha en el último tramo; pts = [[x, y], ...]
-function ruta(s, pts, tipo) {
-  const st = LINEA[tipo];
-  for (let i = 0; i < pts.length - 1; i++) {
-    const [x1, y1] = pts[i], [x2, y2] = pts[i + 1], ult = i === pts.length - 2;
-    s.addShape(S.line, { x: x1, y: y1, w: x2 - x1, h: y2 - y1, line: Object.assign({}, st, ult ? { endArrowType: 'triangle' } : {}) });
-  }
-}
-function leyendaLineas(s, x0 = R) {
-  const items = [['hab', 'HABILITANTE'], ['ext', 'CONDICIÓN EXTERNA'], ['hip', 'HIPÓTESIS']];
-  let x = x0;
-  [...items].reverse().forEach(([t, k]) => {
-    const w = k.length * (12 * 0.6 + 0.5) / 72 + 0.1;
-    x -= w;
-    mono(s, k, { x, y: 0.92, w, h: 0.3, fontSize: 12, color: C.text1, valign: 'middle', charSpacing: 0.5 });
-    s.addShape(S.line, { x: x - 0.55, y: 1.07, w: 0.42, h: 0, line: Object.assign({}, LINEA[t]) });
-    x -= 0.85;
-  });
-}
-// barra superior de color según el eje estratégico de origen (dividida si viene de dos)
-function barraEje(s, ejes, x, y, w, h = 0.07) {
-  if (!ejes.length) return;
-  const bw = w / ejes.length;
-  ejes.forEach((e, i) => s.addShape(S.rect, { x: x + i * bw, y, w: bw, h, fill: { color: EJE[e] }, line: { type: 'none' } }));
-}
-// nodo del mapa: código arriba, nombre abajo
-function nodo(s, id, x, y, w, h, o = {}) {
-  const ob = OBJ[id], hot = !!o.hot;
-  if (hot) { brillo(s, x, y, w, h, 0.4); cajaHot(s, x, y, w, h); } else caja(s, x, y, w, h, { line: { color: o.borde || C.text2, width: 0.75 } });
-  barraEje(s, ob.eje, x, y, w);
-  const size = o.size || 14;
-  if (o.inline) {
-    T(s, [{ text: id + '  ', options: { fontFace: F_MONO, fontSize: 12, bold: true, color: C.accent1 } }, { text: o.corto && CORTO[id] || ob.n, options: { bold: hot } }], { x: x + 0.1, y: y + 0.06, w: w - 0.16, h: h - 0.08, fontSize: size, valign: 'middle', lineSpacingMultiple: 0.88 });
-    return;
-  }
-  mono(s, id, { x: x + 0.1, y: y + 0.08, w: 0.8, h: size >= 18 ? 0.3 : 0.2, fontSize: size >= 18 ? 15 : 12, bold: true, color: C.accent1 });
-  T(s, ob.n, { x: x + 0.1, y: y + (size >= 18 ? 0.38 : 0.26), w: w - 0.16, h: h - (size >= 18 ? 0.44 : 0.3), fontSize: size, bold: hot, valign: 'top', lineSpacingMultiple: 0.88 });
-}
-// estado con forma y color: cumple = círculo · alerta = triángulo · no cumple = cuadrado · meta pendiente = cuadrado punteado · sin medir = anillo a trazos
-function forma(s, tipo, x, y, d) {
-  if (tipo === 'cumple') s.addShape(S.ellipse, { x, y, w: d, h: d, fill: { color: VERDE }, line: { type: 'none' } });
-  if (tipo === 'alerta') s.addShape(S.triangle, { x, y, w: d, h: d, fill: { color: AMBAR }, line: { type: 'none' } });
-  if (tipo === 'nocumple') s.addShape(S.rect, { x: x + d * 0.08, y: y + d * 0.08, w: d * 0.84, h: d * 0.84, fill: { color: ROJO }, line: { type: 'none' } });
-  if (tipo === 'pend') s.addShape(S.rect, { x: x + d * 0.08, y: y + d * 0.08, w: d * 0.84, h: d * 0.84, fill: { color: C.background1, transparency: 100 }, line: { color: GRIS, width: 1.5, dashType: 'sysDot' } });
-  if (tipo === 'sin') s.addShape(S.ellipse, { x, y, w: d, h: d, fill: { color: C.background1, transparency: 100 }, line: { color: GRIS, width: 1.75, dashType: 'dash' } });
-}
-// rótulo de código (chip) para remitir a un objetivo del CMI
-function chip(s, id, x, y, o = {}) {
-  const w = o.w || (id.length * 0.13 + 0.3), h = o.h || 0.36;
-  s.addShape(S.rect, { x, y, w, h, fill: { color: o.fill || C.accent5 }, line: { type: 'none' } });
-  barraEje(s, (OBJ[id] || { eje: [] }).eje, x, y, w, 0.05);
-  T(s, id, { x, y, w, h, fontFace: F_MONO, fontSize: o.size || 14, bold: true, align: 'center', valign: 'middle', color: C.text1 });
-  return w;
-}
-
-// Fuente al pie de cada diapositiva. Cifras públicas verificadas el 22-10-2026; resultados de instrumentos rotulados como del equipo.
-const INST = n => `instrumento ${n} del equipo`;
-const FUENTES = {
-  contexto: 'Fuentes: CAVEM (2026), mercado automotor enero-agosto; CNE, Bencina en Línea, citado por Emol (24-03-2026); Banco Central de Chile (2026), IPoM de septiembre.',
-  kit: 'Fuentes: presentación «Análisis estratégico» de Control de Gestión (octubre de 2026); contexto vigente del proyecto. Ilustración del kit, no un plano certificado.',
-  valor: 'Fuentes: entrevistas del equipo (n = 3; evidencia indicativa); estimación de ingeniería del equipo, no medida en autos chilenos; Lumine Habilita, demostración con datos ficticios.',
-  identidad: 'Fuente: declaraciones estratégicas del proyecto; textos literales en el anexo A7.',
-  pest: `Fuentes: ${INST('03')} (PEST, escala 1 a 5); INE (2026), ENE junio-agosto; Banco Central de Chile (2026), dólar observado; BloombergNEF (2025).`,
-  regulacion: 'Fuentes: Ley N° 21.793, Diario Oficial (14-01-2026); borrador de reglamento del MTT en consulta (diciembre de 2021); escenarios elaborados por el equipo.',
-  porter: `Fuente: ${INST('02')} (cinco fuerzas de Porter): intensidad de 0 a 5 y ponderación propia del modelo; cálculo en el anexo A2.`,
-  recursos: `Fuentes: ${INST('05')} (recursos y capacidades, cuatro criterios de competencias centrales) e ${INST('06')} (factores críticos de éxito, escala 1 a 5).`,
-  cadena: `Fuente: ${INST('06')} (cadena de valor y comparación con competidores estimada por el equipo, escala 1 a 5).`,
-  foda: 'Fuentes: instrumentos 02, 03, 05 y 06 del equipo; CAVEM (2026); CNE (2026); INE (2026); Banco Central de Chile (2026); BloombergNEF (2025).',
-  brechas: 'Fuente: elaboración propia a partir del diagnóstico (PEST, cinco fuerzas, recursos y capacidades) y del FODA del informe.',
-  cierre: 'Fuente: elaboración propia; conclusiones del informe final (capítulo 11).',
-  indice: 'Las fuentes de cada tema están al pie de su diapositiva.',
-  'a-pest': `Fuentes: ${INST('03')}; Banco Central de Chile (2026); INE (2026); BloombergNEF (2025); CAVEM (2026).`,
-  'a-porter': `Fuente: ${INST('02')}. La ponderación es un supuesto del modelo, no una medición del mercado.`,
-  'a-vrio': `Fuente: ${INST('05')} (recursos y capacidades; criterios valioso, raro, costoso de imitar e insustituible).`,
-  'a-fce': `Fuente: ${INST('06')}, factores críticos de éxito. Escala de 1 (gran debilidad) a 5 (gran fortaleza); en riesgo, un número bajo es riesgo alto.`,
-  'a-competidores': `Fuente: ${INST('06')}. Los puntajes de los competidores son estimaciones del equipo; las marcadas con * operan fuera del segmento liviano y son referencia.`,
-  'a-foda': 'Fuentes: instrumentos 02, 03, 05 y 06 del equipo y las fuentes públicas del anexo A8.',
-  'a-identidad': 'Fuente: declaraciones estratégicas del proyecto (presentación «Análisis estratégico», octubre de 2026).',
-  'a-fuentes': 'Verificación realizada el 22-10-2026. Las cifras de los instrumentos que no tienen fuente pública identificable no se usan en las láminas.',
-  'a-supuestos': 'Fuente: elaboración propia.',
-  mapa: 'Fuente: elaboración propia. CMI completo en el anexo A2; las 20 relaciones, con mecanismo y prueba, en el anexo A3.',
-  diagnostico: 'Fuentes: instrumentos 02, 03 y 05 del equipo; INE (2026); Banco Central de Chile (2026); Ley N° 21.793 (14-01-2026) y borrador del MTT (diciembre de 2021).',
-  estrategia: 'Fuente: elaboración propia; estrategia genérica según Porter (2008). La ventaja sostenible es potencial: la biblioteca de calibraciones hoy está vacía.',
-  objetivos: 'Fuente: elaboración propia; perspectivas del Cuadro de Mando Integral según Kaplan y Norton (2008). Objetivos redactados en el informe, Tabla 3.',
-  analisis: 'Fuente: elaboración propia con base en el CMI (17 objetivos) y sus 20 relaciones. Sin datos simulados: Lumine no opera.',
-  escenarios: 'Fuentes: Ley N° 21.793 (14-01-2026); borrador de reglamento del MTT (diciembre de 2021); escenarios y efectos elaborados por el equipo.',
-  umbral: 'Fuentes: precios de referencia con IVA del informe de la Fase 3 del equipo (por validar); Emol (2026), datos de la CNE. Ahorro: estimación de ingeniería no medida en autos chilenos.',
-  recomendaciones: 'Fuente: elaboración propia con base en el análisis de la información (láminas 11 a 13).',
-  'a-ficha': 'Fuente: elaboración propia; ficha y estados del tablero según el informe final (sección 9.4).',
-  'a-cmiA': 'Fuente: elaboración propia. Metas propuestas por el equipo; responsables según la estructura propuesta en la Fase 3.',
-  'a-cmiP': 'Fuente: elaboración propia. Metas propuestas por el equipo; responsables según la estructura propuesta en la Fase 3.',
-  'a-cmiC': 'Fuente: elaboración propia. C3 y C4 sin meta numérica hasta la primera muestra de clientes.',
-  'a-cmiF': 'Fuente: elaboración propia. F2 y F3 sin meta numérica hasta el Plan Financiero.',
-  'a-rel1': 'Fuente: elaboración propia. Continua: habilitante; blanca gruesa: condición externa; punteada: hipótesis.',
-  'a-rel2': 'Fuente: elaboración propia. Continua: habilitante; blanca gruesa: condición externa; punteada: hipótesis.',
-  'a-f1': 'Fuente: elaboración propia. Sin cifra: faltan flujos, inversión y una tasa sustentada (Plan Financiero).',
-  'a-sensibilidad': 'Fuentes: informe de la Fase 3 del equipo (precios de referencia); Emol (2026), datos de la CNE. Estimación, no medición.',
-};
-
-let SEC = null, CLAVE = null, NUM = 1, ANEXO_ACTUAL = null, INDICE_ANEXO = null;
-const abrirSeccion = t => { pres.addSection({ title: t }); SEC = t; };
-function contenido(etiqueta, titulo, acento) {
-  const s = pres.addSlide({ masterName: 'CONTENIDO', sectionTitle: SEC });
-  let n;
+let N = 0, INDICE_ANEXO = null, ANEXO_ACTUAL = null;
+function contenido(etq, titulo, acento, o = {}) {
+  const s = pres.addSlide({ masterName: 'CONTENIDO', sectionTitle: SECCION });
+  s.addText(etq, { placeholder: 'etiqueta' });
+  const runs = [{ text: titulo, options: { breakLine: !!acento && !o.unaLinea } }];
+  if (acento) runs.push({ text: (o.unaLinea ? ' ' : '') + acento, options: { fontFace: F_SER, italic: true, color: K.cel, fontSize: 38 } });
+  s.addText(runs, { placeholder: 'title' });
   if (ANEXO_ACTUAL) {
-    n = ANEXO_ACTUAL.codigo; etiqueta = 'ANEXO · ' + etiqueta;
-    s.addText('VOLVER AL ÍNDICE DEL ANEXO', { x: 7.7, y: 0.7, w: R - 7.7, h: 0.26, align: 'right', valign: 'middle', fontFace: F_MONO, fontSize: 12, color: C.accent1, charSpacing: 1, margin: 0, hyperlink: { slide: INDICE_ANEXO, tooltip: 'Volver al índice del anexo' } });
-  } else n = CLAVE === 'indice' ? 'A' : String(++NUM).padStart(2, '0');
-  s.addText([{ text: n, options: { color: C.accent1 } }, { text: '  —— ', options: { color: C.accent5 } }, { text: etiqueta }], { placeholder: 'etiqueta' });
-  const unaLinea = titulo.length * 0.345 + acento.length * 0.18 <= CW - 0.6;
-  s.addText([{ text: unaLinea ? titulo + ' ' : titulo, options: { breakLine: !unaLinea } }, { text: acento, options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: TX.acento } }], { placeholder: 'title' });
-  const f = FUENTES[CLAVE];
-  if (!f) throw new Error('Falta la fuente de la diapositiva ' + CLAVE);
-  T(s, f, { x: M, y: 6.94, w: R - M - 1.0, h: 0.42, valign: 'top', fontSize: TX.inst, color: C.text2 });
+    s.addText('← ÍNDICE DEL ANEXO', { x: 9.6, y: 0.52, w: R - 9.6, h: 0.3, align: 'right', valign: 'middle', fontFace: F_MONO, fontSize: 12, bold: true, color: K.azul, margin: 0, hyperlink: { slide: INDICE_ANEXO, tooltip: 'Volver al índice del anexo' } });
+  }
   return s;
 }
-function tabla(s, cols, filas, y0, o = {}) {
-  const rh = o.rh || 0.6, size = o.size || 16;
-  let x = M;
-  cols.forEach(([k, w]) => { mono(s, k, { x, y: y0, w, h: 0.3, fontSize: 12, color: C.accent1 }); x += w; });
-  filas.forEach((f, i) => {
-    const y = y0 + 0.34 + i * rh;
-    regla(s, y, M, CW, i ? C.accent5 : C.accent1);
-    let xx = M;
-    f.forEach((v, j) => {
-      const w = cols[j][1];
-      if (o.render && o.render[j]) o.render[j](v, xx, y, w, rh, i);
-      else T(s, String(v), { x: xx, y, w: w - 0.15, h: rh, fontSize: size, valign: 'middle', bold: !!(o.negrita && o.negrita.includes(j)), color: o.gris && o.gris.includes(j) ? C.text2 : C.text1, lineSpacingMultiple: 0.92, align: o.derecha && o.derecha.includes(j) ? 'right' : 'left' });
-      xx += w;
-    });
-  });
-  regla(s, y0 + 0.34 + filas.length * rh, M, CW);
-}
-const coma = n => String(n).replace('.', ',');
+let SECCION = 'Portada';
+const abrirSeccion = t => { SECCION = t; pres.addSection({ title: t }); };
 
-// =====================================================================
-// 1 · PORTADA
-// =====================================================================
+// tabla simple sobre el papel (encabezado celeste, filas blancas)
+function tabla(s, cols, filas, y, o = {}) {
+  const size = o.size || 14, x = o.x || M;
+  const head = cols.map(([k]) => ({ text: k, options: { bold: true, color: K.azul, fill: { color: K.suave }, fontFace: F_MONO, fontSize: Math.max(11, size - 2) } }));
+  const body = filas.map((f, i) => f.map((v, j) => ({ text: String(v), options: { bold: o.negrita && o.negrita(i, j), fill: { color: o.destacar && o.destacar(i) ? K.suave : K.blanco }, align: (o.centro || []).includes(j) ? 'center' : 'left' } })));
+  s.addTable([head, ...body], { x, y, w: cols.reduce((a, c) => a + c[1], 0), colW: cols.map(c => c[1]), fontFace: F_BODY, fontSize: size, color: K.tx,
+    border: { type: 'solid', pt: 0.75, color: K.linea }, margin: [0.03, 0.08, 0.03, 0.08], valign: 'middle', rowH: o.rh || 0.32, autoPage: false });
+}
+
+// ===================================================================== DIEGO
 D.portada = () => {
-  const s = pres.addSlide({ masterName: 'PORTADA', sectionTitle: SEC });
-  mono(s, 'UNAB · OCTUBRE 2026', { x: 7.2, y: 0.4, w: R - 7.2, h: 0.26, align: 'right', valign: 'middle', fontSize: 12 });
-  mono(s, [{ text: 'TIG · INFORME FINAL', options: { color: C.accent1 } }, { text: '  ·  CONTROL DE GESTIÓN', options: { color: C.text2 } }], { x: M, y: 1.0, w: CW, h: 0.32, fontSize: 14, valign: 'middle' });
-  s.addText([
-    { text: 'LUMINE MOTORS', options: { breakLine: true, fontSize: 50 } },
-    { text: 'del diagnóstico al Cuadro de Mando Integral', options: { fontFace: F_SER, italic: true, color: C.accent1, fontSize: 38 } },
-  ], { placeholder: 'title' });
-  linea(s, M, 3.05, 0.06, 0.86, C.accent1, 3);
-  T(s, [{ text: 'Lumine es preoperativa: ', options: { bold: true } }, { text: 'el CMI ordena decisiones antes de tener resultados.', options: { color: C.text2 } }],
-    { x: M + 0.3, y: 3.03, w: 5.4, h: 0.9, fontSize: 21, valign: 'middle', lineSpacingMultiple: 1.05 });
-  const iy = 5.3;
-  linea(s, M, iy, 1.2, 0, C.accent1, 1.25);
-  T(s, [
-    { text: 'Control de Gestión · ICMA901', options: { breakLine: true, bold: true, color: C.text1 } },
-    { text: 'Sección 500 · NRC 4118 · UNAB', options: { breakLine: true } },
-    { text: 'Profesor: Leonardo Lizana Contreras', options: { breakLine: true } },
-    { text: 'Diego Alarcón · Benjamín Torres · Lukas Verdugo' },
-  ], { x: M, y: iy + 0.16, w: 3.75, h: 1.4, fontSize: 12, color: C.text2, lineSpacingMultiple: 1.15 });
-  const by = 6.74;
-  const puntos = [[5.48, 4.97, 'MOTOR ORIGINAL', 'intacto'], [7.58, 5.58, 'BATERÍA', 'bajo el piso'], [10.18, 5.51, 'TRACCIÓN ELÉCTRICA', 'eje trasero']];
-  linea(s, puntos[0][0], by, puntos[2][0] - puntos[0][0], 0, C.text2, 0.75);
-  puntos.forEach(([x, y, k, v]) => {
-    linea(s, x, y + 0.07, 0, by - y - 0.07, C.text2, 0.75, { line: { color: C.text2, width: 0.75, dashType: 'sysDot' } });
-    s.addShape(S.ellipse, { x: x - 0.06, y: y - 0.06, w: 0.12, h: 0.12, fill: { color: C.accent1 }, line: { color: C.text1, width: 0.75 } });
-    s.addShape(S.rect, { x: x - 0.035, y: by - 0.035, w: 0.07, h: 0.07, fill: { color: C.text1 }, line: { type: 'none' } });
-    T(s, [{ text: k, options: { breakLine: true, fontFace: F_MONO, charSpacing: 1, color: C.text1 } }, { text: v, options: { color: C.text2 } }], { x: x - 1.1, y: by + 0.1, w: 2.2, h: 0.5, align: 'center', fontSize: 12 });
-  });
-  mono(s, 'ILUSTRACIÓN DEL KIT', { x: R - 3.0, y: 0.7, w: 3.0, h: 0.26, align: 'right', fontSize: TX.inst });
+  const s = pres.addSlide({ masterName: 'PORTADA', sectionTitle: SECCION });
+  s.addImage({ path: A('unab-facultad-economia-negocios.png'), x: M, y: 0.55, w: 1.75, h: 1.75 * 309 / 899, altText: 'Facultad de Economía y Negocios, Universidad Andrés Bello' });
+  mono(s, 'CONTROL DE GESTIÓN · ICMA901 · SECCIÓN 500 · NRC 4118', { x: M, y: 1.38, w: 6.5, h: 0.28, fontSize: 12 });
+  s.addImage({ path: A('lumine-logo.png'), x: M, y: 1.95, w: 1.1, h: 1.1 * 390 / 530, altText: 'Lumine Motors' });
+  T(s, 'LUMINE MOTORS', { x: M, y: 2.85, w: 6.0, h: 0.75, fontFace: F_TIT, fontSize: 38, valign: 'middle' });
+  serif(s, 'un sistema de control de gestión para una empresa que todavía no opera', { x: M, y: 3.6, w: 5.6, h: 1.25, fontSize: 25, color: K.cel });
+  mono(s, 'TIG · INFORME FINAL', { x: M, y: 5.0, w: 5, h: 0.3, fontSize: 14, bold: true, color: K.azul });
+  T(s, 'Diego Alarcón · Benjamín Torres · Lukas Verdugo', { x: M, y: 5.35, w: 5.8, h: 0.36, fontSize: 17 });
+  T(s, 'Profesor Leonardo Lizana Contreras', { x: M, y: 5.75, w: 5.8, h: 0.3, fontSize: 15, color: K.gris });
+  T(s, 'Santiago, noviembre de 2026', { x: M, y: 6.07, w: 5.8, h: 0.3, fontSize: 15, color: K.gris });
+  // auto en rayos X con sus piezas acotadas
+  const ix = 6.55, iy = 1.75, iw = 6.35, ih = iw * 752 / 1344;
+  s.addImage({ path: A('auto-rayos-x.jpg'), x: ix, y: iy, w: iw, h: ih, altText: 'Auto con el kit de hibridación a la vista' });
+  mono(s, 'IMAGEN ILUSTRATIVA', { x: ix, y: iy - 0.3, w: iw, h: 0.26, fontSize: 11, align: 'right' });
+  const P = (nx, ny) => [ix + nx * iw, iy + ny * ih];
+  const pieza = (nx, ny, yl, t1, t2, w = 2.0, izq = false) => {
+    const [px, py] = P(nx, ny);
+    s.addShape(S.ellipse, { x: px - 0.07, y: py - 0.07, w: 0.14, h: 0.14, fill: { color: K.blanco }, line: { color: K.azul, width: 1.5 } });
+    linea(s, px, Math.min(py, yl), 0, Math.abs(yl - py), K.azul, 1);
+    const bx = izq ? px - 0.05 - w : px + 0.05, al = izq ? 'right' : 'left';
+    s.addShape(S.rect, { x: bx, y: yl - 0.04, w, h: 0.58, fill: { color: K.blanco, transparency: 8 }, line: { type: 'none' } });
+    mono(s, t1, { x: bx + 0.05, y: yl - 0.02, w: w - 0.1, h: 0.26, fontSize: 12, bold: true, color: K.azul, align: al, charSpacing: 0.5 });
+    serif(s, t2, { x: bx + 0.05, y: yl + 0.22, w: w - 0.1, h: 0.3, fontSize: 15, align: al });
+  };
+  pieza(0.25, 0.47, 1.75, 'MOTOR ORIGINAL', 'queda intacto');
+  pieza(0.42, 0.53, 2.4, 'UNIDAD DE CONTROL', 'decide cuándo asistir');
+  pieza(0.47, 0.61, 5.55, 'BATERÍAS LFP', 'se cargan al frenar', 1.75, true);
+  pieza(0.70, 0.60, 5.55, 'MOTOR ELÉCTRICO', 'en el eje trasero', 1.75);
   return s;
 };
 
-// =====================================================================
-// 2 · INTRODUCCIÓN · el parque se conserva y usarlo cuesta cada vez más
-// =====================================================================
 D.contexto = () => {
-  const s = contenido('3 · INTRODUCCIÓN · CONTEXTO Y PROBLEMA', 'EL PARQUE SE CONSERVA', 'y usarlo cuesta cada vez más.');
-  const g = 0.35, w = (CW - 2 * g) / 3, y = Y0, h = 2.72;
-  const datos = [
-    ['SE CONSERVA EL AUTO', '3,5', 'autos usados transferidos por cada auto nuevo inscrito', 'Enero a agosto de 2026 · CAVEM', false],
-    ['USARLO CUESTA MÁS', '+$370', 'por litro de bencina 93 en la RM con el alza de marzo ($1.169 a $1.539)', 'Marzo de 2026 · CNE, Bencina en Línea', true],
-    ['LA ECONOMÍA SE FRENA', '0,25%–0,75%', 'crecimiento proyectado para 2026, recortado en parte por el alza de los combustibles', 'Septiembre de 2026 · Banco Central, IPoM', false],
-  ];
-  datos.forEach(([k, n, t, f, hot], i) => {
-    const x = M + i * (w + g);
-    if (hot) { brillo(s, x, y, w, h, 0.5); cajaHot(s, x, y, w, h); } else caja(s, x, y, w, h, { line: { color: C.text2, width: 0.75 } });
-    mono(s, k, { x: x + 0.25, y: y + 0.2, w: w - 0.5, h: 0.3, fontSize: 13, color: C.accent1 });
-    numero(s, n, { x: x + 0.25, y: y + 0.5, w: w - 0.5, h: 0.85, fontSize: n.length > 6 ? 40 : 54, valign: 'middle', color: hot ? C.accent1 : C.text1 });
-    T(s, t, { x: x + 0.25, y: y + 1.35, w: w - 0.5, h: 0.85, fontSize: 16, valign: 'top' });
-    mono(s, f, { x: x + 0.25, y: y + h - 0.42, w: w - 0.5, h: 0.34, fontSize: 11, color: C.text2, valign: 'bottom' });
-  });
-  const by = y + h + 0.2;
-  regla(s, by, M, CW, C.accent1);
-  [['PROBLEMA', 'Quien depende de su auto paga cada vez más por usarlo y no puede cambiarlo.'], ['OBJETIVO DEL TRABAJO', 'Diseñar el control que diga cuándo avanzar, corregir o detenerse.']].forEach(([k, t], i) => {
-    const yy = by + 0.1 + i * 0.55;
-    mono(s, k, { x: M, y: yy, w: 2.4, h: 0.48, fontSize: 13, color: i ? C.text2 : C.accent1, valign: 'middle' });
-    T(s, t, { x: M + 2.45, y: yy, w: CW - 2.45, h: 0.48, fontSize: 18, bold: i === 0, valign: 'middle' });
-  });
+  const s = contenido('02 · EL PROBLEMA', 'USAR EL AUTO CUESTA MÁS', 'y nadie lo cambia.');
+  mono(s, 'BENCINA 93 · REGIÓN METROPOLITANA · $ POR LITRO', { x: M, y: Y0 + 0.05, w: 6, h: 0.28, fontSize: 13 });
+  num(s, '$1.168,9', { x: M, y: Y0 + 0.4, w: 2.7, h: 0.8, fontSize: 44, color: K.gris });
+  num(s, '$1.538,9', { x: M + 3.05, y: Y0 + 0.3, w: 3.0, h: 0.9, fontSize: 54 });
+  mono(s, 'ANTES DEL ALZA', { x: M, y: Y0 + 1.25, w: 2.4, h: 0.26, fontSize: 12 });
+  mono(s, 'MARZO DE 2026', { x: M + 3.05, y: Y0 + 1.25, w: 2.8, h: 0.26, fontSize: 12, color: K.tx, bold: true });
+  cota(s, M + 0.1, M + 5.6, Y0 + 1.95, '+ $370 POR LITRO', { size: 16 });
+  num(s, '3,5', { x: M, y: Y0 + 2.25, w: 1.5, h: 1.0, fontSize: 64, color: K.cel });
+  T(s, 'autos usados transferidos por cada nuevo inscrito, de enero a agosto de 2026', { x: M + 1.6, y: Y0 + 2.45, w: 4.3, h: 0.8, fontSize: 18, valign: 'middle' });
+  serif(s, 'Quien trabaja con su auto paga más por kilómetro y no tiene el capital para cambiarlo.', { x: M, y: Y0 + 3.45, w: 5.9, h: 0.8, fontSize: 21 });
+  foto(s, 'bencinera-santiago.jpg', 7.0, Y0 + 0.05, R - 7.0, (R - 7.0) * 9 / 16);
+  fuente(s, 'Garretón (2026), con datos de la CNE · CNN Chile (2026), con datos de la CAVEM');
   return s;
 };
 
-// =====================================================================
-// 3 · UN KIT QUE SE SUMA, NO REEMPLAZA
-// =====================================================================
-D.kit = () => {
-  const s = contenido('4 · COMPRENSIÓN DEL NEGOCIO · LA SOLUCIÓN', 'UN KIT QUE SE SUMA,', 'no reemplaza.');
-  const iw = 8.7, ih = iw * 740 / 2400;
-  s.addImage({ path: A('plano.png'), x: M + 0.1, y: Y0 - 0.05, w: iw, h: ih, altText: 'Plano del kit: motor original adelante, unidad de control, banco de baterías y motor eléctrico en el eje trasero' });
-  const ly = Y0 + ih + 0.05, pw = (iw + 0.2) / 4;
-  regla(s, ly, M, iw + 0.2);
-  [['01', 'MOTOR ORIGINAL', 'Intacto, con su tracción delantera'], ['02', 'UNIDAD DE CONTROL', 'Decide cuándo asistir y corta ante fallas'], ['03', 'BANCO DE BATERÍAS', 'Guarda la energía del frenado'], ['04', 'MOTOR ELÉCTRICO', 'En el eje trasero; no se enchufa']].forEach(([n, k, v], i) => {
-    const x = M + i * pw;
-    tag(s, n, x, ly + 0.16, { off: i === 0, w: 0.5, h: 0.34, size: 14 });
-    mono(s, k, { x: x + 0.6, y: ly + 0.16, w: pw - 0.65, h: 0.34, fontSize: 12, color: C.text1, valign: 'middle' });
-    T(s, v, { x, y: ly + 0.6, w: pw - 0.15, h: 0.7, fontSize: 16, color: C.text2 });
-  });
-  const rx = M + iw + 0.6, rw = R - rx;
-  [['ESTADO', 'Preoperativa: sin taller, personal ni clientes', null], ['SEGURIDAD', 'Por diseño, freno, ABS y estabilidad originales mandan sobre el kit', null], ['DISEÑO', 'Falta probarlo, homologarlo y documentarlo', 'POR VALIDAR']].forEach(([k, v, m], i) => {
-    const y = Y0 + i * 1.32;
-    regla(s, y, rx, rw, i ? C.accent5 : C.accent1);
-    mono(s, k, { x: rx, y: y + 0.1, w: rw, h: 0.3, fontSize: 13, color: C.accent1 });
-    T(s, v, { x: rx, y: y + 0.42, w: rw, h: 0.85, fontSize: 16, valign: 'top' });
-    if (m) marca(s, 'pen', m, R, y + 0.06, { alignRight: true, size: 12, h: 0.32 });
-  });
+D.arbol = () => {
+  const s = contenido('03 · SUPUESTO DE PARTIDA', 'EL REGLAMENTO AÚN NO EXISTE:', 'partimos de E1.');
+  const nodo = (x, y, w, h, t, o = {}) => { caja(s, x, y, w, h, o.caja || {}); T(s, t, { x: x + 0.12, y, w: w - 0.24, h, fontSize: o.size || 16, valign: 'middle', align: 'center', bold: o.bold }); };
+  const cy = 4.3;
+  nodo(M, cy - 0.5, 2.15, 1.0, 'Reglamento de la Ley N° 21.793', { bold: true });
+  nodo(3.35, cy - 0.5, 2.4, 1.0, '¿Acepta conservar el motor?');
+  nodo(6.45, 2.55, 2.6, 1.0, '¿Mantiene las exclusiones? (ABS, airbag)');
+  nodo(6.45, 5.05, 2.6, 1.0, '¿Procede la alteración de características?');
+  linea(s, M + 2.15, cy, 3.35 - M - 2.15, 0, K.tx, 1.25);
+  // Q1 → Q2 (sí) y Q3 (no)
+  linea(s, 5.75, cy, 0.35, 0, K.tx, 1.25); linea(s, 6.1, 3.05, 0, 2.5, K.tx, 1.25);
+  linea(s, 6.1, 3.05, 0.35, 0, K.tx, 1.25); linea(s, 6.1, 5.55, 0.35, 0, K.tx, 1.25);
+  mono(s, 'SÍ', { x: 5.8, y: 3.12, w: 0.3, h: 0.24, fontSize: 12, bold: true, color: K.tx });
+  mono(s, 'NO', { x: 5.8, y: 5.2, w: 0.35, h: 0.24, fontSize: 12, bold: true, color: K.tx });
+  const hoja = (y, cod, t, base) => {
+    if (base) cajaAzul(s, 9.75, y, R - 9.75, 0.62); else caja(s, 9.75, y, R - 9.75, 0.62);
+    T(s, [{ text: cod + '  ', options: { fontFace: F_MONO, bold: true, color: base ? K.azul : K.tx } }, { text: t, options: { bold: base } }], { x: 9.9, y, w: R - 9.9, h: 0.62, fontSize: 17, valign: 'middle' });
+  };
+  // Q2 → E1 (no) y E2 (sí); Q3 → E3 (sí) y E4 (no)
+  const rama = (x0, y0, ya, yb, la, lb) => {
+    linea(s, x0, y0, 0.3, 0, K.tx, 1.25); linea(s, x0 + 0.3, ya + 0.31, 0, yb - ya, K.tx, 1.25);
+    linea(s, x0 + 0.3, ya + 0.31, 0.4, 0, K.tx, 1.25); linea(s, x0 + 0.3, yb + 0.31, 0.4, 0, K.tx, 1.25);
+    mono(s, la, { x: x0 + 0.33, y: ya + 0.02, w: 0.4, h: 0.24, fontSize: 12, bold: true, color: K.tx });
+    mono(s, lb, { x: x0 + 0.33, y: yb + 0.36, w: 0.4, h: 0.24, fontSize: 12, bold: true, color: K.tx });
+  };
+  rama(9.05, 3.05, 2.2, 3.0, 'NO', 'SÍ');
+  hoja(2.2, 'E1', 'Vía amplia', true); hoja(3.0, 'E2', 'Vía acotada');
+  rama(9.05, 5.55, 4.7, 5.5, 'SÍ', 'NO');
+  hoja(4.7, 'E3', 'Vía alternativa'); hoja(5.5, 'E4', 'Sin vía');
+  marca(s, 'ESCENARIO BASE', R, 1.86, { derecha: true, color: K.azul, dash: 'solid' });
+  serif(s, 'La ley es posterior al borrador de 2021 y suma «otras adaptaciones»; el kit conserva los sistemas de seguridad.', { x: M, y: 2.25, w: 5.0, h: 1.0, fontSize: 19 });
+  marca(s, 'SUPUESTO DECLARADO · SE MIDE EN P1', M, 5.6, {});
+  fuente(s, 'Ley N° 21.793 (2026) · Subsecretaría de Transportes (2021) · Anexo A1');
   return s;
 };
 
-// =====================================================================
-// 4 · EL CLIENTE COMPRA AHORRO SIN CAMBIAR DE AUTO, SI CONFÍA · propuesta de valor y modelo de negocio
-// =====================================================================
-D.valor = () => {
-  const s = contenido('4 · COMPRENSIÓN DEL NEGOCIO · CLIENTE Y MODELO', 'EL CLIENTE COMPRA AHORRO', 'sin cambiar de auto, si confía.');
-  mono(s, 'NECESIDAD', { x: M, y: Y0, w: 2, h: 0.4, fontSize: 13, valign: 'middle' });
-  T(s, '«Dejar de pagar cada vez más por usar el auto, sin tener que reemplazarlo.»', { x: M + 1.6, y: Y0, w: CW - 1.6, h: 0.4, fontFace: F_SER, italic: true, fontSize: 22, valign: 'middle' });
-  const g = 0.25, w = (CW - 3 * g) / 4, y = Y0 + 0.55, h = 1.32;
-  [['Ahorrar hasta 20% sin cambiar de auto', 'ESTIMACIÓN'], ['Respaldo técnico verificable', null], ['Seguir usando el mismo vehículo', null], ['Transparencia en compatibilidad y costos', null]].forEach(([t, m], i) => {
-    const x = M + i * (w + g);
-    caja(s, x, y, w, h, { line: { color: i === 0 ? C.accent1 : C.text2, width: i === 0 ? 1.25 : 0.75 } });
-    tag(s, String(i + 1), x + 0.18, y + 0.16, { off: i > 0, w: 0.38, h: 0.34, size: 14 });
-    T(s, t, { x: x + 0.18, y: y + 0.56, w: w - 0.3, h: 0.6, fontSize: 16, bold: true, valign: 'top', lineSpacingMultiple: 0.95 });
-    if (m) marca(s, 'est', m, x + w - 0.12, y + 0.14, { alignRight: true, size: 10, h: 0.3 });
+D.lienzo = () => {
+  const s = contenido('04 · PROPUESTA DE VALOR', 'CADA FRUSTRACIÓN TIENE SU ALIVIADOR', null);
+  const Z = 13, RH = 0.32;
+  const item = (x, y, cod, t, w) => {
+    mono(s, cod, { x, y, w: 0.34, h: RH, fontSize: 11, bold: true, color: K.cel, valign: 'middle' });
+    T(s, t, { x: x + 0.34, y, w, h: RH, fontSize: Z, valign: 'middle' });
+  };
+  // cuadrado: mapa de valor (4,4 in, con 0,2 in de aire en el borde interior)
+  const sx = M, sy = 2.15, sq = 4.4, cx = sx + sq / 2, cy = sy + sq / 2;
+  mono(s, 'MAPA DE VALOR · LUMINE', { x: sx, y: 1.8, w: sq, h: 0.26, fontSize: 12, bold: true, color: K.azul, align: 'center' });
+  s.addShape(S.rect, { x: sx, y: sy, w: sq, h: sq, fill: { color: K.blanco }, line: { color: K.tx, width: 2 } });
+  linea(s, sx, sy, cx - 0.25 - sx, cy - 0.2 - sy, K.tx, 1.5);
+  linea(s, sx, cy + 0.2, cx - 0.25 - sx, sy + sq - cy - 0.2, K.tx, 1.5, { flipV: true });
+  linea(s, cx + 0.25, cy, sx + sq - cx - 0.25, 0, K.tx, 1.5);
+  s.addShape(S.rect, { x: cx - 0.2, y: cy - 0.08, w: 0.4, h: 0.3, fill: { color: K.blanco }, line: { color: K.tx, width: 1.5 } });
+  s.addShape(S.rect, { x: cx - 0.24, y: cy - 0.17, w: 0.48, h: 0.1, fill: { color: K.blanco }, line: { color: K.tx, width: 1.5 } });
+  linea(s, cx, cy - 0.17, 0, 0.39, K.tx, 1.5);
+  const tx0 = cx - 0.05, tw = sx + sq - 0.2 - tx0 - 0.34;
+  mono(s, 'CREADORES DE ALEGRÍAS', { x: tx0, y: sy + 0.18, w: sx + sq - 0.1 - tx0, h: 0.24, fontSize: 11, bold: true, color: K.tx, charSpacing: 0 });
+  [['C1', 'Reporte de consumo'], ['C2', 'Calibración propia'], ['C3', 'Cuota comparable'], ['C4', 'Garantía escrita']].forEach(([k, t], i) => item(tx0, sy + 0.55 + i * 0.36, k, t, tw));
+  mono(s, 'ALIVIADORES', { x: cx + 0.34, y: cy + 0.1, w: 2, h: 0.24, fontSize: 11, bold: true, color: K.tx });
+  const yr = [cy + 0.42, cy + 0.78, cy + 1.14, cy + 1.5];
+  [['R1', 'Hasta −20% bencina'], ['R2', 'No cambia de auto'], ['R3', 'Respaldo formal'], ['R4', 'Ahorro medido']].forEach(([k, t], i) => item(tx0, yr[i], k, t, tw));
+  mono(s, 'PRODUCTOS', { x: sx + 0.2, y: cy - 0.55, w: 1.6, h: 0.24, fontSize: 11, bold: true, color: K.tx });
+  ['Kit e instalación', 'Diagnóstico', 'Medición'].forEach((t, i) => T(s, t, { x: sx + 0.2, y: cy - 0.27 + i * 0.3, w: 1.6, h: 0.28, fontSize: 13, valign: 'middle' }));
+  // círculo: perfil del cliente
+  const ox = 10.25, oy = cy, r = 2.2, a = 40 * Math.PI / 180;
+  mono(s, 'PERFIL · CONDUCTOR DE USO INTENSIVO', { x: ox - r - 0.3, y: 1.8, w: 2 * r + 0.6, h: 0.26, fontSize: 12, bold: true, color: K.azul, align: 'center' });
+  s.addShape(S.ellipse, { x: ox - r, y: oy - r, w: 2 * r, h: 2 * r, fill: { color: K.blanco }, line: { color: K.tx, width: 2 } });
+  const ex = ox + r * Math.cos(a), eyU = oy - r * Math.sin(a), eyD = oy + r * Math.sin(a);
+  linea(s, ox + 0.2, eyU, ex - ox - 0.2, oy - 0.12 - eyU, K.tx, 1.5, { flipV: true });
+  linea(s, ox + 0.2, oy + 0.12, ex - ox - 0.2, eyD - oy - 0.12, K.tx, 1.5);
+  linea(s, ox - r, oy, r - 0.22, 0, K.tx, 1.5);
+  s.addShape(S.ellipse, { x: ox - 0.22, y: oy - 0.22, w: 0.44, h: 0.44, fill: { color: K.blanco }, line: { color: K.tx, width: 1.5 } });
+  s.addShape(S.ellipse, { x: ox + 0.02, y: oy - 0.09, w: 0.06, h: 0.06, fill: { color: K.tx }, line: { type: 'none' } });
+  const izq = y => ox - Math.sqrt(Math.max(0, r * r - (y - oy) ** 2));
+  const xFila = y => Math.max(izq(y), izq(y + RH)) + 0.3; // 0,3 in de aire respecto del círculo
+  mono(s, 'ALEGRÍAS', { x: xFila(oy - 2.0), y: oy - 2.0, w: 1.4, h: 0.24, fontSize: 11, bold: true, color: K.tx });
+  ['Ver el ahorro cada mes', 'Seguir con su auto', 'Cuota menor al ahorro', 'Taller que responde'].forEach((t, i) => {
+    const y = oy - 1.7 + i * 0.36;
+    item(xFila(y), y, `G${i + 1}`, t, 2.2);
   });
-  const ey = y + h + 0.16;
-  T(s, [{ text: 'Indicio cualitativo: ', options: { color: C.text2 } }, { text: 'el precio decide si se compra; la confianza, si uno se atreve.', options: { bold: true } }], { x: M, y: ey, w: CW - 2.6, h: 0.45, fontSize: 18, valign: 'middle' });
-  marca(s, 'sup', 'INDICATIVO · n = 3', R, ey + 0.05, { alignRight: true, size: 12, h: 0.36 });
-  const my = ey + 0.65, q = YF - my;
-  regla(s, my, M, CW, C.accent1);
-  mono(s, 'MODELO DE NEGOCIO', { x: M, y: my + 0.12, w: 4, h: 0.3, fontSize: 13, color: C.accent1 });
-  const bw = (CW - q - 0.6) / 2;
-  [['LÍNEA 1', 'Taller propio: diagnóstico, instalación, calibración y posventa', null], ['LÍNEA 2', 'Licencias de calibración y procedimiento, con Lumine Habilita', 'POTENCIAL']].forEach(([k, t, m], i) => {
-    const x = M + i * (bw + 0.25);
-    mono(s, k, { x, y: my + 0.48, w: 1.2, h: 0.3, fontSize: 12, color: C.text2 });
-    T(s, t, { x, y: my + 0.8, w: bw - 0.1, h: q - 0.85, fontSize: 17, valign: 'top' });
-    if (m) marca(s, 'sup', m, x + bw - 0.1, my + 0.45, { alignRight: true, size: 11, h: 0.3 });
+  mono(s, 'FRUSTRACIONES', { x: xFila(oy + 0.1), y: oy + 0.1, w: 1.8, h: 0.24, fontSize: 11, bold: true, color: K.tx });
+  ['La bencina sube', 'Sin capital para cambiar', 'Teme perder el seguro', 'No sabe cuánto ahorra'].forEach((t, i) => {
+    const y = yr[i], x = xFila(y);
+    item(x, y, `F${i + 1}`, t, 2.25);
+    flecha(s, x - 0.08, y + RH / 2, sx + sq + 0.08, y + RH / 2, K.cel, 1.5);
   });
-  s.addImage({ path: A('qr-habilita.png'), x: R - q + 0.1, y: my + 0.1, w: q - 0.1, h: q - 0.1, altText: 'Código QR a la demostración de Lumine Habilita' });
+  // trabajos: en la parte ancha de la cuña derecha
+  mono(s, 'TRABAJOS', { x: ox + 0.95, y: oy - 0.5, w: 1.0, h: 0.22, fontSize: 11, bold: true, color: K.tx });
+  ['Muchos km', 'Costo por km'].forEach((t, i) => T(s, t, { x: ox + 0.95, y: oy - 0.22 + i * 0.3, w: 1.05, h: 0.28, fontSize: 12, valign: 'middle' }));
+  flecha(s, sx + sq + 0.3, oy - 0.3, ox - r - 0.3, oy - 0.3, K.tx, 1.25, { doble: true });
+  fuente(s, 'Adaptado de Osterwalder et al. (2014) · Entrevistas: indicio · R1: estimación');
   return s;
 };
 
-// =====================================================================
-// 5 · MISIÓN, VISIÓN Y VALORES QUE ORIENTAN DECISIONES
-// =====================================================================
+D.canvas = () => {
+  const s = contenido('05 · MODELO DE NEGOCIO', 'TALLER PROPIO PRIMERO,', 'licencias después.');
+  const x0 = M, y0 = Y0, w = CW / 5, hT = 3.35, hB = YF - y0 - hT;
+  const bloque = (x, y, bw, bh, titulo, items, o = {}) => {
+    s.addShape(S.rect, { x, y, w: bw, h: bh, fill: { color: o.azul ? K.suave : K.blanco }, line: { color: K.tx, width: 1 } });
+    mono(s, titulo, { x: x + 0.1, y: y + 0.08, w: bw - 0.2, h: 0.26, fontSize: 12, bold: true, color: K.azul });
+    T(s, items.map((t, i) => ({ text: t, options: { bullet: { indent: 12 }, breakLine: i < items.length - 1, paraSpaceAfter: 3 } })), { x: x + 0.12, y: y + 0.38, w: bw - 0.26, h: bh - 0.5, fontSize: o.size || 14, bold: o.negrita });
+  };
+  bloque(x0, y0, w, hT, 'SOCIOS CLAVE', ['Proveedores del kit', 'Aseguradoras y plantas de revisión técnica', 'Entidad financiera', 'Talleres licenciados (año 2)']);
+  bloque(x0 + w, y0, w, hT / 2, 'ACTIVIDADES', ['Diagnóstico', 'Instalación y calibración', 'Homologación por par'], { size: 13 });
+  bloque(x0 + w, y0 + hT / 2, w, hT / 2, 'RECURSOS', ['Biblioteca de calibraciones', 'Estimador y Habilita', 'Técnicos de alta tensión'], { size: 13 });
+  bloque(x0 + 2 * w, y0, w, hT, 'PROPUESTA DE VALOR', ['Ahorrar con el mismo auto, sin tocar el motor', 'Calibración para su modelo', 'Ahorro medido, no prometido', 'Respaldo ante seguro y revisión técnica'], { azul: true, size: 15 });
+  bloque(x0 + 3 * w, y0, w, hT / 2, 'RELACIÓN', ['Diagnóstico y reporte de ahorro', 'Posventa con seguimiento'], { size: 13 });
+  bloque(x0 + 3 * w, y0 + hT / 2, w, hT / 2, 'CANALES', ['Estimador web', 'Convenios con flotas', 'Taller propio, luego red'], { size: 13 });
+  bloque(x0 + 4 * w, y0, w, hT, 'SEGMENTOS', ['Conductores de uso intensivo de la RM', 'Particulares de alto kilometraje', 'Talleres que licencian (2.ª línea)']);
+  bloque(x0, y0 + hT, CW / 2, hB, 'COSTOS', ['Kit importado, pagado en dólares', 'Personal técnico, calibración y homologación']);
+  bloque(x0 + CW / 2, y0 + hT, CW / 2, hB, 'INGRESOS', ['Venta e instalación del kit Esencial o Plus', 'Posventa, recalibración y licencias a la red']);
+  fuente(s, 'Adaptado de Osterwalder y Pigneur (2010) · Socios y red: por formalizar');
+  return s;
+};
+
 D.identidad = () => {
-  const s = contenido('5 · DECLARACIONES ESTRATÉGICAS COMPARTIDAS', 'MISIÓN, VISIÓN Y VALORES', 'que orientan decisiones.');
-  marca(s, 'sup', 'DECLARACIÓN DEL PROYECTO', R, 0.88, { alignRight: true, size: 11, h: 0.32 });
-  [['MISIÓN', '«Reducir el combustible que un vehículo liviano a combustión necesita por kilómetro, mediante la instalación certificada de un sistema de hibridación aditiva sobre el automóvil que el cliente ya tiene, sin reemplazarlo y sin intervenir su motor.»', 1.05],
-    ['VISIÓN', '«Ser hacia 2031 el taller de referencia en hibridación de vehículos en uso en Chile, con un procedimiento reconocido por la autoridad, las plantas de revisión técnica y las compañías de seguros.»', 0.8]].forEach(([k, t, h], i) => {
-    const y = Y0 + (i ? 0.98 : 0);
-    mono(s, k, { x: M, y: y + 0.05, w: 1.3, h: 0.3, fontSize: 13, color: C.accent1 });
-    T(s, t, { x: M + 1.35, y, w: CW - 1.35, h: i ? 0.66 : 0.92, fontFace: F_SER, italic: true, fontSize: 18, valign: 'top', lineSpacingMultiple: 0.95 });
+  const s = contenido('06 · DECLARACIONES', 'MISIÓN CON ALCANCE,', 'visión con cifra y plazo.');
+  const xL = M, wL = 5.9;
+  mono(s, 'MISIÓN', { x: xL, y: Y0, w: 3, h: 0.28, bold: true, color: K.azul });
+  serif(s, '«Reducir el combustible que un vehículo liviano a combustión necesita por kilómetro, en Chile y partiendo por la Región Metropolitana, mediante la instalación certificada de un sistema de hibridación aditiva sobre el automóvil que el cliente ya tiene, sin reemplazarlo y sin intervenir su motor.»', { x: xL, y: Y0 + 0.32, w: wL, h: 2.1, fontSize: 19, color: K.tx });
+  mono(s, 'FINES', { x: xL, y: Y0 + 2.4, w: 3, h: 0.28, bold: true, color: K.azul });
+  T(s, 'Rentar sobre el costo del capital (F1) y crecer con la red, sin activos propios', { x: xL, y: Y0 + 2.68, w: wL, h: 0.6, fontSize: 17 });
+  mono(s, 'VALORES COMO REGLAS', { x: xL, y: Y0 + 3.35, w: 4, h: 0.28, bold: true, color: K.azul });
+  T(s, 'Verificabilidad antes que afirmación: un ahorro sin medir no se comunica', { x: xL, y: Y0 + 3.63, w: wL, h: 0.6, fontSize: 17 });
+  const xR = 7.2, wR = R - xR;
+  linea(s, xR - 0.35, Y0, 0, YF - Y0, K.linea, 1);
+  mono(s, 'VISIÓN', { x: xR, y: Y0, w: 3, h: 0.28, bold: true, color: K.azul });
+  T(s, 'Ser el taller de referencia en hibridación de vehículos en uso en Chile, reconocido por la autoridad, las plantas de revisión y las aseguradoras', { x: xR, y: Y0 + 0.35, w: wR, h: 1.45, fontSize: 18, bold: true });
+  [['2031', 'PLAZO'], ['2.715', 'INSTALACIONES PROPIAS AL AÑO'], ['42', 'TALLERES CERTIFICADOS']].forEach(([n, t], i) => {
+    const x = xR + i * (wR / 3);
+    num(s, n, { x, y: Y0 + 1.95, w: wR / 3 - 0.1, h: 0.95, fontSize: 52, color: i ? K.tx : K.cel });
+    linea(s, x, Y0 + 2.98, wR / 3 - 0.2, 0, K.tx, 1);
+    mono(s, t, { x, y: Y0 + 3.05, w: wR / 3 - 0.15, h: 0.55, fontSize: 12, bold: true, color: K.tx });
   });
-  const vy = Y0 + 1.72, w = (CW - 0.4) / 2;
-  const col = [['VALORES ORGANIZACIONALES', [['Verificabilidad antes que afirmación', true], ['Formalidad como condición de operación', true], ['Trazabilidad del conocimiento técnico', false], ['Responsabilidad sobre el ciclo completo del componente', false]]],
-    ['VALORES HUMANOS', [['Honestidad técnica en el diagnóstico', false], ['Seguridad de quien instala y de quien conduce', true], ['Responsabilidad individual sobre la instalación ejecutada', false], ['Reconocimiento del oficio técnico', false]]]];
-  col.forEach(([k, items], c) => {
-    const x = M + c * (w + 0.4);
-    regla(s, vy, x, w, C.accent1);
-    mono(s, k, { x, y: vy + 0.08, w, h: 0.3, fontSize: 12, color: C.accent1 });
-    items.forEach(([t, hot], j) => {
-      const y = vy + 0.42 + j * 0.52;
-      s.addShape(S.rect, { x, y: y + 0.18, w: 0.14, h: 0.14, fill: { color: hot ? C.accent1 : C.accent5 }, line: { type: 'none' } });
-      T(s, t, { x: x + 0.3, y, w: w - 0.3, h: 0.5, fontSize: 16, bold: hot, color: hot ? C.text1 : C.text2, valign: 'middle', lineSpacingMultiple: 0.9 });
-    });
-  });
+  marca(s, 'METAS DEL PLAN · POR REVISAR', xR, Y0 + 3.95, { dash: 'sysDot', size: 12 });
+  fuente(s, 'Kovacevic y Reynoso (2010) · Francés (2006)');
   return s;
 };
 
-// =====================================================================
-// 6 · PEST 2,82 · barras por dimensión con el neutro marcado
-// =====================================================================
-D.pest = () => {
-  const s = contenido('6 · ANÁLISIS ESTRATÉGICO · ENTORNO GENERAL (PEST)', 'PEST 2,82:', 'el freno es económico y regulatorio.');
-  const lw = 8.2, x0 = M + 2.75, bw = lw - 2.75 - 0.75, sx = v => x0 + (v - 1) / 4 * bw;
-  mono(s, 'DIMENSIÓN · ESCALA 1 A 5 · 3 = NEUTRO', { x: M, y: Y0 - 0.05, w: lw, h: 0.3, fontSize: 12 });
-  [1, 2, 3, 4, 5].forEach(v => mono(s, String(v), { x: sx(v) - 0.2, y: Y0 + 0.28, w: 0.4, h: 0.25, fontSize: 11, align: 'center', color: v === 3 ? C.text1 : C.text2 }));
-  const dims = [['Económico', 2.38, 2.81, 'Ingreso disponible, desempleo 9,6%, dólar sobre $970'], ['Político-jurídico', 2.67, 2.78, 'Ley 21.793 sin reglamento'], ['Sociocultural', 3.00, 3.00, 'Se conserva el auto; posibles exclusiones de seguros'], ['Tecnológico', 3.23, 3.38, 'Componentes maduros; packs LFP a US$81/kWh, promedio mundial']];
-  const rh = 0.86, y0 = Y0 + 0.62;
-  dims.forEach(([k, hoy, fut, nota], i) => {
-    const y = y0 + i * rh, malo = hoy < 3;
-    T(s, k, { x: M, y, w: 2.6, h: 0.38, fontSize: 18, bold: true, valign: 'middle' });
-    T(s, nota, { x: M, y: y + 0.38, w: lw - 0.1, h: 0.36, fontSize: 13, color: C.text2, valign: 'top' });
-    s.addShape(S.rect, { x: sx(1), y: y + 0.07, w: sx(hoy) - sx(1), h: 0.22, fill: { color: malo ? C.text1 : C.accent1 }, line: { type: 'none' } });
-    s.addShape(S.rect, { x: sx(1), y: y + 0.3, w: sx(fut) - sx(1), h: 0.06, fill: { color: GRIS }, line: { type: 'none' } });
-    numero(s, coma(hoy.toFixed(2)), { x: sx(5) + 0.05, y, w: 0.75, h: 0.38, fontSize: 20, valign: 'middle', color: malo ? C.text1 : C.accent1 });
+// ===================================================================== BENJAMÍN
+D.entorno = () => {
+  const s = contenido('07 · ENTORNO', 'HAY OPORTUNIDADES,', 'pero hoy no las aprovechamos.');
+  mono(s, 'PEST · ESCALA 1 A 5 · NEUTRO 3', { x: M, y: Y0, w: 5, h: 0.28 });
+  num(s, '2,82', { x: M, y: Y0 + 0.3, w: 2.0, h: 0.9, fontSize: 54 });
+  T(s, 'moderadamente desfavorable', { x: M + 2.05, y: Y0 + 0.62, w: 3.0, h: 0.5, fontSize: 18, color: K.gris });
+  const bx = M + 2.15, bw = 2.9, bU = bw / 5;
+  [['Tecnológica', 3.23], ['Sociocultural', 3.00], ['Político-jurídica', 2.67], ['Económica', 2.38]].forEach(([k, v], i) => {
+    const y = Y0 + 1.45 + i * 0.5;
+    T(s, k, { x: M, y, w: 2.05, h: 0.4, fontSize: 16, valign: 'middle' });
+    s.addShape(S.rect, { x: bx, y: y + 0.08, w: v * bU, h: 0.24, fill: { color: v >= 3 ? K.cel : K.medio }, line: { type: 'none' } });
+    T(s, v.toFixed(2).replace('.', ','), { x: bx + v * bU + 0.08, y, w: 0.7, h: 0.4, fontSize: 16, bold: true, valign: 'middle' });
   });
-  linea(s, sx(3), Y0 + 0.55, 0, 4 * rh + 0.05, C.accent1, 1.25, { line: { color: C.accent1, width: 1.25, dashType: 'dash' } });
-  const ly = y0 + 4 * rh - 0.05;
-  s.addShape(S.rect, { x: M, y: ly + 0.08, w: 0.3, h: 0.14, fill: { color: C.text1 }, line: { type: 'none' } });
-  T(s, 'hoy', { x: M + 0.38, y: ly, w: 0.6, h: 0.3, fontSize: 12, color: C.text2, valign: 'middle' });
-  s.addShape(S.rect, { x: M + 1.05, y: ly + 0.12, w: 0.3, h: 0.06, fill: { color: GRIS }, line: { type: 'none' } });
-  T(s, 'a futuro', { x: M + 1.43, y: ly, w: 1.2, h: 0.3, fontSize: 12, color: C.text2, valign: 'middle' });
-  const rx = M + lw + 0.5, rw = R - rx;
-  brillo(s, rx, Y0, rw, 1.4, 0.5);
-  mono(s, 'GLOBAL HOY', { x: rx, y: Y0 - 0.05, w: rw, h: 0.3, fontSize: 12, color: C.accent1 });
-  numero(s, '2,82', { x: rx, y: Y0 + 0.25, w: rw, h: 1.1, fontSize: 72, valign: 'middle', color: C.accent1 });
-  T(s, 'moderadamente desfavorable', { x: rx, y: Y0 + 1.35, w: rw, h: 0.35, fontSize: 15, color: C.text2 });
-  const cy = Y0 + 2.0, tot = 51, cw = rw;
-  mono(s, '51 FACTORES · A FUTURO 2,99', { x: rx, y: cy, w: rw, h: 0.28, fontSize: 12 });
-  let cx = rx;
-  const cuenta = [[13, 'oportunidades', C.accent1], [18, 'neutros', GRIS], [20, 'amenazas', C.text1]];
-  cuenta.forEach(([n, k, color]) => {
-    const w = cw * n / tot;
-    s.addShape(S.rect, { x: cx, y: cy + 0.34, w: w - 0.04, h: 0.28, fill: { color }, line: { type: 'none' } });
-    cx += w;
-  });
-  cuenta.forEach(([n, k, color], i) => {
-    const yy = cy + 0.75 + i * 0.44;
-    numero(s, String(n), { x: rx, y: yy, w: 0.7, h: 0.42, fontSize: 24, valign: 'middle', color });
-    T(s, k, { x: rx + 0.75, y: yy, w: rw - 0.75, h: 0.42, fontSize: 16, valign: 'middle' });
-  });
+  linea(s, bx + 3 * bU, Y0 + 1.4, 0, 2.0, K.tx, 1, { line: { color: K.tx, width: 1, dashType: 'dash' } });
+  mono(s, 'NEUTRO', { x: bx + 3 * bU - 0.4, y: Y0 + 3.42, w: 0.8, h: 0.24, fontSize: 11, align: 'center' });
+  serif(s, 'Ayuda la tecnología (LFP a US$81/kWh); frena la economía (desocupación de 9,6%).', { x: M, y: Y0 + 3.6, w: 5.6, h: 0.7, fontSize: 18 });
+  // MEFE
+  const xR = 7.0, wR = R - xR - 0.2;
+  mono(s, 'MEFE · 7 OPORTUNIDADES Y 9 AMENAZAS NUMERADAS', { x: xR, y: Y0, w: wR + 0.2, h: 0.28, bold: true, color: K.azul });
+  regla(s, xR + 0.1, Y0 + 2.35, wR - 0.2, [{ v: 2.03, n: '2,03', t: 'HOY' }, { v: 2.75, n: '2,75', t: 'CON HITOS', color: K.cel, hueco: true, dash: 'dash' }], { alto: 1.45 });
+  T(s, [{ text: 'Mayor peso: ', options: { bold: true } }, { text: 'O3 vacío de oferta formal y A1 el borrador de 2021 (0,079 cada uno).' }], { x: xR, y: Y0 + 3.05, w: wR + 0.2, h: 0.65, fontSize: 16 });
+  marca(s, 'CALIFICACIONES DEL EQUIPO · POR VALIDAR', xR, Y0 + 3.85, { dash: 'sysDot' });
+  fuente(s, 'BloombergNEF (2025) · Banco Central (2026a) · INE (2026) · David (1997)');
   return s;
 };
 
-// =====================================================================
-// 7 · LA VÍA LEGAL DECIDE SI EL NEGOCIO EXISTE · árbol de escenarios
-// =====================================================================
-D.regulacion = () => {
-  const s = contenido('6 · ANÁLISIS ESTRATÉGICO · ENTORNO REGULATORIO', 'LA VÍA LEGAL', 'decide si el negocio existe.');
-  const lw = 4.15;
-  caja(s, M, Y0, lw, 1.9, { line: { color: C.accent1, width: 1 } });
-  mono(s, 'LEY N° 21.793 · 14-01-2026', { x: M + 0.22, y: Y0 + 0.15, w: lw - 0.4, h: 0.3, fontSize: 12, color: C.accent1 });
-  T(s, 'Faculta al MTT para autorizar talleres que transformen la propulsión de vehículos en uso.', { x: M + 0.22, y: Y0 + 0.48, w: lw - 0.4, h: 0.95, fontSize: 16 });
-  marca(s, 'pen', 'REGLAMENTO SIN PUBLICAR', M + 0.22, Y0 + 1.42, { size: 11, h: 0.32 });
-  caja(s, M, Y0 + 2.1, lw, 2.0, { line: { color: C.text2, width: 0.75, dashType: 'dash' } });
-  mono(s, 'BORRADOR MTT · DIC. 2021', { x: M + 0.22, y: Y0 + 2.25, w: lw - 0.4, h: 0.3, fontSize: 12, color: C.text2 });
-  T(s, 'Anterior a la ley. Define transformación como reemplazar el motor y excluye autos con ABS, airbag o control de estabilidad.', { x: M + 0.22, y: Y0 + 2.58, w: lw - 0.4, h: 1.4, fontSize: 16, color: C.text2 });
-  // árbol de decisión
-  const tx = M + lw + 0.45, bw = 2.15, bh = 0.86, ew = R - (tx + 2 * (bw + 0.55)) + 0.3;
-  const q1 = [tx, Y0 + 1.45], q2 = [tx + bw + 0.55, Y0 + 0.35], q3 = [tx + bw + 0.55, Y0 + 2.65];
-  const ex = q2[0] + bw + 0.55;
-  const E = [[ex, Y0 - 0.05, 'E1', 'Vía amplia: ventaja temporal al primero'], [ex, Y0 + 0.9, 'E2', 'Vía acotada: solo parque sin esos sistemas'], [ex, Y0 + 2.3, 'E3', 'Vía alternativa: alteración de características'], [ex, Y0 + 3.3, 'E4', 'Sin vía legal: el negocio no opera']];
-  const pregunta = ([x, y], t, hot) => { caja(s, x, y, bw, bh, { fill: { color: hot ? HOT : C.background2 }, line: { color: hot ? C.accent1 : C.text2, width: hot ? 1.5 : 0.75 } }); T(s, t, { x: x + 0.12, y, w: bw - 0.24, h: bh, fontSize: 15, bold: true, valign: 'middle', align: 'center', lineSpacingMultiple: 0.92 }); };
-  const conector = (a, b, k, hot) => {
-    const xm = a[0] + 0.27;
-    s.addShape(S.line, { x: a[0], y: a[1], w: xm - a[0], h: 0, line: { color: hot ? C.accent1 : C.text2, width: hot ? 2.25 : 1 } });
-    s.addShape(S.line, { x: xm, y: a[1], w: 0, h: b[1] - a[1], line: { color: hot ? C.accent1 : C.text2, width: hot ? 2.25 : 1 } });
-    s.addShape(S.line, { x: xm, y: b[1], w: b[0] - xm, h: 0, line: { color: hot ? C.accent1 : C.text2, width: hot ? 2.25 : 1, endArrowType: 'triangle' } });
-    mono(s, k, { x: xm + 0.04, y: b[1] - 0.27, w: 0.4, h: 0.24, fontSize: 11, color: hot ? C.accent1 : C.text2, bold: true });
-  };
-  pregunta(q1, '¿Acepta conservar el motor?', true);
-  pregunta(q2, '¿Excluye ABS, airbag o estabilidad?', false);
-  pregunta(q3, '¿Procede alterar características?', true);
-  conector([q1[0] + bw, q1[1] + bh / 2], [q2[0], q2[1] + bh / 2], 'SÍ', false);
-  conector([q1[0] + bw, q1[1] + bh / 2], [q3[0], q3[1] + bh / 2], 'NO', true);
-  E.forEach(([x, y, k, t], i) => {
-    const hot = i >= 2;
-    caja(s, x, y, ew, 0.82, { line: { color: hot ? C.accent1 : C.text2, width: hot ? 1.5 : 0.75 } });
-    tag(s, k, x + 0.12, y + 0.22, { off: !hot, w: 0.5, h: 0.36, size: 13 });
-    T(s, t, { x: x + 0.72, y, w: ew - 0.8, h: 0.82, fontSize: 14, valign: 'middle', lineSpacingMultiple: 0.92 });
-  });
-  conector([q2[0] + bw, q2[1] + bh / 2], [ex, E[0][1] + 0.41], 'NO', false);
-  conector([q2[0] + bw, q2[1] + bh / 2], [ex, E[1][1] + 0.41], 'SÍ', false);
-  conector([q3[0] + bw, q3[1] + bh / 2], [ex, E[2][1] + 0.41], 'SÍ', true);
-  conector([q3[0] + bw, q3[1] + bh / 2], [ex, E[3][1] + 0.41], 'NO', true);
-  mono(s, 'SI SIGUE EL BORRADOR:', { x: tx, y: Y0 + 2.42, w: bw + 0.2, h: 0.28, fontSize: 11, color: C.accent1 });
-  mono(s, 'RAMA E3 O E4', { x: tx, y: Y0 + 2.7, w: bw + 0.2, h: 0.28, fontSize: 11, color: C.accent1, bold: true });
-  T(s, [{ text: 'Condición de entrada: ', options: { bold: true } }, { text: 'no se promedia.', options: { color: C.text2 } }], { x: tx, y: Y0 + 3.55, w: bw + 0.3, h: 0.55, fontSize: 15, valign: 'top' });
-  return s;
-};
-
-// =====================================================================
-// 8 · PORTER 3,49 · intensidad por fuerza y ponderación del modelo
-// =====================================================================
 D.porter = () => {
-  const s = contenido('6 · ANÁLISIS ESTRATÉGICO · INDUSTRIA (CINCO FUERZAS)', 'PORTER 3,49:', 'el rival principal es posponer la inversión.');
-  const lw = 8.2, x0 = M + 2.95, bw = lw - 2.95 - 0.85, sx = v => x0 + v / 5 * bw;
-  mono(s, 'FUERZA · PESO', { x: M, y: Y0 - 0.05, w: 2.8, h: 0.3, fontSize: 12 });
-  mono(s, 'INTENSIDAD · 0 A 5', { x: x0, y: Y0 - 0.05, w: bw, h: 0.3, fontSize: 12 });
-  const f = [['Sustitutos', 30, 5.00], ['Nuevos entrantes', 20, 3.75], ['Proveedores', 15, 2.67], ['Clientes', 25, 2.64], ['Rivalidad', 10, 1.83]];
-  const rh = 0.66, y0 = Y0 + 0.4;
-  f.forEach(([k, p, v], i) => {
-    const y = y0 + i * rh, top = i === 0;
-    T(s, k, { x: M, y, w: 2.2, h: rh, fontSize: 18, bold: top, valign: 'middle' });
-    mono(s, p + '%', { x: M + 2.1, y, w: 0.7, h: rh, fontSize: 13, color: C.text2, valign: 'middle', align: 'right' });
-    s.addShape(S.rect, { x: x0, y: y + 0.2, w: sx(5) - x0, h: rh - 0.4, fill: { color: C.accent6 }, line: { type: 'none' } });
-    s.addShape(S.rect, { x: x0, y: y + 0.2, w: sx(v) - x0, h: rh - 0.4, fill: { color: top ? C.accent1 : C.text2 }, line: { type: 'none' } });
-    numero(s, coma(v.toFixed(2)), { x: sx(5) + 0.08, y, w: 0.85, h: rh, fontSize: 22, valign: 'middle', color: top ? C.accent1 : C.text1 });
+  const s = contenido('08 · CINCO FUERZAS', 'LA INERCIA NO ES UN SUSTITUTO:', 'es poder del cliente.');
+  const lx = M, bx = M + 3.2, bw = 4.6, U = bw / 5;
+  mono(s, 'INTENSIDAD 0 A 5 · PESO', { x: lx, y: Y0, w: 4, h: 0.28 });
+  [['Sustitutos', '30%', 3.67, 5.00], ['Nuevos entrantes', '20%', 3.75], ['Clientes', '25%', 2.83, 2.64], ['Proveedores', '15%', 2.67], ['Rivalidad', '10%', 1.83]].forEach(([k, p, v, antes], i) => {
+    const y = Y0 + 0.4 + i * 0.72, cambia = antes !== undefined;
+    T(s, k, { x: lx, y, w: 2.4, h: 0.5, fontSize: 18, bold: cambia, valign: 'middle' });
+    mono(s, p, { x: lx + 2.4, y, w: 0.7, h: 0.5, fontSize: 13, valign: 'middle' });
+    if (cambia) s.addShape(S.rect, { x: bx, y: y + 0.1, w: antes * U, h: 0.3, fill: { color: K.blanco, transparency: 100 }, line: { color: K.gris, width: 1, dashType: 'dash' } });
+    s.addShape(S.rect, { x: bx, y: y + 0.1, w: v * U, h: 0.3, fill: { color: cambia ? K.cel : K.medio }, line: { type: 'none' } });
+    T(s, v.toFixed(2).replace('.', ','), { x: bx + Math.max(v, antes || 0) * U + 0.1, y, w: 0.8, h: 0.5, fontSize: 18, bold: true, valign: 'middle' });
+    if (cambia) mono(s, `ANTES ${antes.toFixed(2).replace('.', ',')}`, { x: bx + antes * U - 1.4, y: y + 0.42, w: 1.4, h: 0.22, fontSize: 11, align: 'right' });
   });
-  const ny = y0 + 5 * rh + 0.12;
-  T(s, [{ text: 'Sustitutos + clientes = 55% ', options: { bold: true } }, { text: 'del peso del modelo, no probabilidad de amenaza.', options: { color: C.text2 } }], { x: M, y: ny, w: lw, h: 0.42, fontSize: 15, valign: 'middle' });
-  const rx = M + lw + 0.5, rw = R - rx;
-  brillo(s, rx, Y0, rw, 1.4, 0.5);
-  mono(s, 'PONDERADO · 0 A 5', { x: rx, y: Y0 - 0.05, w: rw, h: 0.3, fontSize: 12, color: C.accent1 });
-  numero(s, '3,49', { x: rx, y: Y0 + 0.25, w: rw, h: 1.1, fontSize: 72, valign: 'middle', color: C.accent1 });
-  T(s, 'industria moderadamente poco atractiva', { x: rx, y: Y0 + 1.35, w: rw, h: 0.4, fontSize: 15, color: C.text2 });
-  cajaHot(s, rx, Y0 + 2.0, rw, YF - Y0 - 2.06);
-  mono(s, 'SUSTITUTO PRINCIPAL', { x: rx + 0.22, y: Y0 + 2.15, w: rw - 0.4, h: 0.3, fontSize: 12, color: C.accent1 });
-  T(s, 'Posponer la inversión', { x: rx + 0.22, y: Y0 + 2.48, w: rw - 0.4, h: 0.45, fontSize: 21, bold: true, valign: 'middle' });
-  T(s, 'El cliente se ahorra el kit, pero sigue pagando toda su bencina.', { x: rx + 0.22, y: Y0 + 2.98, w: rw - 0.4, h: 1.0, fontSize: 16, color: C.text2, valign: 'top' });
+  const xR = 9.75, wR = R - xR;
+  mono(s, 'INTENSIDAD PONDERADA', { x: xR, y: Y0, w: wR, h: 0.28, bold: true, color: K.azul });
+  num(s, '3,14', { x: xR, y: Y0 + 0.3, w: wR, h: 1.0, fontSize: 60, color: K.cel });
+  T(s, 'media · antes 3,49', { x: xR, y: Y0 + 1.3, w: wR, h: 0.36, fontSize: 17, color: K.gris });
+  mono(s, 'SUSTITUTOS REALES', { x: xR, y: Y0 + 1.95, w: wR, h: 0.28, bold: true, color: K.azul });
+  [['Gas', 'solo autos de hasta 7 años'], ['Híbrido usado', '$9,5 a $13 millones'], ['Eléctrico nuevo', 'desde $13.990.000']].forEach(([a, b], i) =>
+    T(s, [{ text: a, options: { bold: true, breakLine: true } }, { text: b, options: { color: K.gris } }], { x: xR, y: Y0 + 2.3 + i * 0.68, w: wR, h: 0.64, fontSize: 16 }));
+  fuente(s, 'Porter (2008) · BioBioChile, KMcheck y Autofact (2026) · D. S. N° 55 (1988)');
   return s;
 };
 
-// =====================================================================
-// 9 · RECURSOS Y FACTORES CRÍTICOS · cuatro criterios y FCE
-// =====================================================================
-D.recursos = () => {
-  const s = contenido('6 · ANÁLISIS ESTRATÉGICO · RECURSOS, CAPACIDADES Y FCE', 'RECURSOS Y FACTORES CRÍTICOS:', 'la diferenciación es potencial.');
-  const lw = 4.6;
-  mono(s, 'CUATRO CRITERIOS · 15 RECURSOS', { x: M, y: Y0 - 0.05, w: lw, h: 0.3, fontSize: 12 });
-  const cnt = [['2', 'sostenibles*', C.accent1], ['6', 'temporales', C.text1], ['7', 'igualdad', GRIS], ['0', 'desventaja', GRIS]];
-  const cw = lw / 4;
-  cnt.forEach(([n, k, color], i) => {
-    numero(s, n, { x: M + i * cw, y: Y0 + 0.3, w: cw, h: 0.8, fontSize: 48, valign: 'middle', color });
-    T(s, k, { x: M + i * cw, y: Y0 + 1.1, w: cw + 0.1, h: 0.3, fontSize: 13, color: C.text2 });
+D.interno = () => {
+  const s = contenido('09 · ANÁLISIS INTERNO', 'LA VENTAJA ES UN SISTEMA', 'que acumula conocimiento.');
+  const cx = 4.05, cy = 4.4, rx = 2.15, ry = 1.65;
+  const nodos = [['Instalación calibrada', 0], ['Medición con línea base', 1], ['Biblioteca y base de consumo', 1], ['Estimador que aprende', 1], ['Lumine Habilita', 2], ['Red que devuelve datos', 0]];
+  const pos = nodos.map((_, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / nodos.length; return [cx + rx * Math.cos(a), cy + ry * Math.sin(a)]; });
+  const bw = 2.15, bh = 0.62;
+  const borde = (dx, dy) => Math.min(dx ? (bw / 2) / Math.abs(dx) : 1e9, dy ? (bh / 2) / Math.abs(dy) : 1e9);
+  pos.forEach(([x, y], i) => {
+    const [x2, y2] = pos[(i + 1) % pos.length];
+    const dx = x2 - x, dy = y2 - y, L = Math.hypot(dx, dy), t0 = borde(dx, dy) + 0.06 / L, t1 = borde(dx, dy) + 0.1 / L;
+    flecha(s, x + dx * t0, y + dy * t0, x2 - dx * t1, y2 - dy * t1, K.azul, 1.75);
   });
-  const by = Y0 + 1.6;
-  cajaHot(s, M, by, lw, YF - by - 0.04);
-  mono(s, '* POTENCIALMENTE SOSTENIBLES', { x: M + 0.22, y: by + 0.15, w: lw - 0.4, h: 0.3, fontSize: 12, color: C.accent1 });
-  T(s, [{ text: 'Biblioteca de calibraciones', options: { bold: true, breakLine: true } }, { text: 'Ingeniería de integración', options: { bold: true } }], { x: M + 0.22, y: by + 0.5, w: lw - 0.4, h: 0.8, fontSize: 18, valign: 'top' });
-  T(s, 'La biblioteca está vacía: solo sería sostenible si se protege como secreto empresarial.', { x: M + 0.22, y: by + 1.35, w: lw - 0.4, h: 0.9, fontSize: 15, color: C.text2, valign: 'top' });
-  const rx = M + lw + 0.5, rw = R - rx;
-  mono(s, 'FACTORES CRÍTICOS DE ÉXITO · 1 A 5', { x: rx, y: Y0 - 0.05, w: rw, h: 0.3, fontSize: 12 });
-  mono(s, 'HABILIDAD', { x: R - 2.55, y: Y0 + 0.25, w: 1.3, h: 0.26, fontSize: 11, align: 'center' });
-  mono(s, 'RIESGO', { x: R - 1.25, y: Y0 + 0.25, w: 1.25, h: 0.26, fontSize: 11, align: 'center' });
-  const fce = [['Ingeniería de integración y calibración', 4, 2, false], ['Estandarización y tiempo de taller', 4, 3, false], ['Logística de insumos críticos', 3, 2, false], ['Financiamiento en el punto de venta', 3, 2, false], ['Gestión regulatoria e institucional', 2, 2, true], ['Talento certificado en alta tensión', 2, 2, false]];
-  const rh = 0.55, y0 = Y0 + 0.55;
-  fce.forEach(([k, h, r, entrada], i) => {
-    const y = y0 + i * rh;
-    regla(s, y, rx, rw, i ? C.accent5 : C.accent1);
-    if (entrada) s.addShape(S.rect, { x: rx, y: y + 0.18, w: 0.08, h: rh - 0.36, fill: { color: C.text1 }, line: { type: 'none' } });
-    T(s, k, { x: rx + 0.2, y, w: rw - 2.8, h: rh, fontSize: 16, bold: entrada, valign: 'middle', lineSpacingMultiple: 0.92 });
-    for (let j = 1; j <= 5; j++) s.addShape(S.rect, { x: R - 2.45 + (j - 1) * 0.22, y: y + rh / 2 - 0.08, w: 0.16, h: 0.16, fill: { color: j <= h ? (h >= 4 ? C.accent1 : C.text1) : C.accent5 }, line: { type: 'none' } });
-    numero(s, String(r), { x: R - 1.25, y, w: 1.25, h: rh, fontSize: 20, align: 'center', valign: 'middle', color: r <= 2 ? C.text1 : C.text2 });
+  nodos.forEach(([t, c], i) => {
+    const [x, y] = pos[i];
+    if (c === 1) cajaAzul(s, x - bw / 2, y - bh / 2, bw, bh);
+    else if (c === 2) caja(s, x - bw / 2, y - bh / 2, bw, bh, { fill: { color: K.tx }, line: { color: K.tx, width: 1 } });
+    else caja(s, x - bw / 2, y - bh / 2, bw, bh);
+    T(s, t, { x: x - bw / 2 + 0.06, y: y - bh / 2, w: bw - 0.12, h: bh, fontSize: 15, bold: c > 0, align: 'center', valign: 'middle', color: c === 2 ? K.blanco : K.tx });
   });
-  regla(s, y0 + 6 * rh, rx, rw);
-  s.addShape(S.rect, { x: rx, y: y0 + 6 * rh + 0.12, w: 0.08, h: 0.2, fill: { color: C.text1 }, line: { type: 'none' } });
-  T(s, 'condición de entrada · en riesgo, un número bajo es riesgo alto', { x: rx + 0.2, y: y0 + 6 * rh + 0.06, w: rw - 0.2, h: 0.32, fontSize: 13, color: C.text2, valign: 'middle' });
-  return s;
-};
-
-// =====================================================================
-// 10 · CADENA DE VALOR · dónde nace la exclusividad, dónde está el costo y el cuello de botella
-// =====================================================================
-D.cadena = () => {
-  const s = contenido('6 · ANÁLISIS ESTRATÉGICO · CADENA DE VALOR', 'LA CALIBRACIÓN DA EXCLUSIVIDAD;', 'operaciones, el cuello de botella.');
-  const dw = CW, x = M, y = Y0 - 0.05;
-  const apoyo = [['Infraestructura de la empresa', 'CONDICIÓN DE ENTRADA', 'ent'], ['Gestión de recursos humanos', '', ''], ['Desarrollo tecnológico', 'EXCLUSIVIDAD: LA CALIBRACIÓN', 'exc'], ['Adquisiciones', '', '']];
-  const ah = 0.42;
-  apoyo.forEach(([k, t, tipo], i) => {
-    const yy = y + i * (ah + 0.06);
-    caja(s, x, yy, dw - 0.6, ah, { fill: { color: tipo === 'exc' ? HOT : C.background2 }, line: { color: tipo === 'exc' ? C.accent1 : tipo === 'ent' ? C.text1 : C.accent5, width: tipo ? 1.25 : 0.75 } });
-    T(s, k, { x: x + 0.18, y: yy, w: 4.0, h: ah, fontSize: 15, bold: !!tipo, valign: 'middle' });
-    if (t) mono(s, t, { x: x + 4.2, y: yy, w: dw - 0.6 - 4.4, h: ah, fontSize: 12, color: tipo === 'exc' ? C.accent1 : C.text1, valign: 'middle', align: 'right' });
+  serif(s, 'Un competidor puede comprar el kit; la historia de datos, no.', { x: cx - 1.3, y: cy - 0.42, w: 2.6, h: 0.9, fontSize: 17, align: 'center', valign: 'middle' });
+  const xR = 7.75, wR = R - xR;
+  mono(s, 'DOS COMPETENCIAS CENTRALES', { x: xR, y: Y0, w: wR, h: 0.28, bold: true, color: K.azul });
+  s.addShape(S.rect, { x: xR, y: Y0 + 0.42, w: 0.32, h: 0.32, fill: { color: K.suave }, line: { color: K.cel, width: 1.5 } });
+  T(s, 'Calibración y medición', { x: xR + 0.45, y: Y0 + 0.36, w: wR - 0.45, h: 0.44, fontSize: 17, bold: true, valign: 'middle' });
+  s.addShape(S.rect, { x: xR, y: Y0 + 0.92, w: 0.32, h: 0.32, fill: { color: K.tx }, line: { color: K.tx, width: 1 } });
+  T(s, 'Método Lumine Habilita', { x: xR + 0.45, y: Y0 + 0.86, w: wR - 0.45, h: 0.44, fontSize: 17, bold: true, valign: 'middle' });
+  mono(s, '17 RECURSOS · CRITERIOS DE HITT', { x: xR, y: Y0 + 1.55, w: wR, h: 0.28, bold: true, color: K.azul });
+  const segs = [[3, K.cel, '3 sostenibles (potencial)'], [7, K.medio, '7 temporales'], [7, K.linea, '7 de igualdad']];
+  let xx = xR; const u = wR / 17;
+  segs.forEach(([n, c, t], i) => {
+    s.addShape(S.rect, { x: xx, y: Y0 + 1.92, w: n * u, h: 0.32, fill: { color: c }, line: { color: K.blanco, width: 1 } }); xx += n * u;
+    const lx = xR + i * (wR / 3);
+    s.addShape(S.rect, { x: lx, y: Y0 + 2.36, w: 0.18, h: 0.18, fill: { color: c }, line: { type: 'none' } });
+    T(s, t, { x: lx + 0.24, y: Y0 + 2.28, w: wR / 3 - 0.26, h: 0.5, fontSize: 13, color: K.tx });
   });
-  const py = y + 4 * (ah + 0.06) + 0.06, ph = 1.58, n = 5, pw = (dw - 0.6) / n;
-  const prim = [['Logística de entrada', 'COSTO', 'Kit importado, Clase 9 y dólar', 'costo'], ['Operaciones', 'CUELLO DE BOTELLA', 'Homologación, internación y técnicos', 'cuello'], ['Logística de salida', '', '', ''], ['Marketing y ventas', '', '', ''], ['Servicio posventa', '', '', '']];
-  prim.forEach(([k, t, d, tipo], i) => {
-    const xx = x + i * pw;
-    s.addShape(S.chevron, { x: xx, y: py, w: pw + 0.12, h: ph, fill: { color: tipo === 'cuello' ? HOT : C.background2 }, line: { color: tipo === 'cuello' ? C.accent1 : tipo === 'costo' ? C.text1 : C.accent5, width: tipo ? 1.25 : 0.75 } });
-    T(s, k, { x: xx + 0.4, y: py + 0.1, w: pw - 0.6, h: 0.5, fontSize: 14, bold: !!tipo, valign: 'top', lineSpacingMultiple: 0.9 });
-    if (t) mono(s, t, { x: xx + 0.4, y: py + 0.68, w: pw - 0.5, h: 0.26, fontSize: 11, color: tipo === 'cuello' ? C.accent1 : C.text1 });
-    if (d) T(s, d, { x: xx + 0.4, y: py + 0.96, w: pw - 0.55, h: 0.6, fontSize: 13, color: C.text2, valign: 'top', lineSpacingMultiple: 0.9 });
-  });
-  s.addShape(S.rect, { x: x + dw - 0.55, y, w: 0.55, h: py + ph - y, fill: { color: C.accent6 }, line: { color: C.accent5, width: 0.75 } });
-  T(s, 'MARGEN', { x: x + dw - 0.55, y, w: 0.55, h: py + ph - y, fontFace: F_MONO, fontSize: 11, color: C.text2, align: 'center', valign: 'middle', vert: 'vert270' });
-  const ey = py + ph + 0.03;
-  T(s, [{ text: 'Externalizable: ', options: { bold: true } }, { text: 'contabilidad, aduana, transporte peligroso y remuneraciones.', options: { color: C.text2 } }], { x, y: ey, w: dw, h: 0.34, fontSize: 15, valign: 'middle' });
-  T(s, [{ text: 'Frente a competidores en operación: ', options: { bold: true } }, { text: '3,00 en habilidades y 2,71 en riesgo (1 a 5); brecha de −1,29 y −1,43 con el líder.', options: { color: C.text2 } }], { x, y: ey + 0.36, w: dw, h: 0.34, fontSize: 15, valign: 'middle' });
+  T(s, 'La ingeniería de integración queda en igualdad: cualquiera con ingenieros la contrata.', { x: xR, y: Y0 + 2.75, w: wR, h: 0.7, fontSize: 16, color: K.gris });
+  mono(s, 'MEFI', { x: xR, y: Y0 + 3.55, w: 1, h: 0.28, bold: true, color: K.azul });
+  T(s, [{ text: '2,32', options: { fontFace: F_CON, bold: true, fontSize: 36 } }, { text: '  hoy  →  ', options: { color: K.gris, fontSize: 16 } }, { text: '2,96', options: { fontFace: F_CON, bold: true, fontSize: 36, color: K.cel } }, { text: '  con hitos', options: { color: K.gris, fontSize: 16 } }], { x: xR, y: Y0 + 3.8, w: wR, h: 0.6, valign: 'middle' });
+  fuente(s, 'Hitt et al. (2004) · Porter (1996) · David (1997) · Anexos A3 y A5');
   return s;
 };
 
-// =====================================================================
-// 11 · FODA · interno arriba, externo abajo
-// =====================================================================
-D.foda = () => {
-  const s = contenido('6 · ANÁLISIS ESTRATÉGICO · SÍNTESIS FODA', 'FODA:', 'fortalezas de diseño frente a amenazas decisivas.');
-  const lab = 0.55, g = 0.22, w = (CW - lab - g) / 2, h = (YF - Y0 - 0.35 - g) / 2, y0 = Y0 + 0.35;
-  mono(s, 'A FAVOR', { x: M + lab, y: Y0, w, h: 0.3, fontSize: 12, color: C.accent1, align: 'center' });
-  mono(s, 'EN CONTRA', { x: M + lab + w + g, y: Y0, w, h: 0.3, fontSize: 12, color: C.text1, align: 'center' });
-  [['INTERNO', y0], ['EXTERNO', y0 + h + g]].forEach(([k, y]) => T(s, k, { x: M, y, w: 0.4, h, fontFace: F_MONO, fontSize: 12, color: C.text2, align: 'center', valign: 'middle', vert: 'vert270' }));
-  const q = [['FORTALEZAS · DE DISEÑO', ['Arquitectura trasera que conserva el motor', 'Proceso de taller en cinco etapas', 'Segmento delimitado: uso intensivo'], C.accent1, false],
-    ['DEBILIDADES · DE EJECUCIÓN', ['Sin ensayo ni homologación; biblioteca vacía', 'Sin técnicos habilitados ni retención', 'Compras sin cobertura cambiaria; marca sin casos'], C.text1, false],
-    ['OPORTUNIDADES', ['Se conserva el auto: 3,5 usados por cada nuevo', 'La bencina 93 subió $370 por litro en marzo', 'Packs LFP a US$81/kWh, promedio mundial'], C.accent1, true],
-    ['AMENAZAS', ['Ley N° 21.793 sin reglamento', 'Dólar sobre $970 y kit 100% importado', 'Menor ingreso y opción de posponer'], C.text1, true]];
-  q.forEach(([k, items, color, ext], i) => {
-    const x = M + lab + (i % 2) * (w + g), y = y0 + Math.floor(i / 2) * (h + g);
-    caja(s, x, y, w, h, { line: { color, width: i % 2 ? 0.75 : 1.25, dashType: ext ? 'solid' : 'solid' } });
-    s.addShape(S.rect, { x, y, w, h: 0.06, fill: { color }, line: { type: 'none' } });
-    mono(s, k, { x: x + 0.22, y: y + 0.15, w: w - 0.4, h: 0.3, fontSize: 13, color, bold: true });
-    items.forEach((t, j) => {
-      const yy = y + 0.5 + j * 0.42;
-      s.addShape(S.rect, { x: x + 0.22, y: yy + 0.14, w: 0.12, h: 0.12, fill: { color }, line: { type: 'none' } });
-      T(s, t, { x: x + 0.45, y: yy, w: w - 0.6, h: 0.4, fontSize: 16, valign: 'middle' });
-    });
-  });
-  return s;
-};
-
-// =====================================================================
-// 12 · TRES BRECHAS PRIORITARIAS · hallazgos, no objetivos
-// =====================================================================
-D.brechas = () => {
-  const s = contenido('6 · ANÁLISIS ESTRATÉGICO · FODA Y DIAGNÓSTICO INTEGRADO', 'TRES BRECHAS', 'deciden si el negocio funciona.');
-  const g = 0.3, w = (CW - 2 * g) / 3, y = Y0, h = 3.55;
-  const b = [['1', 'Habilitación formal', ['Vía legal aplicable', 'Aseguradoras y plantas de revisión'], 'PEST · LEY · FCE'],
-    ['2', 'Valor frente a posponer', ['Ahorro medido en autos chilenos', 'Forma de pago que el cliente pueda asumir'], 'PORTER · PEST · FODA'],
-    ['3', 'Capacidad de ejecución', ['Biblioteca de calibraciones con datos', 'Técnicos en alta tensión y kit protegido del dólar'], 'RECURSOS · FCE · CADENA']];
-  b.forEach(([n, k, items, src], i) => {
-    const x = M + i * (w + g);
-    if (i === 0) { brillo(s, x, y, w, h, 0.4); cajaHot(s, x, y, w, h); } else caja(s, x, y, w, h, { line: { color: C.accent1, width: 1 } });
-    tag(s, n, x + 0.25, y + 0.25, { w: 0.5, h: 0.44, size: 18 });
-    T(s, k, { x: x + 0.25, y: y + 0.85, w: w - 0.45, h: 0.55, fontSize: 22, bold: true, valign: 'top' });
-    items.forEach((t, j) => {
-      const yy = y + 1.55 + j * 0.72;
-      regla(s, yy, x + 0.25, w - 0.5);
-      T(s, t, { x: x + 0.25, y: yy + 0.05, w: w - 0.45, h: 0.65, fontSize: 17, valign: 'middle' });
-    });
-    mono(s, 'VIENE DE · ' + src, { x: x + 0.25, y: y + h - 0.42, w: w - 0.45, h: 0.3, fontSize: 11, color: C.text2 });
-  });
-  const by = y + h + 0.22;
-  T(s, [{ text: 'Son hallazgos del diagnóstico: ', options: { bold: true } }, { text: 'la estrategia responde a cada una con un eje.', options: { color: C.text2 } }], { x: M, y: by, w: CW, h: 0.45, fontSize: 18, valign: 'middle' });
-  return s;
-};
-
-// =====================================================================
-// 13 · CIERRE · fundamentado y por demostrar
-// =====================================================================
-D.cierre = () => {
-  const s = contenido('CIERRE · DEL DIAGNÓSTICO AL AVANCE 2', 'LO FUNDAMENTADO', 'y lo que falta demostrar.');
-  const g = 0.4, w = (CW - g) / 2, y = Y0, h = 3.0;
-  [['FUNDAMENTADO', ['Una necesidad real y medible', 'Una propuesta coherente con la identidad', 'Un entorno moderadamente desfavorable, con causas claras'], false],
-    ['POR DEMOSTRAR', ['La vía legal', 'El ahorro, medido en autos chilenos', 'La capacidad de ejecutar'], true]].forEach(([k, items, hot], i) => {
-    const x = M + i * (w + g);
-    if (hot) { brillo(s, x, y, w, h, 0.4); cajaHot(s, x, y, w, h); } else caja(s, x, y, w, h, { line: { color: C.text2, width: 0.75 } });
-    mono(s, k, { x: x + 0.28, y: y + 0.22, w: w - 0.5, h: 0.3, fontSize: 14, color: C.accent1, bold: true });
-    items.forEach((t, j) => {
-      const yy = y + 0.7 + j * 0.72;
-      regla(s, yy, x + 0.28, w - 0.56);
-      T(s, t, { x: x + 0.28, y: yy + 0.05, w: w - 0.56, h: 0.65, fontSize: 20, bold: hot, valign: 'middle' });
-    });
-  });
-  const by = y + h + 0.3;
-  regla(s, by, M, CW, C.accent1);
-  T(s, [{ text: 'AVANCE 2  ', options: { fontFace: F_MONO, fontSize: 13, color: C.accent1 } }, { text: 'Estrategia, objetivos y Cuadro de Mando Integral', options: { bold: true } }], { x: M, y: by + 0.12, w: 8.6, h: 0.45, fontSize: 18, valign: 'middle' });
-  mono(s, 'GRACIAS · ¿PREGUNTAS?', { x: R - 4, y: by + 0.12, w: 4, h: 0.45, fontSize: 18, color: C.text1, align: 'right', valign: 'middle' });
-  return s;
-};
-
-// =====================================================================
-// ANEXO
-// =====================================================================
-D.indice = (primera) => {
-  const s = contenido('MATERIAL DE APOYO', 'ANEXO', 'para preguntas.');
-  const rowH = 0.37, y0 = Y0 - 0.02;
-  G.ANEXO.forEach((a, i) => {
-    const y = y0 + i * rowH, n = primera + i;
-    regla(s, y, M, CW);
-    tag(s, a.codigo, M, y + 0.04, { w: 0.62, h: 0.29, size: 12, off: a.d === 'a-avance2' });
-    s.addText(a.titulo, { x: M + 0.8, y, w: CW - 2.0, h: rowH, valign: 'middle', fontFace: F_BODY, fontSize: 17, color: a.d === 'a-avance2' ? C.text2 : C.text1, margin: 0, isTextBox: true, hyperlink: { slide: n, tooltip: 'Ir a ' + a.titulo } });
-    s.addText('LÁM. ' + n, { x: R - 1.1, y, w: 1.1, h: rowH, valign: 'middle', align: 'right', fontFace: F_MONO, fontSize: 13, color: C.accent1, charSpacing: 1, margin: 0, isTextBox: true, hyperlink: { slide: n, tooltip: 'Ir a ' + a.titulo } });
-  });
-  regla(s, y0 + G.ANEXO.length * rowH, M, CW);
-  return s;
-};
-
-D['a-pest'] = () => {
-  const s = contenido('PEST · INSTRUMENTO 03', 'EL PEST POR DIMENSIÓN,', 'hoy y a futuro.');
-  tabla(s, [['DIMENSIÓN', 2.3], ['HOY', 0.8], ['FUTURO', 1.0], ['A FAVOR', 3.95], ['EN CONTRA', CW - 8.05]], [
-    ['Político-jurídico', '2,67', '2,78', 'Ley 21.455 de carbono neutralidad (oportunidad leve)', 'Ley 21.793 sin reglamento (gran amenaza); IVA completo'],
-    ['Económico', '2,38', '2,81', 'Bencina más cara; packs LFP a US$81/kWh (promedio mundial)', 'Ingreso disponible (gran amenaza); dólar sobre $970; PIB 2026 de 0,25% a 0,75%; desempleo 9,6%'],
-    ['Sociocultural', '3,00', '3,00', '3,5 usados por cada nuevo (gran oportunidad)', 'Posibles exclusiones de modificados en seguros (por verificar); pago por sostenibilidad sesgado por ingreso'],
-    ['Tecnológico', '3,23', '3,38', 'Componentes maduros y estandarizados', 'Sin proveedor local de baterías'],
-    ['Global', '2,82', '2,99', '13 oportunidades', '20 amenazas · 18 neutros'],
-  ], Y0 - 0.05, { rh: 0.78, size: 14, negrita: [0], gris: [3, 4], derecha: [1, 2] });
-  return s;
-};
-
-D['a-porter'] = () => {
-  const s = contenido('CINCO FUERZAS · INSTRUMENTO 02', 'EL 3,49', 'es peso por intensidad.');
-  tabla(s, [['FUERZA', 2.6], ['PESO', 1.0], ['INTENSIDAD', 1.5], ['PESO × INTENSIDAD', 2.2], ['LECTURA', CW - 7.3]], [
-    ['Sustitutos', '30%', '5,00', '1,50', 'Posponer la inversión; híbrido usado'],
-    ['Nuevos entrantes', '20%', '3,75', '0,75', 'La barrera regulatoria hoy bloquea a todos por igual'],
-    ['Clientes', '25%', '2,64', '0,66', 'Sensibles al precio por falta de liquidez'],
-    ['Proveedores', '15%', '2,67', '0,40', 'Componentes estandarizados e importados'],
-    ['Rivalidad', '10%', '1,83', '0,18', 'Sin competidores directos identificados'],
-    ['Total', '100%', '—', '3,49', 'Industria moderadamente poco atractiva'],
-  ], Y0 - 0.05, { rh: 0.62, size: 16, negrita: [0], gris: [4], derecha: [1, 2, 3] });
-  return s;
-};
-
-D['a-vrio'] = () => {
-  const s = contenido('RECURSOS Y CAPACIDADES · INSTRUMENTO 05', 'QUINCE RECURSOS Y CAPACIDADES,', 'cuatro filtros.');
-  tabla(s, [['RECURSO O CAPACIDAD', 6.5], ['TIPO', 2.2], ['CONSECUENCIA', CW - 8.7]], [
-    ['Biblioteca de calibraciones por marca y modelo', 'Recurso intangible', 'Sostenible (potencial)'],
-    ['Ingeniería de integración y calibración', 'Capacidad', 'Sostenible (potencial)'],
-    ['Formación interna en proceso y calibración', 'Capacidad', 'Temporal'],
-    ['Homologación por par modelo-kit', 'Recurso', 'Temporal'],
-    ['Autorización del taller', 'Recurso', 'Temporal'],
-    ['Técnicos con licencia SEC', 'Recurso', 'Temporal'],
-    ['Gestión regulatoria e institucional', 'Capacidad', 'Temporal'],
-    ['Diagnóstico previo y posventa', 'Capacidad', 'Temporal'],
-    ['Taller, kit, convenio financiero y cuatro más', '7 elementos', 'Igualdad'],
-  ], Y0 - 0.1, { rh: 0.44, size: 15, gris: [1] });
-  return s;
-};
-
-D['a-fce'] = () => {
-  const s = contenido('FACTORES CRÍTICOS DE ÉXITO · INSTRUMENTO 06', 'SEIS FACTORES CRÍTICOS,', 'uno es condición de entrada.');
-  tabla(s, [['FACTOR · LÍNEA DEL 06', 4.6], ['HAB.', 0.8], ['RIESGO', 1.0], ['ESTADO', CW - 6.4]], [
-    ['Gestión regulatoria e institucional · infraestructura', '2', '2', 'Sin interlocución formal con la autoridad · condición de entrada'],
-    ['Financiamiento en el punto de venta · finanzas', '3', '2', 'Sin convenio · facilitador clave de la compra'],
-    ['Ingeniería de integración y calibración · fabricación', '4', '2', 'Diseñada; riesgo de incompatibilidad con la electrónica original'],
-    ['Talento certificado en alta tensión · RR. HH.', '2', '2', 'Perfil escaso; sin esquema de retención'],
-    ['Logística de insumos críticos · adquisiciones', '3', '2', 'Protocolo definido; Clase 9 con plazos largos'],
-    ['Estandarización y tiempo de taller · procesos', '4', '3', 'Cinco etapas definidas; no probadas'],
-  ], Y0 - 0.05, { rh: 0.64, size: 15, gris: [3], derecha: [1, 2] });
-  return s;
-};
-
-D['a-competidores'] = () => {
-  const s = contenido('COMPARACIÓN COMPETITIVA · INSTRUMENTO 06', 'FRENTE A COMPETIDORES EN OPERACIÓN,', 'todo sale debilidad.');
-  const labels = ['Conversión GLP', 'Eléctricos nuevos', 'Reborn*', 'Movener*', 'Híbridos usados', 'Lumine', 'Líder'];
-  s.addChart(pres.ChartType.bar, [
-    { name: 'Habilidades', labels, values: [3.86, 3.86, 3.86, 3.71, 3.57, 3.00, 4.29] },
-    { name: 'Factores de riesgo', labels, values: [4.00, 3.43, 3.71, 3.43, 3.43, 2.71, 4.14] },
-  ], {
-    x: M - 0.1, y: Y0 + 0.3, w: 8.4, h: 3.9, barDir: 'col', barGrouping: 'clustered', barGapWidthPct: 60,
-    chartColors: [HEX.accent1, HEX.dk2], valAxisMinVal: 1, valAxisMaxVal: 5,
-    catAxisLabelColor: HEX.dk1, catAxisLabelFontFace: F_BODY, catAxisLabelFontSize: 13,
-    valAxisLabelColor: HEX.dk2, valAxisLabelFontSize: 12, valAxisLabelFontFace: F_BODY, valGridLine: { color: HEX.accent5, size: 0.5 }, catGridLine: { style: 'none' },
-    showValue: true, dataLabelFontSize: 12, dataLabelFontFace: F_CON, dataLabelColor: HEX.dk1, dataLabelFormatCode: '0.00',
-    showLegend: true, legendPos: 't', legendFontSize: 13, legendColor: HEX.dk1, legendFontFace: F_BODY,
-    chartArea: { fill: { color: HEX.lt1 } }, plotArea: { fill: { color: HEX.lt1 } },
-  });
-  const rx = M + 8.6, rw = R - rx;
-  [['Por qué todo sale debilidad', 'Se compara una empresa preoperativa con actores en operación.'], ['El líder no es real', 'Es el máximo de cada área entre los competidores.'], ['Qué se usa en el FODA', 'Las fortalezas puntuales (puntaje 4 o más), no el promedio.']].forEach(([k, t], i) => {
-    const y = Y0 + 0.2 + i * 1.3;
-    regla(s, y, rx, rw, i ? C.accent5 : C.accent1);
-    mono(s, k.toUpperCase(), { x: rx, y: y + 0.1, w: rw, h: 0.3, fontSize: 11, color: C.accent1 });
-    T(s, t, { x: rx, y: y + 0.42, w: rw, h: 0.8, fontSize: 15, valign: 'top' });
-  });
-  return s;
-};
-
-D['a-foda'] = () => {
-  const s = contenido('FODA · CON SU EVIDENCIA', 'EL FODA COMPLETO,', 'factor por factor.');
-  const q = [['FORTALEZAS', ['Arquitectura en el eje trasero que conserva el motor (diseño)', 'Proceso de taller en cinco etapas (definido, no probado)', 'Segmento delimitado y estrategia de producto única', 'Riesgos identificados con protocolo de contención']],
-    ['DEBILIDADES', ['Sin ensayo ni homologación; biblioteca de calibraciones vacía', 'Sin técnicos habilitados ni esquema de retención', 'Patrimonio reducido; compras en dólares sin cobertura', 'Marca sin casos; validación cualitativa con n = 3']],
-    ['OPORTUNIDADES', ['3,5 usados transferidos por cada nuevo (CAVEM, ene-ago 2026)', 'Bencina 93 en la RM de $1.169 a $1.539 (CNE, marzo de 2026)', 'Packs LFP a US$81/kWh, promedio mundial (BloombergNEF, 2025)', 'Ocupación informal en transporte +8,6% en 12 meses (INE)']],
-    ['AMENAZAS', ['Ley N° 21.793 sin reglamento; borrador de 2021 sin vía', 'Dólar observado sobre $970 con kit importado (Banco Central)', 'PIB 2026 de 0,25% a 0,75%; desempleo 9,6% (BCCh, INE)', 'Posponer la inversión; posibles exclusiones de seguros']]];
-  const g = 0.25, w = (CW - g) / 2, h = (YF - Y0 - g) / 2;
-  q.forEach(([k, items], i) => {
-    const x = M + (i % 2) * (w + g), y = Y0 + Math.floor(i / 2) * (h + g);
-    caja(s, x, y, w, h, { line: { color: i % 2 ? C.text2 : C.accent1, width: 0.75 } });
-    mono(s, k, { x: x + 0.2, y: y + 0.1, w: w - 0.4, h: 0.28, fontSize: 12, color: C.accent1 });
-    T(s, items.map((t, j) => ({ text: t, options: { bullet: true, breakLine: j < items.length - 1 } })), { x: x + 0.2, y: y + 0.42, w: w - 0.35, h: h - 0.5, fontSize: 14, valign: 'top', paraSpaceAfter: 3 });
-  });
-  return s;
-};
-
-D['a-identidad'] = () => {
-  const s = contenido('DECLARACIONES · TEXTOS LITERALES', 'MISIÓN, VISIÓN Y VALORES', 'completos.');
-  T(s, [{ text: 'MISIÓN  ', options: { fontFace: F_MONO, fontSize: 12, color: C.accent1 } }, { text: '«Reducir el combustible que un vehículo liviano a combustión necesita por kilómetro, mediante la instalación certificada de un sistema de hibridación aditiva sobre el automóvil que el cliente ya tiene, sin reemplazarlo y sin intervenir su motor.»' }], { x: M, y: Y0, w: CW, h: 0.95, fontSize: 16, valign: 'top' });
-  T(s, [{ text: 'VISIÓN  ', options: { fontFace: F_MONO, fontSize: 12, color: C.accent1 } }, { text: '«Ser hacia 2031 el taller de referencia en hibridación de vehículos en uso en Chile, con un procedimiento reconocido por la autoridad, las plantas de revisión técnica y las compañías de seguros.»' }], { x: M, y: Y0 + 1.0, w: CW, h: 0.75, fontSize: 16, valign: 'top' });
-  const w = (CW - 0.4) / 2, y = Y0 + 1.9;
-  [['VALORES ORGANIZACIONALES', ['Verificabilidad antes que afirmación', 'Formalidad como condición de operación', 'Trazabilidad del conocimiento técnico', 'Responsabilidad sobre el ciclo completo del componente']], ['VALORES HUMANOS', ['Honestidad técnica en el diagnóstico', 'Seguridad de quien instala y de quien conduce', 'Responsabilidad individual sobre la instalación ejecutada', 'Reconocimiento del oficio técnico']]].forEach(([k, items], i) => {
-    const x = M + i * (w + 0.4);
-    regla(s, y, x, w, C.accent1);
-    mono(s, k, { x, y: y + 0.08, w, h: 0.3, fontSize: 12, color: C.accent1 });
-    T(s, items.map((t, j) => ({ text: t, options: { bullet: true, breakLine: j < items.length - 1 } })), { x, y: y + 0.45, w, h: 2.0, fontSize: 16, valign: 'top', paraSpaceAfter: 3 });
-  });
-  return s;
-};
-
-D['a-fuentes'] = () => {
-  const s = contenido('FUENTES PÚBLICAS · APA', 'DE DÓNDE SALE', 'cada cifra pública.');
-  const refs = [
-    'Banco Central de Chile. (2026, 9 de septiembre). Informe de Política Monetaria, septiembre 2026. https://www.bcentral.cl',
-    'Banco Central de Chile. (2026). Dólar observado, serie diaria (30-09-2026: $970,46). Base de Datos Estadísticos.',
-    'BloombergNEF. (2025, 9 de diciembre). Lithium-ion battery pack prices fall to $108 per kilowatt-hour. https://about.bnef.com',
-    'Cámara de Comercio Automotriz de Chile [CAVEM]. (2026). Informe del mercado automotor, enero a agosto de 2026 (citado en Redimin).',
-    'Comisión Nacional de Energía [CNE]. (2026). Bencina en Línea. Citado en «Combustibles se disparan…», Emol, 24 de marzo de 2026.',
-    'Instituto Nacional de Estadísticas [INE]. (2026, 30 de septiembre). Boletín estadístico: empleo trimestral, n.º 335 (junio-agosto 2026).',
-    'Ley N° 21.793. (2026, 14 de enero). Diario Oficial de la República de Chile.',
-    'Precios de referencia del kit (con IVA): informe de la Fase 3 del equipo, Integrador II (octubre de 2026), por validar.',
-  ];
-  T(s, refs.map((t, j) => ({ text: t, options: { breakLine: j < refs.length - 1 } })), { x: M, y: Y0 - 0.05, w: CW, h: 3.6, fontSize: 14, valign: 'top', paraSpaceAfter: 6, lineSpacingMultiple: 0.98 });
-  marca(s, 'no', 'NO SE USA: «EMPLEO EN TRANSPORTE +9,7%» · SIN FUENTE CHILENA VERIFICABLE', M, YF - 0.42, { size: 11, h: 0.36 });
-  return s;
-};
-
-D['a-supuestos'] = () => {
-  const s = contenido('TRANSPARENCIA · NATURALEZA DE CADA AFIRMACIÓN', 'DATO, INSTRUMENTO, ESTIMACIÓN', 'o por confirmar.');
-  const cols = [['DATO PÚBLICO', ['Usados por cada nuevo', 'Precio de la bencina', 'Dólar, PIB y desempleo', 'Ley N° 21.793 sin reglamento'], { color: C.accent1, width: 1.25 }],
-    ['INSTRUMENTO DEL EQUIPO', ['PEST 2,82 y Porter 3,49', 'Recursos: 2 de 15; FCE', 'Escenarios E1 a E4', 'CMI: 17 objetivos y metas propuestas'], { color: C.text1, width: 1, dashType: 'sysDot' }],
-    ['ESTIMACIÓN O INDICIO', ['Hasta 20% menos bencina en ciudad', 'Precio de referencia del kit (Fase 3)', 'Precio decide, confianza atreve (n = 3)'], { color: GRIS, width: 1, dashType: 'dash' }],
-    ['POR CONFIRMAR', ['Convenios de financiamiento y seguros', 'Homologación y autorización', 'Precio y costos unitarios'], { color: C.text1, width: 1.25, dashType: 'dash' }]];
-  const g = 0.25, w = (CW - 3 * g) / 4, h = YF - Y0 - 0.06;
-  cols.forEach(([k, items, ln], i) => {
-    const x = M + i * (w + g);
-    caja(s, x, Y0, w, h, { line: ln });
-    mono(s, k, { x: x + 0.2, y: Y0 + 0.2, w: w - 0.4, h: 0.5, fontSize: 12, bold: true, color: ln.color === C.accent1 ? C.accent1 : C.text1 });
-    items.forEach((t, j) => {
-      const yy = Y0 + 0.85 + j * 0.8;
-      regla(s, yy, x + 0.2, w - 0.4);
-      T(s, t, { x: x + 0.2, y: yy + 0.05, w: w - 0.4, h: 0.7, fontSize: 16, valign: 'middle' });
-    });
-  });
-  return s;
-};
-
-const MAPA = (() => {
-  const NW = 1.5, X = i => 1.95 + i * (NW + 0.356);
-  const nh = 0.62, Yr = { F: 2.55, Cu: 3.46, Cl: 4.37, P: 5.28, A: 6.19 };
-  const pos = {
-    P5: [X(0), Yr.P], P1: [X(1), Yr.P], P2: [X(2), Yr.P], P3: [X(3), Yr.P], P4: [X(4), Yr.P], P6: [X(5), Yr.P],
-    A4: [X(0), Yr.A], A1: [X(2), Yr.A], A2: [X(3), Yr.A], A3: [X(4), Yr.A],
-    C1: [7.85, Yr.Cl], C2: [9.6, Yr.Cl], C3: [8.75, Yr.Cu], C4: [10.6, Yr.Cu],
-    F3: [X(0), Yr.F], F1: [5.5, Yr.F], F2: [10.4, Yr.F],
+D.cruces = () => {
+  const s = contenido('10 · CRUCES DEL FODA', 'HOY DEFENSIVOS;', 'ofensivos cuando se cumplan los hitos.');
+  const x0 = M + 0.55, y0 = Y0 + 0.35, cw = 3.4, ch = 1.95;
+  mono(s, 'FORTALEZAS', { x: x0, y: Y0, w: cw, h: 0.28, bold: true, align: 'center', color: K.tx });
+  mono(s, 'DEBILIDADES', { x: x0 + cw, y: Y0, w: cw, h: 0.28, bold: true, align: 'center', color: K.tx });
+  mono(s, 'OPORTUNIDADES', { x: M - 0.62, y: y0 + ch / 2 - 0.14, w: 1.9, h: 0.28, bold: true, align: 'center', color: K.tx, rotate: 270 });
+  mono(s, 'AMENAZAS', { x: M - 0.62, y: y0 + ch * 1.5 - 0.14, w: 1.9, h: 0.28, bold: true, align: 'center', color: K.tx, rotate: 270 });
+  const celda = (i, j, cod, items, hoy) => {
+    const x = x0 + j * cw, y = y0 + i * ch;
+    if (hoy) caja(s, x, y, cw, ch, { fill: { color: K.blanco }, line: { color: K.tx, width: 1 } });
+    else cajaAzul(s, x, y, cw, ch);
+    mono(s, cod, { x: x + 0.15, y: y + 0.1, w: 1, h: 0.3, fontSize: 16, bold: true, color: hoy ? K.tx : K.azul });
+    marca(s, hoy ? 'HOY' : 'CON E1 Y PILOTO', x + cw - 0.12, y + 0.1, { derecha: true, color: hoy ? K.tx : K.azul, dash: hoy ? 'solid' : 'dash', size: 11, h: 0.28 });
+    T(s, items.map(([k, t], n) => ({ text: '', options: {} }) && [{ text: k + ' ', options: { fontFace: F_MONO, bold: true, fontSize: 12, color: K.azul } }, { text: t, options: { breakLine: n < items.length - 1 } }]).flat(), { x: x + 0.15, y: y + 0.48, w: cw - 0.3, h: ch - 0.55, fontSize: 14, paraSpaceAfter: 3 });
   };
-  return { NW, X, nh, Yr, pos, w: id => id === 'F1' ? 2.4 : NW };
-})();
-D.mapa = () => {
-  const s = contenido('9 · CMI · MAPA ESTRATÉGICO', '17 OBJETIVOS, 20 RELACIONES:', 'tres rutas.');
-  leyendaLineas(s);
-  const { nh, Yr, pos } = MAPA, W = MAPA.w;
-  [['FINANCIERA', Yr.F, nh, ''], ['CLIENTES', Yr.Cu, 2 * nh + 0.29, ''], ['PROCESOS', Yr.P, nh, ''], ['APRENDIZAJE', Yr.A, nh, '']].forEach(([t, y, h]) => {
-    linea(s, M, y, 0, h, C.accent1, 2);
-    mono(s, t, { x: M + 0.12, y, w: 1.3, h, fontSize: 12, color: C.text1, valign: 'middle', charSpacing: 0.5 });
-  });
-  serif(s, 'resultado', { x: M + 0.12, y: Yr.Cu + 0.36, w: 1.3, h: 0.26, fontSize: 13, color: C.text2 });
-  serif(s, 'propuesta de valor', { x: M + 0.12, y: Yr.Cl + 0.36, w: 1.3, h: 0.26, fontSize: 13, color: C.text2 });
-  // relaciones (antes que los nodos, para que las flechas queden debajo)
-  const L = id => pos[id][0], Tp = id => pos[id][1], B = id => pos[id][1] + nh, Mx = id => pos[id][0] + W(id) / 2, My = id => pos[id][1] + nh / 2, Rt = id => pos[id][0] + W(id);
-  const v = (x, a, b, t) => ruta(s, [[x, a], [x, b]], t);
-  v(Mx('A1'), Tp('A1'), B('P2'), 'hab');           // R01
-  ruta(s, [[Rt('P1'), My('P1')], [L('P2'), My('P2')]], 'ext'); // R02
-  ruta(s, [[Rt('P2'), My('P2')], [L('P3'), My('P3')]], 'hab'); // R03
-  v(Mx('A2'), Tp('A2'), B('P3'), 'hab');           // R04
-  v(8.5, Tp('P3'), B('C1'), 'hab');                // R05
-  ruta(s, [[L('P1'), My('P1')], [Rt('P5'), My('P5')]], 'ext'); // R06
-  v(Mx('A3'), Tp('A3'), B('P4'), 'hab');           // R07
-  ruta(s, [[Rt('P3'), My('P3')], [L('P4'), My('P4')]], 'hip'); // R08
-  v(10.2, Tp('P4'), B('C2'), 'hab');               // R09
-  v(9.05, Tp('C1'), B('C3'), 'hip');               // R10
-  v(9.9, Tp('C2'), B('C3'), 'hip');                // R11
-  const yg2 = (B('C3') + Tp('C1')) / 2;
-  ruta(s, [[11.45, Tp('P6')], [11.45, yg2], [10.1, yg2], [10.1, B('C3')]], 'hip'); // R12
-  ruta(s, [[Rt('C3'), My('C3')], [L('C4'), My('C4')]], 'hip'); // R13
-  v(11.85, Tp('P6'), B('C4'), 'hip');              // R14
-  v(11.3, Tp('C4'), B('F2'), 'hip');               // R15
-  const yg1 = (B('F1') + Tp('C3')) / 2;
-  ruta(s, [[7.62, Tp('P3')], [7.62, yg1], [10.7, yg1], [10.7, B('F2')]], 'hip'); // R16
-  ruta(s, [[L('F2'), My('F2')], [Rt('F1'), My('F1')]], 'hip'); // R17
-  v(Mx('A4'), Tp('A4'), B('P5'), 'hip');           // R18
-  v(2.7, Tp('P5'), B('F3'), 'hip');                // R19
-  ruta(s, [[Rt('F3'), My('F3')], [L('F1'), My('F1')]], 'hip'); // R20
-  Object.keys(pos).forEach(id => nodo(s, id, pos[id][0], pos[id][1], W(id), nh, { hot: id === 'F1', inline: true, corto: true }));
-  // ventaja sostenible potencial: A1
-  serif(s, 'ventaja sostenible (potencial)', { x: MAPA.X(1) - 0.1, y: Yr.A, w: 1.45, h: nh, fontSize: 14, align: 'right', valign: 'middle' });
-  flecha(s, MAPA.X(1) + 1.38, Yr.A + nh / 2, MAPA.X(2) - MAPA.X(1) - 1.43, 0, C.accent1, 1);
-  // leyenda de ejes en el hueco bajo P6
-  const lx = MAPA.X(5);
-  [[1, ''], [2, ''], [3, '']].forEach(([e, k], i) => {
-    s.addShape(S.rect, { x: lx, y: Yr.A + 0.07 + i * 0.19, w: 0.22, h: 0.07, fill: { color: EJE[e] }, line: { type: 'none' } });
-    T(s, 'eje ' + e, { x: lx + 0.3, y: Yr.A + i * 0.19, w: 1.2, h: 0.2, fontSize: 11, color: C.text2, valign: 'middle' });
-  });
+  celda(0, 0, 'FO', [['FO1', 'Calibración para tu modelo'], ['FO2', 'Antecedentes al MTT'], ['FO3', 'Licenciar tras el piloto']], false);
+  celda(0, 1, 'DO', [['DO1', 'Medir el ahorro en el piloto'], ['DO2', 'Expediente del primer par'], ['DO3', 'Cuota comparable al ahorro']], true);
+  celda(1, 0, 'FA', [['FA1', 'Mismo auto, sin enchufe ni límite de antigüedad'], ['FA2', 'Habilita y franquicia SENCE']], false);
+  celda(1, 1, 'DA', [['DA1', 'Cobertura cambiaria'], ['DA2', 'Convenios con casos piloto'], ['DA3', 'Proteger las calibraciones']], true);
+  const xR = 8.35, wR = R - xR;
+  caja(s, xR, y0, wR, 1.7);
+  mono(s, 'HOY · DEFENSIVA', { x: xR + 0.2, y: y0 + 0.12, w: wR - 0.4, h: 0.28, bold: true, color: K.tx });
+  T(s, [{ text: 'MEFE 2,03 · MEFI 2,32', options: { bold: true, breakLine: true } }, { text: 'ambas bajo 2,5: primero DO y DA', options: { color: K.gris } }], { x: xR + 0.2, y: y0 + 0.5, w: wR - 0.4, h: 1.0, fontSize: 18 });
+  flecha(s, xR + wR / 2, y0 + 1.78, xR + wR / 2, y0 + 2.18, K.azul, 2);
+  cajaAzul(s, xR, y0 + 2.25, wR, 1.65);
+  mono(s, 'CON E1 Y PILOTO · OFENSIVA', { x: xR + 0.2, y: y0 + 2.37, w: wR - 0.3, h: 0.28, bold: true, color: K.azul, fontSize: 12 });
+  T(s, [{ text: 'MEFE 2,75 · MEFI 2,96', options: { bold: true, breakLine: true } }, { text: 'sobre 2,5: FO en el nicho', options: { color: K.gris } }], { x: xR + 0.2, y: y0 + 2.75, w: wR - 0.4, h: 1.0, fontSize: 18 });
+  fuente(s, 'David (1997) · Las 11 estrategias y su objetivo del CMI: anexo A6');
   return s;
 };
 
-
-
-// =====================================================================
-// 6 · DIAGNÓSTICO EN CUATRO NÚMEROS
-// =====================================================================
-D.diagnostico = () => {
-  const s = contenido('6 · ANÁLISIS ESTRATÉGICO · SÍNTESIS DEL DIAGNÓSTICO', 'CUATRO NÚMEROS', 'resumen el diagnóstico.');
-  const g = 0.25, w = (CW - 3 * g) / 4, y = Y0, h = 3.35;
-  const c = [
-    ['ENTORNO · PEST', '2,82', 'de 5 · bajo el neutro 3', 'Frenos: económico (2,38) y político-jurídico (2,67)'],
-    ['INDUSTRIA · PORTER', '3,49', 'de 5 · poco atractiva', 'Sustituto principal: posponer la inversión (5,00)'],
-    ['RECURSOS · 4 CRITERIOS', '2 de 15', 'potencialmente sostenibles', 'Biblioteca de calibraciones e ingeniería de integración'],
-    ['VÍA LEGAL', 'E3–E4', 'si sigue el borrador de 2021', 'Ley N° 21.793 sin reglamento: condición de entrada'],
-  ];
-  c.forEach(([k, n, sub, t], i) => {
-    const x = M + i * (w + g), hot = i === 3;
-    if (hot) { brillo(s, x, y, w, h, 0.45); cajaHot(s, x, y, w, h); } else caja(s, x, y, w, h, { line: { color: C.text2, width: 0.75 } });
-    mono(s, k, { x: x + 0.22, y: y + 0.2, w: w - 0.4, h: 0.3, fontSize: 13, color: C.accent1 });
-    numero(s, n, { x: x + 0.22, y: y + 0.55, w: w - 0.4, h: 0.95, fontSize: n.length > 4 ? 46 : 60, valign: 'middle', color: hot ? C.accent1 : C.text1 });
-    T(s, sub, { x: x + 0.22, y: y + 1.5, w: w - 0.4, h: 0.4, fontSize: 15, color: C.text2, valign: 'top' });
-    regla(s, y + 2.0, x + 0.22, w - 0.44, hot ? C.accent1 : C.accent5);
-    T(s, t, { x: x + 0.22, y: y + 2.1, w: w - 0.4, h: 1.15, fontSize: 17, bold: hot, valign: 'top' });
-  });
-  const by = y + h + 0.22;
-  T(s, [{ text: 'Una necesidad real ', options: { bold: true } }, { text: 'en un entorno que todavía no habilita el negocio.', options: { color: C.text2 } }], { x: M, y: by, w: CW, h: 0.5, fontSize: 20, valign: 'middle' });
-  return s;
-};
-
-// =====================================================================
-// 8 · ESTRATEGIA · diferenciación enfocada, renuncias y ejes
-// =====================================================================
 D.estrategia = () => {
-  const s = contenido('7 · FORMULACIÓN DE ESTRATEGIA', 'DIFERENCIACIÓN ENFOCADA:', 'competir con evidencia, no con precio.');
-  linea(s, M, Y0 + 0.05, 0.06, 1.05, C.accent1, 3);
-  T(s, '«Un servicio certificado que reduce el combustible del auto que el cliente ya tiene, para conductores de alto kilometraje, sostenido por un conocimiento de calibración que un competidor no puede comprar.»',
-    { x: M + 0.3, y: Y0, w: CW - 0.3, h: 1.15, fontFace: F_SER, italic: true, fontSize: 21, valign: 'middle', lineSpacingMultiple: 1.0 });
-  const ry = Y0 + 1.4;
-  mono(s, 'RENUNCIAS', { x: M, y: ry, w: 2, h: 0.36, fontSize: 13, valign: 'middle' });
-  let x = M + 1.75;
-  ['NO COMPETIR POR PRECIO', 'NO OFRECER INMEDIATEZ'].forEach(t => { x += marca(s, 'no', t, x, ry, { size: 12, h: 0.36 }) + 0.2; });
-  T(s, [{ text: 'Ventaja buscada: ', options: { color: C.text2 } }, { text: 'la biblioteca de calibraciones (potencial)', options: { bold: true } }], { x: x + 0.2, y: ry, w: R - x - 0.2, h: 0.36, fontSize: 15, valign: 'middle', align: 'right' });
-  const ey = ry + 0.7, eh = YF - ey, ew = (CW - 0.5) / 3;
-  [[1, 'Vía legal y reconocimiento de terceros'], [2, 'Valor frente a posponer la compra'], [3, 'Capacidad de ejecución y ahorro sin medir']].forEach(([e, a], i) => {
-    const xx = M + i * (ew + 0.25);
-    caja(s, xx, ey, ew, eh, { line: { color: C.accent5, width: 0.75 } });
-    barraEje(s, [e], xx, ey, ew, 0.1);
-    mono(s, 'EJE ' + e, { x: xx + 0.25, y: ey + 0.25, w: ew - 0.5, h: 0.3, fontSize: 13, color: C.text2 });
-    T(s, EJE_NOMBRE[e], { x: xx + 0.25, y: ey + 0.58, w: ew - 0.5, h: 0.5, fontSize: 22, bold: true, valign: 'middle' });
-    T(s, [{ text: 'Brecha: ', options: { color: C.text2 } }, { text: a }], { x: xx + 0.25, y: ey + 1.15, w: ew - 0.5, h: eh - 1.3, fontSize: 17, valign: 'top' });
+  const s = contenido('11 · ESTRATEGIA Y OBJETIVOS', 'DIFERENCIACIÓN ENFOCADA:', 'competir con evidencia.');
+  serif(s, '«El mismo auto, ahora híbrido, con un ahorro medido y una calibración hecha para su modelo.»', { x: M, y: Y0, w: 7.6, h: 0.95, fontSize: 24, color: K.tx });
+  foto(s, 'kit-tres-piezas.jpg', 9.0, Y0 - 0.15, R - 9.0, (R - 9.0) * 9 / 16);
+  const ejes = [['EJE 1 · HABILITACIÓN FORMAL', 'Autorización, primer par y alianzas', 'P1 · P2 · P6'], ['EJE 2 · ACCESO COMERCIAL', 'Alto kilometraje, con crédito', 'C4 · P6'], ['EJE 3 · CONOCIMIENTO Y ESCALA', 'Biblioteca, medición y red', 'A1–A4 · P4 · P5 · C2 · F3']];
+  const g = 0.25, w = (CW - 2 * g) / 3, y = Y0 + 2.2, h = 1.65;
+  ejes.forEach(([k, t, o], i) => {
+    const x = M + i * (w + g);
+    caja(s, x, y, w, h);
+    mono(s, k, { x: x + 0.15, y: y + 0.12, w: w - 0.3, h: 0.28, fontSize: 12, bold: true, color: K.azul });
+    T(s, t, { x: x + 0.15, y: y + 0.45, w: w - 0.3, h: 0.75, fontSize: 18, bold: true });
+    mono(s, o, { x: x + 0.15, y: y + 1.25, w: w - 0.3, h: 0.3, fontSize: 14, bold: true, color: K.tx });
   });
+  T(s, [{ text: '17 objetivos ', options: { bold: true } }, { text: 'con verbo y resultado verificable · ' }, { text: 'Renuncias: ', options: { bold: true } }, { text: 'precio bajo e inmediatez' }], { x: M, y: y + h + 0.12, w: CW, h: 0.38, fontSize: 17, valign: 'middle' });
+  fuente(s, 'Porter (1996) · Kaplan y Norton (2008) · Imagen ilustrativa del kit');
   return s;
 };
 
-// =====================================================================
-// 9 · LOS OCHO OBJETIVOS DE LA ESTRATEGIA LLEGAN AL CMI
-// =====================================================================
-D.objetivos = () => {
-  const s = contenido('8 · REDACCIÓN DE OBJETIVOS ESTRATÉGICOS', 'LOS OCHO OBJETIVOS DE LA ESTRATEGIA', 'llegan al CMI.');
-  const ew = (CW - 0.5) / 3, ey = Y0, eh = 3.05;
-  const ejes = [[1, [['01', 'Autorización del taller', ['P1']], ['02', 'Homologación progresiva', ['P2']], ['03', 'Aseguradoras y plantas', ['P6']]]],
-    [2, [['04', 'Consolidar el segmento', ['C4']], ['05', 'Financiamiento al cliente', ['P6']]]],
-    [3, [['06', 'Demostrar el ahorro real', ['A3', 'P4', 'C2']], ['07', 'Retener el conocimiento', ['A1', 'A2', 'A4']], ['08', 'Ampliar capacidad', ['P5', 'F3']]]]];
-  ejes.forEach(([e, objs], i) => {
-    const x = M + i * (ew + 0.25);
-    caja(s, x, ey, ew, eh, { line: { color: C.accent5, width: 0.75 } });
-    barraEje(s, [e], x, ey, ew, 0.1);
-    T(s, [{ text: 'EJE ' + e + '  ', options: { fontFace: F_MONO, fontSize: 12, color: C.text2 } }, { text: EJE_NOMBRE[e], options: { bold: true } }], { x: x + 0.2, y: ey + 0.18, w: ew - 0.4, h: 0.42, fontSize: 18, valign: 'middle' });
-    objs.forEach(([n, t, ids], j) => {
-      const y = ey + 0.72 + j * 0.76;
-      regla(s, y, x + 0.2, ew - 0.4);
-      mono(s, n, { x: x + 0.2, y: y + 0.08, w: 0.4, h: 0.3, fontSize: 12, color: C.accent1 });
-      T(s, t, { x: x + 0.62, y: y + 0.04, w: ew - 0.84, h: 0.38, fontSize: 15, valign: 'top' });
-      let cx = x + 0.62;
-      ids.forEach(id => { cx += chip(s, id, cx, y + 0.42, { h: 0.28, size: 12, w: 0.5 }) + 0.08; });
+// ===================================================================== LUKAS
+D.mapa = () => {
+  const s = contenido('12 · CUADRO DE MANDO INTEGRAL', 'TRES RUTAS:', '17 objetivos y 20 relaciones', { unaLinea: true });
+  const w = 10.9, h = w * 842 / 2048;
+  s.addImage({ path: A('mapa.png'), x: (W - w) / 2, y: 1.85, w, h, altText: 'Mapa estratégico de Lumine Motors' });
+  fuente(s, 'Kaplan y Norton (2008) · Indicador, meta y responsable: anexo A7');
+  return s;
+};
+
+const SIMB = { sin: 'sin', pen: 'pen' };
+function estadoIcono(s, tipo, x, y, d = 0.26) {
+  if (tipo === 'sin') s.addShape(S.ellipse, { x, y, w: d, h: d, fill: { color: K.blanco }, line: { color: K.gris, width: 1.5, dashType: 'dash' } });
+  else s.addShape(S.rect, { x, y, w: d, h: d, fill: { color: K.blanco }, line: { color: K.gris, width: 1.5, dashType: 'sysDot' } });
+}
+D.tablero = () => {
+  const s = contenido('13 · LÍNEA BASE', 'EL TABLERO ESTÁ SIN MEDIR,', 'no en rojo.');
+  const filas = [['FINANCIERA', ['F1', 'F2', 'F3']], ['CLIENTES', ['C1', 'C2', 'C3', 'C4']], ['PROCESOS', ['P1', 'P2', 'P3', 'P4', 'P5', 'P6']], ['APRENDIZAJE', ['A1', 'A2', 'A3', 'A4']]];
+  const pend = ['P5', 'C3', 'C4', 'F2', 'F3'], hitos = ['A3', 'P1', 'P2', 'P6'];
+  filas.forEach(([k, ids], i) => {
+    const y = Y0 + 0.1 + i * 0.95;
+    mono(s, k, { x: M, y, w: 1.7, h: 0.7, fontSize: 12, bold: true, valign: 'middle' });
+    ids.forEach((id, j) => {
+      const x = M + 1.75 + j * 0.88;
+      caja(s, x, y, 0.8, 0.7, hitos.includes(id) ? { line: { color: K.azul, width: 2 } } : {});
+      mono(s, id, { x, y: y + 0.04, w: 0.8, h: 0.3, fontSize: 14, bold: true, color: K.tx, align: 'center' });
+      estadoIcono(s, pend.includes(id) ? 'pen' : 'sin', x + 0.27, y + 0.37, 0.26);
     });
   });
-  const by = ey + eh + 0.25;
-  regla(s, by, M, CW, C.accent1);
-  mono(s, 'NUEVOS EN EL CMI', { x: M, y: by + 0.14, w: 4.2, h: 0.3, fontSize: 13, color: C.accent1 });
-  let cx = M;
-  ['P3', 'C1', 'C3', 'F2', 'F1'].forEach(id => { cx += chip(s, id, cx, by + 0.52, { w: 0.62 }) + 0.12; });
-  T(s, '17 objetivos · verbo, resultado, indicador y responsable', { x: cx + 0.1, y: by + 0.5, w: R - cx - 0.1, h: 0.4, fontSize: 16, color: C.text2, valign: 'middle' });
+  const ly = Y0 + 3.95;
+  estadoIcono(s, 'sin', M, ly + 0.05, 0.24); mono(s, 'SIN MEDIR', { x: M + 0.32, y: ly, w: 1.4, h: 0.34, fontSize: 12, valign: 'middle', bold: true });
+  estadoIcono(s, 'pen', M + 1.8, ly + 0.05, 0.24); mono(s, 'META PENDIENTE', { x: M + 2.12, y: ly, w: 1.9, h: 0.34, fontSize: 12, valign: 'middle', bold: true });
+  s.addShape(S.rect, { x: M + 4.1, y: ly + 0.04, w: 0.3, h: 0.26, fill: { color: K.blanco }, line: { color: K.azul, width: 2 } }); mono(s, 'HITO', { x: M + 4.5, y: ly, w: 0.8, h: 0.34, fontSize: 12, valign: 'middle', bold: true, color: K.azul });
+  const xR = 8.0, wR = R - xR;
+  [['12', 'SIN MEDIR'], ['5', 'META PENDIENTE'], ['0', 'CUMPLEN O INCUMPLEN']].forEach(([n, t], i) => {
+    const x = xR + i * (wR / 3);
+    num(s, n, { x, y: Y0, w: wR / 3 - 0.1, h: 0.9, fontSize: 54, color: i === 0 ? K.cel : K.tx });
+    mono(s, t, { x, y: Y0 + 0.95, w: wR / 3 - 0.1, h: 0.5, fontSize: 12, bold: true, color: K.tx });
+  });
+  mono(s, '20 RELACIONES CAUSA-EFECTO', { x: xR, y: Y0 + 1.75, w: wR, h: 0.28, bold: true, color: K.azul });
+  let xx = xR; const u = wR / 20;
+  [[6, K.tx, 'Habilit. 30%'], [2, K.medio, 'Externas 10%'], [12, K.cel, 'Hipótesis 60%']].forEach(([n, c, t], i) => {
+    s.addShape(S.rect, { x: xx, y: Y0 + 2.1, w: n * u, h: 0.42, fill: { color: c }, line: { color: K.blanco, width: 1 } }); xx += n * u;
+    const lx = xR + i * (wR / 3);
+    s.addShape(S.rect, { x: lx, y: Y0 + 2.66, w: 0.18, h: 0.18, fill: { color: c }, line: { type: 'none' } });
+    T(s, t, { x: lx + 0.24, y: Y0 + 2.58, w: wR / 3 - 0.26, h: 0.34, fontSize: 13, color: i === 2 ? K.azul : K.tx, valign: 'middle' });
+  });
+  mono(s, 'SE ACTIVAN EN CUATRO ETAPAS', { x: xR, y: Y0 + 3.2, w: wR, h: 0.28, bold: true, color: K.azul });
+  ['Preparar', 'Piloto', 'Taller', 'Red'].forEach((t, i) => {
+    const w = (wR - 0.3) / 4, x = xR + i * (w + 0.1);
+    s.addShape(S.chevron, { x, y: Y0 + 3.55, w, h: 0.55, fill: { color: i === 0 ? K.suave : K.blanco }, line: { color: i === 0 ? K.cel : K.tx, width: 1.25 } });
+    T(s, t, { x: x + 0.15, y: Y0 + 3.55, w: w - 0.2, h: 0.55, fontSize: 13, bold: i === 0, align: 'center', valign: 'middle' });
+  });
+  fuente(s, 'Plan de comprobación de las 12 hipótesis: anexo A8');
   return s;
 };
 
-// =====================================================================
-// 11 · ANÁLISIS · línea base del tablero y solidez de las relaciones
-// =====================================================================
-D.analisis = () => {
-  const s = contenido('10 · ANÁLISIS DE LA INFORMACIÓN', 'EL TABLERO ESTÁ SIN MEDIR', 'y 12 de 20 relaciones son hipótesis.');
-  const lw = 5.3;
-  mono(s, 'LÍNEA BASE · 17 INDICADORES', { x: M, y: Y0 - 0.05, w: lw, h: 0.3, fontSize: 12, color: C.accent1 });
-  const filas = [['sin', '12', 'sin medir', 'falta el dato: no vale cero'], ['pend', '5', 'meta pendiente', 'falta el dato para fijar la meta'], [null, '0', 'cumple, alerta o no cumple', 'la empresa todavía no opera']];
-  const rh = 0.85, y0 = Y0 + 0.35;
-  filas.forEach(([t, n, k, v], i) => {
-    const y = y0 + i * rh;
-    regla(s, y, M, lw, i ? C.accent5 : C.accent1);
-    if (t) forma(s, t, M + 0.02, y + rh / 2 - 0.17, 0.34);
-    else { forma(s, 'cumple', M - 0.02, y + rh / 2 - 0.3, 0.2); forma(s, 'alerta', M + 0.1, y + rh / 2 - 0.08, 0.2); forma(s, 'nocumple', M + 0.24, y + rh / 2 - 0.3, 0.2); }
-    numero(s, n, { x: M + 0.6, y, w: 1.0, h: rh, fontSize: 48, valign: 'middle', color: i === 0 ? C.accent1 : C.text1 });
-    T(s, [{ text: k, options: { bold: true, breakLine: true } }, { text: v, options: { color: C.text2, fontSize: 15 } }], { x: M + 1.65, y, w: lw - 1.65, h: rh, fontSize: 18, valign: 'middle' });
-  });
-  regla(s, y0 + 3 * rh, M, lw);
-  // solidez por ruta
-  const rx = M + lw + 0.6, rw = R - rx, lab = 2.35, bx = rx + lab, u = (rw - lab - 0.1) / 8;
-  mono(s, 'SOLIDEZ · 20 RELACIONES POR RUTA', { x: rx, y: Y0 - 0.05, w: rw, h: 0.3, fontSize: 12, color: C.accent1 });
-  const rutas = [['Habilitación', [['hab', 4], ['ext', 2]]], ['Evidencia', [['hab', 2], ['hip', 6]]], ['Valor económico', [['hip', 6]]]];
-  const bh = 0.5, gy = 0.3, ry0 = Y0 + 0.45;
-  rutas.forEach(([k, seg], i) => {
-    const y = ry0 + i * (bh + gy);
-    T(s, k, { x: rx, y, w: lab - 0.1, h: bh, fontSize: 18, bold: true, valign: 'middle' });
-    let x = bx;
-    seg.forEach(([t, n]) => {
-      const w = n * u;
-      const st = t === 'hab' ? { fill: { color: C.accent1 }, line: { type: 'none' } } : t === 'ext' ? { fill: { color: C.text1 }, line: { type: 'none' } } : { fill: { color: C.accent6 }, line: { color: C.accent1, width: 1.25, dashType: 'dash' } };
-      s.addShape(S.rect, Object.assign({ x, y, w: w - 0.05, h: bh }, st));
-      numero(s, String(n), { x, y, w: w - 0.05, h: bh, fontSize: 22, align: 'center', valign: 'middle', color: t === 'hip' ? C.accent1 : C.background1 });
-      x += w;
-    });
-  });
-  const ly = ry0 + 3 * (bh + gy) - 0.15;
-  let lx = rx;
-  [['hab', 'habilitante · 30%'], ['ext', 'externa · 10%'], ['hip', 'hipótesis · 60%']].forEach(([t, k]) => {
-    const st = t === 'hab' ? { fill: { color: C.accent1 }, line: { type: 'none' } } : t === 'ext' ? { fill: { color: C.text1 }, line: { type: 'none' } } : { fill: { color: C.accent6 }, line: { color: C.accent1, width: 1, dashType: 'dash' } };
-    s.addShape(S.rect, Object.assign({ x: lx, y: ly + 0.08, w: 0.26, h: 0.2 }, st));
-    T(s, k, { x: lx + 0.33, y: ly, w: 1.9, h: 0.36, fontSize: 13, color: C.text2, valign: 'middle' });
-    lx += 2.0;
-  });
-  const by = y0 + 3 * rh + 0.2;
-  cajaHot(s, M, by, CW, YF - by - 0.02);
-  T(s, [{ text: 'Al principio, el CMI no mide resultados: ', options: { bold: true } }, { text: 'comprueba hipótesis. Hoy se gestionan los cuatro hitos previos a la venta: A3, P1, P2 y P6.', options: { color: C.text2 } }], { x: M + 0.25, y: by, w: CW - 0.5, h: YF - by - 0.02, fontSize: 18, valign: 'middle' });
+D.postura = () => {
+  const s = contenido('14 · CUÁNDO CAMBIA LA POSTURA', 'EL REGLAMENTO MARCA', 'el paso a la ofensiva.');
+  const x = M + 0.2, w = 7.6;
+  mono(s, 'MEFE · FACTORES EXTERNOS', { x: M, y: Y0, w: 5, h: 0.28, bold: true, color: K.azul });
+  regla(s, x, Y0 + 1.6, w, [{ v: 2.03, n: '2,03', t: 'HOY', izq: true }, { v: 2.34, n: '2,34', t: 'SIN E1', color: K.gris, hueco: true, dash: 'sysDot', alto: 0 }, { v: 2.75, n: '2,75', t: 'CON E1', color: K.cel }], { alto: 1.3 });
+  mono(s, 'MEFI · FACTORES INTERNOS', { x: M, y: Y0 + 2.3, w: 5, h: 0.28, bold: true, color: K.azul });
+  regla(s, x, Y0 + 3.85, w, [{ v: 2.32, n: '2,32', t: 'HOY', izq: true }, { v: 2.96, n: '2,96', t: 'HITOS PROPIOS', color: K.cel }], { alto: 1.3 });
+  const xR = 8.85, wR = R - xR;
+  mono(s, 'MEJORA DE LA MEFE: +0,72', { x: xR, y: Y0, w: wR, h: 0.28, bold: true, color: K.azul });
+  const bh = 2.0, u = bh / 0.72;
+  s.addShape(S.rect, { x: xR, y: Y0 + 0.45, w: 0.9, h: 0.42 * u, fill: { color: K.cel }, line: { color: K.blanco, width: 1 } });
+  s.addShape(S.rect, { x: xR, y: Y0 + 0.45 + 0.42 * u, w: 0.9, h: 0.30 * u, fill: { color: K.medio }, line: { color: K.blanco, width: 1 } });
+  T(s, [{ text: '0,42', options: { fontFace: F_CON, bold: true, fontSize: 32, color: K.cel, breakLine: true } }, { text: 'depende del reglamento (O5, A1, A5)', options: { fontSize: 15 } }], { x: xR + 1.05, y: Y0 + 0.45, w: wR - 1.05, h: 1.15 });
+  T(s, [{ text: '0,30', options: { fontFace: F_CON, bold: true, fontSize: 28, breakLine: true } }, { text: 'hitos propios y convenios', options: { fontSize: 15 } }], { x: xR + 1.05, y: Y0 + 0.45 + 0.42 * u + 0.02, w: wR - 1.05, h: 0.85 });
+  serif(s, 'La ofensiva la marca la publicación del reglamento, no el calendario.', { x: xR, y: Y0 + 2.75, w: wR, h: 1.0, fontSize: 21 });
+  marca(s, 'CALIFICACIONES POR VALIDAR', xR, Y0 + 3.9, { dash: 'sysDot' });
+  fuente(s, 'David (1997) · Aporte = peso × cambio de calificación · Anexos A2 y A3');
   return s;
 };
 
-// =====================================================================
-// 12 · ESCENARIOS · la vía legal como compuerta del CMI
-// =====================================================================
-D.escenarios = () => {
-  const s = contenido('10 · ANÁLISIS DE LA INFORMACIÓN · ESCENARIOS', 'LA VÍA LEGAL ES UNA COMPUERTA:', 'decide qué parte del CMI avanza.');
-  const rh = 0.78, y0 = Y0 - 0.05;
-  s.addShape(S.rect, { x: M - 0.1, y: y0 + 0.34 + 2 * rh, w: CW + 0.2, h: 2 * rh, fill: { color: HOT }, line: { color: C.accent1, width: 1 } });
-  tabla(s, [['ESCENARIO', 2.5], ['SITUACIÓN DE P1 · VÍA LEGAL', 3.4], ['OBJETIVOS AFECTADOS', 2.9], ['DECISIÓN DEL CMI', CW - 8.8]], [
-    ['E1 · Vía amplia', 'Cumple con el reglamento', 'Ninguno bloqueado', 'Avanzar a P2, par por par'],
-    ['E2 · Vía acotada', 'Solo autos sin ABS, airbag ni control de estabilidad', 'P2 y C4 al parque elegible', 'Ajustar la meta de C4 y el orden de los pares'],
-    ['E3 · Vía alternativa', 'Trámite por alteración de características', 'P2 y P5 sujetos al trámite', 'Cambiar el indicador de P1 y recalendarizar'],
-    ['E4 · Sin vía', 'No cumple', 'P2, P3, P5 y lo que depende de ellos', 'Detener; no subir metas comerciales'],
-  ], y0, { rh, size: 16, negrita: [0], gris: [2] });
-  const by = y0 + 0.34 + 4 * rh + 0.2;
-  mono(s, 'SI SIGUE EL BORRADOR', { x: M, y: by, w: 3.2, h: 0.4, fontSize: 13, color: C.accent1, valign: 'middle' });
-  T(s, [{ text: 'Rama E3 o E4. ', options: { bold: true } }, { text: 'Actúa por dos relaciones externas: R02 (aprobar cada par) y R06 (réplica en talleres).', options: { color: C.text2 } }], { x: M + 3.2, y: by, w: CW - 3.2, h: 0.4, fontSize: 17, valign: 'middle' });
-  return s;
-};
-
-// =====================================================================
-// 13 · UMBRAL · litros para que el ahorro pague el kit
-// =====================================================================
-const UMB = { antes: 1168.9, despues: 1538.9, plus: 4990000, esencial: 4290000 };
-const litros = (p, a, b) => p / (a * b);
-const mil = n => Math.round(n).toLocaleString('es-CL');
 D.umbral = () => {
-  const s = contenido('10 · ANÁLISIS DE LA INFORMACIÓN · UMBRAL', 'MÁS DE 16.000 LITROS', 'para que el ahorro pague el kit.');
-  const lw = 4.6;
-  brillo(s, M, Y0, lw, 1.8, 0.5);
-  mono(s, 'KIT PLUS · BENCINA A $1.538,9', { x: M, y: Y0 - 0.05, w: lw, h: 0.3, fontSize: 12, color: C.accent1 });
-  numero(s, mil(litros(UMB.plus, 0.2, UMB.despues)), { x: M, y: Y0 + 0.3, w: lw, h: 1.2, fontSize: 80, valign: 'middle', color: C.accent1 });
-  T(s, 'litros que el auto debe consumir para que el 20% ahorrado iguale el precio del kit', { x: M, y: Y0 + 1.55, w: lw, h: 0.8, fontSize: 16, color: C.text2, valign: 'top' });
-  regla(s, Y0 + 2.5, M, lw, C.accent1);
-  mono(s, 'LITROS = PRECIO ÷ (AHORRO × $/LITRO)', { x: M, y: Y0 + 2.6, w: lw, h: 0.32, fontSize: 12, color: C.text1 });
-  marca(s, 'est', 'ESTIMACIÓN · PRECIO DE REFERENCIA', M, Y0 + 3.05, { size: 11, h: 0.32 });
-  T(s, 'Sin costo financiero, mantención ni cambios de precio.', { x: M, y: Y0 + 3.45, w: lw, h: 0.4, fontSize: 13, color: C.text2, valign: 'top' });
-  const rx = M + lw + 0.6, rw = R - rx, lab = 3.3, bx = rx + lab, bwmax = rw - lab - 1.25, max = 33000;
-  mono(s, 'LITROS DE UMBRAL', { x: rx, y: Y0 - 0.05, w: rw, h: 0.3, fontSize: 12, color: C.accent1 });
-  const barras = [['Plus · bencina antes del alza', litros(UMB.plus, 0.2, UMB.antes), false], ['Plus · bencina actual', litros(UMB.plus, 0.2, UMB.despues), true], ['Esencial (15%) · actual', litros(UMB.esencial, 0.15, UMB.despues), false], ['Plus si ahorrara 10%', litros(UMB.plus, 0.1, UMB.despues), false]];
-  const bh = 0.42, gy = 0.3, y0 = Y0 + 0.35;
-  barras.forEach(([k, v, hot], i) => {
-    const y = y0 + i * (bh + gy);
-    T(s, k, { x: rx, y, w: lab - 0.1, h: bh, fontSize: 16, bold: hot, valign: 'middle' });
-    s.addShape(S.rect, { x: bx, y, w: bwmax * v / max, h: bh, fill: { color: hot ? C.accent1 : i === 3 ? C.accent6 : C.text2 }, line: i === 3 ? { color: C.accent1, width: 1.25, dashType: 'dash' } : { type: 'none' } });
-    numero(s, mil(v), { x: bx + bwmax * v / max + 0.1, y, w: 1.2, h: bh, fontSize: 20, valign: 'middle', color: hot ? C.accent1 : C.text1 });
+  const s = contenido('15 · UMBRAL PARA EL CLIENTE', 'MÁS DE 16.000 LITROS', 'para pagar el kit.');
+  mono(s, 'KIT PLUS · $4.990.000 · AHORRO 20% · BENCINA $1.538,9', { x: M, y: Y0, w: 7, h: 0.28 });
+  num(s, '16.213', { x: M, y: Y0 + 0.3, w: 3.6, h: 1.1, fontSize: 72, color: K.cel });
+  T(s, 'litros de consumo para que el ahorro iguale el precio', { x: M + 3.65, y: Y0 + 0.62, w: 3.2, h: 0.75, fontSize: 17, valign: 'middle' });
+  mono(s, 'SI EL AHORRO REAL FUERA MENOR', { x: M, y: Y0 + 1.75, w: 6, h: 0.28, bold: true, color: K.azul });
+  const bx = M + 1.2, bw = 4.2, mx = 32426;
+  [['20%', 16213], ['15%', 21617], ['10%', 32426]].forEach(([k, v], i) => {
+    const y = Y0 + 2.12 + i * 0.6;
+    T(s, k, { x: M, y, w: 1.0, h: 0.46, fontSize: 18, bold: true, valign: 'middle' });
+    s.addShape(S.rect, { x: bx, y: y + 0.08, w: v / mx * bw, h: 0.3, fill: { color: i === 0 ? K.cel : i === 2 ? K.tx : K.medio }, line: { type: 'none' } });
+    T(s, v.toLocaleString('es-CL') + ' L', { x: bx + v / mx * bw + 0.1, y, w: 1.5, h: 0.46, fontSize: 16, bold: true, valign: 'middle' });
   });
-  const ty = y0 + 4 * (bh + gy) + 0.05;
-  regla(s, ty, rx, rw, C.accent1);
-  [['−24%', 'de umbral por el alza de marzo'], ['×2', 'umbral si el ahorro fuera la mitad']].forEach(([n, t], i) => {
-    const x = rx + i * (rw / 2);
-    numero(s, n, { x, y: ty + 0.1, w: 1.25, h: 0.6, fontSize: 32, valign: 'middle', color: C.text1 });
-    T(s, t, { x: x + 1.3, y: ty + 0.1, w: rw / 2 - 1.4, h: 0.6, fontSize: 15, color: C.text2, valign: 'middle' });
+  serif(s, 'Con la mitad del ahorro, el umbral se duplica.', { x: M, y: Y0 + 3.95, w: 6.5, h: 0.5, fontSize: 20 });
+  const xR = 8.0, wR = R - xR;
+  mono(s, 'MESES PARA RECUPERAR EL KIT (PLAN)', { x: xR, y: Y0, w: wR, h: 0.28, bold: true, color: K.azul });
+  const tx = xR, tw = wR - 0.1, Mx = 48, ty = Y0 + 1.75, X = m => tx + m / Mx * tw;
+  s.addShape(S.rect, { x: tx, y: ty - 0.12, w: tw, h: 0.24, fill: { color: K.suave }, line: { color: K.tx, width: 1 } });
+  [0, 12, 24, 36, 48].forEach(m => { linea(s, X(m), ty + 0.12, 0, 0.15, K.tx, 1); mono(s, String(m), { x: X(m) - 0.3, y: ty + 0.3, w: 0.6, h: 0.24, fontSize: 12, align: 'center' }); });
+  [[27.5, 'Plus · aplicación', -1], [34.3, 'Plus · colectivo', 1]].forEach(([m, t, lado]) => {
+    s.addShape(S.ellipse, { x: X(m) - 0.11, y: ty - 0.11, w: 0.22, h: 0.22, fill: { color: K.cel }, line: { color: K.tx, width: 1 } });
+    const yy = lado < 0 ? ty - 1.25 : ty + 0.65;
+    if (lado < 0) linea(s, X(m), yy + 0.8, 0, ty - 0.11 - yy - 0.8, K.azul, 1); else linea(s, X(m), ty + 0.11, 0, yy - ty - 0.13, K.azul, 1);
+    T(s, [{ text: m.toFixed(1).replace('.', ','), options: { fontFace: F_CON, bold: true, fontSize: 30, breakLine: true } }, { text: t, options: { fontSize: 13, color: K.gris } }], { x: X(m) - 0.9, y: yy, w: 1.8, h: 0.75, align: 'center' });
   });
+  mono(s, 'CICLO DE RECAMBIO: 48 MESES', { x: tx, y: ty + 1.5, w: tw, h: 0.28, fontSize: 12, bold: true, align: 'right', color: K.tx });
+  marca(s, 'ESTIMACIÓN · AHORRO SIN MEDIR', xR, Y0 + 3.95, {});
+  T(s, 'Esencial: 28,9 y 36,6 meses', { x: xR, y: Y0 + 3.55, w: 4, h: 0.34, fontSize: 15, color: K.gris });
+  fuente(s, 'Garretón (2026) · Umbral = precio ÷ (ahorro × litro) · Meses: plan del equipo');
   return s;
 };
 
-// =====================================================================
-// 14 · RECOMENDACIONES
-// =====================================================================
 D.recomendaciones = () => {
-  const s = contenido('12 · RECOMENDACIONES', 'CINCO DECISIONES', 'antes de vender el primer kit.');
-  const recs = [
-    ['1', 'No comprometer inversión comercial antes de documentar una vía legal', ['P1'], 'Gerente General', 'Desde hoy'],
-    ['2', 'Aprobar el protocolo y medir el primer auto antes de comunicar ahorros', ['A3', 'C2'], 'Ing. de Calibración', 'Antes del piloto'],
-    ['3', 'Plan Financiero con tasa sustentada para medir la rentabilidad', ['F1'], 'Gerente General', 'Antes de invertir'],
-    ['4', 'Convenios con aseguradora, planta de revisión y financiera', ['P6'], 'Gerente General', 'Antes del 1.er kit'],
-    ['5', 'Proteger cada calibración como secreto empresarial', ['A1'], 'Ing. de Calibración', '1.ª calibración'],
-  ];
-  tabla(s, [['N°', 0.6], ['RECOMENDACIÓN', 6.15], ['OBJETIVO', 1.45], ['RESPONSABLE', 2.2], ['CUÁNDO', CW - 10.4]], recs, Y0 - 0.05, {
-    rh: 0.66, size: 17, gris: [3, 4],
-    render: {
-      0: (n, x, y, w, h) => tag(s, n, x, y + (h - 0.36) / 2, { w: 0.42, h: 0.36, size: 14 }),
-      2: (ids, x, y, w, h) => { let cx = x; ids.forEach(id => { cx += chip(s, id, cx, y + (h - 0.32) / 2, { w: 0.55, h: 0.32, size: 12 }) + 0.08; }); },
-    },
+  const s = contenido('16 · RECOMENDACIONES', 'CUATRO ACCIONES', 'que parten sin esperar el reglamento.');
+  const rec = [['1', 'Preparar el expediente técnico y aportar antecedentes al MTT', 'P1 · P2', 'Gerente General'], ['2', 'Aprobar el protocolo de medición y hacer el piloto con el modelo más frecuente', 'A1 · A3 · P2 · C2', 'Ingeniería de Calibración'], ['3', 'Elaborar el Plan Financiero con una tasa de costo de capital sustentada', 'F1 · F2 · F3', 'Gerente General'], ['4', 'Firmar convenios con aseguradora, planta de revisión técnica y financiera', 'P6', 'Gerente General']];
+  const g = 0.3, w = (CW - g) / 2, h = 1.85;
+  rec.forEach(([n, t, o, r], i) => {
+    const x = M + (i % 2) * (w + g), y = Y0 + Math.floor(i / 2) * (h + 0.22);
+    caja(s, x, y, w, h);
+    num(s, n, { x: x + 0.15, y: y + 0.08, w: 0.6, h: 0.85, fontSize: 48, color: K.cel, valign: 'top' });
+    T(s, t, { x: x + 0.85, y: y + 0.15, w: w - 1.0, h: 0.95, fontSize: 18, bold: true });
+    mono(s, o, { x: x + 0.85, y: y + 1.22, w: w - 1.0, h: 0.26, fontSize: 12, color: K.azul, bold: true });
+    mono(s, r.toUpperCase(), { x: x + 0.85, y: y + 1.48, w: w - 1.0, h: 0.26, fontSize: 12, color: K.gris, bold: true });
   });
-  const by = Y0 - 0.05 + 0.34 + 5 * 0.66 + 0.22;
-  T(s, [{ text: 'Mientras no opere: ', options: { color: C.text2 } }, { text: 'revisión mensual de los cuatro hitos previos a la venta.', options: { bold: true } }], { x: M, y: by, w: CW, h: 0.45, fontSize: 19, valign: 'middle' });
+  T(s, [{ text: 'Además: ', options: { bold: true } }, { text: 'validar precio y cuota · cubrir el dólar · proteger las calibraciones · revisar el reglamento cada mes' }], { x: M, y: Y0 + 2 * h + 0.32, w: CW, h: 0.38, fontSize: 17, valign: 'middle' });
+  fuente(s, 'Recomendaciones 1 a 8 del informe final, capítulo 12');
   return s;
 };
 
-// =====================================================================
-// 15 · CIERRE · conclusiones
-// =====================================================================
+// ===================================================================== DIEGO · CIERRE
 D.cierre = () => {
-  const s = contenido('11 · CONCLUSIONES', 'EL CMI DECIDE CUÁNDO AVANZAR,', 'corregir o detenerse.');
-  const g = 0.4, w = (CW - g) / 2, y = Y0, h = 3.0;
-  [['FUNDAMENTADO', ['Necesidad real y documentada', 'Estrategia coherente con el diagnóstico', 'CMI que ordena decisiones hoy'], false],
-    ['POR DEMOSTRAR', ['La vía legal', 'El ahorro, medido en autos chilenos', 'La rentabilidad sobre el costo de capital'], true]].forEach(([k, items, hot], i) => {
-    const x = M + i * (w + g);
-    if (hot) { brillo(s, x, y, w, h, 0.4); cajaHot(s, x, y, w, h); } else caja(s, x, y, w, h, { line: { color: C.text2, width: 0.75 } });
-    mono(s, k, { x: x + 0.28, y: y + 0.22, w: w - 0.5, h: 0.3, fontSize: 14, color: C.accent1, bold: true });
-    items.forEach((t, j) => {
-      const yy = y + 0.7 + j * 0.72;
-      regla(s, yy, x + 0.28, w - 0.56);
-      T(s, t, { x: x + 0.28, y: yy + 0.05, w: w - 0.56, h: 0.65, fontSize: 20, bold: hot, valign: 'middle' });
-    });
+  const s = contenido('17 · CONCLUSIONES', '¿QUÉ FALTA?', 'el primer auto del piloto.');
+  const c = [['El mismo auto, ahora híbrido', 'responde a una necesidad documentada'], ['La ventaja es un sistema', 'que acumula conocimiento que nadie compra hecho'], ['El CMI ordena decisiones', 'qué cumplir antes de vender y cuándo pasar a la ofensiva']];
+  c.forEach(([a, b], i) => {
+    const y = Y0 + 0.1 + i * 1.3;
+    num(s, String(i + 1), { x: M, y, w: 0.6, h: 0.8, fontSize: 44, color: K.cel, valign: 'top' });
+    T(s, [{ text: a, options: { bold: true, breakLine: true } }, { text: b, options: { color: K.gris } }], { x: M + 0.75, y: y + 0.05, w: 5.8, h: 1.1, fontSize: 21 });
   });
-  const by = y + h + 0.3;
-  regla(s, by, M, CW, C.accent1);
-  serif(s, 'hacia la visión 2031 · sin inventar lo que todavía no se mide', { x: M, y: by + 0.12, w: 8.6, h: 0.45, fontSize: 20, valign: 'middle' });
-  mono(s, 'GRACIAS · ¿PREGUNTAS?', { x: R - 4, y: by + 0.12, w: 4, h: 0.45, fontSize: 18, color: C.text1, align: 'right', valign: 'middle' });
+  foto(s, 'auto-costanera-cordillera.jpg', 7.4, Y0 + 0.1, R - 7.4, (R - 7.4) * 9 / 16);
+  T(s, 'Muchas gracias.', { x: 7.4, y: Y0 + 3.75, w: R - 7.4, h: 0.5, fontSize: 22, bold: true, align: 'right' });
+  fuente(s, 'Informe final del TIG, capítulo 11');
   return s;
 };
 
-// =====================================================================
-// ANEXO · índice agrupado por tema y láminas portadas de la Solemne 2
-// =====================================================================
-D.indice = (primeras) => {
-  const s = contenido('MATERIAL DE APOYO', 'ANEXO', 'para preguntas.');
-  const temas = [];
-  G.ANEXO.forEach((a, i) => { if (!temas.find(t => t.codigo === a.codigo)) temas.push({ codigo: a.codigo, titulo: a.titulo, n: primeras + i, partes: G.ANEXO.filter(b => b.codigo === a.codigo).length }); });
-  const rowH = 0.345, y0 = Y0 - 0.06;
-  temas.forEach((t, i) => {
-    const y = y0 + i * rowH;
-    regla(s, y, M, CW);
-    tag(s, t.codigo, M, y + 0.035, { w: 0.62, h: 0.275, size: 12 });
-    const txt = t.titulo + (t.partes > 1 ? `  (${t.partes} láminas)` : '');
-    s.addText(txt, { x: M + 0.8, y, w: CW - 2.0, h: rowH, valign: 'middle', fontFace: F_BODY, fontSize: 16, color: C.text1, margin: 0, isTextBox: true, hyperlink: { slide: t.n, tooltip: 'Ir a ' + t.titulo } });
-    s.addText('LÁM. ' + t.n, { x: R - 1.1, y, w: 1.1, h: rowH, valign: 'middle', align: 'right', fontFace: F_MONO, fontSize: 13, color: C.accent1, charSpacing: 1, margin: 0, isTextBox: true, hyperlink: { slide: t.n, tooltip: 'Ir a ' + t.titulo } });
-  });
-  regla(s, y0 + temas.length * rowH, M, CW);
+// ===================================================================== BIBLIOGRAFÍA
+const REFS = [
+  'Autofact. (2026, 25 de marzo). Los autos eléctricos más baratos en Chile en 2026. https://www.autofact.cl/blog/comprar-auto/modelos/autos-electricos-mas-baratos',
+  'Banco Central de Chile. (2026a). Informe de Política Monetaria, septiembre 2026. https://www.bcentral.cl/contenido/-/detalle/prensa/nota-de-prensa/bcch-publica-ipom-septiembre-2026',
+  'Banco Central de Chile. (2026b). Tipo de cambio dólar observado [Serie diaria]. https://si3.bcentral.cl/Bdemovil/BDE/IndicadoresDiarios',
+  'BioBioChile. (2026, 24 de marzo). GLP o bencina: lo que debes tener en cuenta si estás considerando cambiarte al gas vehicular. https://www.biobiochile.cl',
+  'BloombergNEF. (2025, 9 de diciembre). Lithium-ion battery pack prices fall to $108 per kilowatt-hour despite rising metal prices. https://about.bnef.com',
+  'CNN Chile. (2026, septiembre). Mercado automotriz nacional creció 2,9% en agosto y acumula casi un millón de operaciones este 2026. https://www.cnnchile.com',
+  'David, F. R. (1997). Conceptos de administración estratégica (5.ª ed.). Prentice Hall Hispanoamericana.',
+  'Decreto Supremo N° 55. (1988). Establece normas para la conversión de vehículos a gas. Ministerio de Transportes y Telecomunicaciones.',
+  'Francés, A. (2006). Estrategia y planes para la empresa con el cuadro de mando integral. Pearson Educación.',
+  'Garretón, M. (2026, 24 de marzo). Combustibles se disparan: Revisa cuánto costará llenar el estanque y los nuevos precios por región. Emol.',
+  'Hitt, M. A., Ireland, R. D., y Hoskisson, R. E. (2004). Administración estratégica: competitividad y conceptos de globalización (5.ª ed.). Thomson.',
+  'Instituto Nacional de Estadísticas. (2025). Parque de vehículos en circulación 2024 [Conjunto de datos].',
+  'Instituto Nacional de Estadísticas. (2026, 30 de septiembre). Boletín estadístico: empleo trimestral, edición n.º 335 (junio-agosto 2026).',
+  'Kaplan, R. S., y Norton, D. P. (2008). The execution premium: integrando la estrategia y las operaciones para lograr ventajas competitivas. Ediciones Deusto.',
+  'KMcheck. (2026, 18 de abril). Los 5 autos híbridos usados más buscados en Chileautos y sus precios referenciales (2026). https://kmcheck.cl',
+  'Kovacevic, A., y Reynoso, Á. (2010). El diamante de la excelencia organizacional. Aguilar Chilena de Ediciones.',
+  'Ley N° 21.793. (2026, 14 de enero). Modifica la Ley N° 18.290, de Tránsito, para autorizar talleres de transformación de sistemas de propulsión y otras adaptaciones. Diario Oficial.',
+  'Osterwalder, A., y Pigneur, Y. (2010). Business model generation. John Wiley & Sons.',
+  'Osterwalder, A., Pigneur, Y., Bernarda, G., y Smith, A. (2014). Value proposition design. John Wiley & Sons.',
+  'Porter, M. E. (1996). What is strategy? Harvard Business Review, 74(6), 61–78.',
+  'Porter, M. E. (2008). The five competitive forces that shape strategy. Harvard Business Review, 86(1), 78–93.',
+  'Subsecretaría de Transportes. (2021). Reglamento que establece requisitos para transformación de vehículos a propulsión eléctrica [Consulta pública]. Ministerio de Transportes y Telecomunicaciones.',
+];
+const biblio = (parte, refs) => () => {
+  const s = contenido(`BIBLIOGRAFÍA · ${parte}`, 'BIBLIOGRAFÍA', null);
+  T(s, refs.map((r, i) => ({ text: r, options: { breakLine: i < refs.length - 1, paraSpaceAfter: 6, indentLevel: 0 } })), { x: M, y: 1.75, w: CW, h: 4.85, fontSize: 13, color: K.tx, lineSpacingMultiple: 1.0 });
+  fuente(s, 'APA 7 · Enlaces completos en la bibliografía del informe final');
   return s;
 };
+D.biblio1 = biblio('1 DE 2', REFS.slice(0, 11));
+D.biblio2 = biblio('2 DE 2', REFS.slice(11));
 
-D['a-ficha'] = () => {
-  const s = contenido('CMI · FICHA DEL INDICADOR Y ESTADOS', 'UN INDICADOR VALE POR SU FICHA;', 'sin medir no es no cumplir.');
-  const lw = 7.3;
-  T(s, [{ text: 'FICHA · ', options: { color: C.text2 } }, { text: 'C2 AHORRO ACREDITADO' }], { x: M, y: Y0, w: lw, h: 0.3, fontFace: F_MONO, fontSize: 13, color: C.accent1 });
-  const filas = [['FÓRMULA', 'Reportes completos ÷ reportes exigibles'], ['FUENTE', 'Expediente de medición y acta de entrega'], ['META', '100% de los exigibles'], ['RESPONSABLE', 'Comercial y Postventa'], ['SI HAY BRECHA', 'Completar la prueba o explicar por qué no se pudo']];
-  const rh = 0.74, y0 = Y0 + 0.4;
-  filas.forEach(([k, v], i) => {
-    const y = y0 + i * rh;
-    regla(s, y, M, lw, i ? C.accent5 : C.accent1);
-    mono(s, k, { x: M, y, w: 2.1, h: rh, fontSize: 13, valign: 'middle' });
-    T(s, v, { x: M + 2.15, y, w: lw - 2.15, h: rh, fontSize: 18, bold: k === 'RESPONSABLE' || k === 'SI HAY BRECHA', valign: 'middle' });
-  });
-  regla(s, y0 + 5 * rh, M, lw);
-  const rx = M + lw + 0.55, rw = R - rx;
-  mono(s, 'ESTADOS', { x: rx, y: Y0, w: rw, h: 0.3, fontSize: 13, color: C.accent1 });
-  const st = [['cumple', 'CUMPLE', VERDE], ['alerta', 'ALERTA', AMBAR], ['nocumple', 'NO CUMPLE', ROJO], ['pend', 'META PENDIENTE', GRIS], ['sin', 'SIN MEDIR', C.text1]];
-  st.forEach(([t, k, color], i) => {
-    const y = y0 + i * 0.6;
-    forma(s, t, rx, y + 0.13, 0.34);
-    mono(s, k, { x: rx + 0.55, y, w: rw - 0.55, h: 0.6, fontSize: 16, bold: true, color, valign: 'middle' });
+// ===================================================================== ANEXO
+const coma = (n, d = 2) => n.toFixed(d).replace('.', ',');
+D.indice = () => {
+  const s = contenido('ANEXO · NO SE EXPONE', 'ANEXO PARA PREGUNTAS', null);
+  const vistos = new Set(); const items = G.ANEXO.filter(a => !vistos.has(a.codigo) && vistos.add(a.codigo));
+  const col = Math.ceil(items.length / 2), w = (CW - 0.4) / 2;
+  items.forEach((a, i) => {
+    const x = M + Math.floor(i / col) * (w + 0.4), y = 1.85 + (i % col) * 0.75;
+    caja(s, x, y, w, 0.62);
+    mono(s, a.codigo, { x: x + 0.12, y, w: 0.7, h: 0.62, fontSize: 14, bold: true, color: K.azul, valign: 'middle' });
+    s.addText(a.titulo, { x: x + 0.85, y, w: w - 0.95, h: 0.62, fontFace: F_BODY, fontSize: 13, color: K.tx, valign: 'middle', margin: 0, hyperlink: { slide: PRIMERA[a.codigo], tooltip: a.titulo } });
   });
   return s;
 };
+const CORTO = { A1: 'CONTINGENCIA REGULATORIA', A2: 'MEFE COMPLETA', A3: 'MEFI COMPLETA', A4: 'CINCO FUERZAS RECALIFICADAS', A5: 'RECURSOS Y CAPACIDADES', A6: 'CRUCES DEL FODA', A7: 'CUADRO DE MANDO INTEGRAL', A8: 'RELACIONES E HIPÓTESIS', A9: 'FICHAS DE INDICADORES', A10: 'SENSIBILIDAD DEL UMBRAL', A11: 'NATURALEZA DE LA EVIDENCIA' };
+const anexo = () => { const a = ANEXO_ACTUAL; return contenido(`${a.codigo} · ANEXO${a.parte ? ' · ' + a.parte.toUpperCase() : ''}`, CORTO[a.codigo], null); };
 
-const cmiPersp = (ids, acento) => () => {
-  const s = contenido('CMI COMPLETO', 'EL CMI COMPLETO:', acento);
-  const rh = ids.length > 4 ? 0.62 : 0.82;
-  tabla(s, [['ID', 0.8], ['OBJETIVO · INDICADOR', 4.6], ['META · REGLA', 2.55], ['RESPONSABLE', 1.95], ['INICIATIVA', CW - 9.9]],
-    ids.map(id => [id, id, id, OBJ[id].resp, OBJ[id].ini]), ids.length > 4 ? Y0 - 0.12 : Y0, {
-      rh, size: 13, gris: [4],
-      render: {
-        0: (id, x, y, w, h) => chip(s, id, x, y + (h - 0.32) / 2, { w: 0.6, h: 0.32, size: 12 }),
-        1: (id, x, y, w, h) => T(s, [{ text: OBJ[id].n, options: { bold: true, breakLine: true } }, { text: OBJ[id].ind, options: { color: C.text2 } }], { x, y, w: w - 0.15, h, fontSize: 13, valign: 'middle', lineSpacingMultiple: 0.92 }),
-        2: (id, x, y, w, h) => T(s, [{ text: OBJ[id].meta, options: { breakLine: true } }, { text: OBJ[id].regla.toUpperCase(), options: { fontFace: F_MONO, fontSize: 11, color: C.accent1 } }], { x, y, w: w - 0.15, h, fontSize: 13, valign: 'middle', lineSpacingMultiple: 0.92 }),
-      },
-    });
+D['a-contingencia'] = () => {
+  const s = anexo();
+  tabla(s, [['ESCENARIO', 2.1], ['CONDICIÓN DEL REGLAMENTO', 3.0], ['EFECTO EN EL CMI', 2.9], ['RESPUESTA', CW - 8.0]], [
+    ['E1 · Vía amplia (base)', 'Conserva el motor, sin exclusiones', 'Ninguno bloqueado', 'Avanzar par por par; postura ofensiva'],
+    ['E2 · Vía acotada', 'Conserva el motor, con exclusiones', 'P2 y C4 al parque elegible', 'Priorizar modelos sin esos sistemas'],
+    ['E3 · Vía alternativa', 'No conserva el motor; procede la alteración', 'P2 y P5 sujetos a otro trámite', 'Cambiar el indicador de P1 y recalendarizar'],
+    ['E4 · Sin vía', 'No procede ninguna vía', 'P2, P3, P5 y lo que depende de ellos', 'Detener lo que depende de la vía legal y reevaluar'],
+  ], 2.0, { size: 15, rh: 0.75, negrita: (i, j) => j === 0, destacar: i => i === 0 });
+  T(s, 'Señal temprana: el texto final del reglamento. Se revisa cada mes (recomendación 8). La vía legal entra al mapa por las relaciones externas R02 y R06.', { x: M, y: 5.95, w: CW, h: 0.6, fontSize: 15, color: K.gris });
+  fuente(s, 'Ley N° 21.793 (2026) · Subsecretaría de Transportes (2021)');
   return s;
 };
-D['a-cmiA'] = cmiPersp(['A1', 'A2', 'A3', 'A4'], 'aprendizaje y crecimiento.');
-D['a-cmiP'] = cmiPersp(['P1', 'P2', 'P3', 'P4', 'P5', 'P6'], 'procesos internos.');
-D['a-cmiC'] = cmiPersp(['C1', 'C2', 'C3', 'C4'], 'clientes.');
-D['a-cmiF'] = cmiPersp(['F1', 'F2', 'F3'], 'financiera.');
-
-const relSlide = (desde, hasta, acento) => () => {
-  const s = contenido('MAPA', 'LAS 20 RELACIONES:', acento);
-  leyendaLineas(s);
-  tabla(s, [['R', 1.25], ['DE · A', 1.4], ['MECANISMO', 5.4], ['CÓMO SE COMPRUEBA', CW - 8.05]],
-    REL.slice(desde, hasta).map(r => [r, `${r[1]} a ${r[2]}`, r[4], r[5]]), Y0 - 0.08, {
-      rh: 0.385, size: 13, gris: [3],
-      render: {
-        0: (r, x, y, w, h) => { mono(s, r[0], { x, y, w: 0.5, h, fontSize: 12, color: C.accent1, valign: 'middle' }); s.addShape(S.line, { x: x + 0.55, y: y + h / 2, w: 0.5, h: 0, line: Object.assign({}, LINEA[r[3]]) }); },
-      },
-    });
+const EXT = [['O1', 'El parque se conserva: 3,5 usados por nuevo', 6, 3, 3], ['O2', 'Alza de la bencina: $1.168,9 → $1.538,9', 5, 3, 3], ['O3', 'Vacío de oferta formal sin reemplazar el auto', 7, 3, 4], ['O4', 'Segmento laboral RM: 162.780 vehículos (est.)', 6, 2, 3], ['O5', 'Reglamento en elaboración: «otras adaptaciones»', 6, 1, 4], ['O6', 'Paquetes LFP a US$81/kWh', 5, 3, 3], ['O7', 'Talleres que podrían licenciar el método', 6, 2, 2], ['A1', 'Reglamento podría seguir el borrador de 2021', 7, 1, 3], ['A2', 'Menor ingreso: PIB 0,25%–0,75%; desocupación 9,6%', 6, 2, 2], ['A3', 'Sustitutos sin trámite: gas, híbrido, eléctrico', 6, 2, 2], ['A4', 'Aseguradoras y plantas sin protocolo', 7, 1, 3], ['A5', 'Homologación por par lenta y costosa', 5, 2, 3], ['A6', 'Déficit de técnicos en alta tensión', 5, 2, 2], ['A7', 'Crédito de consumo caro', 5, 2, 2], ['A8', 'Dólar a $970,46: riesgo cíclico que se cubre', 3, 2, 2], ['A9', 'Entrada de actores técnicos (Movener, Reborn)', 4, 2, 2]];
+const INT = [['F1', 'Arquitectura en el eje trasero que se suma al auto', 7, 3, 4], ['F2', 'Sin enchufe: se carga al frenar', 5, 3, 3], ['F3', 'Conocimiento de calibración y medición', 6, 3, 4], ['F4', 'Proceso estandarizado con cuatro controles', 5, 3, 3], ['F5', 'Lumine Habilita (prototipo)', 6, 4, 4], ['F6', 'Modelo de red sin activos fijos', 5, 3, 3], ['D1', 'Sin gestión técnica ni regulatoria iniciada', 7, 1, 3], ['D2', 'Ahorro sin medir en autos chilenos', 7, 1, 3], ['D3', 'Biblioteca vacía; cada calibración es costo hundido', 6, 2, 3], ['D4', 'Investigación de mercado incompleta', 6, 2, 2], ['D5', 'Inversión alta para el cliente', 5, 2, 2], ['D6', 'Marca nueva, sin casos que mostrar', 5, 2, 3], ['D7', 'Compras en dólares sin cobertura', 6, 2, 2], ['D8', 'Conocimiento concentrado en pocas personas', 5, 2, 2]];
+function matriz(filas) {
+  const suma = filas.reduce((a, f) => a + f[2], 0);
+  const rows = filas.map(f => [f[0], f[1], coma(f[2] / suma, 3), String(f[3]), coma(f[2] / suma * f[3], 3), String(f[4])]);
+  const tot = k => filas.reduce((a, f) => a + f[2] / suma * f[k], 0);
+  rows.push(['', 'Total ponderado', '1,000', '', coma(tot(3)), coma(tot(4))]);
+  return rows;
+}
+const tablaMatriz = (s, filas) => tabla(s, [['N°', 0.6], ['FACTOR', 6.2], ['PESO', 1.0], ['CALIF. HOY', 1.15], ['POND. HOY', 1.1], ['CON HITOS', CW - 10.05]], matriz(filas), 1.75, { size: 12, rh: 0.265, centro: [0, 2, 3, 4, 5], negrita: (i, j) => i === filas.length || j === 0, destacar: i => i === filas.length });
+D['a-mefe'] = () => { const s = anexo(); tablaMatriz(s, EXT); fuente(s, 'David (1997) · Peso = relevancia ÷ suma · Calificaciones del equipo, por validar'); return s; };
+D['a-mefi'] = () => { const s = anexo(); tablaMatriz(s, INT); fuente(s, 'David (1997) · 1 = debilidad mayor, 4 = fortaleza mayor · Por validar'); return s; };
+D['a-porter'] = () => {
+  const s = anexo();
+  tabla(s, [['FACTOR', 3.6], ['CALIF.', 0.9], ['JUSTIFICACIÓN', CW - 4.5]], [
+    ['D.1 Precio relativo de los sustitutos', '4', 'Gas de $900.000 a $1,8 millones, solo autos de hasta 7 años; híbridos y eléctricos sobre $9,5 millones'],
+    ['D.2 Costo de cambiarse al sustituto', '3', 'Bajo hacia el gas; alto hacia el híbrido o el eléctrico, que exigen vender el auto'],
+    ['D.3 Propensión a sustituir', '4', 'El conductor de aplicación renueva su auto cerca de cada cuatro años'],
+    ['Sustitutos (promedio)', '3,67', 'Antes 5,00, cuando incluía no hacer nada'],
+    ['C.a.6 Inercia: no intervenir el auto', '5', 'Nuevo factor de clientes: seguir igual no tiene costo inmediato'],
+    ['Clientes (promedio de 12 factores)', '2,83', 'Antes 2,64, con 11 factores'],
+    ['Total ponderado de las cinco fuerzas', '3,14', 'Antes 3,49 · Entrantes 3,75, proveedores 2,67 y rivalidad 1,83 sin cambio'],
+  ], 1.85, { size: 14, rh: 0.6, centro: [1], negrita: (i, j) => j === 0 || i === 6, destacar: i => i === 3 || i === 5 || i === 6 });
+  fuente(s, 'Porter (2008) · Escala del instrumento: 0 no aplica a 5 alta');
   return s;
 };
-D['a-rel1'] = relSlide(0, 10, 'R01 a R10.');
-D['a-rel2'] = relSlide(10, 20, 'R11 a R20.');
-
-D['a-f1'] = () => {
-  const s = contenido('PERSPECTIVA FINANCIERA · F1', 'F1 SE MIDE EN DOS ETAPAS:', 'decidir invertir y controlar la operación.');
-  const g = 0.4, w = (CW - g) / 2, y = Y0, h = 3.4;
-  [['1 · ANTES DE INVERTIR', 'VAN > 0 y TIR > tasa exigida', [['Mide', 'si conviene invertir, con flujos proyectados'], ['Cuándo', 'una vez, con el Plan Financiero'], ['Falta', 'flujos, inversión inicial y tasa sustentada']]],
-    ['2 · OPERANDO', 'Retorno sobre el capital empleado frente a su costo', [['Mide', 'si la operación rinde más que el capital'], ['Cuándo', 'cada ejercicio'], ['Falta', 'resultados, capital empleado y costo de capital']]]].forEach(([k, t, rows], i) => {
-    const x = M + i * (w + g);
-    if (i === 0) cajaHot(s, x, y, w, h); else caja(s, x, y, w, h, { line: { color: C.accent1, width: 1 } });
-    mono(s, k, { x: x + 0.28, y: y + 0.2, w: w - 0.5, h: 0.3, fontSize: 13, color: C.accent1 });
-    T(s, t, { x: x + 0.28, y: y + 0.55, w: w - 0.5, h: 0.75, fontSize: 21, bold: true, valign: 'top' });
-    rows.forEach(([a, b], j) => {
-      const yy = y + 1.45 + j * 0.62;
-      regla(s, yy, x + 0.28, w - 0.56);
-      mono(s, a.toUpperCase(), { x: x + 0.28, y: yy, w: 1.1, h: 0.62, fontSize: 12, valign: 'middle' });
-      T(s, b, { x: x + 1.4, y: yy, w: w - 1.7, h: 0.62, fontSize: 16, color: C.text2, valign: 'middle' });
-    });
+D['a-recursos'] = () => {
+  const s = anexo();
+  const R17 = [['Taller habilitado y equipamiento', 'T', 'Sí', 'No', 'No', 'No', 'Igualdad'], ['Kit híbrido (motor, baterías, unidad de control)', 'T', 'Sí', 'No', 'No', 'No', 'Igualdad'], ['Convenio de financiamiento', 'I', 'Sí', 'No', 'No', 'No', 'Igualdad'], ['Cartera de homologaciones por par', 'I', 'Sí', 'Sí', 'No', 'No', 'Temporal'], ['Autorización del taller', 'I', 'Sí', 'Sí', 'No', 'No', 'Temporal'], ['Biblioteca de calibraciones y base de consumo', 'I', 'Sí', 'Sí', 'Sí', 'Sí', 'Sostenible (potencial)'], ['Técnicos con licencia SEC en alta tensión', 'I', 'Sí', 'Sí', 'No', 'No', 'Temporal'], ['Reputación por evidencia publicada', 'I', 'Sí', 'Sí', 'Sí', 'No', 'Temporal'], ['Convenios con aseguradoras y plantas', 'I', 'Sí', 'Sí', 'No', 'No', 'Temporal'], ['Estimador de ahorro que aprende', 'C', 'Sí', 'Sí', 'Sí', 'Sí', 'Sostenible (potencial)'], ['Método Lumine Habilita', 'C', 'Sí', 'Sí', 'Sí', 'Sí', 'Sostenible (potencial)'], ['Integración del kit (ingeniería)', 'C', 'Sí', 'No', 'No', 'No', 'Igualdad'], ['Diagnóstico previo y posventa', 'C', 'Sí', 'Sí', 'No', 'No', 'Temporal'], ['Estandarización del proceso', 'C', 'Sí', 'No', 'No', 'No', 'Igualdad'], ['Logística de baterías (clase 9)', 'C', 'Sí', 'No', 'No', 'No', 'Igualdad'], ['Negociación de convenios financieros', 'C', 'Sí', 'No', 'No', 'No', 'Igualdad'], ['Red de talleres que devuelve datos', 'C', 'Sí', 'Sí', 'Sí', 'No', 'Temporal']];
+  tabla(s, [['RECURSO O CAPACIDAD', 4.3], ['TIPO', 0.6], ['VALIOSO', 0.95], ['RARO', 0.75], ['COSTOSO DE IMITAR', 1.2], ['INSUSTIT.', 1.0], ['CONSECUENCIA', CW - 8.8]], R17, 1.72, { size: 12, rh: 0.255, centro: [1, 2, 3, 4, 5], negrita: (i, j) => j === 6 && R17[i][6].startsWith('Sost'), destacar: i => R17[i][6].startsWith('Sost') });
+  fuente(s, 'Hitt et al. (2004) · T tangible · I intangible · C capacidad · 3 / 7 / 7');
+  return s;
+};
+D['a-cruces'] = () => {
+  const s = anexo();
+  const CR = [['FO1', 'F1, F3 · O1, O3, O4', 'Ofrecer «calibración para tu modelo», partiendo por el modelo más frecuente', 'C4, P2'], ['FO2', 'F1 · O5', 'Aportar antecedentes técnicos al MTT para caber en «otras adaptaciones»', 'P1'], ['FO3', 'F5, F6 · O7', 'Licenciar el método y Habilita a talleres, validado el piloto', 'P5, F3'], ['DO1', 'D2 · O2, O6', 'Medir el ahorro en el piloto con línea base antes de comunicarlo', 'A3, P4, C2'], ['DO2', 'D1 · O5', 'Memoria de cálculo y expediente del primer par modelo-kit', 'P1, P2'], ['DO3', 'D5 · O2', 'Financiamiento con cuota comparable con el ahorro mensual', 'P6'], ['FA1', 'F1, F2 · A3', 'Mismo auto, sin enchufe y sin límite de antigüedad', 'C4'], ['FA2', 'F5 · A6', 'Formar técnicos con Habilita y la franquicia SENCE', 'A2'], ['DA1', 'D7 · A8', 'Cobertura cambiaria y abastecimiento de largo plazo', 'F2'], ['DA2', 'D6 · A4', 'Convenios con aseguradora y planta, con casos piloto', 'P6, C3'], ['DA3', 'D3, D8 · A9', 'Proteger las calibraciones y retener a los técnicos', 'A1, A2']];
+  tabla(s, [['N°', 0.75], ['CRUCE', 2.1], ['ESTRATEGIA', CW - 4.35], ['OBJETIVO', 1.5]], CR, 1.75, { size: 13, rh: 0.4, centro: [0], negrita: (i, j) => j === 0, destacar: i => CR[i][0].startsWith('D') });
+  fuente(s, 'David (1997) · Destacadas: estrategias DO y DA, las de la postura defensiva actual');
+  return s;
+};
+const CMI = [['A1', 'Calibraciones registradas y protegidas ÷ generadas', '100% antes de reutilizar', 'Ingeniería de Calibración'], ['A2', 'Técnicos con validación vigente ÷ asignados', '100% antes de tareas críticas', 'Responsable Técnico'], ['A3', 'Protocolos de prueba aprobados', '1 antes del piloto', 'Ingeniería de Calibración'], ['A4', 'Competencias de Habilita documentadas ÷ definidas', '100% antes de licenciar', 'Responsable Técnico'], ['P1', 'Autorización vigente del taller', '1 antes de vender', 'Gerente General'], ['P2', 'Pares modelo-kit aprobados', '1 (piloto) antes de vender', 'Ingeniería de Calibración'], ['P3', 'Órdenes con control técnico completo ÷ cerradas', '100% de las órdenes', 'Responsable Técnico'], ['P4', 'Expedientes de medición completos ÷ exigibles', '100% de los exigibles', 'Ingeniería de Calibración'], ['P5', 'Paquete de licencia validado', 'Meta pendiente', 'Gerente General'], ['P6', 'Convenios vigentes: aseguradora, planta y financiera', '1 de cada una antes del primer kit', 'Gerente General'], ['C1', 'Servicios conformes ÷ entregas verificadas', '100% de las entregas', 'Responsable Técnico'], ['C2', 'Reportes comparativos completos ÷ exigibles', '100% de los exigibles', 'Comercial y Postventa'], ['C3', 'Confianza declarada después del servicio; reclamos', 'Meta pendiente', 'Comercial y Postventa'], ['C4', 'Consultas del segmento convertidas en instalaciones', 'Meta pendiente', 'Comercial y Postventa'], ['F1', 'VAN > 0 y TIR > tasa; operando, retorno sobre el capital frente a su costo', 'Superar el costo de capital', 'Gerente General'], ['F2', 'Margen de contribución unitario', 'Meta pendiente', 'Gerente General'], ['F3', 'Evaluación incremental por alternativa', 'Meta pendiente', 'Gerente General']];
+const tablaCMI = (s, filas) => tabla(s, [['OBJ.', 0.7], ['INDICADOR', 5.6], ['META', 2.6], ['RESPONSABLE', CW - 8.9]], filas, 1.75, { size: 14, rh: 0.42, centro: [0], negrita: (i, j) => j === 0 });
+D['a-cmi1'] = () => { const s = anexo(); tablaCMI(s, CMI.slice(0, 10)); fuente(s, 'Kaplan y Norton (2008) · Metas propuestas por el equipo'); return s; };
+D['a-cmi2'] = () => { const s = anexo(); tablaCMI(s, CMI.slice(10)); T(s, 'Las iniciativas de cada objetivo vienen de los cruces del FODA (anexo A6).', { x: M, y: 5.0, w: CW, h: 0.4, fontSize: 16, color: K.gris }); fuente(s, 'Kaplan y Norton (2008) · La meta pendiente se fija con el dato que la respalde'); return s; };
+D['a-relaciones'] = () => {
+  const s = anexo();
+  tabla(s, [['RUTA', 3.4], ['HABILITANTES', 1.9], ['EXTERNAS', 1.6], ['HIPÓTESIS', 1.6], ['TOTAL', CW - 8.5]], [['Habilitación (R01 a R06)', '4', '2', '0', '6'], ['Evidencia (R07 a R14)', '2', '0', '6', '8'], ['Valor económico (R15 a R20)', '0', '0', '6', '6'], ['Total', '6 (30%)', '2 (10%)', '12 (60%)', '20']], 1.75, { size: 14, rh: 0.36, centro: [1, 2, 3, 4], negrita: (i, j) => i === 3 || j === 0, destacar: i => i === 3 });
+  mono(s, 'PLAN DE COMPROBACIÓN DE LAS 12 HIPÓTESIS', { x: M, y: 3.75, w: 8, h: 0.28, bold: true, color: K.azul });
+  tabla(s, [['RELACIONES', 2.0], ['DATO QUE LAS PRUEBA', 4.3], ['CUÁNDO', 1.6], ['SI NO SE CUMPLEN', CW - 7.9]], [['R08', 'Expediente de cada vehículo del piloto', 'Piloto', 'Rediseñar el registro antes de abrir'], ['R10 a R12', 'Encuesta posservicio con y sin respaldo', 'Primeros clientes', 'Cambiar mensaje o respaldo'], ['R13 a R16', 'Conversión, costo y margen por orden', 'Año 1', 'Ajustar precio, cuota o proceso'], ['R17 a R20', 'Flujos reales y evaluación de cada licencia', 'Desde el año 2', 'No licenciar sin VAN incremental positivo']], 4.1, { size: 13, rh: 0.36, negrita: (i, j) => j === 0 });
+  fuente(s, 'Informe final, tablas 6 y 13');
+  return s;
+};
+D['a-fichas'] = () => {
+  const s = anexo();
+  const w = (CW - 0.3) / 2;
+  [['C2 · AHORRO ACREDITADO', [['Indicador', 'Reportes comparativos completos ÷ exigibles'], ['Completo si', 'Línea base del mismo auto, consumo posterior, método, límites y acuse'], ['Fuente', 'Expediente de medición (P4); por entrega, consolidado mensual'], ['Meta', '100% · Comercial y Postventa'], ['Si hay brecha', 'Completar la prueba o informar; nunca una cifra sin respaldo']]],
+    ['P2 · PRIMER PAR MODELO-KIT', [['Indicador', 'Pares modelo-kit con aprobación vigente'], ['Tipo', 'Hito: cumple solo con el documento'], ['Evidencia', 'Resolución de la autoridad y expediente técnico con calibración versionada (A1)'], ['Meta', 'Un par, el modelo más frecuente · Ingeniería de Calibración'], ['Si hay brecha', 'No vender el modelo; en E2, el modelo más frecuente sin exclusiones']]]].forEach(([k, filas], i) => {
+    const x = M + i * (w + 0.3);
+    mono(s, k, { x, y: 1.75, w, h: 0.3, bold: true, color: K.azul, fontSize: 14 });
+    tabla(s, [['CAMPO', 1.5], ['DEFINICIÓN', w - 1.5]], filas, 2.1, { x, size: 13, rh: 0.66, negrita: (r, j) => j === 0 });
   });
-  T(s, [{ text: 'Un VAN positivo autoriza invertir; ', options: { bold: true } }, { text: 'no demuestra que la operación rinda.', options: { bold: true, color: C.accent1 } }], { x: M, y: y + h + 0.25, w: CW, h: 0.5, fontSize: 20, valign: 'middle' });
+  fuente(s, 'Estados: cumple · alerta (70% a 89%) · no cumple · meta pendiente · sin medir');
+  return s;
+};
+D['a-umbral'] = () => {
+  const s = anexo();
+  const L = (p, a, b) => Math.round(p / (a * b)).toLocaleString('es-CL');
+  const filas = [];
+  [['Esencial', 4290000], ['Plus', 4990000]].forEach(([k, p]) => [0.10, 0.15, 0.20].forEach(a => filas.push([k, `${a * 100}%`, L(p, a, 1168.9), L(p, a, 1538.9)])));
+  tabla(s, [['VERSIÓN', 1.5], ['AHORRO', 1.1], ['LITROS A $1.168,9', 2.3], ['LITROS A $1.538,9', 2.3]], filas, 1.75, { size: 14, rh: 0.4, centro: [1, 2, 3], negrita: (i, j) => j === 0, destacar: i => i === 5 });
+  mono(s, 'GASTO MENSUAL (24 DÍAS, 10 KM/L)', { x: 8.6, y: 1.75, w: R - 8.2, h: 0.28, bold: true, color: K.azul });
+  tabla(s, [['CONCEPTO', 1.75], ['150 KM/DÍA', 1.1], ['250 KM/DÍA', R - 8.6 - 2.85]], [['Litros al mes', '360', '600'], ['Gasto a $1.538,9', '$554.004', '$923.340'], ['Ahorro con 10%', '$55.400', '$92.334'], ['Ahorro con 20%', '$110.801', '$184.668']], 2.1, { x: 8.6, size: 13, rh: 0.42, centro: [1, 2], negrita: (i, j) => j === 0 });
+  T(s, 'El alza de marzo bajó el umbral en 24%. Con la mitad del ahorro, el umbral se duplica.', { x: M, y: 4.9, w: 7.2, h: 0.6, fontSize: 16, color: K.gris });
+  fuente(s, 'Garretón (2026) · Supuestos del equipo · Derivaciones aritméticas, no mediciones');
+  return s;
+};
+D['a-evidencia'] = () => {
+  const s = anexo();
+  tabla(s, [['TIPO', 2.2], ['CONTENIDO', 6.3]], [['Dato público', 'Bencina, 3,5 usados por nuevo, PIB, desocupación, dólar, Ley N° 21.793, borrador de 2021, precio LFP, precios de sustitutos'], ['Evaluación del equipo', 'PEST, cinco fuerzas, MEFE, MEFI, recursos, factores críticos y cadena de valor'], ['Plan del equipo', 'Precios de referencia, pronóstico de instalaciones y talleres, meses de recuperación'], ['Estimación o indicio', 'Ahorro de hasta 15% y 20%; entrevistas exploratorias'], ['Por confirmar', 'Reglamento, convenios, homologaciones y resultados de la encuesta']], 1.75, { size: 13, rh: 0.6, negrita: (i, j) => j === 0 });
+  mono(s, 'ENTREVISTAS', { x: M, y: 5.45, w: 3, h: 0.28, bold: true, color: K.azul });
+  T(s, '3 exploratorias (fases 1 y 2) · 1 conductor de aplicación · 1 experto realizada · 3 agendadas · encuesta en curso', { x: M, y: 5.75, w: 8.5, h: 0.6, fontSize: 15 });
+  mono(s, 'DEMO LUMINE HABILITA', { x: 9.9, y: 1.75, w: R - 9.9, h: 0.28, bold: true, color: K.azul, align: 'center', charSpacing: 0 });
+  s.addShape(S.rect, { x: 10.15, y: 2.15, w: 2.35, h: 2.35, fill: { color: K.blanco }, line: { color: K.linea, width: 0.75 } });
+  s.addImage({ path: AQ('qr-habilita.png'), x: 10.25, y: 2.25, w: 2.15, h: 2.15, altText: 'Código QR de la demostración de Lumine Habilita' });
+  T(s, 'Formación por competencias del técnico instalador (prototipo)', { x: 9.95, y: 4.6, w: 2.75, h: 0.8, fontSize: 13, align: 'center', color: K.gris });
+  fuente(s, 'Las personas entrevistadas no se nombran');
   return s;
 };
 
-D['a-sensibilidad'] = () => {
-  const s = contenido('UMBRAL · SENSIBILIDAD AL AHORRO REAL', 'SI EL AHORRO FUERA MENOR,', 'el umbral sube rápido.');
-  tabla(s, [['AHORRO REAL', 3.0], ['ESENCIAL · $4.290.000', 4.5], ['PLUS · $4.990.000', CW - 7.5]],
-    [0.05, 0.10, 0.15, 0.20, 0.25].map(a => [`${Math.round(a * 100)}%`, mil(litros(UMB.esencial, a, UMB.despues)) + ' litros', mil(litros(UMB.plus, a, UMB.despues)) + ' litros']), Y0, { rh: 0.62, size: 20, negrita: [0] });
-  T(s, 'Bencina 93 RM a $1.538,9 por litro. Precios de referencia con IVA (Fase 3), por validar. Mismo cálculo que la hoja «Umbral» del Excel.', { x: M, y: Y0 + 0.34 + 5 * 0.62 + 0.25, w: CW, h: 0.6, fontSize: 16, color: C.text2, valign: 'top' });
-  return s;
-};
-
-// ---------- orden de la exposición (guion.js), notas del orador y anexo ----------
+// ---------- orden, notas del orador y anexo ----------
 const nota = x => `${x.quien.toUpperCase()} · ${G.mmss(G.segundos(x.texto))} a ${G.PALABRAS_POR_MINUTO} palabras por minuto (${G.palabras(x.texto)} palabras) · Informe: ${x.seccion}\n\n${x.texto}`;
 let quienAnterior = null, parte = 0;
 G.PRINCIPAL.forEach(x => {
   if (x.quien !== quienAnterior) { abrirSeccion(`${++parte} · ${x.quien}`); quienAnterior = x.quien; }
   if (!D[x.d]) throw new Error('Falta la diapositiva ' + x.d);
-  CLAVE = x.d;
   D[x.d]().addNotes(nota(x));
 });
+abrirSeccion('Bibliografía');
+D.biblio1().addNotes('BIBLIOGRAFÍA · No se expone.');
+D.biblio2().addNotes('BIBLIOGRAFÍA · No se expone.');
 abrirSeccion('Anexo');
-INDICE_ANEXO = G.PRINCIPAL.length + 1;
-CLAVE = 'indice';
-D.indice(INDICE_ANEXO + 1).addNotes('ANEXO · No se expone. Cada pregunta tiene un enlace a su respuesta; cada lámina del anexo tiene un enlace de vuelta a este índice.');
+INDICE_ANEXO = G.PRINCIPAL.length + 3;
+const PRIMERA = {};
+G.ANEXO.forEach((a, i) => { if (!(a.codigo in PRIMERA)) PRIMERA[a.codigo] = INDICE_ANEXO + 1 + i; });
+D.indice().addNotes('ANEXO · No se expone. Cada tema tiene un enlace a su lámina; cada lámina vuelve a este índice.');
 G.ANEXO.forEach(a => {
   ANEXO_ACTUAL = a;
-  CLAVE = a.d;
   if (!D[a.d]) throw new Error('Falta la diapositiva ' + a.d);
   D[a.d]().addNotes(`ANEXO ${a.codigo} · Solo si preguntan.\n\n${a.apoyo}`);
 });
 ANEXO_ACTUAL = null;
 
-// pptxgenjs escribe la paleta de Office: se reemplaza por la de Lumine en ppt/theme/theme1.xml
+// ---------- tema y tipografías incrustadas ----------
 async function aplicarTema(archivo, tema) {
   const zip = await JSZip.loadAsync(fs.readFileSync(archivo));
-  const parte = 'ppt/theme/theme1.xml';
+  const parteT = 'ppt/theme/theme1.xml';
   const slots = ['dk1', 'lt1', 'dk2', 'lt2', 'accent1', 'accent2', 'accent3', 'accent4', 'accent5', 'accent6', 'hlink', 'folHlink'];
   const esquema = `<a:clrScheme name="${tema.name}">` + slots.map(k => `<a:${k}><a:srgbClr val="${tema.colors[k]}"/></a:${k}>`).join('') + '</a:clrScheme>';
-  const xml = (await zip.file(parte).async('string'))
-    .replace(/<a:clrScheme\b[\s\S]*?<\/a:clrScheme>/, () => esquema)
-    .replace(/(<a:(?:theme|fontScheme)\b[^>]*?\bname=")[^"]*"/g, (_, a) => `${a}${tema.name}"`);
-  if (!xml.includes(esquema)) throw new Error('No se encontró la paleta del tema');
-  zip.file(parte, xml);
+  const xml = (await zip.file(parteT).async('string')).replace(/<a:clrScheme\b[\s\S]*?<\/a:clrScheme>/, () => esquema);
+  zip.file(parteT, xml);
   fs.writeFileSync(archivo, await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' }));
 }
-
-// ---------- tipografías incrustadas ----------
-// Sin esto, PowerPoint reemplaza las fuentes de la marca por Calibri o Arial en un computador que no las tenga.
-// Se incrustan como lo hace PowerPoint (ppt/fonts/*.fntdata en EOT sin comprimir). Las cinco familias son OFL.
 const FUENTES_PPTX = [
   [F_TIT, { regular: 'ArchivoSemiExpanded-ExtraBold.ttf' }],
   [F_CON, { regular: 'ArchivoCondensed-Regular.ttf', bold: 'ArchivoCondensed-Bold.ttf' }],
@@ -1371,42 +806,31 @@ const FUENTES_PPTX = [
 ];
 function ttfAEot(ttf) {
   const tablas = {};
-  for (let i = 0, n = ttf.readUInt16BE(4); i < n; i++) {
-    const r = 12 + 16 * i;
-    tablas[ttf.toString('latin1', r, r + 4)] = ttf.readUInt32BE(r + 8);
-  }
+  for (let i = 0, n = ttf.readUInt16BE(4); i < n; i++) { const r = 12 + 16 * i; tablas[ttf.toString('latin1', r, r + 4)] = ttf.readUInt32BE(r + 8); }
   const os2 = tablas['OS/2'], head = tablas.head, name = tablas.name;
-  const nombre = id => { // registro Windows, Unicode, inglés (EE. UU.); EOT lo pide en UTF-16LE
+  const nombre = id => {
     const cuenta = ttf.readUInt16BE(name + 2), base = name + ttf.readUInt16BE(name + 4);
     for (let i = 0; i < cuenta; i++) {
       const r = name + 6 + 12 * i;
       if (ttf.readUInt16BE(r) === 3 && ttf.readUInt16BE(r + 2) === 1 && ttf.readUInt16BE(r + 4) === 0x409 && ttf.readUInt16BE(r + 6) === id) {
-        const b = Buffer.from(ttf.subarray(base + ttf.readUInt16BE(r + 10), base + ttf.readUInt16BE(r + 10) + ttf.readUInt16BE(r + 8)));
-        return b.swap16();
+        return Buffer.from(ttf.subarray(base + ttf.readUInt16BE(r + 10), base + ttf.readUInt16BE(r + 10) + ttf.readUInt16BE(r + 8))).swap16();
       }
     }
     throw new Error('La fuente no tiene el nombre ' + id);
   };
-  const familia = nombre(1);
-  const cadenas = [familia, nombre(2), nombre(5), nombre(4)];
+  const familia = nombre(1), cadenas = [familia, nombre(2), nombre(5), nombre(4)];
   const fijo = Buffer.alloc(82);
-  fijo.writeUInt32LE(ttf.length, 4);
-  fijo.writeUInt32LE(0x00020001, 8);                       // versión 2.1, sin compresión ni XOR
-  ttf.copy(fijo, 16, os2 + 32, os2 + 42);                   // PANOSE
-  fijo.writeUInt8(1, 26);                                   // DEFAULT_CHARSET
-  fijo.writeUInt8(ttf.readUInt16BE(os2 + 62) & 1, 27);     // itálica
-  fijo.writeUInt32LE(ttf.readUInt16BE(os2 + 4), 28);       // peso
-  fijo.writeUInt16LE(ttf.readUInt16BE(os2 + 8), 32);       // fsType
-  fijo.writeUInt16LE(0x504C, 34);                           // número mágico
+  fijo.writeUInt32LE(ttf.length, 4); fijo.writeUInt32LE(0x00020001, 8);
+  ttf.copy(fijo, 16, os2 + 32, os2 + 42);
+  fijo.writeUInt8(1, 26); fijo.writeUInt8(ttf.readUInt16BE(os2 + 62) & 1, 27);
+  fijo.writeUInt32LE(ttf.readUInt16BE(os2 + 4), 28); fijo.writeUInt16LE(ttf.readUInt16BE(os2 + 8), 32); fijo.writeUInt16LE(0x504C, 34);
   for (let i = 0; i < 4; i++) fijo.writeUInt32LE(ttf.readUInt32BE(os2 + 42 + 4 * i), 36 + 4 * i);
   for (let i = 0; i < 2; i++) fijo.writeUInt32LE(ttf.readUInt32BE(os2 + 78 + 4 * i), 52 + 4 * i);
-  fijo.writeUInt32LE(ttf.readUInt32BE(head + 8), 60);      // checkSumAdjustment
+  fijo.writeUInt32LE(ttf.readUInt32BE(head + 8), 60);
   const partes = [fijo];
   cadenas.forEach(c => { const t = Buffer.alloc(4); t.writeUInt16LE(c.length, 2); partes.push(t, c); });
-  partes.push(Buffer.alloc(4));                             // Padding5 y RootString vacío
-  partes.push(ttf);
-  const eot = Buffer.concat(partes);
-  eot.writeUInt32LE(eot.length, 0);
+  partes.push(Buffer.alloc(4), ttf);
+  const eot = Buffer.concat(partes); eot.writeUInt32LE(eot.length, 0);
   return { eot, familia: familia.toString('utf16le') };
 }
 async function incrustarFuentes(archivo) {
@@ -1428,9 +852,7 @@ async function incrustarFuentes(archivo) {
   });
   zip.file('ppt/_rels/presentation.xml.rels', rels);
   let pr = await zip.file('ppt/presentation.xml').async('string');
-  if (!/<p:notesSz[^>]*\/>/.test(pr)) throw new Error('No se encontró p:notesSz en presentation.xml');
-  pr = pr.replace(/<p:presentation\b/, '<p:presentation embedTrueTypeFonts="1"')
-    .replace(/(<p:notesSz[^>]*\/>)/, `$1<p:embeddedFontLst>${lista}</p:embeddedFontLst>`);
+  pr = pr.replace(/<p:presentation\b/, '<p:presentation embedTrueTypeFonts="1"').replace(/(<p:notesSz[^>]*\/>)/, `$1<p:embeddedFontLst>${lista}</p:embeddedFontLst>`);
   zip.file('ppt/presentation.xml', pr);
   let tipos = await zip.file('[Content_Types].xml').async('string');
   if (!tipos.includes('Extension="fntdata"')) tipos = tipos.replace('<Default ', '<Default Extension="fntdata" ContentType="application/x-fontdata"/><Default ');
@@ -1443,5 +865,5 @@ async function incrustarFuentes(archivo) {
   await pres.writeFile({ fileName: OUT });
   await aplicarTema(OUT, THEME);
   console.log('tipografías incrustadas:', await incrustarFuentes(OUT));
-  console.log('listo', OUT, '·', G.PRINCIPAL.length, 'diapositivas +', G.ANEXO.length + 1, 'de anexo');
+  console.log('listo', OUT, '·', G.PRINCIPAL.length, 'láminas + 2 de bibliografía +', G.ANEXO.length + 1, 'de anexo');
 })();

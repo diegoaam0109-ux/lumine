@@ -44,7 +44,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | `fase-3/` | **Presentación de la Fase 3** de Integrador II: Taller de Empresas (ICMA 1001, Grupo 1, profesor Roberto Brito): Capítulo III, Plan de Marketing, Operaciones y RR.HH. | Generador propio copiado del de Control de Gestión: `generador/deck.js` + `guion.js` + `render.sh` (también en Git Bash para Windows). El informe .docx no se sube. |
 | `solemne-2/` | **Solemne 2 de Control de Gestión** (ICMA901): de la estrategia de Lumine a un CMI en red (17 objetivos, 20 relaciones). | `generador/deck.js` + `guion.js` + `render.sh` (mismo sistema que la Fase 3). `RESPALDO.md` tiene contradicciones, riesgos y respuestas para la defensa. El paquete del curso (docx, xlsx) no se sube. |
 | `control-3/` | **Control 3 de Control de Gestión** (ICMA901, Avance 1 del TIG, prof. Leonardo Lizana Contreras): puntos 3 a 6 del instructivo. | `generador/`: `deck.js` + `guion.js` + `guion-docx.js` + `render.sh`. El manual de defensa (`defensa-docx.js` y su .docx) cita el borrador del informe y no se sube, igual que el instructivo y el borrador. |
-| `tig-final/` | **Entrega final del TIG** de Control de Gestión (ICMA901): presentación del informe final (15 láminas + anexo de 19). | Mismo generador que `control-3/` (`deck.js` + `guion.js` + `render.sh`). El informe final (Word) y el Excel no se suben. |
+| `tig-final/` | **Entrega final del TIG** de Control de Gestión (ICMA901): presentación del informe final, fondo claro «cuaderno de ingeniería» (17 láminas + bibliografía + anexo de 12). | `generador/`: `deck.js` + `guion.js` (guion, términos por integrante y banco de preguntas) + `guion-docx.js`; `render2.sh` para pruebas. El informe final (Word) y el Excel no se suben. |
 
 
 ## Artefactos publicados (cuenta de Diego)
@@ -163,14 +163,17 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   (`Avance1_TIG_Lumine_Motors.docx`, local, no se sube); falta que el equipo lo revise, subirlo e imprimirlo y confirmar si se
   expone. Puntos 3–6 ocupan 9 páginas: en el informe final (máx. 20, con 9–12 ≥ 50%) habrá que resumir. Auditoría externa del
   22-10-2026 aplicada (sin «VRIO», vía legal en condicional, financiamiento como facilitador): ver `control-3/RESPALDO.md`.
-- TIG, informe final (22-10-2026, local, no se sube): `Informe_Final_TIG_Lumine_Motors.docx` (puntos 1–13, 17 páginas + 3 de
-  anexos, 9–12 ≈ 53%) y `TIG_Lumine_Motors_Datos_y_Calculos.xlsx` (10 hojas con fórmulas). Decisiones del equipo: el CMI es el
-  de la Solemne 2 (17 objetivos, 20 relaciones); el punto 10 usa solo información real (línea base «sin medir», solidez de
-  las relaciones, escenarios E1–E4 y umbral de litros con precios de referencia de la Fase 3). Falta el PPT final y que el
-  equipo apruebe objetivos, metas y responsables.
-- TIG, presentación final (22-10-2026, `tig-final/`): 15 láminas, ~12:00 a 130 ppm. Diego 1–5 y 15 (abre y cierra), Benjamín
-  6–9 (diagnóstico, brechas, estrategia, objetivos), Lukas 10–14 (mapa, análisis, escenarios, umbral, recomendaciones).
-  La ficha del indicador va al anexo (A1). Detalle en `tig-final/RESPALDO.md`.
+- TIG, versión posterior a la retroalimentación del Control 3 (31-10 a 02-11-2026). Generadores locales en
+  `Descargas/Lumine_informes_TIG/` (no se suben): `informe-final-v2.js` + `generar.sh` (dos pasadas para el índice),
+  `datos-tig.js` (fuente única de Porter, MEFE, MEFI, cruces, recursos), `excel-fods.js`, `lienzo-svg.js`, `canvas-svg.js`.
+  Informe: 20 páginas sin anexos, 9–12 = 10 páginas; E1 como escenario base con el árbol al inicio; lienzo en el cuerpo y
+  Canvas en anexo; visión 2031 con 2.715 instalaciones/año y 42 talleres; inercia movida de sustitutos a clientes (Porter
+  3,14); MEFE 2,03 → 2,75 y MEFI 2,32 → 2,96 (pesos exactos = relevancia ÷ suma); postura defensiva hoy y ofensiva con
+  hitos; 0,42 de la mejora de la MEFE depende del reglamento (sin E1, 2,34); ventaja = sistema de actividades con dos
+  competencias centrales (calibración y medición; Lumine Habilita). Resumen ejecutivo según la skill resumen-ejecutivo-elite (C2).
+- TIG, presentación final (`tig-final/`): 17 láminas, 11:45 a 130 ppm. Diego 1–6 y 17, Benjamín 7–11, Lukas 12–16. Las
+  etiquetas de cada lámina usan el mismo número del cajetín. Por verificar con la fuente: D. S. N° 55 (gas hasta 7 años),
+  precios de KMcheck y Autofact (vienen de la Fase 3).
 - Guion: decidir si la frase "Dos observaciones críticas…" (diapositiva 14) se deja, se reformula o se quita.
 - Fase 3: inconsistencias abiertas para revisar con el informe: química de la batería (informe: litio-titanato;
   identidad: LFP) y motores (informe: dos en las ruedas; render: uno central). Ver `fase-3/REDISENO_PREMIUM.md`.
@@ -189,3 +192,6 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   incrustadas en PPTX, así que el render de prueba necesita las fuentes instaladas.
 - En Windows, las fuentes instaladas para el usuario no llegan a LibreOffice hasta cerrar sesión: si `pdffonts` muestra
   Arial o DejaVu en vez de Archivo, Figtree, IBM Plex Mono e Instrument Serif, el PDF salió con fuentes de reemplazo.
+  Sin cerrar sesión: cargarlas con `AddFontResourceW` (gdi32) desde PowerShell para cada .ttf de
+  `%LOCALAPPDATA%\Microsoft\Windows\Fonts` y difundir `WM_FONTCHANGE`; después LibreOffice exporta con las fuentes reales.
+  Revisar el diseño siempre con las fuentes reales: IBM Plex Mono es más ancha que su reemplazo.

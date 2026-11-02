@@ -31,8 +31,8 @@ function tabla(cols, filasT, o = {}) {
 const hijos = [];
 hijos.push(p('LUMINE MOTORS · CONTROL DE GESTIÓN · ICMA901 · SECCIÓN 500 · NRC 4118', { size: 18, color: GRIS, after: 60 }));
 hijos.push(new Paragraph({ heading: HeadingLevel.TITLE, children: [new TextRun({ text: 'Guion · TIG · entrega final' })] }));
-hijos.push(p('Del diagnóstico al Cuadro de Mando Integral de Lumine Motors. Profesor Leonardo Lizana Contreras.', { italics: true, color: AZUL, size: 22, after: 200 }));
-hijos.push(p(`Exposición de máximo 15 minutos: ${filas.length} láminas y ${total.toLocaleString('es-CL')} palabras, unos ${min(total)} a ${g.PALABRAS_POR_MINUTO} palabras por minuto, con margen para el cambio de expositor. Diego abre y cierra. Los cambios de expositor están escritos en el texto. El mismo guion va en las notas del orador del PowerPoint.`));
+hijos.push(p('De la propuesta de valor al Cuadro de Mando Integral de Lumine Motors. Versión posterior a la retroalimentación del Control 3. Profesor Leonardo Lizana Contreras.', { italics: true, color: AZUL, size: 22, after: 200 }));
+hijos.push(p(`Exposición de unos 12 minutos (máximo 15): ${filas.length} láminas y ${total.toLocaleString('es-CL')} palabras, unos ${min(total)} a ${g.PALABRAS_POR_MINUTO} palabras por minuto, con margen para el cambio de expositor. Diego abre y cierra. Los cambios de expositor están escritos en el texto. El mismo guion va en las notas del orador del PowerPoint.`));
 hijos.push(new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun({ text: 'Hoja de control de tiempos' })] }));
 hijos.push(tabla([['Lámina', 3300], ['Expositor', 1300], ['Apartado del informe', 2460], ['Palabras', 1150], ['Tiempo', 1150]],
   [...filas.map(x => [`${x.n} · ${x.titulo}`, x.quien.split(' ')[0], x.seccion, g.palabras(x.texto), g.mmss(g.segundos(x.texto))]),
@@ -48,7 +48,12 @@ filas.forEach(x => {
     const f = filas.filter(y => y.quien === x.quien), pal = f.reduce((s, y) => s + g.palabras(y.texto), 0);
     hijos.push(new Paragraph({ children: [new PageBreak()] }));
     hijos.push(new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun({ text: x.quien + (anterior ? '' : ' · abre') + (x.d === 'cierre' ? ' · cierre' : '') })] }));
-    if (x.d !== 'cierre') hijos.push(p(`Láminas ${f.filter(y => y.d !== 'cierre').map(y => y.n).join(', ')} · unos ${min(pal)} en total (${pal} palabras).`, { color: GRIS, size: 20, after: 160 }));
+    if (x.d !== 'cierre') {
+      hijos.push(p(`Láminas ${f.filter(y => y.d !== 'cierre').map(y => y.n).join(', ')} · unos ${min(pal)} en total (${pal} palabras).`, { color: GRIS, size: 20, after: 120 }));
+      hijos.push(p('Términos técnicos que debes nombrar con calma (el profesor pidió el relato con los términos que están detrás del trabajo):', { size: 20, bold: true, after: 80 }));
+      hijos.push(tabla([['Término', 2600], ['Qué significa en nuestro trabajo', ANCHO - 2600]], g.TERMINOS[x.quien], { negrita: () => false }));
+      hijos.push(p('', { after: 120 }));
+    }
     anterior = x.quien;
   }
   hijos.push(new Paragraph({
@@ -57,6 +62,18 @@ filas.forEach(x => {
   }));
   hijos.push(p(`Informe: ${x.seccion}`, { size: 18, color: GRIS, after: 60 }));
   hijos.push(new Paragraph({ spacing: { after: 240, line: 336 }, children: [new TextRun({ text: x.texto, size: 24 })] }));
+});
+
+// Banco de preguntas probables, agrupado por quien responde
+hijos.push(new Paragraph({ children: [new PageBreak()] }));
+hijos.push(new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun({ text: 'Banco de preguntas probables' })] }));
+hijos.push(p('Responde quien expuso el tema. Respuesta corta, con la cifra y el autor; si piden detalle, se abre el anexo desde su índice (lámina del anexo indicada en la respuesta).', { color: GRIS, size: 20, after: 160 }));
+quienes.forEach(q => {
+  hijos.push(new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun({ text: `Responde ${q}` })] }));
+  g.PREGUNTAS.filter(x => x.quien === q).forEach((x, i) => {
+    hijos.push(new Paragraph({ keepNext: true, spacing: { before: 120, after: 40 }, children: [new TextRun({ text: `${i + 1}. ${x.p}`, bold: true, size: 22 })] }));
+    hijos.push(new Paragraph({ spacing: { after: 120, line: 300 }, indent: { left: 360 }, children: [new TextRun({ text: x.r, size: 22 })] }));
+  });
 });
 
 const doc = new Document({
