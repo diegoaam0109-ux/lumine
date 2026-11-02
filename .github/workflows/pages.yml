@@ -1,0 +1,45 @@
+name: Publicar prototipo y presentaciones en Pages
+on:
+  push:
+    branches: [main]
+    paths: ['lumine-presentaciones/**', '.github/workflows/pages.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      # Conserva el estimador publicado, sin reemplazarlo por la versión antigua de main.
+      - uses: actions/checkout@v4
+        with:
+          ref: de2f7438e584d2648fb3f7a85166bab4a29629e4
+          path: _estimador
+          sparse-checkout: entrega3/prototipo/app
+      - uses: actions/configure-pages@v5
+      - name: Preparar ambos sitios
+        run: |
+          mkdir -p _site
+          cp _estimador/entrega3/prototipo/app/index.html _site/index.html
+          cp _estimador/entrega3/prototipo/app/registro_ejemplo.csv _site/registro_ejemplo.csv
+          cp -a lumine-presentaciones _site/lumine-presentaciones
+          test -s _site/index.html
+          test -s _site/lumine-presentaciones/fase3/index.html
+          test -s _site/lumine-presentaciones/engine/deck.js
+          test -s _site/lumine-presentaciones/fase3/deck-data.js
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - uses: actions/deploy-pages@v4
+        id: deployment
