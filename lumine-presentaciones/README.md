@@ -47,3 +47,16 @@ Los videos parten solos al llegar a la lámina, sin sonido y en bucle. Clic sobr
 
 Copiar la carpeta `fase3` como `fase5`, reemplazar `slides/` y `video/`, rehacer `deck-data.js`
 con una entrada por lámina y activar la tarjeta de la Fase 5 en `index.html`.
+
+## Controles de la presentación
+
+- **Apertura:** sin hash, con `#0`, con `0 + Enter` o con `Inicio`, se reproduce `video/kit.mp4` una vez dentro del marco 16:9. Al terminar pasa a la lámina 1. `→` o clic la saltan. No cuenta en el progreso. En el orador aparece «Apertura» y la siguiente es la lámina 1.
+- **Navegación:** `→`, `↓`, `Espacio`, `AvPág` o `Enter` avanzan; `←`, `↑` y `RePág` retroceden. `Fin` lleva al cierre (21). Se mantienen `F`, `O`, `N`, número + `Enter` y `?`.
+- **Transición:** barrido celeste de 500 ms entre láminas consecutivas, 250 ms para saltos y fundido de 400 ms desde la apertura. Otra tecla completa el efecto inmediatamente.
+- **Z · Lupa:** activa el cursor de lupa; clic amplía 2,5× la zona elegida, incluidos videos y enlaces. Otro clic cambia el foco. `Z` o `Esc` salen; las flechas cambian de lámina y apagan la lupa. El clic no navega mientras está activa.
+- **L · Láser:** activa o apaga el punto celeste con una estela breve. Mientras está activo, el clic no navega. Lupa y láser se desactivan mutuamente.
+- **P · Preguntas:** abre el buscador de los 14 anexos. Busca por código, título, pregunta o palabras clave, sin distinguir tildes ni mayúsculas. `↑` / `↓` seleccionan; `Enter` o clic abren el anexo. `Esc`, desde el buscador o el anexo, vuelve a la lámina donde abriste preguntas. El orador recuerda esa lámina de retorno.
+- **Movimiento reducido:** si el sistema pide `prefers-reduced-motion`, los cambios son cortes, la lupa no anima y el láser no deja estela. Los videos mantienen su reproducción.
+- **QR del cierre:** SVG local con corrección M, generado una sola vez. Abre en otra pestaña https://diegoaam0109-ux.github.io/lumine/ventas/. La presentación y el QR se ven sin internet; visitar la página comercial requiere conexión.
+
+El motor usa únicamente APIs del navegador; no hay bibliotecas, CDN ni peticiones de red para abrir la presentación desde un pendrive. Copia la carpeta completa, incluido `fase3/qr-comercial.svg`.

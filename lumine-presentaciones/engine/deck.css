@@ -57,3 +57,56 @@ body.home { overflow: auto; display: grid; place-items: center; min-height: 100v
 
 /* Video sobre la lámina: mismo marco que las tarjetas de la presentación */
 #frame video { border-radius: 4px; box-shadow: 0 0 0 1px rgba(18, 170, 233, .45), 0 10px 30px rgba(0, 0, 0, .45); }
+
+/* Capas completas: el barrido y la lupa incluyen videos y enlaces. */
+#frame { overflow: hidden; outline: none; }
+.scene, .content { position: absolute; inset: 0; width: 100%; height: 100%; }
+.content { transform-origin: 50% 50%; transition: transform .3s, transform-origin .3s; }
+#frame video.intro-video { inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 0; box-shadow: none; }
+.sweep { position: absolute; top: 0; bottom: 0; width: 2px; background: #12AAE9; box-shadow: 0 0 24px #12AAE9; z-index: 2; pointer-events: none; }
+#frame.zoom-mode, #frame.zoom-mode * { cursor: zoom-in !important; }
+#frame.laser-mode, #frame.laser-mode * { cursor: none !important; }
+#laser { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
+#help { max-width: min(860px, 94vw); max-height: 94vh; overflow: auto; }
+#help b { min-width: 175px; }
+.sp .cur video { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: #000; border: 1px solid var(--line); border-radius: 6px; }
+.sp [hidden] { display: none; }
+#return-note { color: var(--cyan); font-size: 16px; font-weight: 600; }
+#return-note:empty { display: none; }
+
+/* Preguntas: navegación por teclado y foco dentro de un diálogo nativo. */
+#questions { width: min(860px, 94vw); max-height: 90vh; padding: 28px; border: 1px solid #1c2a38; border-radius: 12px; background: #0d141c; color: var(--text); font-family: system-ui, sans-serif; box-shadow: 0 24px 80px #0009; }
+#questions::backdrop { background: #05080cd9; }
+.questions-head { display: flex; justify-content: space-between; align-items: start; gap: 20px; }
+.eyebrow { color: #12AAE9; font-size: 11px; letter-spacing: .15em; font-weight: 700; }
+#questions h2 { margin: 6px 0 24px; font-size: 28px; font-weight: 600; }
+#questions label { display: block; font-size: 14px; margin-bottom: 8px; color: #b5c1cd; }
+#questions input { width: 100%; min-height: 48px; padding: 10px 14px; background: #05080c; color: var(--text); border: 1px solid #1c2a38; border-radius: 6px; font: 18px system-ui; }
+#questions input:focus-visible, #questions button:focus-visible, .closing-qr:focus-visible { outline: 2px solid #12AAE9; outline-offset: 3px; }
+#questions-close { background: transparent; border: 1px solid #1c2a38; color: #b5c1cd; border-radius: 6px; padding: 10px 14px; cursor: pointer; white-space: nowrap; }
+#questions-close:hover { border-color: #12AAE9; color: white; }
+#annex-count, .questions-hint { color: #9eacba; font-size: 12px; }
+#annex-list { max-height: 48vh; overflow: auto; overscroll-behavior: contain; }
+#annex-list [role=option] { display: flex; align-items: center; gap: 16px; padding: 14px 16px; border: 1px solid transparent; border-bottom-color: #1c2a38; cursor: pointer; }
+#annex-list [role=option][aria-selected=true] { background: #12aae910; border-color: #12AAE9; }
+#annex-list [role=option]:hover { background: #12aae910; }
+.annex-code { flex: 0 0 44px; color: #12AAE9; font: 700 15px ui-monospace, monospace; }
+#annex-list strong { display: block; font-size: 16px; font-weight: 600; }
+#annex-list div > span { display: block; color: #a8b5c2; font-size: 14px; margin-top: 4px; }
+.questions-hint { margin-bottom: 0; }
+
+/* QR vectorial local: conserva zona de silencio y proporción cuadrada. */
+.closing-qr { position: absolute; display: block; background: #05080C; padding: 6px; text-align: center; text-decoration: none; }
+.closing-qr img { display: block; width: 100%; height: auto; aspect-ratio: 1; }
+.closing-qr span { display: block; margin-top: 7px; color: #7d8b99; font: 12px/1.45 system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+.closing-qr:hover { outline: 1px solid #12AAE9; }
+@media (max-width: 600px) {
+  #questions { padding: 18px; }
+  #questions h2 { font-size: 22px; }
+  #annex-list strong { font-size: 14px; }
+  .questions-head { gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .sweep { display: none; }
+}

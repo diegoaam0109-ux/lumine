@@ -35,6 +35,18 @@ jobs:
       - name: Construir página comercial con rutas relativas
         working-directory: ventas
         run: npm ci && npm run build -- --base=./
+      - name: Preparar pruebas de navegador
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+        run: npm install --prefix "$RUNNER_TEMP/pages-check" --no-save playwright@1.64.1
+      - name: Probar presentación con file y sin red
+        run: |
+          NODE_PATH="$RUNNER_TEMP/pages-check/node_modules" CHROMIUM_PATH="$(command -v google-chrome)" LUMINE_SCREENSHOTS="$RUNNER_TEMP/presentacion-file" node lumine-presentaciones/engine/tests/deck.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: presentacion-file-capturas
+          path: ${{ runner.temp }}/presentacion-file
       - uses: actions/configure-pages@v5
       - name: Preparar ambos sitios
         run: |
@@ -56,7 +68,6 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
         run: |
-          npm install --prefix "$RUNNER_TEMP/pages-check" --no-save playwright@1.64.1
           NODE_PATH="$RUNNER_TEMP/pages-check/node_modules" node <<'JS'
           const { chromium } = require('playwright');
           (async () => {
@@ -90,3 +101,11 @@ jobs:
         with:
           name: comprobacion-ventas-publica
           path: ventas-publica.png
+      - name: Probar presentación pública sin sesión
+        run: |
+          NODE_PATH="$RUNNER_TEMP/pages-check/node_modules" CHROMIUM_PATH="$(command -v google-chrome)" LUMINE_DECK_URL="https://diegoaam0109-ux.github.io/lumine/lumine-presentaciones/fase3/index.html" LUMINE_SCREENSHOTS="$RUNNER_TEMP/presentacion-publica" node lumine-presentaciones/engine/tests/deck.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: presentacion-publica-capturas
+          path: ${{ runner.temp }}/presentacion-publica

@@ -1,5 +1,190 @@
 // Contenido de la presentación. Editar aquí notas, videos y enlaces.
 window.DECK = {
+ "intro": "video/kit.mp4",
+ "annex": [
+  {
+    "code": "A1",
+    "slide": 23,
+    "title": "Hipótesis y pruebas",
+    "question": "¿Cómo se contrastan las hipótesis?",
+    "keywords": [
+      "hipótesis",
+      "prueba",
+      "z",
+      "chi-cuadrado",
+      "H4"
+    ]
+  },
+  {
+    "code": "A2",
+    "slide": 24,
+    "title": "Pauta por experto",
+    "question": "¿Qué se le preguntó a cada experto?",
+    "keywords": [
+      "pauta",
+      "expertos",
+      "entrevista",
+      "preguntas"
+    ]
+  },
+  {
+    "code": "A3",
+    "slide": 25,
+    "title": "Matriz de Movener",
+    "question": "¿Qué dijo exactamente Movener?",
+    "keywords": [
+      "Movener",
+      "Pacheco",
+      "piloto",
+      "kilómetros",
+      "camiones"
+    ]
+  },
+  {
+    "code": "A4",
+    "slide": 26,
+    "title": "Estado de la encuesta",
+    "question": "¿En qué va la encuesta?",
+    "keywords": [
+      "encuesta",
+      "muestra",
+      "cuotas",
+      "180",
+      "33",
+      "exploratorio"
+    ]
+  },
+  {
+    "code": "A5",
+    "slide": 27,
+    "title": "Recuperación y financiamiento",
+    "question": "¿Quién paga 4 millones?",
+    "keywords": [
+      "precio",
+      "crédito",
+      "cuota",
+      "financiamiento",
+      "payback",
+      "recuperación"
+    ]
+  },
+  {
+    "code": "A6",
+    "slide": 28,
+    "title": "Dudas del cliente",
+    "question": "¿Daña el auto? ¿Pasa la revisión?",
+    "keywords": [
+      "garantía",
+      "daño",
+      "revisión técnica",
+      "ABS",
+      "homologación",
+      "enchufar"
+    ]
+  },
+  {
+    "code": "A7",
+    "slide": 29,
+    "title": "Cobros a la red",
+    "question": "¿Cuánto paga un taller certificado?",
+    "keywords": [
+      "red",
+      "talleres",
+      "licencia",
+      "certificación",
+      "exclusividad"
+    ]
+  },
+  {
+    "code": "A8",
+    "slide": 30,
+    "title": "Pronóstico por línea",
+    "question": "¿Cuánto instala cada línea por año?",
+    "keywords": [
+      "pronóstico",
+      "instalaciones",
+      "Bass",
+      "demanda",
+      "dúos"
+    ]
+  },
+  {
+    "code": "A9",
+    "slide": 31,
+    "title": "Rentas y bonos",
+    "question": "¿Cuánto gana cada cargo?",
+    "keywords": [
+      "sueldos",
+      "rentas",
+      "bonos",
+      "técnico",
+      "remuneración"
+    ]
+  },
+  {
+    "code": "A10",
+    "slide": 32,
+    "title": "Nómina anual",
+    "question": "¿Cuánto cuesta el equipo?",
+    "keywords": [
+      "nómina",
+      "dotación",
+      "personas",
+      "costo empresa"
+    ]
+  },
+  {
+    "code": "A11",
+    "slide": 33,
+    "title": "Presupuesto por partida",
+    "question": "¿En qué se gasta el marketing?",
+    "keywords": [
+      "presupuesto",
+      "marketing",
+      "pauta",
+      "referidos",
+      "comisiones"
+    ]
+  },
+  {
+    "code": "A12",
+    "slide": 34,
+    "title": "Inversión en equipamiento",
+    "question": "¿Cuánto cuesta abrir un taller?",
+    "keywords": [
+      "inversión",
+      "equipamiento",
+      "dinamómetro",
+      "taller",
+      "81,3"
+    ]
+  },
+  {
+    "code": "A13",
+    "slide": 35,
+    "title": "Resultado por línea",
+    "question": "¿Cuál línea gana más?",
+    "keywords": [
+      "resultado",
+      "margen",
+      "rentabilidad",
+      "red",
+      "línea propia"
+    ]
+  },
+  {
+    "code": "A14",
+    "slide": 36,
+    "title": "Sensibilidad",
+    "question": "¿Qué pasa si sube el dólar?",
+    "keywords": [
+      "dólar",
+      "sensibilidad",
+      "tipo de cambio",
+      "escenario"
+    ]
+  }
+],
  "title": "Lumine Motors · Fase 3",
  "subtitle": "Plan de marketing, operaciones y RR.HH.",
  "date": "5 de noviembre de 2026",
@@ -175,6 +360,7 @@ window.DECK = {
   },
   {
    "img": "slides/21.jpg",
+   "qr": {"src": "qr-comercial.svg", "url": "https://diegoaam0109-ux.github.io/lumine/ventas/", "box": {"x": 88, "y": 68, "w": 11}},
    "title": "Cierre",
    "who": "Lukas Verdugo",
    "sec": 0,
