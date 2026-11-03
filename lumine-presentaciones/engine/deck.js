@@ -76,7 +76,7 @@
     <b>L</b> activar / apagar puntero láser<br><b>P</b> buscar anexos; ↑↓ elegir, Enter abrir<br>
     <b>Esc</b> salir de lupa o volver desde preguntas a la lámina de origen<br><b>?</b> mostrar u ocultar esta ayuda</div>
     <dialog id="questions" aria-labelledby="questions-title"><div class="questions-head"><div>
-      <span class="eyebrow">DEFENSA · 14 ANEXOS</span><h2 id="questions-title">Preguntas y respaldo</h2></div>
+      <span class="eyebrow">DEFENSA · ${D.annex.length} ANEXOS</span><h2 id="questions-title">Preguntas y respaldo</h2></div>
       <button id="questions-close" aria-label="Cerrar preguntas y volver">Esc · Volver</button></div>
       <label for="annex-search">Busca por tema, pregunta o código</label>
       <input id="annex-search" type="search" placeholder="Ej.: dólar, financiamiento, A5…" autocomplete="off" role="combobox" aria-controls="annex-list" aria-expanded="true" aria-autocomplete="list">

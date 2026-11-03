@@ -20,7 +20,7 @@ fase3/video/*.mp4     videos que se reproducen sobre la lámina
 - `O` abre la vista del orador en otra ventana: lámina actual, siguiente, guion y reloj total y por lámina.
   Llevar esa ventana al notebook y la principal al proyector.
 - `N` pantalla negra · escribir un número + `Enter` salta a esa lámina · `?` ayuda.
-- Las láminas 23 a 36 son el anexo: el índice (lámina 22) tiene enlaces y cada anexo tiene «← índice».
+- Las láminas 23 a 37 son el anexo: el índice (lámina 22) tiene enlaces y cada anexo tiene «← índice».
 - Sin internet: copiar la carpeta completa a un pendrive y abrir `fase3/index.html`. Funciona igual, con videos.
 
 ## Cómo actualizar láminas (por ejemplo, Diego con las láminas 4 a 6)
@@ -55,7 +55,7 @@ con una entrada por lámina y activar la tarjeta de la Fase 5 en `index.html`.
 - **Transición:** barrido celeste de 500 ms entre láminas consecutivas, 250 ms para saltos y fundido de 400 ms desde la apertura. Otra tecla completa el efecto inmediatamente.
 - **Z · Lupa:** activa el cursor de lupa; clic amplía 2,5× la zona elegida, incluidos videos y enlaces. Otro clic cambia el foco. `Z` o `Esc` salen; las flechas cambian de lámina y apagan la lupa. El clic no navega mientras está activa.
 - **L · Láser:** activa o apaga el punto celeste con una estela breve. Mientras está activo, el clic no navega. Lupa y láser se desactivan mutuamente.
-- **P · Preguntas:** abre el buscador de los 14 anexos. Busca por código, título, pregunta o palabras clave, sin distinguir tildes ni mayúsculas. `↑` / `↓` seleccionan; `Enter` o clic abren el anexo. `Esc`, desde el buscador o el anexo, vuelve a la lámina donde abriste preguntas. El orador recuerda esa lámina de retorno.
+- **P · Preguntas:** abre el buscador de los 15 anexos. Busca por código, título, pregunta o palabras clave, sin distinguir tildes ni mayúsculas. `↑` / `↓` seleccionan; `Enter` o clic abren el anexo. `Esc`, desde el buscador o el anexo, vuelve a la lámina donde abriste preguntas. El orador recuerda esa lámina de retorno.
 - **Movimiento reducido:** si el sistema pide `prefers-reduced-motion`, los cambios son cortes, la lupa no anima y el láser no deja estela. Los videos mantienen su reproducción.
 - **QR del cierre:** SVG local con corrección M, generado una sola vez. Abre en otra pestaña https://diegoaam0109-ux.github.io/lumine/ventas/. La presentación y el QR se ven sin internet; visitar la página comercial requiere conexión.
 

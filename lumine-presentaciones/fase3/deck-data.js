@@ -3,188 +3,211 @@ window.DECK = {
  "intro": "video/kit.mp4",
  "annex": [
   {
-    "code": "A1",
-    "slide": 23,
-    "title": "Hipótesis y pruebas",
-    "question": "¿Cómo se contrastan las hipótesis?",
-    "keywords": [
-      "hipótesis",
-      "prueba",
-      "z",
-      "chi-cuadrado",
-      "H4"
-    ]
+   "code": "A1",
+   "slide": 23,
+   "title": "Hipótesis y pruebas",
+   "question": "¿Cómo se contrastan las hipótesis?",
+   "keywords": [
+    "hipótesis",
+    "prueba",
+    "z",
+    "chi-cuadrado",
+    "H4"
+   ]
   },
   {
-    "code": "A2",
-    "slide": 24,
-    "title": "Pauta por experto",
-    "question": "¿Qué se le preguntó a cada experto?",
-    "keywords": [
-      "pauta",
-      "expertos",
-      "entrevista",
-      "preguntas"
-    ]
+   "code": "A2",
+   "slide": 24,
+   "title": "Pauta por experto",
+   "question": "¿Qué se le preguntó a cada experto?",
+   "keywords": [
+    "pauta",
+    "expertos",
+    "entrevista",
+    "preguntas"
+   ]
   },
   {
-    "code": "A3",
-    "slide": 25,
-    "title": "Matriz de Movener",
-    "question": "¿Qué dijo exactamente Movener?",
-    "keywords": [
-      "Movener",
-      "Pacheco",
-      "piloto",
-      "kilómetros",
-      "camiones"
-    ]
+   "code": "A3",
+   "slide": 25,
+   "title": "Matriz de Movener",
+   "question": "¿Qué dijo exactamente Movener?",
+   "keywords": [
+    "Movener",
+    "Pacheco",
+    "piloto",
+    "kilómetros",
+    "camiones"
+   ]
   },
   {
-    "code": "A4",
-    "slide": 26,
-    "title": "Estado de la encuesta",
-    "question": "¿En qué va la encuesta?",
-    "keywords": [
-      "encuesta",
-      "muestra",
-      "cuotas",
-      "180",
-      "33",
-      "exploratorio"
-    ]
+   "code": "A4",
+   "slide": 26,
+   "title": "Estado de la encuesta",
+   "question": "¿En qué va la encuesta?",
+   "keywords": [
+    "encuesta",
+    "muestra",
+    "cuotas",
+    "180",
+    "33",
+    "exploratorio"
+   ]
   },
   {
-    "code": "A5",
-    "slide": 27,
-    "title": "Recuperación y financiamiento",
-    "question": "¿Quién paga 4 millones?",
-    "keywords": [
-      "precio",
-      "crédito",
-      "cuota",
-      "financiamiento",
-      "payback",
-      "recuperación"
-    ]
+   "code": "A5",
+   "slide": 27,
+   "title": "Recuperación y financiamiento",
+   "question": "¿Quién paga 4 millones?",
+   "keywords": [
+    "precio",
+    "crédito",
+    "cuota",
+    "financiamiento",
+    "payback",
+    "recuperación"
+   ]
   },
   {
-    "code": "A6",
-    "slide": 28,
-    "title": "Dudas del cliente",
-    "question": "¿Daña el auto? ¿Pasa la revisión?",
-    "keywords": [
-      "garantía",
-      "daño",
-      "revisión técnica",
-      "ABS",
-      "homologación",
-      "enchufar"
-    ]
+   "code": "A6",
+   "slide": 28,
+   "title": "Dudas del cliente",
+   "question": "¿Daña el auto? ¿Pasa la revisión?",
+   "keywords": [
+    "garantía",
+    "daño",
+    "revisión técnica",
+    "ABS",
+    "homologación",
+    "enchufar"
+   ]
   },
   {
-    "code": "A7",
-    "slide": 29,
-    "title": "Cobros a la red",
-    "question": "¿Cuánto paga un taller certificado?",
-    "keywords": [
-      "red",
-      "talleres",
-      "licencia",
-      "certificación",
-      "exclusividad"
-    ]
+   "code": "A7",
+   "slide": 29,
+   "title": "Cobros a la red",
+   "question": "¿Cuánto paga un taller certificado?",
+   "keywords": [
+    "red",
+    "talleres",
+    "licencia",
+    "certificación",
+    "exclusividad"
+   ]
   },
   {
-    "code": "A8",
-    "slide": 30,
-    "title": "Pronóstico por línea",
-    "question": "¿Cuánto instala cada línea por año?",
-    "keywords": [
-      "pronóstico",
-      "instalaciones",
-      "Bass",
-      "demanda",
-      "dúos"
-    ]
+   "code": "A8",
+   "slide": 30,
+   "title": "Pronóstico por línea",
+   "question": "¿Cuánto instala cada línea por año?",
+   "keywords": [
+    "pronóstico",
+    "instalaciones",
+    "Bass",
+    "demanda",
+    "dúos"
+   ]
   },
   {
-    "code": "A9",
-    "slide": 31,
-    "title": "Rentas y bonos",
-    "question": "¿Cuánto gana cada cargo?",
-    "keywords": [
-      "sueldos",
-      "rentas",
-      "bonos",
-      "técnico",
-      "remuneración"
-    ]
+   "code": "A9",
+   "slide": 31,
+   "title": "Rentas y bonos",
+   "question": "¿Cuánto gana cada cargo?",
+   "keywords": [
+    "sueldos",
+    "rentas",
+    "bonos",
+    "técnico",
+    "remuneración"
+   ]
   },
   {
-    "code": "A10",
-    "slide": 32,
-    "title": "Nómina anual",
-    "question": "¿Cuánto cuesta el equipo?",
-    "keywords": [
-      "nómina",
-      "dotación",
-      "personas",
-      "costo empresa"
-    ]
+   "code": "A10",
+   "slide": 32,
+   "title": "Nómina anual",
+   "question": "¿Cuánto cuesta el equipo?",
+   "keywords": [
+    "nómina",
+    "dotación",
+    "personas",
+    "costo empresa"
+   ]
   },
   {
-    "code": "A11",
-    "slide": 33,
-    "title": "Presupuesto por partida",
-    "question": "¿En qué se gasta el marketing?",
-    "keywords": [
-      "presupuesto",
-      "marketing",
-      "pauta",
-      "referidos",
-      "comisiones"
-    ]
+   "code": "A11",
+   "slide": 33,
+   "title": "Presupuesto por partida",
+   "question": "¿En qué se gasta el marketing?",
+   "keywords": [
+    "presupuesto",
+    "marketing",
+    "pauta",
+    "referidos",
+    "comisiones"
+   ]
   },
   {
-    "code": "A12",
-    "slide": 34,
-    "title": "Inversión en equipamiento",
-    "question": "¿Cuánto cuesta abrir un taller?",
-    "keywords": [
-      "inversión",
-      "equipamiento",
-      "dinamómetro",
-      "taller",
-      "81,3"
-    ]
+   "code": "A12",
+   "slide": 34,
+   "title": "Inversión en equipamiento",
+   "question": "¿Cuánto cuesta abrir un taller?",
+   "keywords": [
+    "inversión",
+    "equipamiento",
+    "dinamómetro",
+    "taller",
+    "81,3"
+   ]
   },
   {
-    "code": "A13",
-    "slide": 35,
-    "title": "Resultado por línea",
-    "question": "¿Cuál línea gana más?",
-    "keywords": [
-      "resultado",
-      "margen",
-      "rentabilidad",
-      "red",
-      "línea propia"
-    ]
+   "code": "A13",
+   "slide": 35,
+   "title": "Resultado por línea",
+   "question": "¿Cuál línea gana más?",
+   "keywords": [
+    "resultado",
+    "margen",
+    "rentabilidad",
+    "red",
+    "línea propia"
+   ]
   },
   {
-    "code": "A14",
-    "slide": 36,
-    "title": "Sensibilidad",
-    "question": "¿Qué pasa si sube el dólar?",
-    "keywords": [
-      "dólar",
-      "sensibilidad",
-      "tipo de cambio",
-      "escenario"
-    ]
+   "code": "A14",
+   "slide": 36,
+   "title": "Sensibilidad",
+   "question": "¿Qué pasa si sube el dólar?",
+   "keywords": [
+    "dólar",
+    "sensibilidad",
+    "tipo de cambio",
+    "escenario"
+   ]
+  },
+  {
+   "code": "A15",
+   "slide": 37,
+   "title": "Matriz de Gómez y Cádiz",
+   "question": "¿Qué dijeron Gómez y Cádiz?",
+   "keywords": [
+    "Gómez",
+    "Esteban",
+    "Cádiz",
+    "Alfonso",
+    "3CV",
+    "reglamento",
+    "Contraloría",
+    "proyecto experimental",
+    "autorización",
+    "taller",
+    "certificado",
+    "revisión técnica",
+    "frenos",
+    "innovación",
+    "Habilita"
+   ]
   }
-],
+ ],
  "title": "Lumine Motors · Fase 3",
  "subtitle": "Plan de marketing, operaciones y RR.HH.",
  "date": "5 de noviembre de 2026",
@@ -210,28 +233,28 @@ window.DECK = {
    "title": "Primero escuchamos. Después medimos.",
    "who": "Diego Alarcón",
    "sec": 40,
-   "notes": "Para responderlas, primero escuchamos y después medimos. Partimos con cuatro entrevistas exploratorias: las tres de la validación inicial y una a un conductor de aplicaciones con casi veinte años en el rubro. De ahí salieron seis hipótesis y el cuestionario. Hoy estamos en la etapa cualitativa: cinco expertos y cinco perfiles de cliente afinan esas hipótesis. Después se analiza la encuesta por cuotas, que ya lleva 33 de 180 respuestas. Como la muestra no es aleatoria, sus resultados serán exploratorios: describen a quienes responden y no se generalizan."
+   "notes": "Para responderlas, primero escuchamos y después medimos. Partimos con cuatro entrevistas exploratorias: las tres de la validación inicial y una a un conductor de aplicaciones con casi veinte años en el rubro. De ahí salieron seis hipótesis y el cuestionario. Hoy estamos en la etapa cualitativa: ya conversamos con tres de los cinco expertos y con el primero de cinco perfiles de cliente. Después se analiza la encuesta por cuotas, que ya lleva 33 de 180 respuestas. Como la muestra no es aleatoria, sus resultados serán exploratorios: describen a quienes responden y no se generalizan."
   },
   {
    "img": "slides/04.jpg",
    "title": "Cinco miradas sobre una misma propuesta",
    "who": "Diego Alarcón",
-   "sec": 40,
-   "notes": "¿A quiénes escuchamos? A cinco miradas que se complementan. Desde la industria, Gonzalo Pacheco, fundador de Movener, una empresa chilena que ya hibrida camiones. Desde la innovación, el profesor Esteban Gómez, para entender por qué alguien adopta algo nuevo. Desde el Estado, Alfonso Cádiz, secretario técnico del 3CV, que sabe lo que exige aprobar un modelo. Desde el transporte, Julio Villalobos, por los kilómetros y el gasto. Y desde la mecánica, INACAP, por el riesgo técnico. Tres miran el mercado y dos, la factibilidad."
+   "sec": 35,
+   "notes": "¿A quiénes escuchamos? A cinco miradas que se complementan, y con tres ya conversamos. Desde la industria, Gonzalo Pacheco, fundador de Movener, una empresa chilena que ya hibrida camiones. Desde la innovación, el profesor Esteban Gómez, para entender por qué alguien adopta algo nuevo. Y desde el Estado, Alfonso Cádiz, secretario técnico del 3CV, que conoce lo que exige aprobar una modificación. Esta semana siguen el transporte, con Julio Villalobos, y la mecánica, con Claudio Villavicencio, de INACAP."
   },
   {
    "img": "slides/05.jpg",
    "title": "Probar antes de vender",
    "who": "Diego Alarcón",
-   "sec": 45,
-   "notes": "Y la primera entrevista ya cambió el plan. Gonzalo Pacheco fue directo: el cliente no tiene por qué creer en el ahorro; hay que demostrárselo con un piloto de 30.000 a 50.000 kilómetros antes de salir al mercado. Por eso decidimos sumar una etapa de pilotos de unos seis meses antes de abrir la venta, que se cuantifica en la fase financiera. También confirmó que sin financiamiento para el cliente no hay venta, y matizó nuestra hipótesis: la barrera más grande es la resistencia a lo nuevo. [Sumar una frase por cada experto nuevo.]"
+   "sec": 70,
+   "notes": "Y lo que nos dijeron converge en una sola decisión: probar antes de vender. Gonzalo Pacheco fue directo: el ahorro hay que demostrarlo con un piloto de 30.000 a 50.000 kilómetros antes de salir al mercado. Esteban Gómez lo explica desde la innovación: para que algo sea creíble tiene que ser real primero, y pesan antes el respaldo institucional y la demostración. Y Alfonso Cádiz nos mostró la vía: el Ministerio tiene un reglamento de Proyectos Experimentales que permite circular en prueba y, si los resultados son buenos, impulsar un reglamento para este tipo de sistema. Por eso sumamos una etapa de pilotos de unos seis meses por esa vía, que se cuantifica en la fase financiera. Cádiz agregó una condición: la autorización es por taller y por modelo, así que cada taller de la red tendría que obtener la suya."
   },
   {
    "img": "slides/06.jpg",
    "title": "De lo que oímos a lo que vamos a medir",
    "who": "Diego Alarcón",
-   "sec": 20,
-   "notes": "Fijémonos en la hipótesis que más decide. Nació de la exploración: los conductores temían por su auto, la reventa y la revisión técnica. Por eso planteamos que la barrera principal es la confianza y no el precio; la encuesta la contrastará. Benjamín sigue con el plan de marketing."
+   "sec": 35,
+   "notes": "Fijémonos en la hipótesis que más decide. Nació de la exploración: los conductores temían por su auto, la reventa y la revisión técnica. Por eso planteamos que la barrera principal es la confianza y no el precio. Los expertos la matizan: la resistencia a lo nuevo y no entenderlo frenan la compra, aunque el ahorro sea condición. Y el primer cliente en profundidad pidió justamente un taller certificado y garantía de la batería. La encuesta la contrastará. Benjamín sigue con el plan de marketing."
   },
   {
    "img": "slides/07.jpg",
@@ -360,7 +383,15 @@ window.DECK = {
   },
   {
    "img": "slides/21.jpg",
-   "qr": {"src": "qr-comercial.svg", "url": "https://diegoaam0109-ux.github.io/lumine/ventas/", "box": {"x": 88, "y": 68, "w": 11}},
+   "qr": {
+    "src": "qr-comercial.svg",
+    "url": "https://diegoaam0109-ux.github.io/lumine/ventas/",
+    "box": {
+     "x": 88,
+     "y": 68,
+     "w": 11
+    }
+   },
    "title": "Cierre",
    "who": "Lukas Verdugo",
    "sec": 0,
@@ -375,126 +406,135 @@ window.DECK = {
      "to": 23,
      "box": {
       "x": 4.5,
-      "y": 26.667,
+      "y": 26.4,
       "w": 31.126,
-      "h": 7.467
+      "h": 6.667
      }
     },
     {
      "to": 24,
      "box": {
       "x": 4.5,
-      "y": 35.467,
+      "y": 34.4,
       "w": 31.126,
-      "h": 7.467
+      "h": 6.667
      }
     },
     {
      "to": 25,
      "box": {
       "x": 4.5,
-      "y": 44.267,
+      "y": 42.4,
       "w": 31.126,
-      "h": 7.467
+      "h": 6.667
      }
     },
     {
      "to": 26,
      "box": {
       "x": 4.5,
-      "y": 53.067,
+      "y": 50.4,
       "w": 31.126,
-      "h": 7.467
+      "h": 6.667
      }
     },
     {
      "to": 27,
      "box": {
       "x": 4.5,
-      "y": 61.867,
+      "y": 58.4,
       "w": 31.126,
-      "h": 7.467
+      "h": 6.667
      }
     },
     {
      "to": 28,
      "box": {
       "x": 4.5,
-      "y": 70.667,
+      "y": 66.4,
       "w": 31.126,
-      "h": 7.467
+      "h": 6.667
      }
     },
     {
      "to": 29,
      "box": {
       "x": 4.5,
-      "y": 79.467,
+      "y": 74.4,
       "w": 31.126,
-      "h": 7.467
+      "h": 6.667
      }
     },
     {
      "to": 30,
      "box": {
-      "x": 36.751,
-      "y": 26.667,
+      "x": 4.5,
+      "y": 82.4,
       "w": 31.126,
-      "h": 7.467
+      "h": 6.667
      }
     },
     {
      "to": 31,
      "box": {
       "x": 36.751,
-      "y": 35.467,
+      "y": 26.4,
       "w": 31.126,
-      "h": 7.467
+      "h": 6.667
      }
     },
     {
      "to": 32,
      "box": {
       "x": 36.751,
-      "y": 44.267,
+      "y": 34.4,
       "w": 31.126,
-      "h": 7.467
+      "h": 6.667
      }
     },
     {
      "to": 33,
      "box": {
       "x": 36.751,
-      "y": 53.067,
+      "y": 42.4,
       "w": 31.126,
-      "h": 7.467
+      "h": 6.667
      }
     },
     {
      "to": 34,
      "box": {
       "x": 36.751,
-      "y": 61.867,
+      "y": 50.4,
       "w": 31.126,
-      "h": 7.467
+      "h": 6.667
      }
     },
     {
      "to": 35,
      "box": {
       "x": 36.751,
-      "y": 70.667,
+      "y": 58.4,
       "w": 31.126,
-      "h": 7.467
+      "h": 6.667
      }
     },
     {
      "to": 36,
      "box": {
       "x": 36.751,
-      "y": 79.467,
+      "y": 66.4,
       "w": 31.126,
-      "h": 7.467
+      "h": 6.667
+     }
+    },
+    {
+     "to": 37,
+     "box": {
+      "x": 36.751,
+      "y": 74.4,
+      "w": 31.126,
+      "h": 6.667
      }
     }
    ]
@@ -710,6 +750,22 @@ window.DECK = {
   {
    "img": "slides/36.jpg",
    "title": "Anexo A14",
+   "notes": "Anexo: solo si preguntan. «← índice» (arriba a la derecha) vuelve al índice.",
+   "links": [
+    {
+     "to": 22,
+     "box": {
+      "x": 85.502,
+      "y": 10,
+      "w": 9.975,
+      "h": 5.333
+     }
+    }
+   ]
+  },
+  {
+   "img": "slides/37.jpg",
+   "title": "Anexo A15",
    "notes": "Anexo: solo si preguntan. «← índice» (arriba a la derecha) vuelve al índice.",
    "links": [
     {
