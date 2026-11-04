@@ -68,8 +68,17 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - Revalidación del core de seguridad cada 24 meses; período autónomo del nivel 3: 90 días; 392 h si se cursa todo.
 
 **Informe de Habilita para Gestión de Personas** (profesor Esteban Gómez Sotta; revisado el 25-10-2026 con sus comentarios del 16-10):
-- Cuerpo = **alcance, objetivos y marco de procedimiento**; todo lo técnico de la plataforma (enlaces, arquitectura, guía de uso,
-  pruebas) va en **anexos**.
+- **Sigue la rúbrica del profesor (38 puntos)**, que manda sobre todo lo demás: 1 Organización de lo macro a lo micro con misión,
+  visión y valores (3) · 2 Problema con métricas y evidencia (6) · 3 Por qué es un problema: impacto estratégico, financiero, ético y
+  de bienestar a corto, mediano y largo plazo (12, el que más pesa) · 4 Diagnóstico gráfico, Ishikawa con causa raíz (6) ·
+  5 Propuesta con modelos del curso (6) · 6 Por qué la solución elimina cada causa raíz, ética y RR.HH. como socio estratégico (5).
+  La evidencia del problema debe tener menos de 5 años y salir de noticias o estudios, nunca de blogs de listas.
+- Estructura actual (04-11-2026): resumen ejecutivo · 1 Organización · 2 Problema · 3 Por qué es un problema · 4 Ishikawa (dibujado
+  en el documento) · 5 Propuesta = alcance, objetivos y marco de procedimiento · 6 De la causa a la solución · 7 Pendientes ·
+  Fuentes (25) · anexos técnicos. Misión, visión y valores salen del informe final TIG de Control de Gestión (nov. 2026).
+- Autores integrados en su sección (no en un capítulo aparte): Spencer y Spencer, Kaplan y Norton, Kirkpatrick, Bandura, Meyer y
+  Allen, Ulrich. Falta la edición de Chiavenato y de Robbins y Judge que usa el curso.
+- Todo lo técnico de la plataforma (enlaces, arquitectura, guía de uso, pruebas) va en **anexos**.
 - El centro es la **correspondencia entre competencias y módulos de capacitación**, explicada con por qué, para qué, cómo, dónde
   y quiénes. Cada decisión se explica con qué establece, qué significa en la práctica y para qué existe.
 - Escribir como si la empresa ya operara («Lumine instala…»). Usar el temario del curso como guía, no como sección.
