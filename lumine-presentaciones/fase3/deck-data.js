@@ -1,6 +1,6 @@
 // Contenido de la presentación. Editar aquí notas, videos y enlaces.
 window.DECK = {
- "intro": "video/kit.mp4",
+ "intro": "video/kit.mp4?v=reconstruido-20261104",
  "annex": [
   {
    "code": "A1",
@@ -277,7 +277,7 @@ window.DECK = {
    "sec": 25,
    "notes": "El kit tiene dos versiones con la misma estructura. Esencial cuesta 4,29 millones con IVA y Plus, 4,99 millones. Plus cuesta 16% más, pero ahorra 24% más al colectivero, así que cada punto de ahorro sale más barato. En estricto rigor, los ahorros son simulados y los precios, referenciales.",
    "video": {
-    "src": "video/kit.mp4",
+    "src": "video/kit.mp4?v=reconstruido-20261104",
     "box": {
      "x": 33.601,
      "y": 26.667,
