@@ -42,6 +42,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | `.claude/skills/presentaciones/` | Skill con el método de presentaciones del equipo: lámina como apoyo y no como guion, tiempo según la rúbrica, anexo para la defensa y un plan aprobado antes de construir. | Úsala con `lumine-marca` para cualquier presentación nueva. |
 | `.claude/skills/lumine-marca/` | Skill con el sistema visual de Lumine (colores, tipografías, motivos, recursos). | Úsala para cualquier pieza nueva con la marca. |
 | `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada** (UNAB, Grupo 1, NRC 4153): estimador de ahorro con IA, prototipo, informe técnico del modelo matemático y revisión cruzada con varias IA. | Pasos para reproducir en `entrega3/README.md`; resultados de la Entrega 4 en `entrega4/Resultados_mejoras_modelo_E4.md`. |
+| `gestion-de-personas/` | Scripts que arman el Word del informe de Habilita para Gestión de Personas. | Ver `gestion-de-personas/README.md`. |
 | `fase-3/` | **Presentación de la Fase 3** de Integrador II: Taller de Empresas (ICMA 1001, Grupo 1, profesor Roberto Brito): Capítulo III, Plan de Marketing, Operaciones y RR.HH. | Generador propio copiado del de Control de Gestión: `generador/deck.js` + `guion.js` + `render.sh` (también en Git Bash para Windows). El informe .docx no se sube. |
 
 
@@ -84,7 +85,13 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - Escribir como si la empresa ya operara («Lumine instala…»). Usar el temario del curso como guía, no como sección.
 - Todo hecho externo lleva cita con enlace en nota al pie numerada (no APA). Afirmaciones de contexto: parafrasear y llevarlas a
   oportunidades y restricciones (un FODA dentro del párrafo).
-- Las metas de los 8 indicadores siguen «Por confirmar».
+- **9 indicadores en el informe** (el 9.º, preventivo: casi accidentes y observaciones de seguridad); la app sigue con 8 hasta
+  implementarlo. Las metas de la sección 5.2 son una **propuesta del equipo, por aprobar** (rotuladas así); las de los objetivos
+  6 y 7 coinciden con el CMI de Control de Gestión. El costo por técnico y el bono siguen «Por confirmar».
+- Textos del curso citados: Chiavenato, *Administración de RR.HH.* (10.ª ed., 2017) y *Gestión del talento humano* (5.ª ed., 2020),
+  y Robbins y Judge, *Comportamiento organizacional* (18.ª ed., 2023); ediciones sacadas de catálogos de bibliotecas, por verificar
+  contra el libro. 28 fuentes, numeradas por orden de aparición.
+- El Word de entrega se arma con `gestion-de-personas/` (portada, índice con páginas, estilos). Falta la sección o NRC en la portada.
 
 **Página comercial**:
 - Oscuro por defecto, con interruptor claro/oscuro visible; estilo cinematográfico (referencias Lamborghini, Ferrari, AWE y Apple)
