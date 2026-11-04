@@ -372,14 +372,14 @@ window.DECK = {
    "title": "Qué necesitamos y cuándo",
    "who": "Lukas Verdugo",
    "sec": 35,
-   "notes": "En el tiempo, el orden es este. Primero la preapertura: homologamos el primer modelo con un cliente piloto y formamos el primer dúo. Ahí se suma la etapa de pilotos en ruta que salió de la investigación. La apertura queda condicionada al reglamento de la Ley 21.793. En cinco años, el equipamiento suma 243,8 millones, la nómina 2.187 millones y el gasto operacional 25.873 millones, donde el kit pesa más del 90%."
+   "notes": "En el tiempo, el orden es este. Primero la preapertura: homologamos el primer modelo con un cliente piloto y formamos el primer dúo. Ahí se suma la etapa de pilotos en ruta que salió de la investigación, como Proyecto Experimental ante el Ministerio. La apertura queda condicionada al reglamento de la Ley 21.793. En cinco años, el equipamiento suma 243,8 millones, la nómina 2.187 millones y el gasto operacional 25.873 millones, donde el kit pesa más del 90%."
   },
   {
    "img": "slides/20.jpg",
    "title": "Sabemos qué vender y cómo ejecutarlo",
    "who": "Lukas Verdugo",
    "sec": 30,
-   "notes": "En resumen, ya sabemos a quién venderle, con qué promesa y cómo cumplirla. Quedan cuatro condiciones abiertas: el reglamento, el ahorro medido en ruta, los resultados de la investigación y el financiamiento. Por eso la pregunta que sigue es si este plan es financieramente viable. Muchas gracias."
+   "notes": "En resumen, ya sabemos a quién venderle, con qué promesa y cómo cumplirla. Quedan cuatro condiciones abiertas: un reglamento propio, que ahora tiene una vía para impulsarse, el ahorro medido en ruta, los resultados de la investigación y el financiamiento. Por eso la pregunta que sigue es si este plan es financieramente viable. Muchas gracias."
   },
   {
    "img": "slides/21.jpg",
