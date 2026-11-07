@@ -50,7 +50,7 @@ function puedeVer(id){ const r = ROUTES[id]; if(!r) return false; const k = role
 function homeRoute(){
   if(S.kiosk) return 'kiosco';
   if(S.role === 'admin') return 'panel';
-  if(S.role === 'tecnico'){ if(!S.loaded.has('expediente')) return 'ruta'; return S.mine.expediente ? 'hoy' : 'postular'; }
+  if(S.role === 'tecnico'){ if(!S.loaded.has('expediente')) return 'hoy'; return S.mine.expediente ? 'hoy' : 'postular'; }
   return 'inicio';
 }
 function navItems(){

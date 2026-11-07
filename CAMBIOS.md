@@ -24,6 +24,11 @@ pero con rigor universitario y de capacitación, modo claro académico y fuentes
 - Terminar todas las lecciones de un módulo lo deja como revisado (derecho a presentarse, D8). La práctica evaluada se mantiene.
 - Pruebas: lógica de repaso, racha, dominio y puntos, e integridad del contenido (ids, respuestas, fuentes, casos sin caminos rotos).
 
+- **Corrección (inicio de sesión de la demo):** la celebración de nivel se programaba medio segundo después de abrir la vista
+  del técnico y aparecía aunque ya se hubiera cambiado de cuenta, tapando los botones del inicio de sesión. Ahora solo se
+  muestra si sigues en Hoy o Mi ruta con la misma cuenta, y se cierra al cambiar de cuenta. El técnico entra siempre a Hoy.
+  Los datos guardados de la demo pasan a `lh-demo-v6`, para que la versión nueva parta con los datos de ejemplo completos.
+
 ## Octava ronda: revisión de errores (07-11-2026)
 
 Revisión del código sin cambios previos; cada corrección trae una prueba que falla con el código anterior.

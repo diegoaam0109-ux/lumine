@@ -129,10 +129,19 @@ function revisarCelebracion(e){
   if(n < 1 || !S.me.id || S.preview) return;
   const key = 'lh-nivel-visto-' + S.me.id;
   let visto;
-  try { if(localStorage.getItem('lh-sin-celebrar')) return; visto = localStorage.getItem(key); localStorage.setItem(key, String(n)); } catch(x){ return; }
+  try { if(localStorage.getItem('lh-sin-celebrar')) return; visto = localStorage.getItem(key); } catch(x){ return; }
   const reciente = e.fechasNivel && e.fechasNivel[n] && diffDays(e.fechasNivel[n], S.hoy) <= 60;
-  if(visto === null ? reciente : Number(visto) < n) setTimeout(() => celebrarNivel(n), 450);
+  if(!(visto === null ? reciente : Number(visto) < n)) return;
+  const quien = S.me.id;
+  /* se muestra medio segundo después: si en ese tiempo cambió la cuenta o la pantalla, no se muestra
+     (antes quedaba encima del inicio de sesión de la demo y tapaba los botones) */
+  setTimeout(() => {
+    if(S.role !== 'tecnico' || S.me.id !== quien || !['ruta','hoy'].includes(parseHash().id)) return;
+    try { localStorage.setItem(key, String(n)); } catch(x){}
+    celebrarNivel(n);
+  }, 450);
 }
+function cerrarCelebracion(){ const c = document.querySelector('.celebra'); if(c){ c.remove(); document.body.style.overflow = ''; } }
 function celebrarNivel(n){
   if(document.querySelector('.celebra')) return;
   const N = NIVEL[n];

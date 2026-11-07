@@ -231,16 +231,16 @@ function esFormador(){ return S.role === 'tecnico' && S.mine.agenda && Object.ke
 
 /* ---------- arranque de cada modo ---------- */
 function demoStorageLoad(){
-  try { const raw = localStorage.getItem('lh-demo-v5'); if(!raw) return null; const o = JSON.parse(raw); if(o && o.hoy === S.hoy && o.docs) return o.docs; } catch(e){}
+  try { const raw = localStorage.getItem('lh-demo-v6'); if(!raw) return null; const o = JSON.parse(raw); if(o && o.hoy === S.hoy && o.docs) return o.docs; } catch(e){}
   return null;
 }
 let demoSaveT = null;
 function demoStorageSave(){
   clearTimeout(demoSaveT);
-  demoSaveT = setTimeout(() => { try { localStorage.setItem('lh-demo-v5', JSON.stringify({ hoy:S.hoy, docs:S.mem.dump() })); } catch(e){} }, 400);
+  demoSaveT = setTimeout(() => { try { localStorage.setItem('lh-demo-v6', JSON.stringify({ hoy:S.hoy, docs:S.mem.dump() })); } catch(e){} }, 400);
 }
 function demoReset(){
-  try { localStorage.removeItem('lh-demo-v5'); } catch(e){}
+  try { localStorage.removeItem('lh-demo-v6'); } catch(e){}
   S.mem.load(demoSeed(S.hoy));
   toast('Demostración restablecida');
 }
@@ -268,6 +268,7 @@ async function cambiarRolDemo(id){
   S.cambioRol = Date.now();
   try { if(id === 'visitante') sessionStorage.removeItem('lh-demo-sesion'); else sessionStorage.setItem('lh-demo-sesion', id); } catch(e){}
   closeSheet();
+  if(typeof cerrarCelebracion === 'function') cerrarCelebracion();
   await iniciarDemo();
   const home = S.kiosk ? 'kiosco' : homeRoute();
   if(location.hash === '#' + home) render(); else location.hash = home;

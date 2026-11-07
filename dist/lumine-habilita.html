@@ -4681,16 +4681,16 @@ function esFormador(){ return S.role === 'tecnico' && S.mine.agenda && Object.ke
 
 /* ---------- arranque de cada modo ---------- */
 function demoStorageLoad(){
-  try { const raw = localStorage.getItem('lh-demo-v5'); if(!raw) return null; const o = JSON.parse(raw); if(o && o.hoy === S.hoy && o.docs) return o.docs; } catch(e){}
+  try { const raw = localStorage.getItem('lh-demo-v6'); if(!raw) return null; const o = JSON.parse(raw); if(o && o.hoy === S.hoy && o.docs) return o.docs; } catch(e){}
   return null;
 }
 let demoSaveT = null;
 function demoStorageSave(){
   clearTimeout(demoSaveT);
-  demoSaveT = setTimeout(() => { try { localStorage.setItem('lh-demo-v5', JSON.stringify({ hoy:S.hoy, docs:S.mem.dump() })); } catch(e){} }, 400);
+  demoSaveT = setTimeout(() => { try { localStorage.setItem('lh-demo-v6', JSON.stringify({ hoy:S.hoy, docs:S.mem.dump() })); } catch(e){} }, 400);
 }
 function demoReset(){
-  try { localStorage.removeItem('lh-demo-v5'); } catch(e){}
+  try { localStorage.removeItem('lh-demo-v6'); } catch(e){}
   S.mem.load(demoSeed(S.hoy));
   toast('Demostración restablecida');
 }
@@ -4718,6 +4718,7 @@ async function cambiarRolDemo(id){
   S.cambioRol = Date.now();
   try { if(id === 'visitante') sessionStorage.removeItem('lh-demo-sesion'); else sessionStorage.setItem('lh-demo-sesion', id); } catch(e){}
   closeSheet();
+  if(typeof cerrarCelebracion === 'function') cerrarCelebracion();
   await iniciarDemo();
   const home = S.kiosk ? 'kiosco' : homeRoute();
   if(location.hash === '#' + home) render(); else location.hash = home;
@@ -5615,7 +5616,7 @@ function puedeVer(id){ const r = ROUTES[id]; if(!r) return false; const k = role
 function homeRoute(){
   if(S.kiosk) return 'kiosco';
   if(S.role === 'admin') return 'panel';
-  if(S.role === 'tecnico'){ if(!S.loaded.has('expediente')) return 'ruta'; return S.mine.expediente ? 'hoy' : 'postular'; }
+  if(S.role === 'tecnico'){ if(!S.loaded.has('expediente')) return 'hoy'; return S.mine.expediente ? 'hoy' : 'postular'; }
   return 'inicio';
 }
 function navItems(){
@@ -7900,10 +7901,19 @@ function revisarCelebracion(e){
   if(n < 1 || !S.me.id || S.preview) return;
   const key = 'lh-nivel-visto-' + S.me.id;
   let visto;
-  try { if(localStorage.getItem('lh-sin-celebrar')) return; visto = localStorage.getItem(key); localStorage.setItem(key, String(n)); } catch(x){ return; }
+  try { if(localStorage.getItem('lh-sin-celebrar')) return; visto = localStorage.getItem(key); } catch(x){ return; }
   const reciente = e.fechasNivel && e.fechasNivel[n] && diffDays(e.fechasNivel[n], S.hoy) <= 60;
-  if(visto === null ? reciente : Number(visto) < n) setTimeout(() => celebrarNivel(n), 450);
+  if(!(visto === null ? reciente : Number(visto) < n)) return;
+  const quien = S.me.id;
+  /* se muestra medio segundo después: si en ese tiempo cambió la cuenta o la pantalla, no se muestra
+     (antes quedaba encima del inicio de sesión de la demo y tapaba los botones) */
+  setTimeout(() => {
+    if(S.role !== 'tecnico' || S.me.id !== quien || !['ruta','hoy'].includes(parseHash().id)) return;
+    try { localStorage.setItem(key, String(n)); } catch(x){}
+    celebrarNivel(n);
+  }, 450);
 }
+function cerrarCelebracion(){ const c = document.querySelector('.celebra'); if(c){ c.remove(); document.body.style.overflow = ''; } }
 function celebrarNivel(n){
   if(document.querySelector('.celebra')) return;
   const N = NIVEL[n];
@@ -8783,6 +8793,7 @@ function siguienteLeccion(){
 VIEWS.hoy = function(){
   if(!cargado(['expediente','avance'])) return vistaCargando();
   const e = miExp();
+  if(e) revisarCelebracion(e);
   const ap = miAprende();
   const r = racha(ap.dias, S.hoy);
   const meta = metaDelDia(ap, S.hoy);

@@ -410,6 +410,27 @@ async function ir(pg, h){ await pg.evaluate(x => go(x), h); await pg.waitForTime
     await pg.context().close();
   }
 
+  /* 8. Inicio de sesión de la demo con cada cuenta, con la celebración activa (falla reportada el 07-11-2026:
+        la celebración de nivel quedaba encima del inicio de sesión y tapaba los botones) */
+  for(const vp of ['pc', 'telefono']){
+    const pg = await abrir(browser, vp, 'dark', null, null, { celebrar:true });
+    for(const [cuenta, destino] of [['tecnico', '#hoy'], ['responsable', '#panel'], ['formadora', '#hoy'], ['calibracion', '#panel']]){
+      await rol(pg, 'visitante'); await ir(pg, 'login');
+      ok(await pg.locator('.celebra').count() === 0, vp + ' login: nada tapa el inicio de sesión antes de entrar como ' + cuenta);
+      await pg.locator('.lg-acc', { hasText: cuenta }).getByRole('button', { name:'Usar' }).click(); await pg.waitForTimeout(200);
+      await pg.locator('.lg-go').click(); await pg.waitForTimeout(900);
+      ok((await pg.evaluate(() => location.hash)) === destino, vp + ' login: ' + cuenta + ' entra a ' + destino);
+      const cel = pg.locator('.celebra');
+      if(await cel.count()) await cel.getByRole('button', { name:'Seguir' }).click();
+    }
+    // cambiar de cuenta justo después de entrar como técnico: la celebración no debe aparecer en la pantalla siguiente
+    await pg.evaluate(() => { try { Object.keys(localStorage).filter(k => k.startsWith('lh-nivel-visto')).forEach(k => localStorage.removeItem(k)); } catch(e){} });
+    await rol(pg, 'tecnico'); await pg.evaluate(() => cambiarRolDemo('visitante')); await ir(pg, 'login'); await pg.waitForTimeout(900);
+    ok(await pg.locator('.celebra').count() === 0, vp + ' login: la celebración no queda encima al cambiar de cuenta');
+    ok(!pg.errores.length, vp + ' login sin errores: ' + pg.errores.slice(0, 3).join(' | '));
+    await pg.context().close();
+  }
+
   /* 5. Versión real abierta fuera de claude.ai: avisa y no se rompe */
   {
     const pg = await abrir(browser, 'pc', 'light', 'lumine-habilita.html');

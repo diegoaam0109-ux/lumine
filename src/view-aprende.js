@@ -380,6 +380,7 @@ function siguienteLeccion(){
 VIEWS.hoy = function(){
   if(!cargado(['expediente','avance'])) return vistaCargando();
   const e = miExp();
+  if(e) revisarCelebracion(e);
   const ap = miAprende();
   const r = racha(ap.dias, S.hoy);
   const meta = metaDelDia(ap, S.hoy);
