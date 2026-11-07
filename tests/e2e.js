@@ -36,7 +36,7 @@ async function ir(pg, h){ await pg.evaluate(x => go(x), h); await pg.waitForTime
   const browser = await chromium.launch();
   /* 1. Todas las vistas, por rol, en PC, tablet y teléfono, claro y oscuro */
   const RUTAS = { rt:['panel','personas','sistema','persona-' + 'p_felipe','validaciones','sesion-s_jt_felipe','duos','indicadores','diccionario','ajustes','ajustes-contenido','ajustes-consistencia','entrar','inicio'],
-                  tecnico:['ruta','modulos','modulo-N1-1','modulo-N2-3','diccionario','laboratorio','laboratorio-bateria','taller'], formador:['agenda','ruta'], postulante:['postular','modulos','laboratorio','taller'], visitante:['inicio','sistema','login','login-registro','laboratorio','taller','diccionario'] };
+                  tecnico:['hoy','ruta','modulos','modulo-N1-1','leccion-N1-1-a','repaso','modulo-N2-3','diccionario','laboratorio','laboratorio-bateria','taller'], formador:['agenda','ruta'], postulante:['postular','modulos','laboratorio','taller'], visitante:['inicio','sistema','login','login-registro','laboratorio','taller','diccionario'] };
   for(const vp of Object.keys(VIEWPORTS)) for(const scheme of ['light','dark']){
     const pg = await abrir(browser, vp, scheme);
     for(const r of Object.keys(RUTAS)){ await rol(pg, r); for(const h of RUTAS[r]){ await ir(pg, h); ok(await sinDesborde(pg), vp + '/' + scheme + ' ' + r + ' #' + h + ' sin desborde horizontal'); } }
@@ -348,6 +348,65 @@ async function ir(pg, h){ await pg.evaluate(x => go(x), h); await pg.waitForTime
     ok(await pg.locator('.hist-paso.on').count() === 1, vp + ' v2: al bajar se activa un paso del recorrido');
     ok(await sinDesborde(pg), vp + ' v2: portada sin desborde');
     ok(!pg.errores.length, vp + ' v2 sin errores: ' + pg.errores.slice(0, 3).join(' | '));
+    await pg.context().close();
+  }
+
+  /* 7. Aprender: una lección completa con clics reales, en PC y teléfono (07-11-2026) */
+  for(const [vp, esquema] of [['pc', 'light'], ['telefono', 'dark']]){
+    const pg = await abrir(browser, vp, esquema);
+    await rol(pg, 'tecnico');
+    ok((await pg.evaluate(() => homeRoute())) === 'hoy', vp + ' aprender: el técnico entra por Hoy');
+    await ir(pg, 'hoy');
+    ok(await pg.locator('.hoy-racha .hr-num b').innerText() === '3', vp + ' aprender: Hoy muestra la racha de la demo');
+    ok(await pg.locator('.hoy-rep .rep-n b').innerText() === '4', vp + ' aprender: Hoy cuenta el repaso pendiente');
+    ok(await sinDesborde(pg), vp + ' aprender: Hoy sin desborde');
+    await ir(pg, 'leccion-N1-1-c');
+    ok(await pg.evaluate(() => getComputedStyle(document.getElementById('nav')).display === 'none'), vp + ' aprender: la lección ocupa la pantalla completa');
+    let fallado = false, pasos = 0, vioOrdenar = false;
+    while(pasos++ < 30 && !(await pg.locator('.lec.fin').count())){
+      const tipo = await pg.locator('.lec').getAttribute('data-tipo');
+      const p = await pg.evaluate(() => { const lid = location.hash.slice(9); const st = UI['lec-' + lid]; return LECCION[lid].pasos[st.cola[st.i]]; });
+      const reint = await pg.locator('.lec-reint').count();
+      if(tipo === 'revelar'){ for(const r of await pg.locator('.rev').all()) await r.click(); ok(!(await pg.locator('.lec-cta').isDisabled()), vp + ' aprender: abrir todas las tarjetas habilita seguir'); }
+      if(tipo === 'elegir'){
+        const txt = await pg.locator('.lec .opt').allInnerTexts();
+        const objetivo = !fallado && !reint ? p.o[(p.a + 1) % p.o.length] : p.o[p.a];
+        await pg.locator('.lec .opt').nth(txt.findIndex(t => t.includes(objetivo))).click();
+        await pg.getByRole('button', { name:'Lo sé' }).click(); await pg.waitForTimeout(250);
+        if(!fallado && !reint){ fallado = true; ok(await pg.locator('.lec-fb.bad').count() === 1, vp + ' aprender: una respuesta mala muestra la corrección al tiro'); }
+        await pg.locator('.lec-cta').click(); await pg.waitForTimeout(200); continue;
+      }
+      if(tipo === 'ordenar'){
+        vioOrdenar = true;
+        const a = await pg.locator('.ord-it').first().boundingBox(), z = await pg.locator('.ord-it').last().boundingBox();
+        const t0 = await pg.locator('.ord-t').first().innerText();
+        await pg.mouse.move(a.x + 30, a.y + a.height / 2); await pg.mouse.down(); await pg.mouse.move(a.x + 30, z.y + z.height / 2 + 8, { steps:10 }); await pg.mouse.up(); await pg.waitForTimeout(150);
+        ok((await pg.locator('.ord-t').last().innerText()) === t0, vp + ' aprender: ordenar se puede arrastrar');
+        for(let g = 0; g < 20; g++){ const t = await pg.locator('.ord-t').allInnerTexts(); const k = t.findIndex((x, i) => x !== p.items[i]); if(k < 0) break; await pg.locator('.ord-it').nth(t.indexOf(p.items[k])).locator('.ord-mv').first().click(); }
+      }
+      if(tipo === 'rapido') for(let i = 0; i < p.items.length; i++) await pg.locator('[data-k="rap' + i + '-' + p.items[i].a + '"]').click();
+      await pg.locator('.lec-cta').click(); await pg.waitForTimeout(200);
+      if(await pg.locator('.lec-fb').count()){ await pg.locator('.lec-cta').click(); await pg.waitForTimeout(200); }
+    }
+    ok(vioOrdenar, vp + ' aprender: la lección tiene un ejercicio de ordenar');
+    ok(await pg.locator('.lec.fin').count() === 1, vp + ' aprender: la lección termina');
+    ok(await pg.locator('.lec-reint').count() === 0 && pasos === 8, vp + ' aprender: lo fallado vuelve una vez al final (7 pantallas)');
+    await pg.waitForTimeout(400);
+    const ap = await pg.evaluate(() => S.mine.avance.aprende);
+    ok(ap.dias[await pg.evaluate(() => S.hoy)] > 0 && ap.lecciones['N1-1-c'] && ap.lecciones['N1-1-c'].veces === 1, vp + ' aprender: guarda puntos del día y la lección');
+    ok(ap.items['N1-1-c-2'] && ap.items['N1-1-c-2'].errorSeguro === true && ap.items['N1-1-c-2'].caja === 1, vp + ' aprender: el error dicho con seguridad queda marcado para el repaso');
+    ok((await pg.locator('.fin-tile.racha b').innerText()).includes('4'), vp + ' aprender: la racha sube a 4 días');
+    await pg.locator('.lec-cta').click(); await pg.waitForTimeout(400);
+    ok((await pg.evaluate(() => location.hash)) === '#modulo-N1-1', vp + ' aprender: al terminar vuelve al módulo');
+    ok(await pg.locator('.cam-it.hecha').count() === 3, vp + ' aprender: el camino marca la lección como hecha');
+    /* repaso: trae lo pendiente y salir pide confirmación */
+    await ir(pg, 'repaso'); await pg.waitForTimeout(300);
+    ok(await pg.locator('.lec').count() === 1, vp + ' aprender: el repaso abre una sesión');
+    await pg.locator('.lec-x').click(); await pg.waitForTimeout(250);
+    ok(await pg.locator('.dialog').isVisible(), vp + ' aprender: salir de una lección pide confirmación');
+    await pg.locator('.dialog').getByRole('button', { name:'Salir' }).click(); await pg.waitForTimeout(300);
+    ok((await pg.evaluate(() => location.hash)) === '#hoy', vp + ' aprender: salir del repaso vuelve a Hoy');
+    ok(!pg.errores.length, vp + ' aprender sin errores: ' + pg.errores.slice(0, 3).join(' | '));
     await pg.context().close();
   }
 

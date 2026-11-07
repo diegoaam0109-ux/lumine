@@ -14,7 +14,7 @@ def build(mode, out, title):
     parts = [f'<title>{title}</title>',
              '<meta name="description" content="Selección y habilitación por competencias del técnico instalador de Lumine Motors.">',
              '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
-             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">',
+             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">',
              '<style>\n' + '\n'.join((src/f).read_text() for f in MAN['css']) + '\n</style>',
              (src/'markup.html').read_text(),
              '<script>\n"use strict";\nconst BUILD = ' + repr(mode) + ';\n' + '\n'.join((src/f).read_text() for f in js) + '\n</script>']

@@ -252,6 +252,50 @@ const habC = { id:'hc', etapa:'salio', nivel:3, perfil:'otro', fechasNivel:{ 3:'
 const rotP = indicadores({ personas:[habA, habB, habC], duos:[], registros:[], params:PARAMS_DEF, gestion:{}, hoy:'2026-11-07', desde:'2026-01-01' }).rotacion;
 eq([rotP.salidos, rotP.total, rotP.pct], [1, 2, 50], 'rotación: el denominador son los habilitados presentes en el período');
 
+// aprendizaje: cajas de Leitner, dominio, repaso, racha y puntos
+let itA = repasarItem(null, true, true, '2026-11-07');
+eq([itA.caja, itA.prox], [1, '2026-11-08'], 'repaso: primer acierto seguro va a la caja 1, vuelve mañana');
+itA = repasarItem(itA, true, true, '2026-11-08'); eq([itA.caja, itA.prox], [2, '2026-11-11'], 'repaso: segundo acierto sube a la caja 2 (3 días)');
+eq(repasarItem(itA, true, false, '2026-11-11').caja, 2, 'repaso: acertar dudando no sube de caja');
+const itMal = repasarItem(itA, false, true, '2026-11-11');
+eq([itMal.caja, itMal.errorSeguro], [1, true], 'repaso: error dicho con seguridad vuelve a la caja 1 y queda marcado');
+eq(repasarItem(itMal, true, false, '2026-11-12').errorSeguro, true, 'repaso: acertar dudando no borra la marca de error seguro');
+eq(repasarItem(itMal, true, true, '2026-11-12').errorSeguro, false, 'repaso: acertar con seguridad borra la marca');
+let cj = null; for(let i = 0; i < 9; i++) cj = repasarItem(cj, true, true, '2026-11-07'); eq(cj.caja, 5, 'repaso: la caja máxima es 5');
+const cat = { a:'C01', b:'C01', c:'C02' };
+eq(dominioCompetencia('C01', {}, cat, '2026-11-07'), { pct:0, vistos:0, total:2, vencidos:0 }, 'dominio: sin ítems vistos es 0');
+eq(dominioCompetencia('C01', { a:{ caja:5, prox:'2026-12-01' }, b:{ caja:5, prox:'2026-12-01' } }, cat, '2026-11-07').pct, 100, 'dominio: todo en caja 5 y al día es 100');
+eq(dominioCompetencia('C01', { a:{ caja:5, prox:'2026-11-01' }, b:{ caja:5, prox:'2026-12-01' } }, cat, '2026-11-07').pct, 75, 'dominio: un ítem vencido pesa la mitad');
+eq(dominioCompetencia('C09', {}, cat, '2026-11-07').pct, null, 'dominio: competencia sin ejercicios no tiene dato');
+eq(itemsPorRepasar({ x:{ caja:3, prox:'2026-11-01' }, y:{ caja:1, prox:'2026-11-05' }, z:{ caja:2, prox:'2026-12-01' }, w:{ caja:4, prox:'2026-11-06', errorSeguro:true } }, '2026-11-07'), ['w','y','x'], 'repaso: primero los errores seguros, luego las cajas bajas; lo no vencido no entra');
+eq(racha({}, '2026-11-07'), { n:0, hoy:false }, 'racha: sin práctica es 0');
+eq(racha({ '2026-11-05':10, '2026-11-06':20 }, '2026-11-07'), { n:2, hoy:false }, 'racha: sigue viva si practicó ayer');
+eq(racha({ '2026-11-05':10, '2026-11-06':20, '2026-11-07':5 }, '2026-11-07'), { n:3, hoy:true }, 'racha: cuenta hoy');
+eq(racha({ '2026-11-04':10, '2026-11-06':20 }, '2026-11-07').n, 1, 'racha: un día sin práctica la corta');
+eq(racha({ '2026-11-04':10 }, '2026-11-07').n, 0, 'racha: si no practicó ayer ni hoy, se perdió');
+eq(racha({ '2026-02-28':5, '2026-03-01':5 }, '2026-03-01').n, 2, 'racha: cruza fin de mes');
+eq([puntosLeccion({ aciertos:4, total:4 }), puntosLeccion({ aciertos:3, total:4 }), puntosLeccion({})], [23, 16, 10], 'puntos por lección');
+eq(metaDelDia({ dias:{ '2026-11-07':10 } }, '2026-11-07'), { meta:20, hecho:10, pct:50, cumplida:false }, 'meta diaria por defecto: 20 puntos');
+
+// lecciones: el contenido es coherente (ids únicos, respuestas válidas, fuentes y zonas que existen)
+const todosPasos = Object.values(LECCIONES).flat().flatMap(l => l.pasos.map(p => Object.assign({ lid:l.id }, p)));
+const idsItems = todosPasos.filter(p => p.id).map(p => p.id);
+eq(idsItems.length, new Set(idsItems).size, 'lecciones: ids de ejercicios únicos');
+ok(idsItems.every(validId), 'lecciones: ids válidos para la base');
+ok(Object.values(LECCIONES).flat().every(l => validId(l.id) && l.resultado && l.min > 0), 'lecciones: id, resultado medible y duración');
+ok(Object.keys(LECCIONES).every(mid => MOD[mid] && LECCIONES[mid].every(l => l.c.every(c => MOD[mid].cod.includes(c)))), 'lecciones: sus competencias son del módulo');
+ok(todosPasos.filter(p => p.id).every(p => C[p.c]), 'lecciones: cada ejercicio apunta a una competencia que existe');
+ok(todosPasos.filter(p => p.k === 'elegir').every(p => Number.isInteger(p.a) && p.a >= 0 && p.a < p.o.length && new Set(p.o).size === p.o.length), 'lecciones: alternativas válidas y sin repetir');
+ok(todosPasos.filter(p => p.f).every(p => FUENTES_CONT[p.f]), 'lecciones: toda fuente citada existe');
+ok(Object.values(FUENTES_CONT).every(f => ESTADO_FUENTE[f.estado] && f.t && f.org && (!f.url || /^https:\/\//.test(f.url))), 'fuentes: estado válido, título, organismo y enlace seguro');
+ok(todosPasos.filter(p => p.k === 'tocar').every(p => PLANO_ZONAS[p.zona]), 'lecciones: las zonas del plano existen');
+ok(todosPasos.filter(p => p.k === 'decidir').every(p => p.nodos[p.inicio] && Object.values(p.nodos).every(n => n.op.every(o => o.ir === 'fin' || p.nodos[o.ir]))), 'lecciones: los casos con decisiones no tienen caminos rotos');
+ok(todosPasos.filter(p => p.k === 'rapido').every(p => p.items.every(x => x.a < p.op.length)), 'lecciones: respuestas rápidas válidas');
+ok(todosPasos.filter(p => p.id && p.k !== 'decidir').every(p => p.f), 'lecciones: todo ejercicio calificado cita su fuente');
+ok(Object.values(LECCIONES).flat().every(l => l.pasos[0].k === 'situacion' && l.pasos[l.pasos.length - 1].k === 'cierre'), 'lecciones: parten con un problema y cierran con lo que te llevas (Merrill)');
+const posE = todosPasos.filter(p => p.k === 'elegir').map(p => p.a);
+ok(new Set(posE).size >= 2, 'lecciones: la respuesta correcta no está siempre en la misma posición del dato');
+
 // prueba de fundamentos: la correcta no se concentra en A o B
 const posF = FUNDAMENTOS.map(q => q.a);
 ok([0,1,2,3].every(k => posF.filter(x => x === k).length >= 2), 'fundamentos: la respuesta correcta está repartida en A, B, C y D');

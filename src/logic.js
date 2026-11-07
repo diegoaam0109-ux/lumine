@@ -496,6 +496,68 @@ function armarIntento(banco, n, seed){
   return idx.map((qi, k) => ({ qi, orden: barajar(banco[qi].o.map((_, j) => j), seed + 7919 * (k + 1)) }));
 }
 
+/* ---------- aprendizaje: dominio, repaso espaciado, racha y puntos ----------
+   Cada ejercicio con 'id' es un ítem de repaso con una caja de Leitner (1 a 5). Acertar con seguridad
+   sube una caja; acertar dudando la mantiene (se sabe, pero no firme); fallar la devuelve a la 1.
+   La caja fija cuándo vuelve: así se repasa justo antes de olvidar (práctica espaciada). */
+const CAJAS_DIAS = [0, 1, 3, 7, 16, 35];
+const META_DIARIA_DEF = 20;
+function repasarItem(it, correcto, seguro, hoy){
+  const prev = it || {};
+  const cajaPrev = prev.caja || 0;
+  let caja;
+  if(!correcto) caja = 1;
+  else if(seguro === false) caja = Math.max(1, cajaPrev);
+  else caja = Math.min(5, cajaPrev + 1);
+  const out = { caja, prox: addDays(hoy, CAJAS_DIAS[caja]), ok: (prev.ok || 0) + (correcto ? 1 : 0), mal: (prev.mal || 0) + (correcto ? 0 : 1), ult: hoy };
+  // un error dicho con seguridad es el más peligroso en seguridad: queda marcado hasta acertarlo con seguridad
+  if(!correcto && seguro === true) out.errorSeguro = true;
+  else if(correcto && seguro !== false) out.errorSeguro = false;
+  else if(prev.errorSeguro) out.errorSeguro = true;
+  return out;
+}
+/* Dominio de una competencia de 0 a 100: promedio de las cajas de sus ítems vistos.
+   Un ítem vencido pesa la mitad: el dominio se desgasta si no se repasa. */
+function dominioCompetencia(c, items, catalogo, hoy){
+  const ids = Object.keys(catalogo || {}).filter(id => catalogo[id] === c);
+  if(!ids.length) return { pct:null, vistos:0, total:0, vencidos:0 };
+  let suma = 0, vistos = 0, vencidos = 0;
+  for(const id of ids){
+    const it = items && items[id]; if(!it) continue;
+    vistos++;
+    const venc = it.prox && it.prox <= hoy;
+    if(venc) vencidos++;
+    suma += (it.caja || 0) / 5 * (venc ? 0.5 : 1);
+  }
+  return { pct: Math.round(100 * suma / ids.length), vistos, total: ids.length, vencidos };
+}
+function itemsPorRepasar(items, hoy, max){
+  return Object.keys(items || {}).filter(id => items[id].prox && items[id].prox <= hoy)
+    .sort((a, b) => (items[b].errorSeguro ? 1 : 0) - (items[a].errorSeguro ? 1 : 0) || (items[a].caja || 0) - (items[b].caja || 0) || byCode(items[a].prox, items[b].prox) || byCode(a, b))
+    .slice(0, max || 8);
+}
+/* Racha: días seguidos con práctica, terminando hoy o ayer (si hoy aún no practica, la racha sigue viva). */
+function racha(dias, hoy){
+  const d = dias || {};
+  const activo = f => (d[f] || 0) > 0;
+  let cur = activo(hoy) ? hoy : addDays(hoy, -1);
+  if(!activo(cur)) return { n:0, hoy:false };
+  let n = 0;
+  while(activo(cur)){ n++; cur = addDays(cur, -1); }
+  return { n, hoy: activo(hoy) };
+}
+/* Puntos de una lección: 10 por terminarla, 2 por cada acierto al primer intento y 5 si no hubo errores. */
+function puntosLeccion(res){
+  const r = res || {};
+  return 10 + 2 * (r.aciertos || 0) + ((r.total || 0) > 0 && r.aciertos === r.total ? 5 : 0);
+}
+function metaDelDia(aprende, hoy){
+  const a = aprende || {};
+  const meta = Number(a.meta) > 0 ? Number(a.meta) : META_DIARIA_DEF;
+  const hecho = (a.dias && a.dias[hoy]) || 0;
+  return { meta, hecho, pct: clamp(Math.round(100 * hecho / meta), 0, 100), cumplida: hecho >= meta };
+}
+
 /* ---------- módulos: contenido efectivo y navegación ---------- */
 function contenidoModulo(mid, overlay){
   const base = CONTENIDO[mid] || null;

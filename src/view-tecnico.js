@@ -414,8 +414,9 @@ VIEWS.modulo = function(mid){
     return page(head, comps.length ? h('div', { class:'stack', style:'--g:6px;margin-bottom:22px' }, h('span', { class:'label' }, 'Lo que aprendes aquí'), comps) : null,
       h('div', { class:'stack', style:'--g:12px' }, emptyState('file', 'Contenido en preparación', 'El Responsable Técnico puede cargarlo desde Ajustes › Contenido. Mientras, repásalo con tu formador y márcalo como revisado.'), h('div', { class:'row', style:'justify-content:center' }, revisar)), navMod);
   }
-  const tienePractica = !!(ct.reglas || ct.escenarios);
-  const pasos = [['aprende', 'Aprende', 'book']].concat(tienePractica ? [['practica', 'Practica', 'play']] : []).concat(ct.practica && ct.practica.length ? [['rinde', 'Rinde la práctica', 'list']] : []);
+  const conLecciones = !!(LECCIONES[mid] && LECCIONES[mid].length);
+  const tienePractica = !conLecciones && !!(ct.reglas || ct.escenarios);
+  const pasos = [['aprende', conLecciones ? 'Lecciones' : 'Aprende', 'book']].concat(tienePractica ? [['practica', 'Practica', 'play']] : []).concat(ct.practica && ct.practica.length ? [['rinde', 'Rinde la práctica', 'list']] : []);
   const st = ui('mod-' + mid, { paso:'aprende' });
   if(!pasos.some(x => x[0] === st.paso)) st.paso = 'aprende';
   const pst = UI['prac-' + mid];
@@ -433,7 +434,17 @@ VIEWS.modulo = function(mid){
     const b = h('button', { type:'button', role:'tab', class:'modstep' + (st.paso === v ? ' on' : ''), 'aria-selected': st.paso === v ? 'true' : 'false' }, h('i', null, String(i + 1)), icon(ic, 's16'), l);
     b.addEventListener('click', () => irA(v)); return b; }));
   let cuerpo;
-  if(st.paso === 'aprende'){
+  if(st.paso === 'aprende' && conLecciones){
+    const sig = pasos[1];
+    const hechas = LECCIONES[mid].filter(l => leccionHecha(l.id)).length;
+    cuerpo = h('div', { class:'stack', style:'--g:20px' },
+      h('div', { class:'mod-avance' }, h('div', { class:'row sb' }, h('span', { class:'lbl' }, 'Tu avance en el módulo'), h('span', { class:'small num' }, hechas + ' de ' + LECCIONES[mid].length + ' lecciones')), h('div', { class:'barra' }, h('i', { style:'width:' + Math.round(100 * hechas / LECCIONES[mid].length) + '%' }))),
+      caminoLecciones(mid),
+      comps.length ? h('details', { class:'mod-comps' }, h('summary', null, 'Competencias que trabaja este módulo (' + comps.length + ')'), h('div', { class:'stack', style:'--g:6px;margin-top:10px' }, comps)) : null,
+      modPiezas(mid).length ? h('div', { class:'lab-link' }, h('span', { class:'ll-ic' }, icon('cube', 's20')), h('div', { class:'stack', style:'--g:6px' }, h('b', { class:'small' }, 'Míralo en el laboratorio 3D'), h('div', { class:'tag-row' }, modPiezas(mid).map(p => h('a', { class:'badge info', href:'#laboratorio-' + p.id }, p.n))))) : null,
+      fuentesModulo(mid),
+      sig ? h('div', { class:'row sb' }, h('span', { class:'small ink2' }, 'Cuando termines las lecciones, rinde la práctica: te da derecho a presentarte a la validación.'), btn('Seguir: ' + sig[1], { kind:'ghost', icon:'arrowRight', onClick: () => irA(sig[0]) })) : null);
+  } else if(st.paso === 'aprende'){
     const sig = pasos[1];
     cuerpo = h('div', { class:'stack', style:'--g:16px' },
       m.ic ? notice('info', 'lock', h('b', null, 'La biblioteca de calibraciones no se guarda en la plataforma. '), 'Este módulo enseña a cargarlas y registrarlas; lo enseña y lo valida Ingeniería de Calibración.') : null,

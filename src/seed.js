@@ -203,7 +203,15 @@ function demoSeed(hoy){
   put('avance/u_ignacio', { modulos: Object.assign(
     hecho(['NIV-E','NIV-X','N1-2','N1-3','N2-1','N2-2','N2-3','N2-4','N2-5']),
     { 'N1-1': { revisado:true, aprobado:true, intentos:2, primera:{ ok:4, total:5, fecha:d(-150) }, mejor:{ ok:5, total:5, fecha:d(-149) } },
-      'N3-1': { revisado:false, intentos:0 } }), actualizado:ts(-2) });
+      'N3-1': { revisado:false, intentos:0 } }),
+    /* aprendizaje ficticio: tres días de racha, dos lecciones hechas y un repaso pendiente hoy */
+    aprende:{ meta:20, dias:{ [d(-3)]:16, [d(-2)]:39, [d(-1)]:12 },
+      lecciones:{ 'N1-1-a':{ veces:1, primera:d(-2), ult:d(-2), mejor:75 }, 'N1-1-b':{ veces:1, primera:d(-2), ult:d(-2), mejor:100 } },
+      items:{ 'N1-1-a-1':{ caja:2, prox:d(1), ok:2, mal:0, ult:d(-2) }, 'N1-1-a-2':{ caja:1, prox:d(-1), ok:0, mal:1, ult:d(-2), errorSeguro:true },
+        'N1-1-a-3':{ caja:1, prox:d(0), ok:1, mal:0, ult:d(-1) }, 'N1-1-a-4':{ caja:1, prox:d(-1), ok:1, mal:0, ult:d(-2) },
+        'N1-1-b-1':{ caja:2, prox:d(1), ok:2, mal:0, ult:d(-2) }, 'N1-1-b-2':{ caja:1, prox:d(0), ok:1, mal:0, ult:d(-1) },
+        'N1-1-b-3':{ caja:2, prox:d(1), ok:1, mal:0, ult:d(-2) }, 'N1-1-b-4':{ caja:2, prox:d(1), ok:1, mal:0, ult:d(-2) } } },
+    actualizado:ts(-2) });
   put('avance/u_valentina', { modulos: Object.assign(hecho(['N1-2','N1-3','N2-1','N2-2','N2-3','N2-4','N2-5']), { 'N1-1': { revisado:true, aprobado:true, intentos:1, primera:{ ok:5, total:5, fecha:d(-140) }, mejor:{ ok:5, total:5, fecha:d(-140) } } }), actualizado:ts(-5) });
   /* ---- solicitud de rotación (D13): la escribe la propia técnica ---- */
   put('solicitudes/u_valentina', { rotacion:{ id:'rot_demo1', fecha:d(-3), enviada:ts(-3), duoDesde:d(-130),

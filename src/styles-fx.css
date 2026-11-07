@@ -147,7 +147,7 @@ body.fx-cursor .cursor-fx.down{ width:24px; height:24px; left:-12px; top:-12px; 
 .lab-frame{ position:relative; border-radius:var(--r-lg); overflow:hidden; border:1px solid var(--line);
   background:radial-gradient(70% 60% at 50% 38%, color-mix(in srgb, var(--action) 14%, transparent), transparent 70%), radial-gradient(120% 90% at 50% 120%, rgba(0,0,0,.35), transparent 60%), var(--wash);
   box-shadow:var(--glass), var(--shadow-cta); }
-:root[data-lh="light"] .lab-frame{ background:radial-gradient(70% 60% at 50% 38%, rgba(18,170,233,.10), transparent 70%), linear-gradient(#f6f8f9, #e7ecee); }
+:root[data-lh="light"] .lab-frame{ background:radial-gradient(70% 60% at 50% 38%, rgba(18,170,233,.09), transparent 70%), linear-gradient(#fbf9f4, #ebe5d8); }
 .lab-stage{ position:relative; width:100%; aspect-ratio:16/10.5; min-height:320px; }
 .lab-canvas{ position:absolute; inset:0; width:100%; height:100%; display:block; touch-action:pan-y; cursor:grab; outline:none; }
 .lab-canvas:active{ cursor:grabbing; }

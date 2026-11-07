@@ -20,6 +20,9 @@ const ROUTES = {
   taller:       { t:'Arma el kit',     ic:'wrench',    roles:['*'] },
   login:        { t:'Iniciar sesión',  ic:'key',       roles:['*'] },
   ajustes:      { t:'Ajustes',         ic:'settings',  roles:['admin'] },
+  hoy:          { t:'Hoy',             ic:'flame',     roles:['tecnico'] },
+  leccion:      { t:'Lección',         ic:'play',      roles:['tecnico','postulante'], parent:'modulos' },
+  repaso:       { t:'Repaso',          ic:'refresh',   roles:['tecnico'], parent:'hoy' },
   ruta:         { t:'Mi ruta',         ic:'route',     roles:['tecnico'] },
   modulos:      { t:'Módulos',         ic:'layers',    roles:['tecnico','postulante'] },
   modulo:       { t:'Módulo',          ic:'layers',    roles:['tecnico','postulante'], parent:'modulos' },
@@ -47,14 +50,14 @@ function puedeVer(id){ const r = ROUTES[id]; if(!r) return false; const k = role
 function homeRoute(){
   if(S.kiosk) return 'kiosco';
   if(S.role === 'admin') return 'panel';
-  if(S.role === 'tecnico'){ if(!S.loaded.has('expediente')) return 'ruta'; return S.mine.expediente ? 'ruta' : 'postular'; }
+  if(S.role === 'tecnico'){ if(!S.loaded.has('expediente')) return 'ruta'; return S.mine.expediente ? 'hoy' : 'postular'; }
   return 'inicio';
 }
 function navItems(){
   const k = roleKeys();
   if(S.kiosk) return [];
   if(k.has('admin')) return ['panel','personas','validaciones','duos','indicadores','diccionario'];
-  if(k.has('tecnico')) return ['ruta','modulos','laboratorio'].concat(k.has('formador') ? ['agenda'] : []).concat(['diccionario']);
+  if(k.has('tecnico')) return ['hoy','ruta','modulos','laboratorio'].concat(k.has('formador') ? ['agenda'] : []).concat(['diccionario']);
   if(k.has('postulante')) return ['postular','laboratorio','diccionario'].concat(k.has('formador') ? ['agenda'] : []);
   return ['inicio','sistema','laboratorio','taller','diccionario'];
 }
@@ -112,6 +115,7 @@ function render(esRefresco){
   catch(e){ console.error(e); view = h('div', { class:'wrap page' }, notice('crit', 'alert', h('b', null, 'Algo falló al mostrar esta sección. '), 'Vuelve al inicio y reintenta. Si se repite, exporta un respaldo desde Ajustes.')); }
   main.appendChild(view);
   document.body.classList.toggle('kiosk-on', id === 'kiosco');
+  document.body.classList.toggle('lec-on', id === 'leccion' || id === 'repaso');
   if(nav){
     LAST = key;
     window.scrollTo(0, 0);

@@ -1,5 +1,29 @@
 # Cambios de esta versión
 
+## Novena ronda: aprender haciendo, etapa 1 (07-11-2026)
+
+Prototipo vertical en el módulo «Seguridad del kit · parte 1». Lo pidió el equipo: aprendizaje dinámico al estilo de Duolingo,
+pero con rigor universitario y de capacitación, modo claro académico y fuentes citadas.
+
+- **Lecciones de 4 a 5 minutos** (`src/data-lecciones.js`): cada una declara un resultado medible y sigue el ciclo
+  problema → concepto → hacerlo tú → cierre (alineamiento constructivo de Biggs y primeros principios de Merrill).
+- **Motor de ejercicios** (`src/view-aprende.js`), una pantalla a la vez y con respuesta inmediata:
+  situación, tarjetas por descubrir, concepto, elegir, ordenar arrastrando (o con flechas), unir pares, tocar la pieza en el
+  plano del kit, caso de taller con decisiones encadenadas y respuesta rápida. Lo que se falla vuelve al final de la lección.
+- **«¿Qué tan seguro estás?»** en las preguntas: «Lo sé» o «Creo que sí». Un error dicho con seguridad queda marcado y vuelve
+  primero al repaso (es el error más peligroso en alta tensión).
+- **Repaso espaciado** (cajas de Leitner: 1, 3, 7, 16 y 35 días), **dominio por tema** que se desgasta si no se repasa,
+  **racha**, **meta diaria** y puntos. Todo personal: **sin rankings entre técnicos** (decisión del equipo).
+- **Hoy**: nueva portada del técnico (siguiente lección, racha de la semana, meta, repaso y dominio). La navegación del técnico
+  queda Hoy · Mi ruta · Módulos · Laboratorio · Diccionario.
+- **Fuentes**: cada concepto y ejercicio cita su fuente con estado (verificada, edición confirmada en catálogo, por confirmar),
+  y el módulo lista sus fuentes. Base: `reports/Fuentes para Lumine Habilita.md` (investigación con 5 frentes; notas en
+  `research_notes/`).
+- **Modo claro «papel académico»**: papel cálido, tinta casi negra, filetes y sombras de papel; titulares con remate en serif
+  itálica (Instrument Serif), como la marca.
+- Terminar todas las lecciones de un módulo lo deja como revisado (derecho a presentarse, D8). La práctica evaluada se mantiene.
+- Pruebas: lógica de repaso, racha, dominio y puntos, e integridad del contenido (ids, respuestas, fuentes, casos sin caminos rotos).
+
 ## Octava ronda: revisión de errores (07-11-2026)
 
 Revisión del código sin cambios previos; cada corrección trae una prueba que falla con el código anterior.

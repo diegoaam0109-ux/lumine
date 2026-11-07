@@ -76,6 +76,13 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   (después del recorrido 3D, que se mantiene), fotos en Para quién, Ahorro, Proceso y Confianza, y ayuda comercial sin IA.
   Las fotos son conceptuales y la página lo dice.
 
+**Aprendizaje en Habilita (07-11-2026)**:
+- Lecciones cortas con ejercicios, repaso espaciado, racha y meta diaria; progreso **solo personal, sin rankings** (decisión del equipo).
+- Modo claro **«papel académico»** (elegido frente a «blanco técnico»); el oscuro sigue siendo el de la marca.
+- Toda pieza de contenido cita su fuente con estado; la base es `reports/Fuentes para Lumine Habilita.md`.
+- La certificación sigue presencial; la práctica en línea es para aprender (dos carriles, como recomiendan TEQSA y la QAA).
+- Etapa 1 hecha en «Seguridad del kit · parte 1» (`src/data-lecciones.js`, `src/view-aprende.js`); faltan los otros 12 módulos.
+
 **Presentación de Control de Gestión**:
 - Máximo 15 minutos: 16 diapositivas + 9 de anexo para preguntas. Los tres hablan lo mismo (~500 palabras, ~4 min c/u):
   Diego 1–5, Benjamín 6–10, Lukas 11–16. Para cambiar textos, edita `generador/guion.js` y regenera.
@@ -129,6 +136,11 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - ¿Exigir 12 meses en nivel 2 antes de validar el nivel 3 (DGUV)? No implementar sin confirmación.
 - Licencia SEC del instalador: según el D.S. 92 sería clase C hasta 50 kW o B sobre eso; falta confirmarlo con la SEC.
 - Guion: decidir si la frase "Dos observaciones críticas…" (diapositiva 14) se deja, se reformula o se quita.
+- Tutor o corrector con IA en Habilita: el equipo preguntó si conviene (costo y aporte); sin decisión.
+- Hallazgo del informe de fuentes (según un extracto del borrador; el PDF completo no se pudo leer): el borrador del MTT (2021)
+  solo permitiría transformar vehículos **sin ABS, ESP ni airbag**,
+  lo que dejaría fuera al auto típico del segmento; la Ley 21.793 habla de transformación «a sistema eléctrico» y ningún marco
+  contempla la hibridación aditiva. Revisarlo con el equipo antes de afirmar nada sobre homologación.
 - Fase 3: inconsistencias abiertas para revisar con el informe: química de la batería (informe: litio-titanato;
   identidad: LFP) y motores (informe: dos en las ruedas; render: uno central). Ver `fase-3/REDISENO_PREMIUM.md`.
 

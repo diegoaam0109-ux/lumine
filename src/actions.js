@@ -626,6 +626,33 @@ async function registrarPractica(mid, ok, total, aprobado){
   if(!prev.mejor || ok / total > prev.mejor.ok / prev.mejor.total) m.mejor = res;
   await W.upsert(miAvancePath(), { modulos: { [mid]: m } }, !!S.mine.avance);
 }
+/* Aprendizaje: guarda el resultado de una lección o de un repaso en un solo cambio.
+   Cada ítem actualiza su caja de repaso; los puntos van al día; la lección queda registrada.
+   Terminar todas las lecciones de un módulo lo deja como revisado (derecho a presentarse, D8). */
+async function guardarAprendizaje(lid, res){
+  if(lid !== null && !(validId(lid) && LECCION[lid])) throw new Error('Lección inválida');
+  const ap = (S.mine.avance && S.mine.avance.aprende) || {};
+  const hoy = S.hoy;
+  const items = {};
+  for(const id of Object.keys((res && res.items) || {})){
+    if(!validId(id) || !ITEM_COMP[id]) continue;
+    const r = res.items[id];
+    items[id] = repasarItem((ap.items || {})[id], !!r.ok, r.seguro === true ? true : r.seguro === false ? false : null, hoy);
+  }
+  const total = Object.keys(items).length;
+  const aciertos = Object.keys(items).filter(id => res.items[id].ok).length;
+  const pts = puntosLeccion({ aciertos, total });
+  const patch = { aprende: { items, dias: { [hoy]: ((ap.dias || {})[hoy] || 0) + pts } }, actualizado: nowISO() };
+  if(lid){
+    const prev = (ap.lecciones || {})[lid] || {};
+    patch.aprende.lecciones = { [lid]: { veces: (prev.veces || 0) + 1, primera: prev.primera || hoy, ult: hoy, mejor: Math.max(prev.mejor || 0, total ? Math.round(100 * aciertos / total) : 100) } };
+    const mid = LECCION[lid].mid;
+    const hechas = new Set(Object.keys(ap.lecciones || {}).concat([lid]));
+    if(MOD[mid] && LECCIONES[mid].every(l => hechas.has(l.id))) patch.modulos = { [mid]: { revisado: true } };
+  }
+  await W.upsert(miAvancePath(), patch, !!S.mine.avance);
+  return { pts, items };
+}
 async function marcarRevisado(mid){
   if(!MOD[mid]) throw new Error('Módulo inválido');
   await W.upsert(miAvancePath(), { modulos: { [mid]: { revisado: true } } }, !!S.mine.avance);

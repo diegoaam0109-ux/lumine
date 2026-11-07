@@ -31,27 +31,33 @@
 }
 /* Versión clara (estudio blanco estilo Cap), a elección del visitante */
 :root[data-lh="light"]{
+  /* «Papel académico»: papel cálido, tinta casi negra, filetes como en un libro y sombras de papel
+     en vez de bordes grises. Un solo acento: el celeste Lumine en su versión para texto. */
   color-scheme: light;
-  --paper:#fcfcfc; --card:#fcfcfc; --card-solid:#fcfcfc; --raised:#ffffff; --mist:#f1f3f4; --wash:#e9ecee;
-  --line:#e1e5e7; --line-2:#cfd6da;
-  --ink:#1f2326; --ink-2:#4f575c; --muted:#697177;
-  --spark:#12AAE9; --action:#0A7AAD; --action-hover:#086A98; --on-action:#ffffff;
-  --owner:#1f2326; --owner-hover:#000000; --on-owner:#fcfcfc;
-  --ice:#e8f6fd; --ice-line:#bfe4f5;
-  --ok:#1F7A4D; --ok-bg:#e7f4ec; --warn:#A15C07; --warn-bg:#fcf1df; --crit:#B91C1C; --crit-bg:#fcebeb;
+  --paper:#f4f1ea; --card:#fffdf8; --card-solid:#fffdf8; --raised:#ffffff; --mist:#ece7dc; --wash:#e7e1d4;
+  --line:#ddd6c8; --line-2:#c9c0ae;
+  --ink:#15171a; --ink-2:#3f4348; --muted:#686c70;
+  --spark:#12AAE9; --action:#0A6F9E; --action-hover:#085a80; --on-action:#ffffff;
+  --owner:#15171a; --owner-hover:#000000; --on-owner:#fffdf8;
+  --ice:#e4f0f4; --ice-line:#b7d6e2;
+  --ok:#1a6e45; --ok-bg:#e3efe5; --warn:#94560a; --warn-bg:#f6ead3; --crit:#a8201b; --crit-bg:#f7e4e1;
   --on-status:#ffffff;
-  --chart:#0A7AAD; --chart-muted:#c9d0d4; --grid:#e8ecee;
-  --ring:rgba(10,122,173,.38);
-  --shadow-btn: 0 4px 10px rgba(0,0,0,.05);
-  --shadow-cta: 0 20px 25px -5px rgba(0,0,0,.05), 0 8px 10px -6px rgba(0,0,0,.05);
-  --shadow-float: 0 10px 15px -3px rgba(0,0,0,.10), 0 4px 6px -4px rgba(0,0,0,.10);
-  --shadow-pop: 0 18px 40px -12px rgba(16,24,28,.28), 0 2px 6px rgba(16,24,28,.08);
-  --glass: none;
-  --nav-bg: rgba(252,252,252,.84);
-  --inset: inset 0 1.5px 0 rgba(255,255,255,.7);
-  --scrim: rgba(12,16,18,.42);
-  --amb-a: rgba(18,170,233,.07); --amb-b: rgba(18,170,233,.0); --gridline: rgba(31,35,38,.035);
+  --chart:#0A6F9E; --chart-muted:#cfc7b7; --grid:#e6e0d3;
+  --ring:rgba(10,111,158,.38);
+  --shadow-btn: 0 1px 0 rgba(255,255,255,.7) inset, 0 1px 2px rgba(64,50,20,.10);
+  --shadow-cta: 0 1px 0 rgba(255,255,255,.9) inset, 0 1px 2px rgba(64,50,20,.06), 0 18px 36px -22px rgba(64,50,20,.30);
+  --shadow-float: 0 12px 28px -12px rgba(64,50,20,.24), 0 3px 8px -4px rgba(64,50,20,.12);
+  --shadow-pop: 0 24px 48px -18px rgba(40,30,10,.32), 0 2px 6px rgba(40,30,10,.10);
+  --glass: 0 1px 0 rgba(255,255,255,.95) inset, 0 1px 2px rgba(64,50,20,.06), 0 10px 24px -18px rgba(64,50,20,.22);
+  --nav-bg: rgba(244,241,234,.86);
+  --inset: inset 0 1.5px 0 rgba(255,255,255,.8);
+  --scrim: rgba(21,23,26,.42);
+  --amb-a: rgba(10,111,158,.06); --amb-b: rgba(10,111,158,0); --gridline: rgba(60,48,20,.045);
 }
+/* en papel, las tarjetas se separan del fondo con su sombra y no solo con el borde */
+:root[data-lh="light"] .card:not(.flat):not(.mist):not(.ice){ box-shadow:var(--glass); }
+:root[data-lh="light"] .card.link:hover{ box-shadow:var(--shadow-float); }
+:root[data-lh="light"] h1, :root[data-lh="light"] .h1{ color:#0f1113; }
 
 /* ============ base ============ */
 *,*::before,*::after{ box-sizing:border-box; }
