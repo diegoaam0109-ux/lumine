@@ -31,7 +31,7 @@ function proximoPaso(p){
   if(p.etapa !== 'tecnico') return null;
   if(p.suspendidoAT) return { s:'crit', t:'Suspendido de alta tensión', d:'Tuvo un incidente grave. Programa la revalidación del core de seguridad.', a:'REV' };
   const rv = revalidacion(p, pr, S.hoy);
-  if(rv.estado === 'vencida') return { s:'crit', t:'Revalidación vencida', d:'Venció el ' + fechaLarga(rv.vence) + '.', a:'REV' };
+  if(rv.estado === 'vencida') return { s:'crit', t: rv.reprobada ? 'Revalidación reprobada' : 'Revalidación vencida', d: rv.reprobada ? 'Reprobó el ' + fechaLarga(rv.vence) + '. Sin vigencia hasta aprobar otra.' : 'Venció el ' + fechaLarga(rv.vence) + '.', a:'REV' };
   const sig = siguienteNivel(p);
   if(!sig) return { s:'ok', t:'Formador habilitado', d:'Puede enseñar, validar a otros y firmar revisiones cruzadas.', a:null };
   const abierta = sesionAbiertaDe(p.id, 'N' + sig);
@@ -240,7 +240,7 @@ function duoCorto(p){
 function estadoTags(p){
   const tags = [];
   if(p.suspendidoAT) tags.push(badge('Suspendido AT', 'crit', 'shieldX'));
-  if(p.etapa === 'tecnico'){ const rv = revalidacion(p, params(), S.hoy); if(rv.estado === 'vencida') tags.push(badge('Revalidación vencida', 'crit')); else if(rv.estado === 'pronto') tags.push(badge('Revalida ' + relDias(rv.dias), 'warn')); }
+  if(p.etapa === 'tecnico'){ const rv = revalidacion(p, params(), S.hoy); if(rv.estado === 'vencida') tags.push(badge(rv.reprobada ? 'Revalidación reprobada' : 'Revalidación vencida', 'crit')); else if(rv.estado === 'pronto') tags.push(badge('Revalida ' + relDias(rv.dias), 'warn')); }
   if(p.demo) tags.push(badge('Ficticio', 'demo'));
   return tags.length ? h('div', { class:'tag-row' }, tags) : h('span', { class:'hint' }, 'En orden');
 }
@@ -497,7 +497,7 @@ function tabResumen(p){
     cards.push(h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Duo'), comp ? frag(h('div', { class:'row', style:'gap:10px' }, avatar(nombreP(comp), colorDe(persona(comp) || {})), h('div', null, h('b', null, nombreP(comp)), h('div', { class:'hint' }, nivelNombre((persona(comp) || {}).nivel || 0) + ' · desde ' + fechaCorta(d.desde))))) : h('p', { class:'small', style:'color:var(--warn)' }, 'Sin duo. Todo el trabajo técnico se hace en duos fijos.'), linkBtn('Ver duos', 'duos', { size:'sm' })));
     const rv = revalidacion(p, pr, S.hoy);
     cards.push(h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Revalidación de seguridad'),
-      rv.estado === 'na' ? h('p', { class:'small muted' }, 'Aplica desde el nivel 1.') : frag(h('div', { class:'h3' }, fechaCorta(rv.vence)), badge(rv.estado === 'vencida' ? 'Vencida' : rv.estado === 'pronto' ? 'Vence ' + relDias(rv.dias) : 'Vigente', rv.estado === 'vencida' ? 'crit' : rv.estado === 'pronto' ? 'warn' : 'ok')),
+      rv.estado === 'na' ? h('p', { class:'small muted' }, 'Aplica desde el nivel 1.') : frag(h('div', { class:'h3' }, fechaCorta(rv.vence)), badge(rv.estado === 'vencida' ? (rv.reprobada ? 'Reprobada' : 'Vencida') : rv.estado === 'pronto' ? 'Vence ' + relDias(rv.dias) : 'Vigente', rv.estado === 'vencida' ? 'crit' : rv.estado === 'pronto' ? 'warn' : 'ok')),
       h('p', { class:'hint' }, 'Solo el core de seguridad se revalida, cada ' + pr.revalidacionMeses + ' meses.')));
     const bn = bono(p, pr);
     cards.push(h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Bono por avance validado'),

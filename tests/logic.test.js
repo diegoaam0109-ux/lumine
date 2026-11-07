@@ -224,6 +224,34 @@ ok(incs.some(x => x.fix && x.fix.tipo === 'cerrarDuo'), 'detecta duo activo con 
 const sesV = { id:'s1', pid:'tb', estado:'abierta', items:{ C09:{ ev:'int', asig:'u_nuevo', r:null } } };
 ok(revisarConsistencia({ personas:[tB], duos:[], sesiones:[sesV], agenda:{ u_viejo:{ sesiones:{ s1:{ estado:'pendiente' } } } }, params:PARAMS_DEF, hoy:'2026-10-01', P:{ tb:tB } }).some(x => x.fix && x.fix.estado === 'reasignado'), 'detecta agenda vieja tras reasignar');
 
+// revalidación reprobada: deja al técnico sin vigencia aunque el plazo no se haya cumplido (revisión 07-11-2026)
+const coreN2 = CORE_SEG.filter(c => C[c].n <= 2);
+const tRev = { id:'tr2', etapa:'tecnico', nivel:2, pauta:{}, historial:{} };
+for(const c of coreN2) tRev.pauta[c] = { r:'s', t:'2024-01-10' };
+eq(revalidacion(tRev, { revalidacionMeses:24 }, '2026-11-07').estado, 'vencida', 'revalidación: vencida antes de rendirla');
+const conRev = (rs, aprobado, fecha) => { const x = JSON.parse(JSON.stringify(tRev)); coreN2.forEach((c, i) => x.pauta[c] = { r: rs(i), t: fecha }); x.historial['h' + fecha] = { tipo:'REV', intento:1, fecha, aprobado }; return x; };
+const todoMal = revalidacion(conRev(() => 'n', false, '2026-11-07'), { revalidacionMeses:24 }, '2026-11-07');
+eq([todoMal.estado, !!todoMal.reprobada], ['vencida', true], 'revalidación reprobada entera: sigue sin vigencia (antes quedaba «na»)');
+const unaMal = revalidacion(conRev(i => i === 0 ? 'n' : 's', false, '2026-11-07'), { revalidacionMeses:24 }, '2026-11-07');
+eq([unaMal.estado, !!unaMal.reprobada], ['vencida', true], 'revalidación con un ítem reprobado: sin vigencia (antes quedaba vigente 24 meses)');
+const despues = conRev(() => 's', true, '2026-12-01'); despues.historial.hAntes = { tipo:'REV', intento:1, fecha:'2026-11-07', aprobado:false };
+eq(revalidacion(despues, { revalidacionMeses:24 }, '2026-12-02').estado, 'ok', 'revalidación: una aprobada posterior devuelve la vigencia');
+const tempranaMal = JSON.parse(JSON.stringify(tRev)); for(const c of coreN2) tempranaMal.pauta[c].t = '2026-06-01'; tempranaMal.historial.h1 = { tipo:'REV', intento:1, fecha:'2026-10-01', aprobado:false }; tempranaMal.pauta[coreN2[0]] = { r:'n', t:'2026-10-01' };
+eq(revalidacion(tempranaMal, { revalidacionMeses:24 }, '2026-11-07').estado, 'vencida', 'revalidación reprobada antes de vencer: igual queda sin vigencia');
+ok(alertas({ personas:[conRev(() => 'n', false, '2026-11-07')], duos:[], sesiones:[], params:PARAMS_DEF, hoy:'2026-11-07' }).some(a => /reprobada/.test(a.t)), 'alerta de revalidación reprobada');
+// 0 es un valor válido en los parámetros (antes se ignoraba y se usaba el de fábrica)
+eq(nivelacionFinal({ fundamentos:{ respuestas:{} } }, { umbralFund:0 }), [], 'umbral de fundamentos en 0: nadie va a nivelación');
+// consistencia: un solo aviso por duo y validaciones abiertas de quien ya salió
+eq(revisarConsistencia({ personas:[], duos:[ { id:'dx', a:'x1', b:'x2', activo:true, desde:'2026-01-01' } ], sesiones:[], agenda:{}, params:PARAMS_DEF, hoy:'2026-10-01', P:{} }).length, 1, 'consistencia: un duo sin sus dos integrantes da un solo aviso');
+const salio = Object.assign({}, tB, { etapa:'salio' });
+ok(revisarConsistencia({ personas:[salio], duos:[], sesiones:[{ id:'s9', pid:'tb', tipo:'N3', estado:'abierta', items:{} }], agenda:{}, params:PARAMS_DEF, hoy:'2026-10-01', P:{ tb:salio } }).some(x => x.fix && x.fix.tipo === 'anularSesion'), 'consistencia: detecta validación abierta de quien ya salió');
+// rotación: quien salió antes del período no infla el denominador
+const habA = { id:'ha', etapa:'tecnico', nivel:3, perfil:'otro', fechasNivel:{ 3:'2025-01-01' } };
+const habB = { id:'hb', etapa:'salio', nivel:3, perfil:'otro', fechasNivel:{ 3:'2025-01-01' }, salida:{ fecha:'2026-08-01', nivel:3 } };
+const habC = { id:'hc', etapa:'salio', nivel:3, perfil:'otro', fechasNivel:{ 3:'2024-01-01' }, salida:{ fecha:'2025-03-01', nivel:3 } };
+const rotP = indicadores({ personas:[habA, habB, habC], duos:[], registros:[], params:PARAMS_DEF, gestion:{}, hoy:'2026-11-07', desde:'2026-01-01' }).rotacion;
+eq([rotP.salidos, rotP.total, rotP.pct], [1, 2, 50], 'rotación: el denominador son los habilitados presentes en el período');
+
 // prueba de fundamentos: la correcta no se concentra en A o B
 const posF = FUNDAMENTOS.map(q => q.a);
 ok([0,1,2,3].every(k => posF.filter(x => x === k).length >= 2), 'fundamentos: la respuesta correcta está repartida en A, B, C y D');

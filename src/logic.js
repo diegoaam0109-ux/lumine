@@ -70,7 +70,7 @@ function nivelacionPorJornada(jornada){
   return Object.keys(jornada.basico).filter(a => jornada.basico[a] === 'nivelar');
 }
 function nivelacionFinal(persona, params){
-  const u = (params && params.umbralFund) || PARAMS_DEF.umbralFund;
+  const u = numParam(params && params.umbralFund, PARAMS_DEF.umbralFund);
   const areas = uniq([...nivelacionPorFundamentos(persona.fundamentos, u), ...nivelacionPorJornada(persona.jornada)]);
   return ['electrica','mecanica','electronica'].filter(a => areas.includes(a)).map(a => AREA_NIV[a]);
 }
@@ -207,9 +207,17 @@ function moduloDesbloqueado(m, persona){
 
 /* ---------- revalidación del core de seguridad ---------- */
 function revalidacion(persona, params, hoy){
-  const meses = Number((params && params.revalidacionMeses) || PARAMS_DEF.revalidacionMeses);
+  const meses = numParam(params && params.revalidacionMeses, PARAMS_DEF.revalidacionMeses);
   if(!persona || (persona.nivel || 0) < 1 || persona.etapa !== 'tecnico') return { estado:'na', vence:null, dias:null };
   const p = persona.pauta || {};
+  /* Una revalidación reprobada deja al técnico sin vigencia hasta que apruebe otra, aunque el plazo no se haya
+     cumplido: sus ítems reprobados ya no cuentan y los aprobados no pueden renovar el reloj por sí solos. */
+  const revs = Object.values(persona.historial || {}).filter(h => h && h.tipo === 'REV' && fechaValida(h.fecha))
+    .sort((a, b) => byCode(a.fecha, b.fecha) || ((a.intento || 0) - (b.intento || 0)));
+  const ultima = revs[revs.length - 1];
+  if(ultima && !ultima.aprobado){
+    return { estado:'vencida', reprobada:true, vence: ultima.fecha, dias: diffDays(hoy || hoyISO(), ultima.fecha), base: ultima.fecha };
+  }
   const fechas = CORE_SEG.filter(c => C[c].n <= persona.nivel && p[c] && p[c].r === 's' && p[c].t).map(c => p[c].t).sort();
   if(!fechas.length) return { estado:'na', vence:null, dias:null };
   const vence = addMonths(fechas[0], meses);
@@ -301,7 +309,7 @@ function alertas(ctx){
   for(const p of activos(personas)){
     if(!duoActivoDe(p.id, duos) && (p.nivel || 0) >= 1) out.push({ s:'warn', t: p.nombre + ' no tiene duo', d:'Todo el trabajo técnico se hace en duos fijos (D12).', ref:{ tipo:'persona', id:p.id } });
     const rv = revalidacion(p, params, hoy);
-    if(rv.estado === 'vencida') out.push({ s:'crit', t:'Revalidación de seguridad vencida: ' + p.nombre, d:'Venció el ' + fechaLarga(rv.vence) + '. Solo el core de seguridad se revalida.', ref:{ tipo:'persona', id:p.id }, accion:'REV' });
+    if(rv.estado === 'vencida') out.push({ s:'crit', t:(rv.reprobada ? 'Revalidación de seguridad reprobada: ' : 'Revalidación de seguridad vencida: ') + p.nombre, d:(rv.reprobada ? 'Reprobó el ' + fechaLarga(rv.vence) + ' y no tiene vigencia hasta aprobar otra.' : 'Venció el ' + fechaLarga(rv.vence) + '.') + ' Solo el core de seguridad se revalida.', ref:{ tipo:'persona', id:p.id }, accion:'REV' });
     else if(rv.estado === 'pronto') out.push({ s:'warn', t:'Revalidación de seguridad por vencer: ' + p.nombre, d:'Vence el ' + fechaLarga(rv.vence) + ' (en ' + rv.dias + ' días).', ref:{ tipo:'persona', id:p.id }, accion:'REV' });
     if(p.suspendidoAT) out.push({ s:'crit', t: p.nombre + ' suspendido de alta tensión', d:'Tuvo un incidente grave. Vuelve a trabajar con alta tensión cuando apruebe la revalidación del core de seguridad.', ref:{ tipo:'persona', id:p.id }, accion:'REV' });
   }
@@ -435,7 +443,15 @@ function indicadores(ctx){
   res.fallas = { total: gar.filter(r => r.atribuible).length, casos: gar.length, porTecnico: tecnicos.map(p => ({ id:p.id, l:p.nombre, v: porTec[p.id] || 0 })).sort((a,b) => b.v - a.v || byCode(a.l, b.l)) };
 
   // 8. Rotación de técnicos habilitados (nivel 3 o 4)
-  const hab = personas.filter(p => (p.etapa === 'tecnico' && (p.nivel || 0) >= 3) || (p.etapa === 'salio' && p.salida && (p.salida.nivel || 0) >= 3));
+  /* Denominador: habilitados (nivel 3 o 4) que estaban en la empresa durante el período. Quien salió antes
+     de 'desde' ya no cuenta; quien se habilitó después de 'hasta' todavía no. */
+  const hab = personas.filter(p => {
+    const f3 = p.fechasNivel && (p.fechasNivel[3] || p.fechasNivel[4]);
+    if(f3 && hasta && f3 > hasta) return false;
+    if(p.etapa === 'tecnico') return (p.nivel || 0) >= 3;
+    if(p.etapa === 'salio') return !!(p.salida && (p.salida.nivel || 0) >= 3 && !(desde && p.salida.fecha && p.salida.fecha < desde));
+    return false;
+  });
   const salidos = hab.filter(p => p.etapa === 'salio' && inP(p.salida.fecha));
   res.rotacion = { salidos: salidos.length, total: hab.length, pct: hab.length ? Math.round(100 * salidos.length / hab.length) : null };
 
@@ -534,15 +550,18 @@ function revisarConsistencia(c){
   const P = Object.fromEntries(personas.map(p => [p.id, p]));
   const out = [];
   for(const d of duos.filter(x => x.activo)){
-    for(const pid of [d.a, d.b]){
-      const p = P[pid];
-      if(!p) out.push({ id:'duo-huerfano-' + d.id, t:'Duo activo con un integrante que ya no existe', ref:d.id, fix:{ tipo:'cerrarDuo', did:d.id } });
-      else if(p.etapa !== 'tecnico') out.push({ id:'duo-salio-' + d.id, t:'Duo activo con ' + p.nombre + ', que ya no es técnico activo', ref:d.id, fix:{ tipo:'cerrarDuo', did:d.id } });
-    }
+    /* un solo aviso por duo: los dos integrantes pueden fallar a la vez y el arreglo es el mismo (cerrarlo) */
+    const fuera = [d.a, d.b].map(pid => P[pid]).find(p => p && p.etapa !== 'tecnico');
+    if([d.a, d.b].some(pid => !P[pid])) out.push({ id:'duo-huerfano-' + d.id, t:'Duo activo con un integrante que ya no existe', ref:d.id, fix:{ tipo:'cerrarDuo', did:d.id } });
+    else if(fuera) out.push({ id:'duo-salio-' + d.id, t:'Duo activo con ' + fuera.nombre + ', que ya no es técnico activo', ref:d.id, fix:{ tipo:'cerrarDuo', did:d.id } });
   }
   const vistos = {};
   for(const d of duos.filter(x => x.activo)) for(const pid of [d.a, d.b]){ if(vistos[pid]) out.push({ id:'duo-doble-' + pid, t:((P[pid] || {}).nombre || pid) + ' aparece en dos duos activos', ref:pid, fix:null }); vistos[pid] = true; }
   for(const s of sesiones){
+    if(s.estado === 'abierta' && s.tipo !== 'JT'){
+      const p = P[s.pid];
+      if(p && p.etapa !== 'tecnico') out.push({ id:'ses-no-tec-' + s.id, t:'Validación abierta de ' + p.nombre + ', que ya no es técnico activo', ref:s.id, fix:{ tipo:'anularSesion', sid:s.id } });
+    }
     if(s.estado === 'cerrada' && s.tipo !== 'JT'){
       const p = P[s.pid];
       if(p && !Object.values(p.historial || {}).some(h => h.sid === s.id)) out.push({ id:'ses-sin-hist-' + s.id, t:'Validación cerrada sin registro en el historial de ' + p.nombre, ref:s.id, fix:{ tipo:'reabrirSesion', sid:s.id } });

@@ -1,5 +1,22 @@
 # Cambios de esta versión
 
+## Octava ronda: revisión de errores (07-11-2026)
+
+Revisión del código sin cambios previos; cada corrección trae una prueba que falla con el código anterior.
+
+- **Revalidación reprobada (grave).** Al cerrar una revalidación, los ítems reprobados quedaban fuera del cálculo y los aprobados
+  renovaban el reloj: reprobar todo dejaba al técnico «sin dato» y reprobar uno lo dejaba vigente 24 meses más, sin alerta.
+  Ahora la última revalidación reprobada deja al técnico sin vigencia hasta aprobar otra, aunque el plazo no se haya cumplido.
+  El panel, la ficha, la credencial y los avisos dicen «reprobada» en vez de «vencida».
+- **Salida con validaciones abiertas.** Registrar la salida de un técnico ahora anula sus validaciones abiertas y las saca de la
+  agenda de los formadores. Cerrar una validación de nivel o una revalidación exige que la persona siga siendo técnico activo,
+  y Ajustes › Consistencia detecta (y anula) validaciones abiertas de quien ya no lo es.
+- **Indicador de rotación.** El denominador son los habilitados presentes en el período; antes contaba también a quienes salieron
+  antes, y el porcentaje salía más bajo de lo real.
+- **Garantías:** la fecha se valida igual que en incidentes y salidas.
+- **Parámetros en 0:** el umbral de fundamentos y los meses de revalidación aceptan 0 (antes se ignoraba y se usaba el de fábrica).
+- **Consistencia:** un duo que perdió a sus dos integrantes da un solo aviso, no dos con el mismo identificador.
+
 ## Séptima ronda: recorrido 3D legible
 
 - El paso activo del recorrido "Baja y míralo armarse" ya no depende de una franja delgada de la pantalla: en PC es el texto más cercano al centro y en teléfono el más visible bajo el visor 3D. Ningún texto se apaga mientras se está leyendo.

@@ -227,6 +227,12 @@ async function ir(pg, h){ await pg.evaluate(x => go(x), h); await pg.waitForTime
       out.agenda = S.D.agenda.u_camila.sesiones.s_jt_felipe.estado;
       const p = params(); p.rotacionMinMeses = 0; await guardarParametros(p); out.rot = params().rotacionMinMeses;
       try { await terminarDuo('d_matias', ''); out.d13cero = 'ok'; } catch(e){ out.d13cero = e.message; }
+      /* la salida anula sus validaciones abiertas: nadie le sube el nivel después (revisión 07-11-2026) */
+      const abiertaN3 = sesiones().find(s => s.pid === 'p_ignacio' && s.estado === 'abierta');
+      out.antesSalida = !!abiertaN3;
+      await registrarSalida('p_ignacio', { fecha: S.hoy, motivo:'Prueba de salida' }); await new Promise(r => setTimeout(r, 100));
+      out.trasSalida = abiertaN3 ? S.D.sesiones[abiertaN3.id].estado : null;
+      out.sinAbiertas = !sesiones().some(s => s.pid === 'p_ignacio' && s.estado === 'abierta');
       return out;
     });
     ok(/D8/.test(r.d8sin), 'D8: la acción rechaza programar sin práctica ni motivo');
@@ -236,6 +242,7 @@ async function ir(pg, h){ await pg.evaluate(x => go(x), h); await pg.waitForTime
     ok(r.agenda === 'reasignado', 'al reasignar, la formadora anterior deja de verlo pendiente');
     ok(r.rot === 0, 'rotación de 0 meses se guarda como 0');
     ok(r.d13cero === 'ok', 'con 0 meses la separación ya no es anticipada');
+    ok(r.antesSalida && r.trasSalida === 'anulada' && r.sinAbiertas, 'la salida anula las validaciones abiertas del técnico');
     await ir(pg, 'ajustes-consistencia');
     ok(await pg.locator('h3', { hasText:'Capacidad de la base' }).count() === 1, 'Ajustes muestra la capacidad de la base');
     /* contenido editable: el cambio lo ve el técnico */

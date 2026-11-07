@@ -379,6 +379,7 @@ async function cerrarSesion(sid){
     resultado = { aprobado:true, demostradas: dem, fallidas: codes.filter(c => est[c] === 'n'), fecha };
   } else {
     const n = ses.tipo === 'REV' ? null : Number(ses.tipo.slice(1));
+    if(p.etapa !== 'tecnico') throw new Error(p.nombre + ' ya no es técnico activo: anula esta validación');
     if(n && (p.nivel || 0) !== n - 1) throw new Error(p.nombre + ' tiene nivel ' + (p.nivel || 0) + ': no corresponde validar el nivel ' + n);
     for(const c of codes) pautaPatch[c] = { r: ses.items[c].r, t: fecha, sid, n: ses.intento };
     const hid = nid('h');
@@ -442,6 +443,7 @@ async function registrarGarantia(o){
   const id = nid('r');
   const doc = { id, tipo:'garantia', fecha: o.fecha || S.hoy, pids, atribuible: !!o.atribuible, detalle: txt(o.detalle, 600), creado: nowISO(), por: S.me.id };
   if(doc.detalle.length < 5) throw new Error('Describe el caso');
+  if(!fechaValida(doc.fecha)) throw new Error('La fecha no es válida');
   await W.set('registros/' + id, doc);
   await logEvento('Caso de garantía registrado', id, (doc.atribuible ? 'Atribuible a la instalación · ' : 'No atribuible · ') + pids.map(x => persona(x).nombre).join(', '));
   return id;
@@ -459,12 +461,17 @@ async function registrarSalida(pid, o){
   const d = duoActivoDe(pid, duos());
   const fecha = o.fecha || S.hoy;
   if(!fechaValida(fecha)) throw new Error('La fecha no es válida');
-  const pasos = [{ path:'personas/' + pid, op:'update', data:{ etapa:'salio', salida:{ fecha, motivo: txt(o.motivo, 300), nivel: p.nivel || 0 }, actualizado: nowISO() } }];
+  const salida = { fecha, motivo: txt(o.motivo, 300), nivel: p.nivel || 0 };
+  const pasos = [{ path:'personas/' + pid, op:'update', data:{ etapa:'salio', salida, actualizado: nowISO() } }];
   if(d) pasos.push({ path:'duos/' + d.id, op:'update', data:{ activo:false, hasta: fecha, motivoFin:'Salida de un integrante' } });
+  // sus validaciones abiertas se anulan: nadie debe cerrarlas después y subirle el nivel a quien ya no está
+  const abiertas = sesiones().filter(s => s.pid === pid && s.estado === 'abierta');
+  for(const s of abiertas) pasos.push({ path:'sesiones/' + s.id, op:'update', data:{ estado:'anulada', motivoAnula:'Salida del técnico', cerrado: nowISO(), cerradoPor: S.me.id } });
   await transaccion('Registro de la salida', pasos);
   if(d) S.D.duos[d.id] = Object.assign({}, d, { activo:false, hasta: fecha });
-  S.D.personas[pid] = Object.assign({}, p, { etapa:'salio' });
-  await logEvento('Salida registrada', pid, p.nombre + ' (nivel ' + (p.nivel || 0) + ')');
+  for(const s of abiertas){ S.D.sesiones[s.id] = Object.assign({}, s, { estado:'anulada' }); await cerrarAgenda(s, 'anulada'); }
+  S.D.personas[pid] = Object.assign({}, p, { etapa:'salio', salida });
+  await logEvento('Salida registrada', pid, p.nombre + ' (nivel ' + (p.nivel || 0) + ')' + (abiertas.length ? ' · ' + abiertas.length + ' validación(es) abierta(s) anulada(s)' : ''));
   await syncMuchos([pid, d ? (d.a === pid ? d.b : d.a) : null]);
 }
 
@@ -781,6 +788,7 @@ async function repararConsistencia(fix){
   if(fix.tipo === 'cerrarDuo'){ await W.update('duos/' + mustId(fix.did), { activo:false, hasta:S.hoy, motivoFin:'Reparación de consistencia' }); }
   else if(fix.tipo === 'agenda'){ await W.update('agenda/' + mustId(fix.uid), { sesiones: { [mustId(fix.sid)]: { estado: fix.estado } } }); }
   else if(fix.tipo === 'sync'){ await syncExpediente(mustId(fix.pid)); }
+  else if(fix.tipo === 'anularSesion'){ const ses = S.D.sesiones[mustId(fix.sid)]; await W.update('sesiones/' + fix.sid, { estado:'anulada', motivoAnula:'Reparación de consistencia: la persona ya no es técnico activo', cerrado: nowISO(), cerradoPor: S.me.id }); if(ses) await cerrarAgenda(ses, 'anulada'); }
   else if(fix.tipo === 'reabrirSesion'){ await W.update('sesiones/' + mustId(fix.sid), { estado:'abierta', resultado:null, cerrado:null, cerradoPor:null }); }
   else throw new Error('Reparación desconocida');
   await logEvento('Consistencia reparada', fix.did || fix.sid || fix.pid || null, fix.tipo);

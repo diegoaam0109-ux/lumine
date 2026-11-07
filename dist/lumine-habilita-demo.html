@@ -2191,7 +2191,7 @@ function nivelacionPorJornada(jornada){
   return Object.keys(jornada.basico).filter(a => jornada.basico[a] === 'nivelar');
 }
 function nivelacionFinal(persona, params){
-  const u = (params && params.umbralFund) || PARAMS_DEF.umbralFund;
+  const u = numParam(params && params.umbralFund, PARAMS_DEF.umbralFund);
   const areas = uniq([...nivelacionPorFundamentos(persona.fundamentos, u), ...nivelacionPorJornada(persona.jornada)]);
   return ['electrica','mecanica','electronica'].filter(a => areas.includes(a)).map(a => AREA_NIV[a]);
 }
@@ -2328,9 +2328,17 @@ function moduloDesbloqueado(m, persona){
 
 /* ---------- revalidación del core de seguridad ---------- */
 function revalidacion(persona, params, hoy){
-  const meses = Number((params && params.revalidacionMeses) || PARAMS_DEF.revalidacionMeses);
+  const meses = numParam(params && params.revalidacionMeses, PARAMS_DEF.revalidacionMeses);
   if(!persona || (persona.nivel || 0) < 1 || persona.etapa !== 'tecnico') return { estado:'na', vence:null, dias:null };
   const p = persona.pauta || {};
+  /* Una revalidación reprobada deja al técnico sin vigencia hasta que apruebe otra, aunque el plazo no se haya
+     cumplido: sus ítems reprobados ya no cuentan y los aprobados no pueden renovar el reloj por sí solos. */
+  const revs = Object.values(persona.historial || {}).filter(h => h && h.tipo === 'REV' && fechaValida(h.fecha))
+    .sort((a, b) => byCode(a.fecha, b.fecha) || ((a.intento || 0) - (b.intento || 0)));
+  const ultima = revs[revs.length - 1];
+  if(ultima && !ultima.aprobado){
+    return { estado:'vencida', reprobada:true, vence: ultima.fecha, dias: diffDays(hoy || hoyISO(), ultima.fecha), base: ultima.fecha };
+  }
   const fechas = CORE_SEG.filter(c => C[c].n <= persona.nivel && p[c] && p[c].r === 's' && p[c].t).map(c => p[c].t).sort();
   if(!fechas.length) return { estado:'na', vence:null, dias:null };
   const vence = addMonths(fechas[0], meses);
@@ -2422,7 +2430,7 @@ function alertas(ctx){
   for(const p of activos(personas)){
     if(!duoActivoDe(p.id, duos) && (p.nivel || 0) >= 1) out.push({ s:'warn', t: p.nombre + ' no tiene duo', d:'Todo el trabajo técnico se hace en duos fijos (D12).', ref:{ tipo:'persona', id:p.id } });
     const rv = revalidacion(p, params, hoy);
-    if(rv.estado === 'vencida') out.push({ s:'crit', t:'Revalidación de seguridad vencida: ' + p.nombre, d:'Venció el ' + fechaLarga(rv.vence) + '. Solo el core de seguridad se revalida.', ref:{ tipo:'persona', id:p.id }, accion:'REV' });
+    if(rv.estado === 'vencida') out.push({ s:'crit', t:(rv.reprobada ? 'Revalidación de seguridad reprobada: ' : 'Revalidación de seguridad vencida: ') + p.nombre, d:(rv.reprobada ? 'Reprobó el ' + fechaLarga(rv.vence) + ' y no tiene vigencia hasta aprobar otra.' : 'Venció el ' + fechaLarga(rv.vence) + '.') + ' Solo el core de seguridad se revalida.', ref:{ tipo:'persona', id:p.id }, accion:'REV' });
     else if(rv.estado === 'pronto') out.push({ s:'warn', t:'Revalidación de seguridad por vencer: ' + p.nombre, d:'Vence el ' + fechaLarga(rv.vence) + ' (en ' + rv.dias + ' días).', ref:{ tipo:'persona', id:p.id }, accion:'REV' });
     if(p.suspendidoAT) out.push({ s:'crit', t: p.nombre + ' suspendido de alta tensión', d:'Tuvo un incidente grave. Vuelve a trabajar con alta tensión cuando apruebe la revalidación del core de seguridad.', ref:{ tipo:'persona', id:p.id }, accion:'REV' });
   }
@@ -2556,7 +2564,15 @@ function indicadores(ctx){
   res.fallas = { total: gar.filter(r => r.atribuible).length, casos: gar.length, porTecnico: tecnicos.map(p => ({ id:p.id, l:p.nombre, v: porTec[p.id] || 0 })).sort((a,b) => b.v - a.v || byCode(a.l, b.l)) };
 
   // 8. Rotación de técnicos habilitados (nivel 3 o 4)
-  const hab = personas.filter(p => (p.etapa === 'tecnico' && (p.nivel || 0) >= 3) || (p.etapa === 'salio' && p.salida && (p.salida.nivel || 0) >= 3));
+  /* Denominador: habilitados (nivel 3 o 4) que estaban en la empresa durante el período. Quien salió antes
+     de 'desde' ya no cuenta; quien se habilitó después de 'hasta' todavía no. */
+  const hab = personas.filter(p => {
+    const f3 = p.fechasNivel && (p.fechasNivel[3] || p.fechasNivel[4]);
+    if(f3 && hasta && f3 > hasta) return false;
+    if(p.etapa === 'tecnico') return (p.nivel || 0) >= 3;
+    if(p.etapa === 'salio') return !!(p.salida && (p.salida.nivel || 0) >= 3 && !(desde && p.salida.fecha && p.salida.fecha < desde));
+    return false;
+  });
   const salidos = hab.filter(p => p.etapa === 'salio' && inP(p.salida.fecha));
   res.rotacion = { salidos: salidos.length, total: hab.length, pct: hab.length ? Math.round(100 * salidos.length / hab.length) : null };
 
@@ -2655,15 +2671,18 @@ function revisarConsistencia(c){
   const P = Object.fromEntries(personas.map(p => [p.id, p]));
   const out = [];
   for(const d of duos.filter(x => x.activo)){
-    for(const pid of [d.a, d.b]){
-      const p = P[pid];
-      if(!p) out.push({ id:'duo-huerfano-' + d.id, t:'Duo activo con un integrante que ya no existe', ref:d.id, fix:{ tipo:'cerrarDuo', did:d.id } });
-      else if(p.etapa !== 'tecnico') out.push({ id:'duo-salio-' + d.id, t:'Duo activo con ' + p.nombre + ', que ya no es técnico activo', ref:d.id, fix:{ tipo:'cerrarDuo', did:d.id } });
-    }
+    /* un solo aviso por duo: los dos integrantes pueden fallar a la vez y el arreglo es el mismo (cerrarlo) */
+    const fuera = [d.a, d.b].map(pid => P[pid]).find(p => p && p.etapa !== 'tecnico');
+    if([d.a, d.b].some(pid => !P[pid])) out.push({ id:'duo-huerfano-' + d.id, t:'Duo activo con un integrante que ya no existe', ref:d.id, fix:{ tipo:'cerrarDuo', did:d.id } });
+    else if(fuera) out.push({ id:'duo-salio-' + d.id, t:'Duo activo con ' + fuera.nombre + ', que ya no es técnico activo', ref:d.id, fix:{ tipo:'cerrarDuo', did:d.id } });
   }
   const vistos = {};
   for(const d of duos.filter(x => x.activo)) for(const pid of [d.a, d.b]){ if(vistos[pid]) out.push({ id:'duo-doble-' + pid, t:((P[pid] || {}).nombre || pid) + ' aparece en dos duos activos', ref:pid, fix:null }); vistos[pid] = true; }
   for(const s of sesiones){
+    if(s.estado === 'abierta' && s.tipo !== 'JT'){
+      const p = P[s.pid];
+      if(p && p.etapa !== 'tecnico') out.push({ id:'ses-no-tec-' + s.id, t:'Validación abierta de ' + p.nombre + ', que ya no es técnico activo', ref:s.id, fix:{ tipo:'anularSesion', sid:s.id } });
+    }
     if(s.estado === 'cerrada' && s.tipo !== 'JT'){
       const p = P[s.pid];
       if(p && !Object.values(p.historial || {}).some(h => h.sid === s.id)) out.push({ id:'ses-sin-hist-' + s.id, t:'Validación cerrada sin registro en el historial de ' + p.nombre, ref:s.id, fix:{ tipo:'reabrirSesion', sid:s.id } });
@@ -4833,6 +4852,7 @@ async function cerrarSesion(sid){
     resultado = { aprobado:true, demostradas: dem, fallidas: codes.filter(c => est[c] === 'n'), fecha };
   } else {
     const n = ses.tipo === 'REV' ? null : Number(ses.tipo.slice(1));
+    if(p.etapa !== 'tecnico') throw new Error(p.nombre + ' ya no es técnico activo: anula esta validación');
     if(n && (p.nivel || 0) !== n - 1) throw new Error(p.nombre + ' tiene nivel ' + (p.nivel || 0) + ': no corresponde validar el nivel ' + n);
     for(const c of codes) pautaPatch[c] = { r: ses.items[c].r, t: fecha, sid, n: ses.intento };
     const hid = nid('h');
@@ -4896,6 +4916,7 @@ async function registrarGarantia(o){
   const id = nid('r');
   const doc = { id, tipo:'garantia', fecha: o.fecha || S.hoy, pids, atribuible: !!o.atribuible, detalle: txt(o.detalle, 600), creado: nowISO(), por: S.me.id };
   if(doc.detalle.length < 5) throw new Error('Describe el caso');
+  if(!fechaValida(doc.fecha)) throw new Error('La fecha no es válida');
   await W.set('registros/' + id, doc);
   await logEvento('Caso de garantía registrado', id, (doc.atribuible ? 'Atribuible a la instalación · ' : 'No atribuible · ') + pids.map(x => persona(x).nombre).join(', '));
   return id;
@@ -4913,12 +4934,17 @@ async function registrarSalida(pid, o){
   const d = duoActivoDe(pid, duos());
   const fecha = o.fecha || S.hoy;
   if(!fechaValida(fecha)) throw new Error('La fecha no es válida');
-  const pasos = [{ path:'personas/' + pid, op:'update', data:{ etapa:'salio', salida:{ fecha, motivo: txt(o.motivo, 300), nivel: p.nivel || 0 }, actualizado: nowISO() } }];
+  const salida = { fecha, motivo: txt(o.motivo, 300), nivel: p.nivel || 0 };
+  const pasos = [{ path:'personas/' + pid, op:'update', data:{ etapa:'salio', salida, actualizado: nowISO() } }];
   if(d) pasos.push({ path:'duos/' + d.id, op:'update', data:{ activo:false, hasta: fecha, motivoFin:'Salida de un integrante' } });
+  // sus validaciones abiertas se anulan: nadie debe cerrarlas después y subirle el nivel a quien ya no está
+  const abiertas = sesiones().filter(s => s.pid === pid && s.estado === 'abierta');
+  for(const s of abiertas) pasos.push({ path:'sesiones/' + s.id, op:'update', data:{ estado:'anulada', motivoAnula:'Salida del técnico', cerrado: nowISO(), cerradoPor: S.me.id } });
   await transaccion('Registro de la salida', pasos);
   if(d) S.D.duos[d.id] = Object.assign({}, d, { activo:false, hasta: fecha });
-  S.D.personas[pid] = Object.assign({}, p, { etapa:'salio' });
-  await logEvento('Salida registrada', pid, p.nombre + ' (nivel ' + (p.nivel || 0) + ')');
+  for(const s of abiertas){ S.D.sesiones[s.id] = Object.assign({}, s, { estado:'anulada' }); await cerrarAgenda(s, 'anulada'); }
+  S.D.personas[pid] = Object.assign({}, p, { etapa:'salio', salida });
+  await logEvento('Salida registrada', pid, p.nombre + ' (nivel ' + (p.nivel || 0) + ')' + (abiertas.length ? ' · ' + abiertas.length + ' validación(es) abierta(s) anulada(s)' : ''));
   await syncMuchos([pid, d ? (d.a === pid ? d.b : d.a) : null]);
 }
 
@@ -5235,6 +5261,7 @@ async function repararConsistencia(fix){
   if(fix.tipo === 'cerrarDuo'){ await W.update('duos/' + mustId(fix.did), { activo:false, hasta:S.hoy, motivoFin:'Reparación de consistencia' }); }
   else if(fix.tipo === 'agenda'){ await W.update('agenda/' + mustId(fix.uid), { sesiones: { [mustId(fix.sid)]: { estado: fix.estado } } }); }
   else if(fix.tipo === 'sync'){ await syncExpediente(mustId(fix.pid)); }
+  else if(fix.tipo === 'anularSesion'){ const ses = S.D.sesiones[mustId(fix.sid)]; await W.update('sesiones/' + fix.sid, { estado:'anulada', motivoAnula:'Reparación de consistencia: la persona ya no es técnico activo', cerrado: nowISO(), cerradoPor: S.me.id }); if(ses) await cerrarAgenda(ses, 'anulada'); }
   else if(fix.tipo === 'reabrirSesion'){ await W.update('sesiones/' + mustId(fix.sid), { estado:'abierta', resultado:null, cerrado:null, cerradoPor:null }); }
   else throw new Error('Reparación desconocida');
   await logEvento('Consistencia reparada', fix.did || fix.sid || fix.pid || null, fix.tipo);
@@ -5981,7 +6008,7 @@ function proximoPaso(p){
   if(p.etapa !== 'tecnico') return null;
   if(p.suspendidoAT) return { s:'crit', t:'Suspendido de alta tensión', d:'Tuvo un incidente grave. Programa la revalidación del core de seguridad.', a:'REV' };
   const rv = revalidacion(p, pr, S.hoy);
-  if(rv.estado === 'vencida') return { s:'crit', t:'Revalidación vencida', d:'Venció el ' + fechaLarga(rv.vence) + '.', a:'REV' };
+  if(rv.estado === 'vencida') return { s:'crit', t: rv.reprobada ? 'Revalidación reprobada' : 'Revalidación vencida', d: rv.reprobada ? 'Reprobó el ' + fechaLarga(rv.vence) + '. Sin vigencia hasta aprobar otra.' : 'Venció el ' + fechaLarga(rv.vence) + '.', a:'REV' };
   const sig = siguienteNivel(p);
   if(!sig) return { s:'ok', t:'Formador habilitado', d:'Puede enseñar, validar a otros y firmar revisiones cruzadas.', a:null };
   const abierta = sesionAbiertaDe(p.id, 'N' + sig);
@@ -6190,7 +6217,7 @@ function duoCorto(p){
 function estadoTags(p){
   const tags = [];
   if(p.suspendidoAT) tags.push(badge('Suspendido AT', 'crit', 'shieldX'));
-  if(p.etapa === 'tecnico'){ const rv = revalidacion(p, params(), S.hoy); if(rv.estado === 'vencida') tags.push(badge('Revalidación vencida', 'crit')); else if(rv.estado === 'pronto') tags.push(badge('Revalida ' + relDias(rv.dias), 'warn')); }
+  if(p.etapa === 'tecnico'){ const rv = revalidacion(p, params(), S.hoy); if(rv.estado === 'vencida') tags.push(badge(rv.reprobada ? 'Revalidación reprobada' : 'Revalidación vencida', 'crit')); else if(rv.estado === 'pronto') tags.push(badge('Revalida ' + relDias(rv.dias), 'warn')); }
   if(p.demo) tags.push(badge('Ficticio', 'demo'));
   return tags.length ? h('div', { class:'tag-row' }, tags) : h('span', { class:'hint' }, 'En orden');
 }
@@ -6447,7 +6474,7 @@ function tabResumen(p){
     cards.push(h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Duo'), comp ? frag(h('div', { class:'row', style:'gap:10px' }, avatar(nombreP(comp), colorDe(persona(comp) || {})), h('div', null, h('b', null, nombreP(comp)), h('div', { class:'hint' }, nivelNombre((persona(comp) || {}).nivel || 0) + ' · desde ' + fechaCorta(d.desde))))) : h('p', { class:'small', style:'color:var(--warn)' }, 'Sin duo. Todo el trabajo técnico se hace en duos fijos.'), linkBtn('Ver duos', 'duos', { size:'sm' })));
     const rv = revalidacion(p, pr, S.hoy);
     cards.push(h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Revalidación de seguridad'),
-      rv.estado === 'na' ? h('p', { class:'small muted' }, 'Aplica desde el nivel 1.') : frag(h('div', { class:'h3' }, fechaCorta(rv.vence)), badge(rv.estado === 'vencida' ? 'Vencida' : rv.estado === 'pronto' ? 'Vence ' + relDias(rv.dias) : 'Vigente', rv.estado === 'vencida' ? 'crit' : rv.estado === 'pronto' ? 'warn' : 'ok')),
+      rv.estado === 'na' ? h('p', { class:'small muted' }, 'Aplica desde el nivel 1.') : frag(h('div', { class:'h3' }, fechaCorta(rv.vence)), badge(rv.estado === 'vencida' ? (rv.reprobada ? 'Reprobada' : 'Vencida') : rv.estado === 'pronto' ? 'Vence ' + relDias(rv.dias) : 'Vigente', rv.estado === 'vencida' ? 'crit' : rv.estado === 'pronto' ? 'warn' : 'ok')),
       h('p', { class:'hint' }, 'Solo el core de seguridad se revalida, cada ' + pr.revalidacionMeses + ' meses.')));
     const bn = bono(p, pr);
     cards.push(h('div', { class:'card stack', style:'--g:8px' }, h('span', { class:'label' }, 'Bono por avance validado'),
@@ -7531,7 +7558,7 @@ VIEWS.ruta = function(){
     h('div', { class:'card', style:'--pad:18px;margin:18px 0' }, trackNiveles(n, e.fechasNivel)),
     h('div', { class:'grid g4 keep2', style:'--g:12px' },
       h('div', { class:'card stack tile-card', style:'--g:8px' }, h('span', { class:'label' }, 'Tu duo', ayuda('Todo el trabajo técnico se hace en pareja: uno ejecuta y el otro es encargado de seguridad.')), e.duo ? frag(h('div', { class:'row nw', style:'gap:10px' }, avatar(e.duo.companero), h('div', { style:'min-width:0' }, h('b', { class:'small' }, e.duo.companero), h('div', { class:'hint' }, 'Nivel ' + e.duo.companeroNivel + ' · desde ' + fechaCorta(e.duo.desde)))), bloqueRotacion(e)) : frag(h('p', { class:'small muted' }, n >= 1 ? 'Sin duo asignado.' : 'Entras a un duo al validar el nivel 1.'), bloqueRotacion(e))),
-      h('div', { class:'card stack tile-card', style:'--g:8px' }, h('span', { class:'label' }, 'Revalidación de seguridad', ayuda('Cada ' + params().revalidacionMeses + ' meses vuelves a demostrar lo esencial de seguridad. El resto de tu nivel no vence.')), rv.estado === 'na' ? h('p', { class:'small muted' }, 'Aplica desde el nivel 1.') : frag(h('b', { class:'h3' }, fechaCorta(rv.vence)), badge(rv.estado === 'vencida' ? 'Vencida' : rv.estado === 'pronto' ? 'Vence ' + relDias(rv.dias) : 'Vigente', rv.estado === 'vencida' ? 'crit' : rv.estado === 'pronto' ? 'warn' : 'ok'))),
+      h('div', { class:'card stack tile-card', style:'--g:8px' }, h('span', { class:'label' }, 'Revalidación de seguridad', ayuda('Cada ' + params().revalidacionMeses + ' meses vuelves a demostrar lo esencial de seguridad. El resto de tu nivel no vence.')), rv.estado === 'na' ? h('p', { class:'small muted' }, 'Aplica desde el nivel 1.') : frag(h('b', { class:'h3' }, fechaCorta(rv.vence)), badge(rv.estado === 'vencida' ? (rv.reprobada ? 'Reprobada' : 'Vencida') : rv.estado === 'pronto' ? 'Vence ' + relDias(rv.dias) : 'Vigente', rv.estado === 'vencida' ? 'crit' : rv.estado === 'pronto' ? 'warn' : 'ok'))),
       credMini,
       h('div', { class:'card stack tile-card', style:'--g:8px' }, h('span', { class:'label' }, 'Bono por avance', ayuda('Se paga por cada nivel que validas en el taller, nunca por la nota de la práctica online.')), (e.bono || []).length ? e.bono.map(b => h('div', { class:'row sb small' }, h('span', null, 'Nivel ' + b.n), h('b', null, b.monto === null ? 'Por definir' : clp(b.monto)))) : h('p', { class:'small muted' }, 'Se gana por nivel validado.'))),
     h('section', { class:'section' }, h('div', { class:'section-h' }, h('h2', { class:'h3' }, 'Lo que vas aprendiendo'), h('span', { class:'hint' }, hecho + ' de ' + COMP.length + ' listas')), niveles),
@@ -7547,7 +7574,7 @@ function avisosTecnico(){
   if(n >= 1 && e.fechasNivel && e.fechasNivel[n] && diffDays(e.fechasNivel[n], S.hoy) <= 30) out.push({ id:'nivel-' + n, ic:'grad', k:'ok', t:'Validaste el nivel ' + n + ': ' + NIVEL[n].nombre, d:'Tu credencial ya muestra el nivel nuevo.', cred:true });
   if(e.rotacion && e.rotacion.fecha && diffDays(e.rotacion.fecha, S.hoy) <= 30) out.push({ id:'rot-' + e.rotacion.id + '-' + e.rotacion.estado, ic:'duo', k: e.rotacion.estado === 'aprobada' ? 'ok' : 'warn', t:'Tu solicitud de rotación fue ' + (e.rotacion.estado === 'aprobada' ? 'aprobada' : 'rechazada'), d: e.rotacion.respuesta || (e.rotacion.estado === 'aprobada' ? 'El Responsable Técnico te asignará tu nuevo duo.' : 'Sin comentario.'), go:'ruta' });
   const rv = e.revalidacion || {};
-  if(rv.estado === 'vencida' || rv.estado === 'pronto') out.push({ id:'rev-' + rv.vence + '-' + rv.estado, ic:'shield', k: rv.estado === 'vencida' ? 'crit' : 'warn', t: rv.estado === 'vencida' ? 'Tu revalidación de seguridad venció' : 'Tu revalidación de seguridad vence ' + relDias(rv.dias), d:'Fecha: ' + fechaLarga(rv.vence) + '. Repasa los módulos de seguridad.', go:'modulo-N1-1' });
+  if(rv.estado === 'vencida' || rv.estado === 'pronto') out.push({ id:'rev-' + rv.vence + '-' + rv.estado, ic:'shield', k: rv.estado === 'vencida' ? 'crit' : 'warn', t: rv.estado === 'vencida' ? (rv.reprobada ? 'Tu revalidación de seguridad no se aprobó' : 'Tu revalidación de seguridad venció') : 'Tu revalidación de seguridad vence ' + relDias(rv.dias), d:'Fecha: ' + fechaLarga(rv.vence) + '. Repasa los módulos de seguridad.', go:'modulo-N1-1' });
   if(e.suspendidoAT) out.push({ id:'susp', ic:'shieldX', k:'crit', t:'Estás suspendido de alta tensión', d:'Vuelves cuando apruebes la revalidación de seguridad.', go:'ruta' });
   if(e.repetir && e.repetir.length) out.push({ id:'rep-' + e.repetir.join('.'), ic:'refresh', k:'warn', t:'Tienes ' + (e.repetir.length === 1 ? 'un tema' : e.repetir.length + ' temas') + ' por repasar', d: e.repetir.map(temaCorto).join(' · '), go:'modulos' });
   return out;
@@ -7624,7 +7651,7 @@ function confeti(canvas){
 
 /* ---------- credencial digital con QR ---------- */
 function payloadCredencial(e){ return 'LUMINE HABILITA|' + e.credencial + '|N' + (e.nivel || 0) + '|' + String(e.nombre || '').slice(0, 40) + '|' + ((e.revalidacion || {}).vence || ''); }
-function estadoCredencial(e){ const rv = e.revalidacion || {}; return e.suspendidoAT ? ['Alta tensión suspendida','crit'] : rv.estado === 'vencida' ? ['Revalidación vencida','crit'] : ['Vigente','ok']; }
+function estadoCredencial(e){ const rv = e.revalidacion || {}; return e.suspendidoAT ? ['Alta tensión suspendida','crit'] : rv.estado === 'vencida' ? [rv.reprobada ? 'Revalidación reprobada' : 'Revalidación vencida','crit'] : ['Vigente','ok']; }
 function abrirCredencial(){
   const e = miExp(); if(!e) return;
   openSheet('Tu credencial', () => credencialCard(e));
