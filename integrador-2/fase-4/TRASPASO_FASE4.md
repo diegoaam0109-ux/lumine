@@ -9,9 +9,11 @@ decidido por el equipo hasta el 08-11-2026; lo marcado **PENDIENTE** aún no se 
 |---|---|
 | `excel/v1_base_inicial.xlsx` | Excel base del equipo (hojas azules + hojas grises del semestre anterior). Datos del negocio antiguo (EMC). |
 | `excel/v2_TIR169_descartada.xlsx` | Primera reconstrucción con el complemento de Claude para Excel. TIR 169%: descartada (ver §5). |
-| `excel/v3_TIR6_actual.xlsx` | Reconstrucción actual. TIR 6%: se pasó al extremo conservador (ver §6). **Es la base para seguir.** |
+| `excel/v3_TIR6_actual.xlsx` | Reconstrucción con el complemento. TIR 6%: extremo conservador (ver §6). Reemplazada por la v4; sus hojas grises son la fuente de las de la v4. |
+| `excel/v4_TIR20_kit_medio_credito30.xlsx` (+ `.pdf`) | **Versión actual (08-11-2026). Es la base para seguir.** Kit al punto medio y 30% a crédito; TIR 20% (ver §6). |
+| `generador/` | Genera y verifica la v4 (Python + LibreOffice): `python generar.py`. Ver `generador/README.md`. |
 | `excel/Costo_directo_kit_Lumine.xlsx` | Libro de costeo del kit (especificación antigua 48 V; sirve de base de componentes). |
-| `prompts/PROMPT_v3_completo.md` | Prompt con el que se generó la v3 (Partes A y B) + agregado de sensibilidades. |
+| `prompts/PROMPT_v3_completo.md` | Prompt con el que se generó la v3 (Partes A y B) + agregado de sensibilidades. Sigue siendo la guía de contenido. |
 
 Las hojas de pestaña **gris oscuro** son del semestre anterior: no se tocan. El informe Fase 3 (.docx) no se sube al
 repositorio (es público); sus cifras clave están en §3.
@@ -28,6 +30,9 @@ repositorio (es público); sus cifras clave están en §3.
 - El complemento no puede crear tablas de datos (TABLE): las sensibilidades van con **selector de caso + foto de valores**
   y celda de control "FOTO DESACTUALIZADA".
 - No ajustar supuestos para llegar a una TIR objetivo: cada supuesto debe tener fuente o quedar marcado como supuesto.
+- Desde la v4 el libro se genera con `generador/generar.py` (openpyxl + LibreOffice), con fórmulas vivas y sin números
+  escritos a mano en las hojas de cálculo; el complemento ya no hace falta. Las sensibilidades se toman igual: selector +
+  foto de valores, ahora automática.
 
 ## 3. Datos de la Fase 3 que se usan (informe entregado)
 
@@ -83,26 +88,71 @@ Marketing fuerte en lanzamiento, primeros años y apertura de la red.
 Inversión chica ($198 M) frente a volúmenes de la Fase 3 (2.715 propias + 7.909 de la red al año 5), kit en mejor caso,
 red con licencia por instalación (margen 70%) y talleres fraccionados. No eran errores de fórmula sino supuestos generosos.
 
-## 6. Estado de la v3 (TIR 6%) y propuesta de punto medio — PENDIENTE DE DECIDIR
+## 6. Estado actual: v4 (TIR 20%) con el punto medio aplicado (08-11-2026)
 
-No hay errores de fórmula (controles en 0). La TIR baja porque se apilaron todos los supuestos conservadores:
-kit "realista" $3,25 M (82% del precio neto), 50% de ventas con crédito directo (≈ $4.200 M de capital de trabajo al
-año 5, que rinde poco más que la tasa) y una red chica (16 talleres, $50 M de suscripción al año 5).
+**Decidido (Diego, 08-11-2026):** se aplicó la propuesta de punto medio de la v3.
+- Costo del kit al punto medio entre el costeo realista de la Fase 3 actualizado y el mejor caso (peso 50%): Esencial
+  $2.840.035, Plus $3.165.652, mezcla **$3.035.406** al dólar base ($3.036.896 con forward) = 76,7% del precio neto.
+  Los 6 kits del Proyecto Experimental siguen a costo realista (lote piloto).
+- **30%** de las ventas con crédito directo.
 
-Estimación del equipo de Claude sobre el flujo de la v3 (aproximada):
+Resultados de la v4 (caso base, tasas provisorias; todo en pesos constantes, netos de IVA):
 
-| Combinación | TIR flujo puro |
+| Indicador | v4 |
 |---|---|
-| v3 tal cual (kit $3,25 M, 50% crédito) | 6% |
-| Kit punto medio ~$3,03 M, 50% crédito | ~18% |
-| **Kit punto medio, 30% crédito (propuesta)** | **~23%** |
-| Kit punto medio, sin crédito directo | ~48% |
+| TIR del flujo puro | **20,0%** |
+| VAN del flujo puro a Ku 7,41% | **$799 M** (a WACC 7,73%: $770 M) |
+| Payback descontado / simple | 4,7 / 4,6 años |
+| Inversión del año 0 | **$467 M** = activos e intangibles capitalizados $196 M (nominal $189 M) + capital de trabajo $271 M |
+| Capital de trabajo (requerimiento) | año 1 $271 M (déficit acumulado máximo, mes 12) · año 2 $598 M · año 3 $1.036 M · año 4 $1.710 M · año 5 $2.530 M |
+| EBITDA del año 5 | $1.264 M (margen 9,6%) |
+| Punto de equilibrio del año 1 | 412 vehículos (se proyectan 335: el año 1 cierra con EBITDA −$27 M) |
+| Flujo del inversionista (40% deuda) | TIR 21,7% · VAN a Ke 10,2%: $597 M |
 
-Propuesta: kit al punto medio entre el costeo Fase 3 actualizado ($3,25 M) y el mejor caso ($2,82 M), defendido como
-"precios típicos de componentes"; 30% de ventas a crédito. Los extremos van a Anexos.
+Por qué la TIR es 20%:
+1. El kit pesa 77% del precio neto: el margen de contribución es ~$661 mil por vehículo. Por eso el costo del kit y el
+   dólar son lo que más mueve el resultado.
+2. El negocio crece rápido (Bass) y financia 30% de las ventas a 24 cuotas: el capital de trabajo sube todos los años
+   (al año 5 es 100% cartera del crédito) y los flujos de los años 1 a 4 son negativos. El valor llega el año 5 con el
+   valor de desecho contable ($2.844 M, de los cuales $2.530 M es la cartera recuperada). Sin valor de desecho, el VAN
+   sería −$1.190 M. El valor de desecho económico (solo referencia) sería mucho mayor.
+3. La demanda usa el techo de 100% (optimista): con 50%, la TIR baja a 8,4%.
 
-Otros problemas de la v3: Supuestos tiene 273 filas; Dashboard con números sin formato; capacidad por sobre las
-instalaciones (486 vs 335 el año 1: posible sobredotación de técnicos, revisar regla de dúos).
+Puente v3 → v4 (foto en Anexos; cada paso se puede activar con los casos «Puente»):
+
+| Paso | TIR | VAN a Ku |
+|---|---|---|
+| v3 original (motor anterior) | 6,4% | −$90 M |
+| Motor v4 con todos los supuestos de la v3 | 5,2% | −$202 M |
+| + kit al punto medio | 15,9% | $785 M |
+| + 30% de las ventas a crédito | 21,3% | $879 M |
+| + tasa del crédito al cliente en real (Fisher) | 20,2% | $803 M |
+| + capital de trabajo del año 1 con el déficit acumulado (método de clase) | 20,1% | $801 M |
+| + equipamiento del taller 1 en el mes −9 (= v4) | 20,0% | $799 M |
+
+Supuestos que más pesan (cambio de VAN contra la base): dólar ±10% (∓$1.190 M; TIR 1,3% / 38,8%), costo del kit
+realista o mejor caso (−$994 M / +$988 M; TIR 4,4% / 35,6%), techo de demanda 50% (−$760 M; TIR 8,4%), reglamento con
+12 meses de atraso (−$681 M; TIR 10,0%), q = 0,60 (+$425 M), 70% a crédito (−$290 M), regla de dúos al 100% (+$282 M),
+sin crédito directo (+$214 M; TIR 50%). Red, Habilita y cuota mueven poco (±$60 M). Escenarios del Dashboard: pesimista
+TIR −8,8%; optimista 46,6%.
+
+Cambios de método de la v4 (no son supuestos nuevos; están en el Registro de cambios del Excel):
+- Motor mensual para los 60 meses (antes: mensual hasta el mes 24 y anual en los años 3 a 5); Anual es su espejo.
+- Tasa del crédito al cliente en real con Fisher (1,5% nominal → 1,25% real mensual); la v3 usaba la nominal como real.
+- Capital de trabajo del año 1 con el déficit acumulado máximo del flujo operativo; la v3 tomaba el máximo del saldo.
+- Equipamiento del taller 1 y del primer puesto en el mes −9 (el Proyecto Experimental instala 6 kits); antes, mes −3.
+
+Sobredotación de técnicos (revisada): no hay error de fórmula. Las 486 de capacidad contra 335 instalaciones del año 1
+vienen de la regla del 80% (25% de holgura por diseño: 389 de capacidad planificada) y de los dúos enteros: el tercer
+dúo entra en mayo de 2028 porque la jornada de 40 horas baja la capacidad de 15,75 a 15. La utilización sube de 69%
+(año 1) a 79% (año 5). Con la regla al 90% la TIR sería 22,6%; al 100%, 24,7%. La regla es de la Fase 3: no se cambió.
+
+Verificación de la v4: LibreOffice y Excel calculan lo mismo (VAN $799.485.127); sin celdas con error; 13 controles en
+0; unidades enteras; 14.006 fórmulas y ningún número escrito a mano en las hojas de cálculo; las 12 hojas grises son
+idénticas byte a byte a las de la v3. Un modelo espejo en Python (`generador/espejo.py`) da el mismo VAN, al peso, en
+el caso base y en los 34 casos de sensibilidad.
+
+v3 (histórico): TIR 6% por apilar kit realista ($3,25 M), 50% a crédito y red chica; sin errores de fórmula.
 
 ## 7. Pendientes
 
@@ -112,6 +162,11 @@ licencias por cotizar · recotizar dinamómetro · fuente y tasa del crédito ba
 (Ley 21.850) y depreciación instantánea Pro Pyme · personal y ritmo de la red · Fase 5: corregir Tabla 7 y el texto
 de la Fase 3 que dice que Lumine distribuye kits a la red · informe Word de la Fase 4 (Carta, TNR 12, 1,5, márgenes
 4/2,5, APA), sección por sección; objetivos financieros y estrategias de financiamiento se escriben al final.
+
+Nuevos con la v4: respaldar el kit al punto medio con cotizaciones de componentes (es el supuesto que más pesa junto
+con el dólar) · confirmar si la capacidad de 15,75 vehículos por dúo ya descuenta tiempos muertos (si es así, la regla
+del 80% duplica la holgura) · confirmar con qué equipamiento se hace el Proyecto Experimental (la v4 lo compra en el
+mes −9) · confirmar la tasa del crédito directo (el contrato es nominal; el modelo la usa en real).
 
 ## 8. Fuentes principales usadas
 
