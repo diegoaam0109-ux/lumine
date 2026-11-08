@@ -1,0 +1,295 @@
+Actúa como analista de evaluación de proyectos. Este libro es el Plan Financiero (Fase 4) de Lumine Motors, una tesis de Ingeniería Comercial (UNAB). La versión actual quedó desordenada y con supuestos inflados. REHAZ el modelo siguiendo EXACTAMENTE este documento, que reemplaza todas las instrucciones anteriores. No toques las hojas de pestaña gris oscuro (semestre anterior). Las hojas azules se rehacen: puedes borrar su contenido y reconstruirlas.
+
+######################################################################
+PARTE A — REGLAS, ESTRUCTURA, SUPUESTOS Y DATOS
+######################################################################
+
+=== A0. REGLAS GENERALES ===
+A0.1 Unidad: pesos chilenos constantes (noviembre de 2026), NETOS DE IVA. Rótulo en cada tabla: "CLP netos de IVA, pesos constantes".
+A0.2 La inflación NO se aplica a precios, costos, sueldos ni arriendos. Solo sirve para (a) deflactar la depreciación, la amortización y los pagos de un crédito en pesos, y (b) convertir tasas nominales a reales (Fisher).
+A0.3 Todo dato de entrada vive en "Supuestos" o en "Datos Fase 3". Las demás hojas solo enlazan, sin números escritos a mano.
+A0.4 Kits, vehículos, talleres y personas son NÚMEROS ENTEROS: usa REDONDEAR, REDONDEAR.MAS o REDONDEAR.MENOS según corresponda. Nunca 5,98 kits ni 0,25 talleres.
+A0.5 Formato visual:
+- Fondo blanco en todas las hojas azules (quita los fondos oscuros).
+- Títulos y bordes de tabla en celeste Lumine #12AAE9; encabezados de tabla con relleno celeste y texto blanco en negrita.
+- Todos los números en negro, con separador de miles y sin decimales (porcentajes con 1 decimal).
+- Celdas de entrada: relleno celeste muy claro (#E3F4FC) = dato con fuente; amarillo claro (#FFF6CC) = provisorio o por confirmar; durazno claro (#FDE9D9) = supuesto del equipo. Las fórmulas van sin relleno.
+- Junto a cada dato de entrada, una columna "Fuente y fecha".
+A0.6 Cada hoja parte con una "Guía de lectura" de máximo 3 líneas: qué calcula, de dónde toma los datos y a qué hoja entrega.
+A0.7 Hojas azules finales, en este orden: Dashboard, Supuestos, Datos Fase 3, Mensual (años 0 a 2), Anual (años 3 a 5), 1. Inversión, 2. Ingresos y Costos, 3. Capital de Trabajo, 4. Flujo Puro, 5. Flujo Apalancado, 6. Tasa de Descuento, 7. Punto de Equilibrio, Anexos, Pendientes, Registro de cambios. Elimina cualquier otra hoja azul.
+A0.8 Anota cada cambio relevante en "Registro de cambios" (hoja, qué se hizo, motivo).
+
+=== A1. HOJA "Supuestos" (corta y legible, por bloques) ===
+Arriba de todo, una tabla visible "PRECIOS Y COBROS DE LUMINE" que enlaza a los bloques de abajo: precio Esencial y Plus (neto y con IVA), paquete de entrada de la red, cuota base mensual de la red, Habilita por técnico al mes, suscripción total por taller al mes y al año (con 2 técnicos), descuento al primer cliente de un modelo nuevo, bono financiamiento y tasa del crédito al cliente.
+
+Bloque A. CALENDARIO
+- Año 0 = 2027 (12 meses, meses −12 a −1). Año 1 = 2028; el mes 1 es enero de 2028 y es la apertura comercial. No existe mes 0.
+- Meses −12 a −10: trámite del Proyecto Experimental (D.S. 67/2020; la resolución tarda 30 días hábiles). Sin nómina: lo hacen los socios.
+- Meses −9 a −4: Proyecto Experimental (6 meses).
+- Meses −3 a −1: preapertura.
+- Supuesto declarado (amarillo): "el reglamento propio está vigente al abrir; su atraso va como escenario".
+
+Bloque B. MERCADO
+- Dólar observado base: 981,58 (SII, promedio de octubre de 2026). Nota: "último dato: 994,29 al 27-10-2026".
+- Forward: diferencial de tasas a 2 años de 0,35% (Diario Financiero, 2026), plazo de 2 meses.
+- Euro: 1.098,15. AUD: 679,49 (13-10-2026). Real brasileño: 195,89 (11-10-2026). UF: 41.295,46 (9-11-2026).
+- Inflación, solo para deflactar y para Fisher: 2027 2,8%; 2028 3,0% (IPoM de septiembre de 2026); desde 2029, 3,0% (meta del Banco Central).
+
+Bloque C. IMPUESTO DE PRIMERA CATEGORÍA (por año calendario)
+- 2027 (año 0) 12,5% y 2028 (año 1) 15%: régimen Pro Pyme.
+- Desde 2029 (años 2 a 5): 23% (Ley 21.850, 17-10-2026); en ambos regímenes es 23%.
+- Fila de control: ingresos de cada año en UF y aviso de salida de Pro Pyme si un año supera 85.000 UF o el promedio supera 75.000 UF.
+- Arrastre de pérdidas activo.
+- Nota amarilla: "depreciación instantánea Pro Pyme y crédito por remuneraciones de la Ley 21.850: por evaluar".
+
+Bloque D. TASAS — TODO AMARILLO, "PROVISORIO, SE DECIDE DESPUÉS" (solo Damodaran EE.UU.)
+- Rf BCU/BTU a 10 años: 2,69% (19-10-2026). Spread de default de Chile: 0,72%. Rf limpia: 1,97%.
+- Prima por riesgo de mercado para Chile: 5,33% (Damodaran, enero de 2026).
+- βU Auto Parts EE.UU.: 1,02 (alternativa: 1,13, corregido por caja). t de largo plazo: 23%.
+- Estructura: 60% patrimonio, 40% deuda.
+- Kd nominal: 8,4% (Banco Central, septiembre de 2026) → Kd real = 1,084/1,03 − 1.
+- Sin primas cambiaria ni de iliquidez.
+
+Bloque E. COMERCIAL (TALLER PROPIO)
+- Precio de referencia con IVA (Fase 3): Esencial $4.290.000 y Plus $4.990.000 → neto $3.605.042 y $4.193.277. Va amarillo: "ligeramente sujeto a la investigación (33 respuestas)".
+- Mezcla de ventas: 60% Plus.
+- Descuento de 10% al primer cliente de un modelo no homologado. Modelos nuevos: 18 el año 1 y 12 por año desde el año 2. Regla: un modelo entra con 10 o más solicitudes.
+- Comisión: $15.000 por instalación cobrada, con cargas y tope de $1.000.000 al mes por persona.
+- Sello: $5.000 por vehículo. Referidos: 15% de las instalaciones × $50.000. Garantía: 3% del costo del kit.
+
+Bloque F. DEMANDA PROPIA (MODELO DE BASS)
+- Techo m: segmento laboral de la Región Metropolitana = 162.891 vehículos (deducido de la Fase 3: 615 / F(1) con los coeficientes de EE.UU.) × % del techo.
+- % del techo: 100% (caso base de esta versión, OPTIMISTA, en amarillo). Alternativa: 50% (va en Anexos).
+- p = 0,0026 (Massiani y Gohs, 2015, híbridos en EE.UU.; se mantiene porque p es inestable en series cortas).
+- q = 0,52: estimación propia con un ajuste de Bass a las ventas de híbridos convencionales en Chile, ANAC 2018–2025 (866, 850, 696, 1.796, 2.552, 3.766, 6.291 y ~10.100). Rango de 0,47 a 0,60. Gohs (2022): q es robusto al potencial de mercado.
+- F(t) = (1 − EXP(−(p+q)·t)) / (1 + (q/p)·EXP(−(p+q)·t)), con t en años desde la apertura.
+- Demanda bruta del mes = m × [F(mes/12) − F((mes−1)/12)]. Demanda anual = m × [F(año) − F(año−1)].
+- Cobertura de la biblioteca: 60% el año 1 y 80% desde el año 2. Demanda atendible = demanda × cobertura.
+
+Bloque G. CAPACIDAD Y DÚOS
+- Capacidad por dúo: 15,75 vehículos al mes hasta abril de 2028 (meses 1 a 4) y 15 desde mayo de 2028 (jornada de 40 horas).
+- Regla del 80%: dúos necesarios del mes = REDONDEAR.MAS(demanda atendible / (capacidad por dúo × 0,8)), con tope de 6 por taller. Nunca bajan.
+- Los técnicos de un dúo nuevo entran 2 meses antes, para la formación intensiva.
+- Un taller nuevo abre cuando el anterior está en 6 dúos y la demanda sigue superando el 80% de la capacidad. Su Responsable Técnico entra 3 meses antes y su equipamiento se compra 3 meses antes de abrir.
+- Instalaciones del mes = MIN(demanda atendible, capacidad del mes), redondeado a entero.
+
+Bloque H. RED DE TALLERES (vende el proceso; se cobra POR TALLER, nunca por instalación)
+- La red parte en el año 3. Talleres nuevos por año (amarillo, "limitado por la capacidad de Lumine para incorporar y formar"): año 3: 3, año 4: 5, año 5: 8 (acumulados: 3, 8, 16).
+- Mes de entrada de cada taller: repartidos de forma pareja dentro del año (con n talleres: meses 1, 1+12/n, ... del año, redondeados).
+- Paquete de entrada (una vez, al entrar): $6.000.000 = derecho de entrada $3.000.000 (referencia: Bosch Car Service Brasil 2026, adhesión R$15.000 ≈ $2.938.000) + formación inicial de 2 técnicos a $1.500.000 cada uno (rango de mercado: $732.550 a $2.156.000 por las 392 h de la ruta).
+- Arancel del 3CV por autorización del taller y modelo: se cobra al costo. Monto $0 en amarillo "POR CONFIRMAR (D.S. 33/2004)"; efecto neto cero.
+- Suscripción mensual "Lumine Habilita Red" por taller, desde su mes de entrada:
+  · cuota base $250.000: biblioteca actualizada, activación de la unidad de control, soporte remoto, plataforma, auditoría y certificación anual, marca y sello. Referencia: Bosch, fee R$810 al mes ≈ $158.700;
+  · Habilita por técnico $45.000 × 2 técnicos.
+- Sub-bloque H1 con la canasta de Habilita (en filas compactas):
+  · presencial largo $350.000 × 1 al año;
+  · asincrónico $33.208 × 4 al año;
+  · revalidación de alta tensión $90.000 × 0,5 al año;
+  · total $527.830 al año = $43.986 al mes → precio $45.000.
+  Fuente: redcapacitacion.cl, consultado el 07-11-2026.
+- La unidad de control la compra el taller directo al proveedor (US$124); Lumine solo activa el patrón. No es ingreso de Lumine.
+- Costos de Lumine por taller:
+  · curso externo de alta tensión $750.000 × 2 técnicos al entrar (costo de la Fase 3);
+  · auditoría anual con viaje $600.000 al año (supuesto);
+  · comisión de 5% del paquete para Comercial de Empresas.
+- Personal de la red: ver bloque J.
+- Mostrar el control "suscripción anual por taller como % de sus ventas", suponiendo 60 y 120 kits al año (debe dar ≈1,7% y ≈0,9%).
+
+Bloque I. COBROS, CRÉDITO DIRECTO Y CAPITAL DE TRABAJO
+- Todo cliente paga un pie de 30% al agendar, un mes antes de instalar.
+- 50% de las instalaciones se pagan al contado o con tarjeta: el 70% restante a la entrega, con una comisión de medio de pago de 2% sobre esas ventas.
+- El otro 50% se financia con CRÉDITO DIRECTO de Lumine, sin financiera:
+  · saldo de 70% en cuotas mensuales iguales (sistema francés);
+  · plazo base de 24 meses (rango de 12 a 36 en Anexos);
+  · tasa de 1,5% mensual (amarillo; dentro del rango de 0,99% a 1,89% mensual del crédito automotriz publicado por las marcas en 2025–2026);
+  · primera cuota el mes siguiente a la instalación; sin prepago en el caso base.
+- Bono financiamiento: 5% del precio solo en las ventas con crédito; se registra como menor ingreso.
+- Provisión de incobrables: 3% del monto financiado (amarillo), registrada en el mes de la venta.
+- Costo de evaluación crediticia: $5.000 por solicitud (amarillo).
+- El interés cobrado es "Ingreso por financiamiento a clientes", en su propia línea.
+- Proveedor de kits: 30% al pedir (2 meses antes de instalar) y 70% al embarque (1 mes antes). Desde el 4° pedido, el 70% se paga a 30 días del embarque. El primer pedido cubre los meses 1 y 2.
+- Holgura del capital de trabajo: 0%.
+
+Bloque J. PERSONAL (rentas brutas mensuales; la gratificación está incluida)
+- Gerente General $1.900.000, desde el mes 1.
+- Responsable Técnico $1.700.000: uno por taller, desde el mes −9 en el taller 1 (Proyecto Experimental) y 3 meses antes de abrir en los demás.
+- Ingeniería de Calibración $1.500.000 (amarillo: "evaluar $1.700.000 por el respaldo de la firma"): desde el mes −9; la segunda persona desde el año 4.
+- Administración y Personas $900.000, desde el mes −3.
+- Comercial y Postventa $850.000 + comisión: 1 desde el mes 1, más 1 por cada 600 instalaciones anuales (supuesto).
+- Asistente de Postventa $692.000: 1 cuando el parque instalado acumulado supere 1.000 vehículos, más 1 por cada 1.500 adicionales (supuesto).
+- Comercial de Empresas $850.000 + comisión: 1 cuando la red tenga 5 talleres.
+- Administrador de plataforma y red: honorarios part-time de $450.000 desde la entrada del primer taller de la red; jornada completa de $900.000 desde los 10 talleres.
+- Soporte técnico de red: 1 persona a $900.000 por cada 15 talleres (REDONDEAR.MAS), desde el primer taller.
+- Asistente de Administración $692.000: 1 cuando la dotación total supere 25 personas.
+- Técnicos: N1 $700.000 (2 meses de formación), N2 $770.000 (3 meses), N3 $840.000 (3 meses) y N4 $900.000 desde entonces. El primer dúo entra en el mes −2 y abre con un N3 y un N2.
+- Bonos únicos al validar: N2 $140.000, N3 $140.000 y N4 $170.000, con cargas.
+- Factor de costo empresa (Ley 21.735): 1,0938 hasta julio de 2027; 1,1013 desde agosto de 2027; 1,1088 desde agosto de 2028; 1,1193 desde agosto de 2029 (amarillo, interpolado); 1,1298 desde agosto de 2030.
+- Los honorarios no llevan factor: es gasto directo.
+
+Bloque K. INVERSIÓN, DESARROLLO, I+D Y VIDAS ÚTILES (SII, Resolución 43/2002)
+- Por taller:
+  · dinamómetro AUD 30.000 × AUD/CLP + 10% de flete e instalación ≈ $22.423.170 (Mainline Dyno, 2WD reacondicionado; amarillo "POR RECOTIZAR"; arancel 0% por TLC Chile–Australia);
+  · escáner $1.429.000; bodega de baterías $4.000.000; mobiliario y computadores $4.000.000;
+  · habilitación del local $15.000.000 (amarillo, "desglose pendiente").
+- Por puesto, al activar cada dúo: elevador $2.150.000 y herramientas $1.200.000.
+- Garantía de arriendo: 1 mes (recuperable). Constitución de la SpA y marca: $0, amarillo "POR DEFINIR".
+- Arriendo: $3.600.000 al mes por local. El taller 1 paga desde el mes −9 (amarillo: "el Proyecto Experimental necesita local"); los demás, desde 2 meses antes de abrir.
+- Proyecto Experimental:
+  · 6 kits Plus a costo realista (Toyota Yaris Sedán, Kia Rio, Chevrolet Sail, Nissan Versa, Chevrolet Onix, Kia Soluto; Yapo.cl y BioBioChile, primer trimestre de 2025);
+  · declaración jurada notarial $30.000; seguro de responsabilidad civil $0, amarillo "POR COTIZAR".
+- Desarrollo de software, valorizado a tarifa de mercado: Habilita 900 h, web y estimador 350 h, software de control 800 h, a $13.000 la hora (supuesto; referencia: desarrollador de software, $1.172.239 al mes, Indeed, 14-09-2026) = $26.650.000. Se paga entre los meses −9 y −1.
+- Mantención del software: 15% anual del desarrollo, más hosting US$45 al mes (Fase 3).
+- I+D (amarillo, montos estimados):
+  · Proyecto 1, durabilidad de los motores y proveedor alternativo: $30.000.000, repartido entre los años 1 y 2;
+  · Proyecto 2, siguiente versión del kit: $50.000.000, repartido entre los años 3 y 4.
+  En el caso base, sin subsidio. En Anexos: Crea y Valida de CORFO (hasta 80% de cofinanciamiento para micro y pequeña empresa, con tope de $180 M) y el crédito tributario de 35% de la Ley 20.241 (vigente hasta 2035).
+- Vidas útiles: dinamómetro y elevadores 15 años; escáner 6; herramientas 3 (se reponen al cumplirlas); bodega y habilitación 10; mobiliario y computadores 6. Desarrollo, I+D y puesta en marcha se amortizan en 5 años.
+- Valor de desecho: MÉTODO CONTABLE (decisión del equipo) = valor libro + recuperación del capital de trabajo (cuentas por cobrar netas de provisión incluidas) + garantía de arriendo.
+
+Bloque L. GASTOS DE OPERACIÓN (Fase 3, Tabla 19, por local)
+- Servicios básicos $700.000 al mes; seguros $600.000 al mes; mantención de equipos 3% anual.
+- Cursos externos y EPP: $750.000 por técnico nuevo propio.
+- Software y licencias: línea propia con hosting (bloque K) y "resto POR COTIZAR" en amarillo.
+
+Bloque M. MARKETING (Fase 3, Tabla 11, mismos totales anuales; desde el año 0 = 2027 se corren un año)
+- Lanzamiento $3.000.000 en los meses 1 a 3 del año 1.
+- Pauta digital: año 1 $14.400.000, con el 50% en los meses 1 a 3 y el resto parejo; año 2 $18.000.000; años 3 y 4 $24.000.000; año 5 $30.000.000.
+- Casos medidos: año 1 $2.400.000 entre los meses 4 y 6; $4.800.000 al año desde el año 2.
+- Material para mecánicos: 3,0 / 2,0 / 3,5 / 2,0 / 3,5 millones por año.
+- Convenios con líneas de colectivos: $4.000.000 al año desde el año 3.
+- Marketing a talleres: $10.000.000 el año 3 (apertura de la red) y $5.000.000 al año después.
+- Las comisiones, el sello y los referidos se calculan con el bloque E.
+
+Bloque N. ESCENARIOS
+Selector en el Dashboard (Base / Pesimista / Optimista), con factores de demanda, precio y costo variable.
+
+=== A2. HOJA "Datos Fase 3" ===
+- Costo directo del kit, REALISTA (base): costeo del Anexo 9 de la Fase 3 ($2.991.086 y $3.350.171 al dólar de $965,71), actualizado al dólar base con el coeficiente de la propia Fase 3 ($25.168 y $28.886 por cada $10 de alza).
+  · Debe dar Esencial $3.031.028 y Plus $3.396.013 (mezcla de 60%: $3.250.019).
+  · Al 82% en dólares se le aplica el forward: × (1 + 0,82 × 0,35% × 2/12).
+- Mejor caso (solo para el escenario optimista de Anexos): $2.649.042 y $2.935.293.
+- Tabla 18 (equipamiento), Tabla 19 (gastos de operación) y Tabla 11 (marketing), como referencia enlazada a los bloques K, L y M.
+- Tabla 10 y Tabla 20 de la Fase 3, solo como comparación, en gris: "no comparable: la Fase 3 vendía kits a la red y usaba Bass de EE.UU.".
+- Tabla 7 de la Fase 3, en gris: "reemplazada por el bloque H".
+
+######################################################################
+PARTE B — CÁLCULO, HOJAS 1 A 7, DASHBOARD Y CONTROLES
+######################################################################
+
+=== B1. HOJA "Mensual (años 0 a 2)": 36 columnas, meses −12 a −1 y 1 a 24 ===
+Filas en este orden, cada bloque con su título celeste:
+1. Calendario: mes, año del proyecto, fecha.
+2. Demanda (bloque F): demanda bruta, cobertura y demanda atendible.
+3. Capacidad: dúos necesarios, dúos activos, talleres abiertos, capacidad del mes e instalaciones (enteras). Esencial = REDONDEAR(instalaciones × 40%); Plus = instalaciones − Esencial. Primeros clientes de un modelo nuevo, enteros y repartidos en el año.
+4. Ventas y cobros:
+   · ingreso bruto, descuento de 10%, bono financiamiento e ingreso neto por instalaciones;
+   · pie de 30% (cobrado el mes anterior), saldo al contado, ventas a crédito e intereses cobrados;
+   · cuotas cobradas (capital), saldo de cuentas por cobrar, provisión de incobrables y comisión de medio de pago;
+   · todo el crédito se calcula por cohorte mensual con PAGO, PAGOINT y PAGOPRIN.
+5. Costos variables: kits instalados (costo realista con forward), garantía, comisiones, sello, referidos y evaluación crediticia.
+6. Compras de kits y pagos al proveedor (bloque I), con dos filas de control:
+   · compras acumuladas = instalaciones acumuladas + stock en tránsito (debe dar 0 todos los meses);
+   · saldo de kits pagados y aún no instalados.
+7. Nómina por cargo: una fila por cargo con su número de personas y otra con su costo empresa; los técnicos van agrupados por nivel (N1 a N4) y los bonos en una fila aparte. Subtotales de operación, administración y ventas. NO hacer una fila por dúo.
+8. Gastos fijos: arriendo, servicios, seguros, mantención, cursos y EPP, software y marketing.
+9. Inversión del mes: equipamiento, Proyecto Experimental, desarrollo de software, I+D y garantía.
+10. Resultado y caja: EBITDA del mes, flujo de caja operativo, saldo acumulado y composición del saldo (kits prepagados, cuentas por cobrar, abonos recibidos, resultado acumulado), con un control que debe dar 0.
+
+=== B2. HOJA "Anual (años 3 a 5)": mismas filas que Mensual, pero con una columna por año ===
+- Demanda anual de Bass × 0,8; dúos y talleres con las reglas del bloque G (capacidad anual = capacidad mensual × 12); instalaciones = MIN(demanda, capacidad).
+- Crédito por cohortes anuales: la cohorte del año t paga 6 cuotas en t, 12 en t+1 y 6 en t+2 (venta pareja dentro del año), con CUMPRINC y CUMIPMT. Lo que queda por cobrar de la cohorte 2 viene de la hoja Mensual.
+- Red (bloque H): talleres nuevos y acumulados, talleres-mes activos, paquetes, suscripción (cuota base y Habilita por separado), costos por taller y personal de la red.
+- Nómina: personas por cargo × 12 × renta × factor. Los técnicos nuevos del año cuestan el promedio de su trayectoria (2 meses N1, 3 N2, 3 N3 y el resto N4); los antiguos, N4.
+
+=== B3. HOJA "1. Inversión" ===
+- A. Inversión del año 0 (meses −12 a −1), desglosada por ítem con vida útil y clasificación (depreciable, amortizable o recuperable):
+  · equipamiento del taller 1 y de los dúos de apertura; Proyecto Experimental (kits, notaría, seguro);
+  · nómina de los meses negativos; arriendo, servicios y seguros previos; desarrollo de software; garantía; constitución;
+  · capital de trabajo (hoja 3).
+- B. Calendario de desembolsos mensuales, capitalizado al mes 0 con la tasa provisoria.
+- C. Reinversiones de los años 1 a 5: dúos nuevos, talleres nuevos (3 meses antes de abrir), reposición de herramientas e I+D.
+- D. Depreciación y amortización por año, deflactadas.
+- E. Valor de desecho contable al año 5.
+
+=== B4. HOJA "2. Ingresos y Costos" (resumen anual de los años 1 a 5; toma Mensual y Anual) ===
+- Ingresos:
+  · taller propio: instalaciones netas de descuento y bono;
+  · ingreso por financiamiento a clientes;
+  · red: paquetes, cuota base y Habilita, cada uno en su fila;
+  · total.
+- Costos variables, costos fijos de operación, gastos de administración y ventas, I+D (si se gasta), EBITDA, depreciación, EBIT y márgenes.
+- Resultado por línea (taller propio / red). A la red se le asigna su personal (bloque J), sus costos por taller y el marketing a talleres.
+- Control: nómina anual contra la Tabla 16 de la Fase 3, con la diferencia a la vista (no tiene que calzar, porque cambiaron las rentas y la demanda).
+- Fila destacada: "Ingreso recurrente Lumine Habilita (suscripción de la red)".
+
+=== B5. HOJA "3. Capital de Trabajo" (UN SOLO MÉTODO, coherente) ===
+- Saldo de capital de trabajo de operación al cierre de cada mes o año = kits pagados y no instalados + cuentas por cobrar netas de provisión − abonos recibidos.
+- Requerimiento del año 1 = MAX(déficit acumulado máximo de los meses −12 a 12, según el método de clase; saldo al cierre del año 1).
+- Requerimiento del año t (de 2 a 5) = saldo al cierre del año t.
+- Inversión al cierre del año t−1 = requerimiento del año t − requerimiento del año t−1. Puede ser negativa (liberación).
+- Recuperación al año 5 = requerimiento del año 5.
+- Mostrar el mes del déficit máximo y su composición. Control: lo recuperado = suma de lo invertido.
+
+=== B6. HOJAS 4, 5 Y 6 ===
+- 4. Flujo puro:
+  · ingresos − costos − depreciación − amortización = EBIT;
+  · impuesto por año (bloque C) con arrastre de pérdidas;
+  · + depreciación y amortización − inversión del año 0 − reinversiones − capital de trabajo + valor de desecho.
+  · Indicadores: VAN a Ku y a WACC (columnas rotuladas "por decidir"), TIR, payback simple y descontado, e índice de rentabilidad.
+- 5. Flujo apalancado: crédito de 40% de la inversión del año 0, a 5 años, sistema francés, Kd nominal deflactada. VAN y TIR del inversionista a Ke.
+- 6. Tasa de descuento: Ku, βL (Hamada), Ke y WACC con el bloque D, y verificación VAN ajustado = VAN puro + VAN de la deuda.
+
+=== B7. HOJA "7. Punto de Equilibrio" ===
+Punto de equilibrio multiproducto en unidades y en pesos, años 1 a 5, con el margen ponderado Esencial/Plus de la línea propia. La red se muestra aparte: cuántos talleres cubren sus costos fijos asignados.
+
+=== B8. DASHBOARD (fondo blanco, limpio) ===
+- Selector de escenario y banner amarillo: "VERSIÓN DE TRABAJO: demanda con techo 100% (optimista), tasas, reglamento y precio provisorios".
+- Seis tarjetas:
+  · VAN del flujo puro (Ku); TIR del flujo puro; payback descontado;
+  · inversión del año 0; punto de equilibrio del año 1 (vehículos); EBITDA del año 5.
+- Una tabla pequeña: ingresos de los años 1 a 5 por línea (taller propio, financiamiento, red, de la cual Habilita).
+- Dos gráficos: flujo de caja puro por año (columnas) e instalaciones propias por año contra la capacidad (línea).
+- Nada de párrafos de veredicto.
+
+=== B9. ANEXOS (solo sensibilidades, ordenadas) ===
+Para cada caso, VAN y TIR del flujo puro:
+- techo de la demanda: 100% y 50%;
+- q: 0,47 y 0,60;
+- dólar: ±10%;
+- mezcla Plus: 40% y 80%;
+- costo del kit en el mejor caso;
+- cuota base de la red: $200.000 y $300.000;
+- Habilita: $35.000 y $55.000;
+- talleres de la red: la mitad y el doble;
+- % de ventas a crédito: 30% y 70%; plazo: 12 y 36 meses; incobrables: 1% y 6%;
+- arancel del 3CV: $0 y $500.000 por modelo;
+- reglamento con 12 meses de atraso;
+- I+D con subsidio CORFO y crédito de 35%.
+(Ver PROMPT_sensibilidades.txt: el complemento no crea tablas de datos; se usa selector + foto de valores.)
+
+=== B10. HOJA "Pendientes" ===
+- Tasas: beta, riesgo de empresa nueva, Ku o WACC.
+- Techo de la demanda con las 33 respuestas de la encuesta.
+- Arancel del 3CV (D.S. 33/2004; vía: Ley de Transparencia).
+- Seguro de responsabilidad civil del Proyecto Experimental.
+- Desglose de la habilitación del local.
+- Software y licencias por cotizar.
+- Recotizar el dinamómetro.
+- Fuente y tasa del crédito bancario.
+- Crédito por remuneraciones (Ley 21.850) y depreciación instantánea Pro Pyme.
+- Validar los supuestos de personal de la red y el ritmo de incorporación de talleres.
+- Fase 5: corregir la Tabla 7 y el texto de la Fase 3 que dice que Lumine distribuye kits a la red.
+
+=== B11. VERIFICACIÓN FINAL ===
+- No hay #REF!, #DIV/0! ni #N/A, y todos los controles dan 0.
+- No hay decimales en kits, talleres ni personas.
+- La red no tiene ninguna fila "por instalación".
+- Nada crece con la inflación.
+- Las hojas grises están intactas.
+Al final, entrega una tabla rotulada "provisorio":
+- inversión del año 0 desglosada;
+- capital de trabajo de cada año y su composición;
+- instalaciones propias, dúos y talleres por año;
+- talleres de la red e ingreso de Habilita por año;
+- ingresos, EBITDA y flujo puro de los años 1 a 5;
+- VAN, TIR y payback.

@@ -1,0 +1,6 @@
+SENSIBILIDADES SIN TABLA DE DATOS (reemplaza B9):
+1) En "Anexos", crea un selector "Caso de sensibilidad" (lista desplegable) con: Base y los casos de B9, cada uno con su nombre corto.
+2) En "Supuestos", junto a cada supuesto sensible, agrega su "valor alternativo" y haz que el valor usado por el modelo sea: SI(caso activo = nombre del caso; valor alternativo; valor base). Un solo caso activo a la vez. El modelo debe correr igual que antes con el caso "Base".
+3) Recorre todos los casos: activa cada uno, recalcula y copia COMO VALORES en la tabla "Sensibilidades (foto)": caso, valor del supuesto, VAN del flujo puro, TIR, payback descontado y la diferencia de VAN contra la base. Al terminar, deja el selector en "Base".
+4) Encima de la tabla, anota la fecha y hora de la foto y una celda de control: VAN base de la foto − VAN base en vivo. Si es distinta de 0, que se ponga en rojo con el texto "FOTO DESACTUALIZADA: volver a correr las sensibilidades".
+5) Agrega un gráfico de tornado con la variación del VAN de cada caso respecto de la base, ordenado de mayor a menor impacto.
