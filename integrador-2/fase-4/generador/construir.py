@@ -2177,7 +2177,7 @@ def hoja_dashboard(L, escenario):
     g1.y_axis.majorGridlines.spPr = GraphicalProperties(ln=LineProperties(solidFill="E6E7EA"))
     g1.y_axis.delete = False
     g1.x_axis.delete = False
-    g1.height, g1.width = 9.2, 14.6
+    g1.height, g1.width = 9.2, 13.4
     estilo_grafico(g1, "Flujo de caja puro por año (millones de $)")
     for s_ in g1.series:
         s_.dLbls.txPr = _txt(800)
@@ -2208,7 +2208,7 @@ def hoja_dashboard(L, escenario):
     g2.y_axis.majorGridlines.spPr = GraphicalProperties(ln=LineProperties(solidFill="E6E7EA"))
     g2.y_axis.delete = False
     g2.x_axis.delete = False
-    g2.height, g2.width = 9.2, 14.6
+    g2.height, g2.width = 9.2, 13.4
     estilo_grafico(g2, "Instalaciones propias contra la capacidad (vehículos)")
     g2.series[0].dLbls.txPr = _txt(800)
     ws.add_chart(g2, "H24")
