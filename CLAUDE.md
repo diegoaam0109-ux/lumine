@@ -142,8 +142,11 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   de valor → FODA y cruce → estrategia). Nada suelto: cada dato o conclusión se usa más adelante o se saca.
 - Se escribe como informe final, no por fases: nada de «en esta fase», «queda pendiente» ni «este informe supone». Lo que
   resuelve otra parte se enlaza por su nombre («se analiza en el Plan Financiero»), nunca por número de sección.
-- Investigación de mercado: solo «permitió identificar / permitió ver…», a grandes rasgos. No citar entrevistas ni
-  expertos (tampoco en la bibliografía). No comparar con versiones o análisis anteriores.
+- Investigación de mercado: los capítulos I y II no adelantan sus resultados; solo dicen que una duda «se resolverá en la
+  investigación de mercado». La vía del proyecto experimental se presenta como decreto público (D.S. N° 67), no como hallazgo.
+  No citar entrevistas ni expertos (tampoco en la bibliografía): si una idea viene de un experto, se apoya en teoría
+  publicada (p. ej., Rogers, 2003). No comparar con versiones o análisis anteriores.
+- VRIO: categorías ventaja sostenible, temporal, paridad (costo de participación) o desventaja; nunca «frágil».
 - Porter con el instrumento de Control de Gestión (escala de 0 a 5, promedio de factores): rivalidad 1,83, nuevos
   entrantes 3,75, sustitutos 3,67, proveedores 2,67, clientes 2,83; total 3,14, intensidad media. «No hacer nada» es
   inercia del cliente, no sustituto. PESTEL +1,50 (Legal −1: sin reglamento no se vende y hay que sostener con capital
