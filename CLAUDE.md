@@ -146,8 +146,12 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   expertos (tampoco en la bibliografía). No comparar con versiones o análisis anteriores.
 - Porter con el instrumento de Control de Gestión (escala de 0 a 5, promedio de factores): rivalidad 1,83, nuevos
   entrantes 3,75, sustitutos 3,67, proveedores 2,67, clientes 2,83; total 3,14, intensidad media. «No hacer nada» es
-  inercia del cliente, no sustituto. PESTEL +1,75.
-- Sustituto de referencia: híbrido **nuevo** (desde $11.990.000, Mercado Libre 2026) y eléctrico nuevo; nunca «híbrido usado».
+  inercia del cliente, no sustituto. PESTEL +1,50 (Legal −1: sin reglamento no se vende y hay que sostener con capital
+  una etapa sin ingresos; una incertidumbre regulatoria que hoy perjudica no se puntúa neutra).
+- Sustituto de referencia: híbrido **nuevo** (MG3 Hybrid, precio de lista $16.990.000, Autocosmos 2026; coincide con la tarjeta
+  de la encuesta) y eléctrico nuevo desde $13.990.000; nunca «híbrido usado».
+- En los capítulos I y II va el concepto, no las cifras operativas de la Fase 3 (horas de instalación, n.º de competencias,
+  resultados de la simulación). La batería del kit es litio-titanato: no usar el precio LFP como argumento de costo.
 - Descripción del problema (1.1): máximo 2 a 2,5 páginas, solo lo necesario.
 
 ## Pendientes y preguntas abiertas
