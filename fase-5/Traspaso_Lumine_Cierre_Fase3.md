@@ -9,7 +9,17 @@
 - Ahora toca: corregir y cerrar la Fase 3 con el mismo método que las Fases 1–2, e incorporar las entrevistas en profundidad y la encuesta, que están por terminar.
 - Presentación de la Fase 3: cerrada, no se toca.
 
-## 2. Método que funcionó con las Fases 1–2 (repetirlo)
+## 2. Alcance: corregir, no reescribir
+
+La Fase 3 no se rehace. Brito la felicitó y la mayor parte sigue vigente. Solo se cambia un pasaje si cumple al menos uno de estos criterios:
+1. Contradice algo cerrado: la vía regulatoria o las Fases 1–2 corregidas (sección 4).
+2. Quedó desactualizado por información nueva: las entrevistas a expertos, las entrevistas en profundidad o la encuesta.
+3. Es un error o un pedido explícito de Brito (feedback del 05-11).
+4. Es un dato o una fuente que no se sostiene.
+
+Todo lo demás se deja como está, aunque se pudiera redactar mejor. Si un cambio arrastra otros (por ejemplo, el proyecto experimental en la Carta Gantt mueve el pronóstico del año 1 y los presupuestos), se corrige solo lo arrastrado y se indica el arrastre. La lista de la sección 5 es de candidatos: antes de proponer un cambio, verificar en el .docx que el texto actual realmente lo necesita.
+
+## 3. Método que funcionó con las Fases 1–2 (repetirlo)
 
 1. El equipo sube el .docx; Claude lo lee completo, incluidas las notas al pie.
 2. Revisión en modo auditor, ordenada por gravedad: primero lo que rompe la lógica, después fuentes y datos, después pulido.
@@ -17,7 +27,7 @@
 4. El equipo aplica, deja comentarios en Word donde duda y vuelve a subir. Claude verifica qué se aplicó, responde cada comentario con texto exacto y revisa numeración de notas y restos de versiones viejas.
 5. Se cierra cuando no quedan comentarios abiertos ni problemas de fondo. Lo menor que el equipo decide no tocar se señala una vez y se respeta.
 
-## 3. Lo que la Fase 3 tiene que respetar de las Fases 1–2 cerradas
+## 4. Lo que la Fase 3 tiene que respetar de las Fases 1–2 cerradas
 
 - Vía regulatoria (decisión cerrada, respaldada por Alfonso Cádiz, 3CV): Proyecto Experimental bajo el D.S. N° 67 de 2020 del MTT para probar en la vía pública y, con esos resultados, impulsar un reglamento propio para sistemas aditivos bajo la Ley N° 21.793 («otras adaptaciones y transformaciones»). El proyecto experimental permite probar, no vender; el reglamento propio no existe ni tiene plazo. Secuencia: probar → normar → vender. El borrador de 2021 no se discute más allá de una frase.
 - Autorización por taller y por cada combinación kit-modelo; certificado individual por auto (con él, la planta de revisión técnica no puede rechazarlo por estar modificado); responsabilidad legal del taller; el auto debe mantener su capacidad de frenado.
@@ -29,13 +39,13 @@
 - Ventaja competitiva sostenible: el sistema de conocimiento (biblioteca de calibraciones, base de consumo, estimador), falta protegerlo formalmente. Autorización, personal habilitado y Habilita son ventajas temporales; la Red Lumine escala la ventaja, no es una ventaja en sí.
 - Cifras ya usadas en las Fases 1–2: PESTEL +1,50 (Legal −1); Porter 3,14 (método de factores 0–5); MG3 Hybrid $16.990.000 (Autocosmos); eléctrico nuevo desde $13.990.000; razón de usados por cada nuevo 3,4 (a octubre de 2026); PIB 2026 0,25%–0,75%; desocupación 9,8%; BloombergNEF US$108/kWh (diciembre 2025).
 
-## 4. Correcciones pendientes de la Fase 3 (lista de partida, no definitiva)
+## 5. Correcciones candidatas de la Fase 3 (verificar cada una contra el .docx)
 
 Origen: barrido del 07-11 (`claude/Mapa_cambios_DS67_Fases1a3.md`, sección 4), feedback de Brito del 05-11 (`claude/Feedback_Brito_presentacion_Fase3_2026-11-05.md`) y entrevistas.
 
 Investigación de mercado
 - Incorporar las cinco entrevistas a expertos con ficha uniforme (foto, nombre, cargo, aspecto validado, logo) y las conclusiones comunes (están redactadas en el documento de hallazgos): probar antes de vender; la norma es la condición; la barrera es la confianza; garantía y soporte de batería; caso de negocio del cliente explícito; profundidad antes que volumen; capital y financiamiento.
-- Incorporar las entrevistas en profundidad (1 de 5 analizada; faltan las otras) y la encuesta (ver sección 5).
+- Incorporar las entrevistas en profundidad (1 de 5 analizada; faltan las otras) y la encuesta (ver sección 6).
 - Las hipótesis se presentan como resultados cuando cierre la encuesta (Brito).
 - Las cuatro preguntas de investigación de la presentación siguen: quién compraría primero, qué pesa más (precio o confianza), qué respaldos necesita, cuánto pagaría y cómo lo financiaría.
 
@@ -82,7 +92,7 @@ Forma
 - No nombrar a los entrevistados en profundidad.
 - Errores dichos en entrevistas, a no repetir: tecnología «francesa y alemana» (los motores son de proveedor chino); «un motor atrás» (son dos en rueda); «el 3CV sacaría con nosotros un reglamento» (ofreció apoyo).
 
-## 5. Entrevistas en profundidad y encuesta
+## 6. Entrevistas en profundidad y encuesta
 
 Profundidad
 - Cinco perfiles; la primera (perfil 5, traslado al trabajo, 03-11) está analizada: 10 km diarios, $40.000–$50.000 al mes, esperaba pagar $2,5–3 millones, pide taller certificado y garantía de batería; con ese uso el kit no se paga, lo que respalda el alto kilometraje. Se cita solo por perfil.
@@ -96,11 +106,11 @@ Encuesta «Uso del auto y ahorro de combustible»
 - Limitaciones a declarar: muestra por conveniencia; la escalera de precios descendente ($5.990.000 → $4.990.000 → máximo abierto) puede anclar al alza; la intención declarada sobreestima la compra.
 - Villalobos sugiere medir tres variables de adopción: ahorro y rapidez de recuperación, confianza en el soporte técnico y motivación ambiental.
 
-## 6. Reglas del proyecto que no se negocian
+## 7. Reglas del proyecto que no se negocian
 
 No inventar cifras ni fuentes; separar dato verificado, supuesto del equipo y estimación. No citar documentos internos ni trabajos de otros ramos como fuente (el simulador de ahorro se presenta como elaboración propia, con su método en anexo). Una incertidumbre regulatoria que perjudica nunca se puntúa neutra. Redacción en español de Chile, en condicional para la solución, narrativa, sin rastro de IA ni negritas en el informe. Al corregir, pasaje original y reemplazo exacto.
 
-## 7. Documentos del proyecto
+## 8. Documentos del proyecto
 
 `claude/2_Contexto_Lumine_Motors.md` (fuente de verdad) · `claude/Hallazgos_entrevistas_expertos_para_Fase5.md` · `claude/Mapa_cambios_DS67_Fases1a3.md` · `claude/Feedback_Brito_presentacion_Fase3_2026-11-05.md` · `claude/DS67_2020_Proyectos_Experimentales.md` · `claude/Revision_material_otros_cursos_para_Fase5.md` · `claude/encuesta_respaldo_grupo_sin_tarjeta_2026-10-16.csv` · rúbrica y estructura de la Fase 3 (archivos del proyecto). Hay que subir: el .docx de la Fase 3 entregada, las Fases 1–2 cerradas y las transcripciones de las entrevistas en profundidad.
 
@@ -113,10 +123,10 @@ Vamos a corregir y cerrar la Fase 3 (Capítulo III: marketing, operaciones y RR.
 
 Cómo trabajar:
 1. Lee el traspaso completo y los documentos del proyecto que menciona, sobre todo el contexto, los hallazgos de expertos y el feedback de Brito. Pídeme el .docx de la Fase 3 si no lo tienes; no revises desde la presentación.
-2. Lee el .docx completo, notas al pie incluidas, y entrégame una revisión en modo auditor ordenada por gravedad: primero lo que rompe la lógica o contradice las Fases 1–2 cerradas, después fuentes y datos, después pulido. La lista de la sección 4 del traspaso es un punto de partida; si encuentras algo que no está ahí, agrégalo, y si algo de la lista no aplica, dilo.
+2. Lee el .docx completo, notas al pie incluidas, y entrégame una revisión en modo auditor ordenada por gravedad: primero lo que rompe la lógica o contradice las Fases 1–2 cerradas, después fuentes y datos, después pulido. No se rehace la Fase 3: solo cambia lo que cumple los criterios de la sección 2 del traspaso (contradice algo cerrado, quedó desactualizado por las entrevistas o la encuesta, lo pidió Brito o el dato no se sostiene); lo demás se deja igual aunque se pudiera redactar mejor. La sección 5 es una lista de candidatos: confirma en el .docx que cada uno hace falta, dime cuáles no aplican y agrega lo que encuentres que cumpla los criterios.
 3. Cada corrección como pasaje original exacto → reemplazo exacto, listo para pegar en Word.
 4. Cuando te suba la versión corregida, verifica qué se aplicó, responde cada comentario que deje en Word con texto exacto, revisa la numeración de notas y restos de versiones viejas, y dime si queda lista para cerrar.
-5. Profundidad y encuesta: cuando te pase cada transcripción o los datos de la encuesta, analízalos con la matriz del documento de hallazgos y con el cálculo de recuperación de la inversión de la sección 5, y propón dónde y cómo entran al informe.
+5. Profundidad y encuesta: cuando te pase cada transcripción o los datos de la encuesta, analízalos con la matriz del documento de hallazgos y con el cálculo de recuperación de la inversión de la sección 6, y propón dónde y cómo entran al informe.
 6. Antes de proponer preguntas para cualquier entrevista, busca el perfil de la persona.
 
 Reglas: no inventar cifras ni fuentes y separar dato verificado, supuesto y estimación; no citar documentos internos ni trabajos de otros ramos; no reabrir decisiones cerradas (vía regulatoria, Fases 1–2) salvo un error concreto; redacción en español de Chile, en condicional, narrativa, sin rastro de IA ni negritas en el informe. Si algo no se sostiene, dilo una vez y con claridad; si decidimos seguir igual, respétalo.
