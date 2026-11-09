@@ -6,7 +6,8 @@
     "styles-views.css",
     "styles-fx.css",
     "styles-xp.css",
-    "styles-aprende.css"
+    "styles-aprende.css",
+    "styles-demo.css"
   ],
   "js": [
     "data.js",
@@ -33,6 +34,7 @@
     "view-lab.js",
     "view-login.js",
     "ui-buscar.js",
+    "view-demo.js",
     "app.js"
   ],
   "logic": [

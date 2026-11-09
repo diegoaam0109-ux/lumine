@@ -4,6 +4,7 @@
 'use strict';
 
 const ROUTES = {
+  demo:         { t:'Demostración', ic:'play', roles:['*'] },
   inicio:       { t:'Portada',         ic:'home',      roles:['*'] },
   sistema:      { t:'El sistema',      ic:'book',      roles:['*'] },
   entrar:       { t:'Entrada',         ic:'swap',      roles:['admin'] },
@@ -106,6 +107,7 @@ function render(esRefresco){
   const fk = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.k : null;
   hideTip();
   renderShell(id);
+  if(typeof pintarGuiaDemo === 'function') pintarGuiaDemo();
   renderFooter();
   // el kiosco tiene su propio scroll: se conserva al marcar (antes saltaba arriba)
   const kOld = main.querySelector('.kiosk'), kScroll = kOld ? kOld.scrollTop : 0;
@@ -257,26 +259,7 @@ function abrirCuenta(){
 }
 
 /* ---------- recorrido guiado de la demostración ---------- */
-const RIDS = typeof DEMO_IDS !== 'undefined' ? DEMO_IDS : { sesionJT:'', felipe:'' };
-const RECORRIDO = [
-  { t:'Mira cómo cambia el plan según el perfil', d:'En la portada, alterna entre mecánico, electricista y egresado.', rol:'rt', go:'inicio' },
-  { t:'Compara a los postulantes', d:'Andrés y Daniela ya tienen jornada: la plataforma muestra quién tiene la ruta más corta.', rol:'rt', go:'personas' },
-  { t:'Evalúa como parte externa', d:'Identifícate, marca las estaciones de banco genérico de Felipe y entrega. El kiosco no deja salir a otra sección.', rol:'externo', go:'kiosco-' + RIDS.sesionJT },
-  { t:'Evalúa como formadora', d:'Camila marca la estación interna que le asignaron (OBD).', rol:'formador', go:'agenda' },
-  { t:'Acepta y cierra la jornada', d:'Como Responsable Técnico: acepta lo de Camila, marca la base y cierra.', rol:'rt', go:'sesion-' + RIDS.sesionJT },
-  { t:'Revisa el plan de Felipe', d:'Nivelación, oficio saltado y ruta completa, calculados solos.', rol:'rt', go:'persona-' + RIDS.felipe },
-  { t:'Revisa el tablero de indicadores', d:'Los ocho indicadores del informe 6, con vista de tabla.', rol:'rt', go:'indicadores' },
-  { t:'Mira la ruta de un técnico', d:'Ignacio ve su siguiente paso, su avance, sus avisos y su credencial digital con QR.', rol:'tecnico', go:'ruta' },
-  { t:'Prueba el módulo con simulador', d:'Aprende, practica con el simulador y rinde la práctica: una pregunta a la vez, alternativas mezcladas y sin el material a la vista.', rol:'tecnico', go:'modulo-N1-1' },
-  { t:'Revisa los 20 controles de seguridad', d:'Qué cubre la plataforma, qué cubre claude.ai y qué queda pendiente.', rol:'rt', go:'ajustes-seguridad' }
-];
-function abrirRecorrido(){
-  openSheet('Recorrido guiado', close => h('ol', { class:'stack', style:'--g:8px;list-style:none' }, RECORRIDO.map((p, i) => {
-    const b = h('button', { type:'button', class:'role-opt' }, h('span', { class:'av', style:'background:var(--action)' }, String(i + 1)), h('span', { class:'rt' }, h('b', null, p.t), h('span', null, p.d)));
-    b.addEventListener('click', async () => { close(); if(S.demoRole !== p.rol){ S.demoRole = p.rol; await iniciarDemo(); } go(p.go); });
-    return h('li', null, b);
-  })));
-}
+function abrirRecorrido(){ if(S.build === 'demo') go('demo'); }
 
 /* ---------- pie ---------- */
 function renderFooter(){

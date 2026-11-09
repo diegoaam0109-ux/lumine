@@ -1,5 +1,13 @@
 # Cambios de esta versión
 
+## Demo pública guiada (09-11-2026)
+
+- Entrada propia con recorridos de participante y administrador, cinco pasos cada uno. Incluye avance, retroceso, salida libre y restablecimiento confirmado de los ejemplos.
+- Usa la actualización interactiva de Claude del 07-11 y su corrección del 08-11. La guía no cambia reglas de negocio ni aprueba competencias.
+- Constructor público con fuentes locales; Pages incorpora `/habilita/` y conserva estimador, presentación y ventas.
+- Guion de siete minutos, revisión de errores y operación del retiro en `docs/demo-habilita/`. Retiro solo cuando Diego lo indique.
+- Pruebas del recorrido con Chromium en escritorio y teléfono, antes y después del despliegue. Hallazgos del código previo documentados sin corregirlos sin autorización.
+
 ## Novena ronda: aprender haciendo, etapa 1 (07-11-2026)
 
 Prototipo vertical en el módulo «Seguridad del kit · parte 1». Lo pidió el equipo: aprendizaje dinámico al estilo de Duolingo,

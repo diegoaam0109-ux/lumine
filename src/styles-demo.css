@@ -1,0 +1,17 @@
+/* La guía ocupa espacio propio: no tapa los ejercicios ni atrapa al visitante. */
+.demo-eleccion{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-bottom:24px}
+.demo-camino{display:flex;flex-direction:column;gap:18px;padding:28px}
+.demo-camino ol{padding-left:22px;line-height:1.9;color:var(--ink-2);flex:1}
+.demo-camino .btn{width:100%;min-height:48px}
+.guia-demo{margin:20px auto 0}
+.guia-demo[hidden]{display:none}
+.guia-card{padding:16px 20px;border:1px solid var(--ice-line);border-left:3px solid var(--action);border-radius:12px;background:var(--card);display:grid;grid-template-columns:1fr auto;gap:10px 24px}
+.guia-meta{display:grid;gap:5px}
+.guia-meta b{font-size:18px}
+.guia-detalle{grid-column:1;max-width:75ch;font-size:14px;color:var(--ink-2)}
+.guia-detalle summary{cursor:pointer;color:var(--ink);min-height:32px}
+.guia-detalle p{line-height:1.5;margin:6px 0}
+.guia-controles{grid-column:2;grid-row:1/3;display:flex;flex-wrap:wrap;align-content:center;gap:8px}
+.guia-controles .btn{min-height:44px}
+@media(max-width:900px){.guia-card{grid-template-columns:1fr}.guia-controles{grid-column:1;grid-row:auto}}
+@media(max-width:640px){.demo-eleccion{grid-template-columns:1fr}.demo-camino{padding:22px}.guia-card{padding:14px}.guia-controles .btn{flex:1}.guia-controles .btn:last-child{flex-basis:100%}}

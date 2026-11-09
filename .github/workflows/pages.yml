@@ -1,8 +1,8 @@
-name: Publicar prototipo y presentaciones en Pages
+name: Publicar sitios de Lumine en Pages
 on:
   push:
     branches: [main]
-    paths: ['ventas/**', 'lumine-presentaciones/**', '.github/workflows/pages.yml']
+    paths: ['ventas/**', 'lumine-presentaciones/**', 'src/**', 'manifest.json', 'build.py', 'scripts/build_habilita_demo.py', 'tests/habilita-demo.cjs', 'control-de-gestion/fuentes/**', '.github/workflows/pages.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -48,22 +48,51 @@ jobs:
           name: presentacion-file-capturas
           path: ${{ runner.temp }}/presentacion-file
       - uses: actions/configure-pages@v5
-      - name: Preparar ambos sitios
+      - name: Preparar sitios y demo de Habilita
         run: |
           mkdir -p _site
           cp _estimador/entrega3/prototipo/app/index.html _site/index.html
           cp _estimador/entrega3/prototipo/app/registro_ejemplo.csv _site/registro_ejemplo.csv
           cp -a lumine-presentaciones _site/lumine-presentaciones
           cp -a ventas/dist _site/ventas
+          python3 scripts/build_habilita_demo.py --output _site/habilita
           test -s _site/index.html
           test -s _site/lumine-presentaciones/fase3/index.html
           test -s _site/lumine-presentaciones/engine/deck.js
           test -s _site/lumine-presentaciones/fase3/deck-data.js
+      - name: Comprobar Habilita antes de publicar
+        run: |
+          npm test
+          python3 -m http.server 8903 --bind 127.0.0.1 --directory _site > "$RUNNER_TEMP/habilita-http.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          for attempt in 1 2 3 4 5; do
+            if curl --fail --silent http://127.0.0.1:8903/habilita/ -o /dev/null; then break; fi
+            sleep 1
+          done
+          NODE_PATH="$RUNNER_TEMP/pages-check/node_modules" CHROMIUM_PATH="$(command -v google-chrome)" HABILITA_URL="http://127.0.0.1:8903/habilita/" HABILITA_SCREENSHOTS="$RUNNER_TEMP/habilita-local" node tests/habilita-demo.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: habilita-local-capturas
+          path: ${{ runner.temp }}/habilita-local
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
       - uses: actions/deploy-pages@v4
         id: deployment
+      - name: Probar ambos recorridos de Habilita publicados sin sesión
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            if curl --fail --silent https://diegoaam0109-ux.github.io/lumine/habilita/ | grep -q 'Dos miradas'; then break; fi
+            sleep 15
+          done
+          NODE_PATH="$RUNNER_TEMP/pages-check/node_modules" CHROMIUM_PATH="$(command -v google-chrome)" HABILITA_URL="https://diegoaam0109-ux.github.io/lumine/habilita/" HABILITA_SCREENSHOTS="$RUNNER_TEMP/habilita-publica" node tests/habilita-demo.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: habilita-publica-capturas
+          path: ${{ runner.temp }}/habilita-publica
       - name: Comprobar página comercial pública sin sesión
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'

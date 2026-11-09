@@ -3,6 +3,8 @@
 Repositorio de Lumine Motors Chile SpA: kit de hibridación para autos de tracción delantera (motor eléctrico en el eje trasero, motor original intacto).
 Equipo: Diego Alarcón, Benjamín Torres y Lukas Verdugo · UNAB.
 
+Demo temporal de **Lumine Habilita**: [abrir los dos recorridos](https://diegoaam0109-ux.github.io/lumine/habilita/) · [guion de 7 minutos y revisión](docs/demo-habilita/README.md). Datos ficticios; retiro cuando Diego lo indique.
+
 | Carpeta | Qué es |
 |---|---|
 | `/` (`src/`, `dist/`, `build.py`, `tests/`) | **Lumine Habilita**: selección y habilitación por competencias del técnico instalador (app de capacitación). |
