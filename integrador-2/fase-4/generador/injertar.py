@@ -3,8 +3,9 @@
 Uso: python injertar.py V3.xlsx AZULES.xlsx SALIDA.xlsx [VALORES.json]
 
 - Las 12 hojas grises (pestaña gris oscuro) se copian byte a byte con sus tablas, gráfico, cuadro de texto y comentarios.
-- Las 15 hojas azules de la v3 se reemplazan por las de AZULES.xlsx (generadas con construir.py); sus estilos se agregan
-  al final de styles.xml de la v3, así los índices de las hojas grises no cambian.
+- Las 15 hojas azules de la v3 se reemplazan por las de AZULES.xlsx (generadas con construir.py); si AZULES trae más hojas
+  (la v5 trae 19), las que sobran van en partes nuevas, antes de las grises. Las hojas ocultas de AZULES quedan ocultas.
+  Sus estilos se agregan al final de styles.xml de la v3, así los índices de las hojas grises no cambian.
 - VALORES.json (opcional, de lo_calcular.py valores) deja en caché el resultado de cada fórmula de las hojas azules,
   para que el libro muestre números aunque se abra en vista protegida. Excel igual recalcula al abrir.
 """
@@ -18,6 +19,8 @@ GRIS_TAB = "FF4A4A4A"
 NS_REL_DRAW = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing"
 CT_DRAWING = "application/vnd.openxmlformats-officedocument.drawing+xml"
 CT_CHART = "application/vnd.openxmlformats-officedocument.drawingml.chart+xml"
+CT_SHEET = "application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"
+REL_SHEET = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet"
 
 
 def leer_zip(ruta):
@@ -146,6 +149,13 @@ def fusionar_estilos(sty3, stya):
     return sty3, mapa_xf, off_dxf
 
 
+def etiquetas_propias(xml_graf):
+    """openpyxl escribe el formato de las etiquetas sin sourceLinked="0"; LibreOffice entonces usa el de la celda."""
+    x = xml_graf.decode("utf-8")
+    x = re.sub(r'<numFmt formatCode="([^"]*)"\s*/>', r'<numFmt formatCode="\1" sourceLinked="0" />', x)
+    return x.encode("utf-8")
+
+
 def _num(v):
     r = repr(float(v))
     return r[:-2] if r.endswith(".0") else r
@@ -193,7 +203,7 @@ def injertar(ruta_v3, ruta_az, salida, valores=None):
     grises = [h for h in hojas3 if f'rgb="{GRIS_TAB}"' in pestaña(h)]
     azules3 = [h for h in hojas3 if h not in grises]
     assert len(grises) == 12, [h["nombre"] for h in grises]
-    assert len(azules3) == len(hojasa) == 15, (len(azules3), len(hojasa))
+    assert len(azules3) == 15 and len(hojasa) >= len(azules3), (len(azules3), len(hojasa))
     salida_files = dict(f3)
     ct = f3["[Content_Types].xml"].decode("utf-8")
     # 1) borra las hojas azules de la v3 y lo que solo ellas usan (dibujos y gráficos del Dashboard viejo)
@@ -232,18 +242,33 @@ def injertar(ruta_v3, ruta_az, salida, valores=None):
         ct = re.sub(rf'<Override PartName="/{re.escape(p)}"[^>]*/>', "", ct)
     rels_wb = f3["xl/_rels/workbook.xml.rels"].decode("utf-8")
     rels_wb = re.sub(r'<Relationship [^>]*Target="calcChain.xml"[^>]*/>', "", rels_wb)
-    salida_files["xl/_rels/workbook.xml.rels"] = rels_wb.encode("utf-8")
     # 2) estilos
     sty, mapa_xf, off_dxf = fusionar_estilos(f3["xl/styles.xml"].decode("utf-8"), fa["xl/styles.xml"].decode("utf-8"))
     salida_files["xl/styles.xml"] = sty.encode("utf-8")
-    # 3) hojas azules nuevas en las mismas partes que ocupaban las azules de la v3
+    # 3) hojas azules nuevas: primero en las partes que ocupaban las azules de la v3; las que sobran, en partes nuevas
     n_dib, n_graf = 100, 100
     wb3 = f3["xl/workbook.xml"].decode("utf-8")
-    for h3, ha in zip(azules3, hojasa):
+    destinos = [dict(target=h["target"], xml=h["xml"], nombre=h["nombre"]) for h in azules3]
+    sig_rid = max(int(x) for x in re.findall(r'Id="rId(\d+)"', rels_wb)) + 1
+    sig_sid = max(int(x) for x in re.findall(r'<sheet [^>]*sheetId="(\d+)"', wb3)) + 1
+    sig_parte = max(int(m.group(1)) for n in f3 for m in [re.match(r"xl/worksheets/sheet(\d+)\.xml$", n)] if m) + 1
+    for _ in hojasa[len(azules3):]:
+        target = f"xl/worksheets/sheet{sig_parte}.xml"
+        rid = f"rId{sig_rid}"
+        rels_wb = rels_wb.replace("</Relationships>", f'<Relationship Id="{rid}" Type="{REL_SHEET}" Target="worksheets/sheet{sig_parte}.xml"/></Relationships>')
+        ct = ct.replace("</Types>", f'<Override PartName="/{target}" ContentType="{CT_SHEET}"/></Types>')
+        destinos.append(dict(target=target, xml=None, nombre=None, nuevo=f'<sheet name="X" sheetId="{sig_sid}" r:id="{rid}"/>'))
+        sig_parte, sig_rid, sig_sid = sig_parte + 1, sig_rid + 1, sig_sid + 1
+    salida_files["xl/_rels/workbook.xml.rels"] = rels_wb.encode("utf-8")
+    ultima_azul = azules3[-1]["xml"]
+    insertar = []
+    for h3, ha in zip(destinos, hojasa):
         xml = fa[ha["target"]].decode("utf-8")
         vals = valores.get(ha["nombre"]) if valores else None
         xml = transformar_hoja(xml, mapa_xf, off_dxf, vals if valores else None)
         salida_files[h3["target"]] = xml.encode("utf-8")
+        if f'PartName="/{h3["target"]}"' not in ct:   # el paso 1 borró el tipo de contenido de la parte de la v3
+            ct = ct.replace("</Types>", f'<Override PartName="/{h3["target"]}" ContentType="{CT_SHEET}"/></Types>')
         rp_a, rx_a = rels_de(fa, ha["target"])
         rp_3, _ = rels_de(f3, h3["target"])
         if rx_a:
@@ -263,22 +288,38 @@ def injertar(ruta_v3, ruta_az, salida, valores=None):
                         ch = resolver(parte, t2)
                         n_graf += 1
                         nuevo_ch = f"xl/charts/chart{n_graf}.xml"
-                        salida_files[nuevo_ch] = fa[ch]
+                        salida_files[nuevo_ch] = etiquetas_propias(fa[ch])
                         ct = ct.replace("</Types>", f'<Override PartName="/{nuevo_ch}" ContentType="{CT_CHART}"/></Types>')
                         drx = drx.replace(f'Target="{t2}"', f'Target="../charts/chart{n_graf}.xml"')
                     salida_files[f"xl/drawings/_rels/drawing{n_dib}.xml.rels"] = drx.encode("utf-8")
             salida_files[rp_3] = nuevos_rels.encode("utf-8")
         else:
             salida_files.pop(rp_3, None)
-        # nombre de la hoja (se conservan sheetId y r:id de la v3)
-        nuevo = h3["xml"].replace(f'name="{h3["nombre"]}"', f'name="{escape(ha["nombre"], {chr(34): "&quot;"})}"')
-        wb3 = wb3.replace(h3["xml"], nuevo)
-    # 4) nombres definidos: los del libro nuevo + los locales de las hojas grises de la v3
+        # nombre y visibilidad de la hoja (se conservan sheetId y r:id de la v3; las nuevas van después de la última azul)
+        nom = escape(ha["nombre"], {chr(34): "&quot;"})
+        oculta = re.search(r'state="(hidden|veryHidden)"', ha["attrs"])
+        if h3["xml"]:
+            nuevo = h3["xml"].replace(f'name="{h3["nombre"]}"', f'name="{nom}"')
+        else:
+            nuevo = h3["nuevo"].replace('name="X"', f'name="{nom}"')
+        nuevo = re.sub(r'\sstate="[^"]*"', "", nuevo)
+        if oculta:
+            nuevo = nuevo.replace(" r:id=", f' state="{oculta.group(1)}" r:id=')
+        if h3["xml"]:
+            wb3 = wb3.replace(h3["xml"], nuevo)
+            if h3["xml"] == ultima_azul:
+                ultima_azul = nuevo
+        else:
+            insertar.append(nuevo)
+    wb3 = wb3.replace(ultima_azul, ultima_azul + "".join(insertar))
+    # 4) nombres definidos: los del libro nuevo + los locales de las hojas grises de la v3 (corridos si hay más hojas azules)
     wba = fa["xl/workbook.xml"].decode("utf-8")
     dn_a = re.findall(r"<definedName\b[^>]*>.*?</definedName>", wba, re.S)
     dn_3 = re.findall(r"<definedName\b[^>]*>.*?</definedName>", wb3, re.S)
     idx_gris = {hojas3.index(h) for h in grises}
-    locales_grises = [d for d in dn_3 if re.search(r'localSheetId="(\d+)"', d) and int(re.search(r'localSheetId="(\d+)"', d).group(1)) in idx_gris]
+    extra = len(hojasa) - len(azules3)
+    locales_grises = [re.sub(r'localSheetId="(\d+)"', lambda k: f'localSheetId="{int(k.group(1)) + extra}"', d) for d in dn_3
+                      if re.search(r'localSheetId="(\d+)"', d) and int(re.search(r'localSheetId="(\d+)"', d).group(1)) in idx_gris]
     nuevos_dn = "<definedNames>" + "".join(dn_a + locales_grises) + "</definedNames>"
     if "<definedNames>" in wb3:
         wb3 = re.sub(r"<definedNames>.*?</definedNames>", lambda m: nuevos_dn, wb3, flags=re.S)

@@ -1,4 +1,4 @@
-# Fase 4 · Plan Financiero · Traspaso de contexto (08-11-2026)
+# Fase 4 · Plan Financiero · Traspaso de contexto (08-11-2026, v5 del 09-11-2026)
 
 Integrador II (UNAB, prof. Roberto Brito). Leer completo antes de tocar el Excel. Lo que dice este documento es lo
 decidido por el equipo hasta el 08-11-2026; lo marcado **PENDIENTE** aún no se decide.
@@ -10,8 +10,9 @@ decidido por el equipo hasta el 08-11-2026; lo marcado **PENDIENTE** aún no se 
 | `excel/v1_base_inicial.xlsx` | Excel base del equipo (hojas azules + hojas grises del semestre anterior). Datos del negocio antiguo (EMC). |
 | `excel/v2_TIR169_descartada.xlsx` | Primera reconstrucción con el complemento de Claude para Excel. TIR 169%: descartada (ver §5). |
 | `excel/v3_TIR6_actual.xlsx` | Reconstrucción con el complemento. TIR 6%: extremo conservador (ver §6). Reemplazada por la v4; sus hojas grises son la fuente de las de la v4. |
-| `excel/v4_TIR20_kit_medio_credito30.xlsx` (+ `.pdf`) | **Versión actual (08-11-2026). Es la base para seguir.** Kit al punto medio y 30% a crédito; TIR 20% (ver §6). |
-| `generador/` | Genera y verifica la v4 (Python + LibreOffice): `python generar.py`. Ver `generador/README.md`. |
+| `excel/v4_TIR20_kit_medio_credito30.xlsx` (+ `.pdf`) | Kit al punto medio y 30% a crédito; TIR 20% (ver §6). Mismos números que la v5, con la presentación anterior. |
+| `excel/v5_presentacion_09-11-2026.xlsx` (+ `.pdf`) | **Versión actual (09-11-2026). Es la base para seguir.** v4 con presentación simplificada (Índice, Dashboard, resúmenes arriba y detalle plegado); mismos números (ver §6). |
+| `generador/` | Genera y verifica la v5 (Python + LibreOffice): `python generar.py`. Ver `generador/README.md`. |
 | `excel/Costo_directo_kit_Lumine.xlsx` | Libro de costeo del kit (especificación antigua 48 V; sirve de base de componentes). |
 | `prompts/PROMPT_v3_completo.md` | Prompt con el que se generó la v3 (Partes A y B) + agregado de sensibilidades. Sigue siendo la guía de contenido. |
 
@@ -90,6 +91,14 @@ red con licencia por instalación (margen 70%) y talleres fraccionados. No eran 
 
 ## 6. Estado actual: v4 (TIR 20%) con el punto medio aplicado (08-11-2026)
 
+**v5 = v4 con presentación simplificada, mismos números** (`excel/v5_presentacion_09-11-2026.xlsx`, según
+`INSTRUCCIONES_SIMPLIFICAR.md`). Visibles: Índice, Dashboard, Supuestos clave, hojas 1 a 7 (resumen en millones arriba,
+detalle en pesos plegado), Sensibilidades (los 10 casos de mayor impacto y el tornado) y Mensual (años 0 a 2). Ocultas, al
+final: Supuestos detalle, Datos Fase 3, Motor mensual (cálculo), Anual (cálculo), Controles, Pendientes y Registro de
+cambios. `generar.py` comprueba que todo calza con la v4 al peso: 50 resultados, las 140 filas anuales, los 34 casos y 3
+escenarios de la foto y `espejo.py`. Cada hoja visible se imprime en Carta horizontal a 100% (1 o 2 páginas, ninguna letra
+bajo 9 pt) y el Dashboard cabe en la pantalla de un notebook de 14". Lo de abajo describe los números, que no cambiaron.
+
 **Decidido (Diego, 08-11-2026):** se aplicó la propuesta de punto medio de la v3.
 - Costo del kit al punto medio entre el costeo realista de la Fase 3 actualizado y el mejor caso (peso 50%): Esencial
   $2.840.035, Plus $3.165.652, mezcla **$3.035.406** al dólar base ($3.036.896 con forward) = 76,7% del precio neto.
@@ -118,7 +127,7 @@ Por qué la TIR es 20%:
    sería −$1.190 M. El valor de desecho económico (solo referencia) sería mucho mayor.
 3. La demanda usa el techo de 100% (optimista): con 50%, la TIR baja a 8,4%.
 
-Puente v3 → v4 (foto en Anexos; cada paso se puede activar con los casos «Puente»):
+Puente v3 → v4 (foto en Sensibilidades, sección C; cada paso se puede activar con los casos «Puente»):
 
 | Paso | TIR | VAN a Ku |
 |---|---|---|
@@ -151,6 +160,10 @@ Verificación de la v4: LibreOffice y Excel calculan lo mismo (VAN $799.485.127)
 0; unidades enteras; 14.006 fórmulas y ningún número escrito a mano en las hojas de cálculo; las 12 hojas grises son
 idénticas byte a byte a las de la v3. Un modelo espejo en Python (`generador/espejo.py`) da el mismo VAN, al peso, en
 el caso base y en los 34 casos de sensibilidad.
+
+Verificación de la v5 (09-11-2026): mismos resultados que la v4 (`generador/resultados_v5.json` = `resultados_v4.json`);
+13 de 13 controles en 0, ahora reunidos en la hoja oculta Controles; abre en el Índice en Excel y en LibreOffice; los
+hipervínculos llevan a cada hoja en los dos programas; el PDF trae solo las 12 hojas visibles (14 páginas).
 
 v3 (histórico): TIR 6% por apilar kit realista ($3,25 M), 50% a crédito y red chica; sin errores de fórmula.
 

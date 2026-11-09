@@ -1,5 +1,5 @@
 {
- "fecha": "08-11-2026 16:35",
+ "fecha": "09-11-2026 10:19",
  "motor": "26.8.1.1",
  "base": {
   "van": 799485127.4029325,
@@ -414,7 +414,7 @@
    "tir_inv": 0.3930546973552724
   },
   {
-   "nombre": "Puente 1 · motor v4 con los supuestos de la v3 (kit realista, 50% a crédito, tasa nominal, CT = saldo, equipo en −3)",
+   "nombre": "Puente 1 · motor v4 con los supuestos de la v3",
    "codigo": "P1",
    "grupo": "puente",
    "valor_txt": "",
@@ -470,7 +470,7 @@
    "tir_inv": 0.217407060555637
   },
   {
-   "nombre": "Puente 5 · + capital de trabajo del año 1 con déficit acumulado (método de clase)",
+   "nombre": "Puente 5 · + capital de trabajo con déficit acumulado",
    "codigo": "P5",
    "grupo": "puente",
    "valor_txt": "",

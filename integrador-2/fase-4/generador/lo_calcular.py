@@ -4,10 +4,11 @@ Se ejecuta con el Python de LibreOffice:
   "C:/Program Files/LibreOffice/program/python.exe" lo_calcular.py MODO LIBRO.xlsx MANIFIESTO.json SALIDA [PERFIL]
 Modos:
   revisar  → recalcula el caso base y escribe SALIDA.json con errores, controles, enteros, resultados y el detalle anual.
-  foto     → recorre todos los casos de Anexos y los escenarios del Dashboard; escribe SALIDA.json (foto de valores).
+  foto     → recorre todos los casos de Sensibilidades y los escenarios del Dashboard; escribe SALIDA.json (foto de valores).
   valores  → escribe SALIDA.json con el valor de cada celda con fórmula de las hojas azules (para dejarlo en caché).
-  pdf      → exporta SALIDA.pdf con las hojas azules (sin Mensual ni las grises).
+  pdf      → exporta SALIDA.pdf solo con las hojas visibles (manifiesto["visibles"]).
 PERFIL es una carpeta con un perfil de LibreOffice en es-CL (se copia; nunca se usa directo).
+Los nombres de las hojas técnicas y las celdas de los selectores vienen del manifiesto que escribe construir.py.
 """
 import json
 import os
@@ -114,6 +115,12 @@ def rango(doc, nombre_hoja, ref):
     return hoja(doc, nombre_hoja).getCellRangeByName(ref)
 
 
+def selector(doc, man, cual):
+    """Celda del selector de sensibilidad ("sens") o de escenario ("esc"), según el manifiesto."""
+    h, ref = man["selectores"][cual]
+    return rango(doc, h, ref)
+
+
 def nombre_valor(doc, nombre):
     nr = doc.NamedRanges.getByName(nombre)
     cells = nr.getReferredCells()
@@ -144,7 +151,8 @@ def resultados(doc):
     out = {}
     for n in ["VAN_Ku", "VAN_WACC", "TIR_Puro", "PB_Desc", "PB_Simple", "Inv0_Total", "Inv0Cap", "VD", "CT_Rec", "CT_Def", "VAN_Ke",
               "TIR_Inv", "VAN_Deuda", "Ku", "Ke", "WACC", "BetaL", "Ctrl_Total", "VAN_SinVD", "CostoCT_VAN", "VD_Eco", "Prestamo",
-              "KitE", "KitP", "KitMezcla", "KitP_Real", "TasaCredReal", "FactorCuota", "SensCod", "Anx_Estado", "IR_Ku"]:
+              "KitE", "KitP", "KitMezcla", "KitP_Real", "TasaCredReal", "FactorCuota", "SensCod", "Anx_Estado", "IR_Ku",
+              "Ctrl_OK", "Ctrl_N"]:
         try:
             out[n] = nombre_valor(doc, n)
         except Exception as e:
@@ -171,7 +179,7 @@ def modo_revisar(s, libro, man, salida):
     doc = s.abrir(libro)
     caso = os.environ.get("CASO")  # opcional: revisar con un caso de sensibilidad activo
     if caso:
-        hoja(doc, "Anexos").getCellRangeByName("C6").setString(caso)
+        selector(doc, man, "sens").setString(caso)
         doc.calculateAll()
         doc.calculateAll()
     out = dict(errores=errores(doc, man["hojas"]), resultados=resultados(doc), caso=caso or "Base")
@@ -190,12 +198,12 @@ def modo_revisar(s, libro, man, salida):
     out["enteros"] = ent
     # anual completo (para comparar con el modelo espejo)
     an = {}
-    sh = hoja(doc, "Anual (años 0 a 5)")
+    sh = hoja(doc, man["hoja_anual"])
     for k, r in man["filas_anu"].items():
         an[k] = list(sh.getCellRangeByName(f"C{r}:H{r}").getDataArray()[0])
     out["anual"] = an
     men = {}
-    sh = hoja(doc, "Mensual (años 0 a 5)")
+    sh = hoja(doc, man["hoja_motor"])
     for k, r in man["filas_men"].items():
         if k.startswith("#"):
             continue
@@ -219,10 +227,8 @@ def _fmt_valor(v, fmt):
 
 def modo_foto(s, libro, man, salida):
     doc = s.abrir(libro)
-    anx = hoja(doc, "Anexos")
-    sel = anx.getCellRangeByName("C6")
-    dash = hoja(doc, "Dashboard")
-    esc = dash.getCellRangeByName("C5")
+    sel = selector(doc, man, "sens")
+    esc = selector(doc, man, "esc")
     casos = []
     for c in man["casos"]:
         sel.setString(c["nombre"])
@@ -290,14 +296,14 @@ def modo_valores(s, libro, man, salida):
 
 
 def modo_pdf(s, libro, man, salida):
-    """PDF de las hojas azules sin Mensual (72 columnas): se copia el libro a una carpeta temporal y se quitan las demás hojas."""
+    """PDF solo de las hojas visibles: se copia el libro a una carpeta temporal y se ocultan las demás."""
     copia = os.path.join(s.tmp, "para_pdf.xlsx")
     shutil.copy(libro, copia)
     doc = s.desktop.loadComponentFromURL(url(copia), "_blank", 0, (pv("Hidden", True),))
     try:
         doc.calculateAll()
         doc.calculateAll()
-        quedan = [h for h in man["hojas"] if not h.startswith("Mensual")]
+        quedan = man["visibles"]
         for nombre in list(doc.Sheets.ElementNames):
             if nombre not in quedan:
                 doc.Sheets.getByName(nombre).IsVisible = False  # ocultar (borrar rompería las referencias)
