@@ -136,6 +136,20 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   objetivos = eje estratégico de origen; estados cumple (círculo), alerta (triángulo), no cumple (cuadrado), meta
   pendiente (cuadrado punteado) y sin medir (anillo a trazos). Responsables según la estructura de la Fase 3.
 
+**Informe final de Integrador II (Fase 5, noviembre de 2026; el .docx no se sube)**:
+- **Principio rector: es un solo trabajo.** Un hilo argumental con varios capítulos: cada sección responde a la misma
+  pregunta y retoma lo anterior (problema → necesidad → solución → Canvas → PESTEL → Porter → benchmarking → FCE → cadena
+  de valor → FODA y cruce → estrategia). Nada suelto: cada dato o conclusión se usa más adelante o se saca.
+- Se escribe como informe final, no por fases: nada de «en esta fase», «queda pendiente» ni «este informe supone». Lo que
+  resuelve otra parte se enlaza por su nombre («se analiza en el Plan Financiero»), nunca por número de sección.
+- Investigación de mercado: solo «permitió identificar / permitió ver…», a grandes rasgos. No citar entrevistas ni
+  expertos (tampoco en la bibliografía). No comparar con versiones o análisis anteriores.
+- Porter con el instrumento de Control de Gestión (escala de 0 a 5, promedio de factores): rivalidad 1,83, nuevos
+  entrantes 3,75, sustitutos 3,67, proveedores 2,67, clientes 2,83; total 3,14, intensidad media. «No hacer nada» es
+  inercia del cliente, no sustituto. PESTEL +1,75.
+- Sustituto de referencia: híbrido **nuevo** (desde $11.990.000, Mercado Libre 2026) y eléctrico nuevo; nunca «híbrido usado».
+- Descripción del problema (1.1): máximo 2 a 2,5 páginas, solo lo necesario.
+
 ## Pendientes y preguntas abiertas
 
 - Datos comerciales reales (precio, % de ahorro, garantía, tiempo de instalación, contacto): en proceso; no inventarlos.
