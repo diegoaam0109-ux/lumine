@@ -68,12 +68,17 @@ async function completarLeccion(p){
       await sinDesborde(p,'Selector '+v.nombre); await captura(p,v.nombre+'-selector');
       // Entrar también funciona con teclado.
       await p.getByRole('button',{name:'Ver como participante',exact:true}).focus(); await p.keyboard.press('Enter');
-      await ruta(p,'hoy'); await cerrarCelebracion(p);
+      await ruta(p,'hoy');
+      await p.locator('.celebra').waitFor({state:'visible'});
+      ok(await p.locator('.celebra').innerText().then(t=>/validaste el nivel/i.test(t)),'Al iniciar el recorrido se muestra la celebración de nivel');
+      await cerrarCelebracion(p);
       ok(await p.evaluate(()=>S.demoRole==='tecnico'),'Participante usa su cuenta ficticia');
       ok(await guia(p).getByRole('button',{name:'Anterior',exact:true}).isDisabled(),'Primer paso no permite retroceder fuera de la guía');
       await sinDesborde(p,'Hoy '+v.nombre); await captura(p,v.nombre+'-participante');
       await siguiente(p,'modulo-N1-1');
       await guia(p).getByRole('button',{name:'Anterior',exact:true}).click(); await ruta(p,'hoy');
+      await p.waitForTimeout(650);
+      ok(await p.locator('.celebra').count()===0,'Retroceder dentro de la guía no repite la celebración');
       await siguiente(p,'modulo-N1-1'); await siguiente(p,'leccion-N1-1-c');
       await guia(p).getByRole('button',{name:'Siguiente paso',exact:true}).click();
       await p.getByRole('button',{name:'Seguir practicando',exact:true}).click();
@@ -93,6 +98,11 @@ async function completarLeccion(p){
       await cerrarCelebracion(p);
       await guia(p).getByRole('button',{name:'Terminar recorrido',exact:true}).click(); await ruta(p,'demo');
       ok(await p.evaluate(()=>guiaDemo===null),'Final del participante vuelve al selector');
+      await p.getByRole('button',{name:'Ver como participante',exact:true}).click(); await ruta(p,'hoy');
+      await p.locator('.celebra').waitFor({state:'visible'});
+      ok(await p.evaluate(()=>!!S.mine.avance.aprende.lecciones['N1-1-c']),'Reiniciar el recorrido repite la celebración y conserva el avance');
+      await captura(p,v.nombre+'-celebracion'); await cerrarCelebracion(p);
+      await p.getByRole('button',{name:'Recorrido guiado',exact:true}).click(); await ruta(p,'demo');
       await p.getByRole('button',{name:'Ver como administrador',exact:true}).click(); await ruta(p,'panel');
       ok(await p.evaluate(()=>S.role==='admin'&&S.demoRole==='rt'),'Administrador usa el Responsable Técnico ficticio');
       await sinDesborde(p,'Panel '+v.nombre); await captura(p,v.nombre+'-administrador');
@@ -109,10 +119,12 @@ async function completarLeccion(p){
       await p.getByRole('button',{name:'Restablecer datos de prueba',exact:true}).click();
       await p.getByRole('button',{name:'Cancelar',exact:true}).click();
       ok(await p.evaluate(()=>!!S.D.avance.u_ignacio?.aprende?.lecciones['N1-1-c']),'Cancelar restablecimiento conserva progreso');
+      ok(await p.evaluate(()=>localStorage.getItem('lh-nivel-visto-u_ignacio')!==null),'Cancelar restablecimiento conserva las celebraciones ya vistas');
       await p.getByRole('button',{name:'Restablecer datos de prueba',exact:true}).click();
       await p.getByRole('button',{name:'Restablecer',exact:true}).click(); await ruta(p,'demo');
       await p.waitForFunction(()=>S.demoRole==='visitante');
       ok(await p.evaluate(()=>guiaDemo===null),'Restablecer vuelve a datos iniciales y sale de la cuenta');
+      ok(await p.evaluate(()=>Object.keys(DEMO_DIR).every(uid=>localStorage.getItem('lh-nivel-visto-'+uid)===null)),'Restablecer prepara las celebraciones de las cuentas ficticias');
       ok(errores.length===0,v.nombre+' sin errores JavaScript, de red ni 404: '+errores.join('; '));
       ok(externos.length===0,v.nombre+' no necesita recursos externos: '+externos.join('; '));
       await ctx.close();

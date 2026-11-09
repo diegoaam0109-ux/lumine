@@ -31,13 +31,18 @@ async function confirmarSalidaGuia(){
   if(si){ keys.forEach(k=>delete UI[k]); delete UI['rep-sel']; }
   return si;
 }
-async function pasoGuia(tipo,paso){
+async function pasoGuia(tipo,paso,iniciar){
   if(S.build!=='demo'||guiaOcupada||!DEMO_GUIAS[tipo]) return;
   const g=DEMO_GUIAS[tipo];
   if(paso<0||paso>=g.pasos.length) return;
   guiaOcupada=true;
   try {
     if(!await confirmarSalidaGuia()) return;
+    // Cada presentación puede mostrar el hito otra vez; retroceder dentro de la guía no lo repite.
+    if(iniciar && g.rol==='tecnico'){
+      const rol=DEMO_ROLES.find(r=>r.id===g.rol);
+      try { if(rol && rol.viewer.id) localStorage.removeItem('lh-nivel-visto-'+rol.viewer.id); } catch(e){}
+    }
     guiaDemo={tipo,paso}; guardarGuia();
     if(S.demoRole!==g.rol) await cambiarRolDemo(g.rol);
     go(g.pasos[paso].ruta);
@@ -75,12 +80,13 @@ VIEWS.demo=function(){
       h('span',{class:'label'},id==='participante'?'01 · Quiero capacitarme':'02 · Quiero supervisar'),
       h('h2',{class:'h3'},g.titulo),h('p',{class:'ink2'},id==='participante'?'Lecciones interactivas, repaso y tu ruta de formación.':'Personas, expedientes, validaciones e indicadores.'),
       h('ol',null,g.pasos.map(p=>h('li',null,p.titulo))),
-      btn('Ver como '+id,{kind:'action',size:'lg',arrow:true,onClick:()=>pasoGuia(id,0)}),h('p',{class:'hint'},g.persona)))),
+      btn('Ver como '+id,{kind:'action',size:'lg',arrow:true,onClick:()=>pasoGuia(id,0,true)}),h('p',{class:'hint'},g.persona)))),
     notice('info','info','Datos ficticios guardados en este navegador. Puedes explorar libremente y volver aquí con “Recorrido guiado”. La práctica en línea no reemplaza la evaluación presencial.'),
     h('div',{class:'row',style:'margin-top:20px'},linkBtn('Explorar la portada','inicio',{kind:'ghost'}),
       btn('Restablecer datos de prueba',{kind:'ghost',icon:'refresh',onClick:async()=>{
-        if(await dialog({title:'¿Restablecer la demostración?',body:'Se borran los cambios de esta demo en este navegador y vuelven los ejemplos iniciales.',confirm:'Restablecer'})){
+        if(await dialog({title:'¿Restablecer la demostración?',body:'Se borran los cambios de esta demo en este navegador y vuelven los ejemplos iniciales. La celebración de nivel también queda lista para mostrarse de nuevo.',confirm:'Restablecer'})){
           for(const k of Object.keys(UI)) delete UI[k];
+          try { Object.keys(DEMO_DIR).forEach(uid=>localStorage.removeItem('lh-nivel-visto-'+uid)); } catch(e){}
           guiaDemo=null;guardarGuia();demoReset();await cambiarRolDemo('visitante');go('demo');
         }
       }})))

@@ -6,6 +6,8 @@
 
 La entrada permite elegir participante o administrador, cada uno con cinco pasos. Se puede retroceder, salir para explorar y volver al selector. Si se abandona una práctica sin terminar, la guía lo confirma. Los cambios son locales y ficticios; no se requiere una cuenta de Claude.
 
+Para repetir la presentación ante otra persona, pulsa **Recorrido guiado → Ver como participante**: la celebración de nivel vuelve a aparecer y se conserva el avance de las lecciones. Retroceder dentro de la guía no repite la celebración. **Restablecer datos de prueba → Restablecer** devuelve los ejemplos iniciales y prepara también sus celebraciones.
+
 ## Construir y comprobar
 
 ```sh

@@ -2,6 +2,8 @@
 
 ## Demo pública guiada (09-11-2026)
 
+- Cada inicio de «Ver como participante» vuelve a mostrar la celebración de nivel para ensayar o presentar a otra persona, conservando el avance. Restablecer los datos prepara también las celebraciones; retroceder dentro del recorrido no las repite.
+
 - Entrada propia con recorridos de participante y administrador, cinco pasos cada uno. Incluye avance, retroceso, salida libre y restablecimiento confirmado de los ejemplos.
 - Usa la actualización interactiva de Claude del 07-11 y su corrección del 08-11. La guía no cambia reglas de negocio ni aprueba competencias.
 - Constructor público con fuentes locales; Pages incorpora `/habilita/` y conserva estimador, presentación y ventas.

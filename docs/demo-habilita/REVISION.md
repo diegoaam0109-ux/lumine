@@ -28,7 +28,7 @@ La revisión se concentra en ejecución fuera de Claude, aprendizaje, recorridos
 ## Comprobaciones
 
 - Base de Claude: **218 pruebas de lógica/almacenamiento** y **468 comprobaciones de navegador**, sin fallas. Incluyen escritorio, tablet, teléfono y temas claro/oscuro. Se ejecutó el mismo E2E sobre HTTP local usando Chromium instalado; las rutas `file://` se sustituyeron solo en el lanzador de pruebas, porque el navegador administrado restringe archivos locales.
-- Recorridos nuevos: **54 comprobaciones** en escritorio oscuro y teléfono claro: selector, teclado, avance/retroceso, ejercicio completo con error deliberado, reintento, guardado, recarga, cambio de perfil, cinco pantallas del administrador, salida y restablecimiento confirmado/cancelado.
+- Recorridos nuevos: **64 comprobaciones** en escritorio oscuro y teléfono claro: selector, teclado, avance/retroceso, ejercicio completo con error deliberado, reintento, guardado, recarga, cambio de perfil, cinco pantallas del administrador, salida y restablecimiento confirmado/cancelado. Incluyen repetir la celebración al iniciar una nueva presentación sin borrar avance, y no repetirla al retroceder dentro de la guía.
 - En ambos recorridos se comprueban errores JavaScript, respuestas HTTP fallidas, solicitudes fallidas y ausencia de recursos externos necesarios.
 - El workflow ejecuta estas pruebas **antes** de publicar y las repite contra la URL pública en contextos nuevos sin sesión. Conserva las pruebas existentes de la página comercial y la presentación. Las capturas y el resultado del despliegue quedan en GitHub Actions.
 
