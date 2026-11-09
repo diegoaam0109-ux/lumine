@@ -159,6 +159,11 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 
 ## Pendientes y preguntas abiertas
 
+- Informe final, Fases 1 y 2 **cerradas** (09-11-2026, archivo «Corregida1» revisado). Se reabren solo si el Plan
+  Financiero o la versión final de la Fase 3 las contradicen (ahorro, financiamiento de la etapa sin ventas). Detalles que
+  el equipo decidió no tocar: bencina citada a preciocombustible.cl (no a Bencina en Línea/CNE), nota de Movener sin enlace
+  y cifra del gas de BioBioChile ($900.000 a $1,8 millones) sin confirmar. Actualizar el índice en Word antes de exportar.
+
 - Datos comerciales reales (precio, % de ahorro, garantía, tiempo de instalación, contacto): en proceso; no inventarlos.
 - ¿Agregar un tutor con IA dentro de los módulos de Habilita? Sin respuesta.
 - ¿Exigir 12 meses en nivel 2 antes de validar el nivel 3 (DGUV)? No implementar sin confirmación.
