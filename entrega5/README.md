@@ -5,13 +5,16 @@
 |---|---|
 | `TIG_IA_Grupo01_LumineMotors_InformeFinal.pdf` | Informe consolidado (desarrollo en las páginas 3 a 18; anexos A a K) |
 | `TIG_IA_Grupo01_LumineMotors_InformeFinal.docx` | Misma versión en Word, si la piden |
-| `TIG_IA_Grupo01_LumineMotors_Presentacion.pptx` | Presentación de 11 diapositivas (7 minutos) con notas del orador |
+| `TIG_IA_Grupo01_LumineMotors_Presentacion.pptx` | Presentación de 13 diapositivas (7 minutos) con video del MVP y notas del orador |
+| `TIG_IA_Grupo01_LumineMotors_Guion.docx` | Guion de la exposición por integrante y diapositiva |
+| MVP | claude.ai/artifact/82sohbXt5ctMKPTXnYzwYx (público) |
+| Sitio comercial | claude.ai/artifact/XGpgpuDtxJvtiAjbRDwJ2o (público) |
 | Zip de anexos (opcional) | `entrega3/prototipo/` sin `__pycache__`, `entrega4/redteam/`, `entrega5/analisis/` y `entrega5/figuras/` |
 
 ## Reparto de la exposición (notas en cada diapositiva)
-- Diego: diapositivas 1 a 3 y 11 (unos 2 min 20 s)
-- Benjamín: 4 a 6 (unos 2 min 15 s)
-- Lukas: 7 a 10 (unos 2 min 35 s)
+- Diego: diapositivas 1 a 3, 12 y 13 (2 min 25 s)
+- Benjamín: 4 a 6 (2 min)
+- Lukas: 7 a 11 (2 min 35 s)
 
 ## Cómo regenerar
 ```

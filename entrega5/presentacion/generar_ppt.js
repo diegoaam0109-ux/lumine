@@ -85,7 +85,7 @@ async function icono(nombre, color, px = 256) {
     { text: "Diego Alarcón · Benjamín Torres · Lukas Verdugo", options: { bold: true, breakLine: true } },
     { text: "Grupo 1 · NRC 4153 · IA Aplicada al Marketing y los Negocios · Prof. Cristián Cisterna-Aravena · noviembre de 2026" },
   ], { x: 0.8, y: 6.15, w: 11.7, h: 0.75, fontSize: 14, color: C.background1, objectName: "Integrantes" });
-  s.addNotes("DIEGO (30 s). Buenos días. Somos Lumine Motors: un taller que instalaría un kit híbrido en el eje trasero de autos con más de siete años, el parque que en Chile se conserva y que quedó fuera del gas y del recambio a eléctrico. Todo nuestro proyecto responde una sola pregunta, la que nos hizo cada conductor entrevistado: ¿cuánto me voy a ahorrar? Les mostraremos el problema, la herramienta de IA que construimos y lo que encontramos.");
+  s.addNotes("DIEGO (25 s). Buenos días. Somos Lumine Motors: un taller que instalaría un kit híbrido en el eje trasero de autos con más de siete años, el parque que en Chile quedó fuera del gas y del eléctrico. Todo el proyecto responde la pregunta que nos hizo cada conductor entrevistado: ¿cuánto me voy a ahorrar?");
 
   // ---------------------------------------------------------------- 2. Problema
   s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Problema" });
@@ -109,7 +109,7 @@ async function icono(nombre, color, px = 256) {
     { text: "El ahorro depende de cuánto frena cada conductor", options: { bullet: true, breakLine: true } },
     { text: "Una cifra que no se cumple es publicidad engañosa (Ley 19.496)", options: { bullet: true } },
   ], { x: 7.55, y: 4.5, w: 4.8, h: 1.9, fontSize: 15, color: C.background2, paraSpaceAfter: 8, objectName: "Contexto" });
-  s.addNotes("DIEGO (40 s). El problema es la promesa. El sector vende “hasta 25% de ahorro”, pero el ahorro del kit depende de cuánta energía termina en los frenos, y eso cambia con cada conductor. Al comparar esa cifra con el ahorro simulado de 300 conductores de Santiago, se equivoca en promedio por casi 8 puntos, y en el 98% de los casos por más de 3. En las entrevistas, la barrera no fue el precio sino la confianza. Lumine debe decidir si reemplaza esa cifra por una estimación personal y verificable.");
+  s.addNotes("DIEGO (30 s). El sector promete “hasta 25%”, pero el ahorro depende de cuánto frena cada conductor. Comparada con el ahorro simulado de 300 conductores de Santiago, esa cifra se equivoca en casi 8 puntos, y en 98% de los casos por más de 3. Y la barrera del cliente no fue el precio, sino la confianza. Lumine debe decidir si la reemplaza por una estimación personal y verificable.");
 
   // ---------------------------------------------------------------- 3. Pregunta y objetivos
   s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Problema" });
@@ -133,7 +133,7 @@ async function icono(nombre, color, px = 256) {
     s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 11.2, y: y + 0.22, w: 1.3, h: 0.42, rectRadius: 0.2, fill: { color: col }, line: { color: col }, objectName: "Estado " + (i + 1) });
     txt(s, e, { x: 11.2, y: y + 0.22, w: 1.3, h: 0.42, fontSize: 12, bold: true, color: C.background1, align: "center", valign: "middle", objectName: "Texto estado " + (i + 1) });
   });
-  s.addNotes("DIEGO (35 s). Nuestra pregunta tiene dos mitades: si la IA puede estimar el ahorro de cada cliente con precisión suficiente, y si eso cambia su disposición a contratar. Cumplimos tres de cinco objetivos. Los datos propios en terreno se eliminaron por tiempo y los sustituimos por jornadas reales de una base pública. La medición con clientes la rediseñamos: con 40 encuestas no habríamos detectado nada, así que proponemos un experimento A/B con 173 prospectos por grupo. Benjamín les muestra la herramienta.");
+  s.addNotes("DIEGO (30 s). Nuestra pregunta tiene dos mitades: si la IA puede estimar el ahorro de cada cliente con precisión suficiente, y si eso cambia su disposición a contratar. Cumplimos tres de cinco objetivos. Los datos propios en terreno se eliminaron por tiempo y los sustituimos por jornadas reales de una base pública. La medición con clientes la rediseñamos: con 40 encuestas no habríamos detectado nada, así que proponemos un experimento A/B con 173 prospectos por grupo. Benjamín les muestra la herramienta.");
 
   // ---------------------------------------------------------------- 4. Herramienta
   pres.addSection({ title: "Herramienta" });
@@ -160,12 +160,18 @@ async function icono(nombre, color, px = 256) {
     { text: "Validador de 9 criterios + técnico humano. ", options: { bold: true, color: C.accent1 } },
     { text: "Si una cifra del mensaje no existe en los datos, el cliente recibe una plantilla fija. El técnico aprueba, ajusta hasta ±2 pp con motivo o bloquea." },
   ], { x: 2.0, y: 5.6, w: 10.5, h: 0.9, fontSize: 16, color: C.background1, valign: "middle", objectName: "Texto control humano" });
-  s.addNotes("BENJAMÍN (45 s). La herramienta tiene tres piezas de IA y una regla. Un simulador físico calcula cuánta energía recupera el kit en cada segundo de conducción; un modelo predictivo aprende de miles de esas simulaciones a estimar el ahorro de cada conductor con un intervalo; y Claude, con instrucciones RAFA, solo redacta la explicación. La regla es que la IA generativa nunca calcula: recibe cifras cerradas y un validador comprueba que cada número exista. Encima, un técnico humano aprueba, ajusta o bloquea.");
+  s.addNotes("BENJAMÍN (35 s). La solución tiene tres piezas. Un simulador físico calcula la energía que recupera el kit en cada segundo; un modelo predictivo aprende de esas simulaciones a estimar el ahorro de cada conductor con un intervalo; y Claude, con instrucciones RAFA, solo redacta. La regla: la IA generativa nunca calcula. Un validador y un técnico humano controlan cada cifra.");
 
   // ---------------------------------------------------------------- 5. Demostración
   s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Herramienta" });
-  s.addText("Un colectivo de 213 km diarios, de punta a punta", { placeholder: "title" });
-  s.addImage({ path: path.join(FIG5, "app_diagnostico_ridge.png"), x: 0.6, y: 1.5, w: 5.95, h: 5.2, sizing: { type: "contain", w: 5.95, h: 5.2 }, altText: "Captura del prototipo: diagnóstico de un colectivo con 19,7% de ahorro", objectName: "Captura prototipo" });
+  s.addText("El MVP funcionando: un colectivo de 213 km diarios", { placeholder: "title" });
+  s.addMedia({ type: "video", path: path.join(FIG5, "demo_mvp.mp4"), cover: "data:image/png;base64," + fs.readFileSync(path.join(FIG5, "demo_mvp_poster.png")).toString("base64"), x: 0.6, y: 1.5, w: 6.2, h: 3.49, objectName: "Video del MVP" });
+  s.addImage({ path: path.join(FIG5, "qr_mvp.png"), x: 0.6, y: 5.2, w: 1.45, h: 1.45, altText: "Código QR del MVP publicado", objectName: "QR MVP" });
+  txt(s, [
+    { text: "Pruébalo en vivo", options: { bold: true, color: C.accent2, breakLine: true } },
+    { text: "claude.ai/artifact/82sohbXt5ctMKPTXnYzwYx", options: { fontSize: 13, breakLine: true } },
+    { text: "MVP publicado como artefacto de Claude: cotización, diagnóstico y técnico", options: { fontSize: 13, color: C.accent5 } },
+  ], { x: 2.25, y: 5.25, w: 4.6, h: 1.4, fontSize: 15, color: C.text2, objectName: "Link MVP" });
   const pasos = [
     ["1", "Registro de una semana", "3,3 detenciones por km; la ruta se borra"],
     ["2", "Modelo Ridge", "19,7% de ahorro, rango de 18,4% a 21,0%"],
@@ -174,12 +180,12 @@ async function icono(nombre, color, px = 256) {
   ];
   pasos.forEach(([n, t, d], i) => {
     const y = 1.6 + i * 1.28;
-    s.addShape(pres.shapes.OVAL, { x: 7.0, y: y + 0.1, w: 0.7, h: 0.7, fill: { color: i === 3 ? HEX.accent1 : HEX.accent2 }, line: { color: i === 3 ? HEX.accent1 : HEX.accent2 }, objectName: "Paso " + n });
-    txt(s, n, { x: 7.0, y: y + 0.1, w: 0.7, h: 0.7, fontSize: 20, bold: true, color: C.background1, align: "center", valign: "middle", objectName: "Número paso " + n });
-    txt(s, t, { x: 7.95, y: y, w: 4.75, h: 0.42, fontSize: 17, bold: true, color: C.text2, objectName: "Título paso " + n });
-    txt(s, d, { x: 7.95, y: y + 0.43, w: 4.75, h: 0.65, fontSize: 15, color: C.text2, objectName: "Texto paso " + n });
+    s.addShape(pres.shapes.OVAL, { x: 7.15, y: y + 0.1, w: 0.7, h: 0.7, fill: { color: i === 3 ? HEX.accent1 : HEX.accent2 }, line: { color: i === 3 ? HEX.accent1 : HEX.accent2 }, objectName: "Paso " + n });
+    txt(s, n, { x: 7.15, y: y + 0.1, w: 0.7, h: 0.7, fontSize: 20, bold: true, color: C.background1, align: "center", valign: "middle", objectName: "Número paso " + n });
+    txt(s, t, { x: 8.05, y: y, w: 4.65, h: 0.42, fontSize: 17, bold: true, color: C.text2, objectName: "Título paso " + n });
+    txt(s, d, { x: 8.05, y: y + 0.43, w: 4.65, h: 0.65, fontSize: 15, color: C.text2, objectName: "Texto paso " + n });
   });
-  s.addNotes("BENJAMÍN (40 s). Este es el prototipo funcionando. Un colectivo registra una semana con su celular; el sistema calcula once variables y borra la ruta. El modelo estima 19,7% de ahorro, con un rango de 18,4% a 21%. El motor comercial lo traduce a lo que entiende el cliente: 159 mil pesos al mes y recuperar el kit en 22 meses con el escenario conservador. Claude escribe el mensaje y el validador confirma cada número. Esta es también la conexión entre el modelo matemático y el prompt que nos pidió explicar mejor.");
+  s.addNotes("BENJAMÍN (45 s). Este es el MVP funcionando, publicado como artefacto de Claude: pueden abrirlo con el código QR. [Reproducir el video o abrir el link.] Un colectivo registra una semana con su celular; el sistema calcula once variables y borra la ruta. El modelo estima 19,7% de ahorro, con un rango de 18,4% a 21%. El motor comercial lo traduce a lo que entiende el cliente: 159 mil pesos al mes y recuperar el kit en 22 meses con el escenario conservador. Si el técnico ajusta la cifra, el cambio queda registrado con su motivo.");
 
   // ---------------------------------------------------------------- 6. Resultados del modelo
   pres.addSection({ title: "Resultados" });
@@ -207,7 +213,7 @@ async function icono(nombre, color, px = 256) {
     txt(s, n, { x: 8.45, y: y + 0.15, w: 4.0, h: 0.55, fontSize: 24, bold: true, color: i === 1 ? C.accent1 : C.accent2, objectName: "Cifra resultado " + (i + 1) });
     txt(s, l, { x: 8.45, y: y + 0.72, w: 4.0, h: 0.7, fontSize: 14, color: i === 1 ? C.background1 : C.text2, objectName: "Texto resultado " + (i + 1) });
   });
-  s.addNotes("BENJAMÍN (50 s). Los resultados. En diez particiones de conductores que el modelo nunca vio, la cifra genérica erra por 7,9 puntos y nuestro modelo final por 0,77. Un hallazgo: la regresión Ridge, más simple, le ganó al gradient boosting en las diez, así que la adoptamos. El ahorro mediano es 19,6% en colectivos y 15 a 16% en el resto. En datos reales el error sube a 2 puntos, pero al recalibrar con datos reales baja a 1,3 y el intervalo cubre 78%. Por eso el modelo solo se usa comercialmente después de recalibrarlo. Lukas sigue con la seguridad.");
+  s.addNotes("BENJAMÍN (40 s). En diez particiones de conductores que el modelo nunca vio, la cifra genérica erra por 7,9 puntos y nuestro modelo por 0,77. La regresión Ridge le ganó al gradient boosting en las diez, así que la adoptamos. El ahorro mediano es 19,6% en colectivos y 15 a 16% en el resto. En datos reales, al recalibrar, el error es 1,3 puntos y el intervalo cubre 78%. Lukas sigue.");
 
   // ---------------------------------------------------------------- 7. Capa generativa y auditoría
   s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Resultados" });
@@ -233,7 +239,30 @@ async function icono(nombre, color, px = 256) {
     txt(s, t, { x: 8.2, y: y + 0.15, w: 4.3, h: 0.42, fontSize: 16, bold: true, color: C.text2, objectName: "Título auditoría " + (i + 1) });
     txt(s, d, { x: 8.2, y: y + 0.57, w: 4.3, h: 0.85, fontSize: 12.5, color: C.text2, objectName: "Texto auditoría " + (i + 1) });
   }
-  s.addNotes("LUKAS (45 s). La capa generativa se probó con 12 casos fijos. La primera versión no aprobó ninguno: inventaba ahorros anuales y decía que el kit era legal. Con la estructura RAFA, reglas por estado y cifras cerradas, la versión final aprobó los 12. Después la atacamos: Grok escribió diez notas tramposas y ChatGPT las respondió con nuestras instrucciones; resistió las diez. Además, cinco IA auditaron el trabajo, y dos encontraron por separado el mismo error, que corregimos. También aprendimos que exageran e inventan, así que todo se verificó.");
+  s.addNotes("LUKAS (30 s). Probamos el prompt con 12 casos fijos. La primera versión no aprobó ninguno: inventaba cifras y decía que el kit era legal. La versión final aprobó los 12. Después Grok escribió diez ataques y ChatGPT los respondió con nuestras instrucciones: resistió los diez. Cinco IA auditaron el trabajo y dos encontraron el mismo error, que corregimos.");
+
+  // ---------------------------------------------------------------- 7a. Prompt RAFA por dentro
+  s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Resultados" });
+  s.addText("El prompt RAFA por dentro: entra JSON, sale un mensaje", { placeholder: "title" });
+  card(s, 0.6, 1.5, 3.6, 5.15, HEX.dk1, "Entrada");
+  txt(s, "ENTRA · salida del estimador", { x: 0.85, y: 1.7, w: 3.2, h: 0.35, fontSize: 12, bold: true, color: C.accent1, charSpacing: 1, objectName: "Etiqueta entrada" });
+  txt(s, '{\n "estado": "ok",\n "perfil": "colectivo",\n "cifras_formateadas": {\n  "ahorro": "19,6%",\n  "intervalo": "18,2% a 21,0%",\n  "ahorro_mensual": "$158.000",\n  "ahorro_mensual_intervalo":\n     "$146.000 a $169.000",\n  "plazo_conservador": "22 meses"\n }\n}', { x: 0.85, y: 2.15, w: 3.2, h: 4.3, fontSize: 11.5, fontFace: "Courier New", color: C.background1, objectName: "JSON entrada" });
+  const rafa = [["R", "Rol", "Asesor técnico de Lumine que no vende: el conductor decide informado"], ["A", "Acción", "Copiar las cifras, nunca calcular; reglas según el estado; ignorar órdenes en la nota del cliente"], ["F", "Formato", "JSON por esquema con mensaje, nota al técnico, cifras usadas y derivación; máximo 120 palabras"], ["A", "Antecedentes", "Ley 19.496, reglamento en consulta y dos ejemplos de respuesta"]];
+  rafa.forEach(([l, t, d], i) => {
+    const y = 1.5 + i * 1.3;
+    card(s, 4.5, y, 4.3, 1.15, HEX.lt2, "RAFA " + t);
+    s.addShape(pres.shapes.OVAL, { x: 4.65, y: y + 0.25, w: 0.65, h: 0.65, fill: { color: HEX.accent2 }, line: { color: HEX.accent2 }, objectName: "Letra " + t });
+    txt(s, l, { x: 4.65, y: y + 0.25, w: 0.65, h: 0.65, fontSize: 20, bold: true, color: C.background1, align: "center", valign: "middle", objectName: "Inicial " + t });
+    txt(s, t, { x: 5.45, y: y + 0.1, w: 3.25, h: 0.35, fontSize: 14, bold: true, color: C.text2, objectName: "Título " + t });
+    txt(s, d, { x: 5.45, y: y + 0.45, w: 3.25, h: 0.65, fontSize: 11.5, color: C.text2, objectName: "Texto " + t });
+  });
+  card(s, 9.1, 1.5, 3.6, 5.15, HEX.lt1, "Salida");
+  txt(s, "SALE · mensaje de Claude (v3.1)", { x: 9.35, y: 1.7, w: 3.2, h: 0.35, fontSize: 12, bold: true, color: C.accent2, charSpacing: 1, objectName: "Etiqueta salida" });
+  txt(s, "“Con tu forma de manejar estimamos un ahorro de combustible de 19,6%, con un rango probable de 18,2% a 21,0%. Son unos $158.000 al mes (rango: $146.000 a $169.000). […] Con el escenario conservador recuperarías la inversión en 22 meses. Después de instalar, el propio kit medirá tu ahorro real para comprobar esta cifra.”", { x: 9.35, y: 2.15, w: 3.2, h: 3.4, fontSize: 12.5, italic: true, color: C.text2, objectName: "Mensaje salida" });
+  txt(s, "Validador: 9 de 9 criterios ✓", { x: 9.35, y: 5.85, w: 3.2, h: 0.5, fontSize: 14, bold: true, color: C.accent4, objectName: "Validador salida" });
+  s.addShape(pres.shapes.RIGHT_ARROW, { x: 4.22, y: 3.85, w: 0.26, h: 0.4, fill: { color: HEX.accent5 }, line: { color: HEX.accent5 }, objectName: "Flecha entrada" });
+  s.addShape(pres.shapes.RIGHT_ARROW, { x: 8.82, y: 3.85, w: 0.26, h: 0.4, fill: { color: HEX.accent5 }, line: { color: HEX.accent5 }, objectName: "Flecha salida" });
+  s.addNotes("LUKAS (35 s). Así se aplica el prompt. A la izquierda entra lo que calcula el modelo: un JSON con cifras ya formateadas, sin precio del kit ni ubicación. Al centro, el prompt con estructura RAFA: rol, acción, formato y antecedentes. A la derecha, lo que escribe Claude: copia las cifras con su rango y no inventa ninguna. El validador revisa nueve criterios antes de que el cliente lo vea.");
 
   // ---------------------------------------------------------------- 7b. Cómo lo construimos
   s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Resultados" });
@@ -278,7 +307,7 @@ async function icono(nombre, color, px = 256) {
     txt(s, t, { x: x + 1.4, y: y + 0.38, w: 4.3, h: 0.5, fontSize: 18, bold: true, color: i === 3 ? C.background1 : C.text2, objectName: "Título " + t });
     txt(s, d, { x: x + 0.3, y: y + 1.25, w: 5.4, h: 1.0, fontSize: 14, color: i === 3 ? C.background2 : C.text2, objectName: "Texto " + t });
   }
-  s.addNotes("LUKAS (40 s). El uso responsable no es un anexo, está en el diseño. La ubicación revela domicilio y rutinas, así que pedimos consentimiento específico, borramos la ruta y la IA generativa nunca recibe datos personales. Toda cifra lleva su rango y medimos si el intervalo es igual de confiable para todos: hoy no lo es del todo para particulares. Cada decisión tiene un responsable humano, y una regla con cinco gatillos detiene el sistema si la promesa deja de cumplirse.");
+  s.addNotes("LUKAS (30 s). El uso responsable está en el diseño: consentimiento para la ubicación, borrado de la ruta y ningún dato personal para la IA generativa. Toda cifra lleva su rango, cada decisión tiene un responsable humano y una regla con cinco gatillos detiene el sistema si la promesa deja de cumplirse.");
 
   // ---------------------------------------------------------------- 9. Implementación y economía
   s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Implementación" });
@@ -309,7 +338,29 @@ async function icono(nombre, color, px = 256) {
     txt(s, n, { x: 7.85, y: y + 0.15, w: 4.6, h: 0.65, fontSize: 32, bold: true, color: i === 1 ? C.accent1 : C.accent2, objectName: "Valor económico " + (i + 1) });
     txt(s, l, { x: 7.85, y: y + 0.85, w: 4.6, h: 0.55, fontSize: 14, color: i === 1 ? C.background1 : C.text2, objectName: "Etiqueta económica " + (i + 1) });
   });
-  s.addNotes("LUKAS (40 s). La implementación va por fases y cada una termina en una decisión. Primero, cambiar ya el “hasta 25%” por la cotización con intervalo. Luego, un piloto A/B que mida si la estimación personal aumenta el agendamiento, y diez instalaciones con telemetría para recalibrar. El estimador cuesta unos 9 millones el primer año y se paga si sube el agendamiento en 3 puntos; con 5 puntos, el retorno es de 68%. Si no cambia nada, se pierde el costo: por eso el A/B va primero.");
+  s.addNotes("LUKAS (30 s). Implementamos por fases y cada una termina en una decisión: primero cambiar el “hasta 25%” por la cotización con intervalo; luego un A/B que mida si la estimación personal aumenta el agendamiento. El estimador cuesta unos 9 millones el primer año y se paga si el agendamiento sube 3 puntos.");
+
+  // ---------------------------------------------------------------- 9b. Del proyecto al sitio comercial
+  s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Implementación" });
+  s.addText("Lo que construimos ya alimenta el sitio comercial", { placeholder: "title" });
+  s.addImage({ path: path.join(FIG5, "sitio_portada.png"), x: 0.6, y: 1.5, w: 3.6, h: 2.25, altText: "Portada del sitio comercial de Lumine", objectName: "Sitio portada" });
+  s.addImage({ path: path.join(FIG5, "sitio_calculadora.png"), x: 0.6, y: 3.9, w: 4.6, h: 2.81, altText: "Calculadora de gasto del sitio comercial", objectName: "Sitio calculadora" });
+  s.addImage({ path: path.join(FIG5, "qr_sitio.png"), x: 4.35, y: 1.5, w: 1.3, h: 1.3, altText: "Código QR del sitio comercial", objectName: "QR sitio" });
+  txt(s, "Sitio Lumine", { x: 4.35, y: 2.85, w: 1.5, h: 0.3, fontSize: 11, bold: true, color: C.accent2, objectName: "Etiqueta QR sitio" });
+  const aportes = [
+    ["20% validado", "La referencia del sitio coincide con la mediana de los colectivos (19,6%); para otros perfiles deriva al diagnóstico"],
+    ["Misma fórmula", "Gasto = km × días × 4,33 ÷ rendimiento × $1.459, igual en la calculadora y en el estimador"],
+    ["“Si no conviene, no instalamos”", "Es el estado no_conviene del estimador: plazo conservador sobre 48 meses"],
+    ["Verificación con telemetría", "El sitio promete medir el ahorro real: es el nivel 3 del estimador"],
+    ["Estimaciones de ingeniería", "Escenarios del kit (15 a 30 kW, 1 a 2 kWh) y ahorro por perfil para el TIG"],
+  ];
+  aportes.forEach(([t, d], i) => {
+    const y = 1.5 + i * 1.04;
+    card(s, 6.0, y, 6.7, 0.92, HEX.lt2, "Aporte " + (i + 1));
+    txt(s, t, { x: 6.2, y: y + 0.08, w: 6.3, h: 0.32, fontSize: 14, bold: true, color: C.accent2, objectName: "Título aporte " + (i + 1) });
+    txt(s, d, { x: 6.2, y: y + 0.42, w: 6.3, h: 0.45, fontSize: 12, color: C.text2, objectName: "Texto aporte " + (i + 1) });
+  });
+  s.addNotes("DIEGO (30 s). Y esto no quedó en el ramo. El sitio comercial de Lumine ya usa lo que construimos: su referencia de 20% es la mediana que validamos para colectivos, la calculadora usa la misma fórmula de gasto, la promesa de no instalar si no conviene es una regla del estimador y la verificación con telemetría es su tercer nivel. Además, el simulador entregó las estimaciones de ingeniería del kit para el TIG.");
 
   // ---------------------------------------------------------------- 10. Recomendación
   s = pres.addSlide({ masterName: "CIERRE_OSCURO", sectionTitle: "Implementación" });
@@ -330,8 +381,9 @@ async function icono(nombre, color, px = 256) {
     { text: "Límites: ", options: { bold: true, color: C.accent3 } },
     { text: "el ahorro es simulado con un kit supuesto, los datos reales son secundarios y el efecto sobre el cliente (H3) aún no se mide." },
   ], { x: 0.6, y: 5.45, w: 12.1, h: 0.6, fontSize: 15, color: C.background1, objectName: "Límites" });
-  txt(s, "Gracias. ¿Preguntas?", { x: 0.6, y: 6.25, w: 12.1, h: 0.55, fontSize: 22, bold: true, color: C.accent1, objectName: "Cierre" });
-  s.addNotes("DIEGO (35 s). Nuestra respuesta es sí, con una condición. La IA estima el ahorro de cada cliente diez veces mejor que la cifra genérica y lo comunica sin inventar, pero el intervalo solo es confiable después de recalibrarlo con datos reales. Recomendamos implementar con ajustes: retirar hoy el “hasta 25%”, medir con un A/B y habilitar el diagnóstico cuando la telemetría lo confirme. Los límites son claros: ahorro simulado, datos reales secundarios y el efecto en el cliente por medir. Gracias.");
+  txt(s, "Gracias. ¿Preguntas?", { x: 0.6, y: 6.25, w: 5.5, h: 0.55, fontSize: 22, bold: true, color: C.accent1, objectName: "Cierre" });
+  txt(s, "MVP: claude.ai/artifact/82sohbXt5ctMKPTXnYzwYx\nSitio: claude.ai/artifact/XGpgpuDtxJvtiAjbRDwJ2o", { x: 6.3, y: 6.15, w: 6.4, h: 0.7, fontSize: 12, color: C.background2, align: "right", objectName: "Links" });
+  s.addNotes("DIEGO (30 s). Nuestra respuesta es sí, con una condición: la IA estima el ahorro de cada cliente diez veces mejor que la cifra genérica y lo comunica sin inventar, pero el intervalo se recalibra con datos reales antes de prometer. Recomendamos implementar con ajustes: retirar hoy el “hasta 25%”, medir con un A/B y habilitar el diagnóstico cuando la telemetría lo confirme. Gracias.");
 
   const salida = path.join(RAIZ, "TIG_IA_Grupo01_LumineMotors_Presentacion.pptx");
   await pres.writeFile({ fileName: salida });

@@ -221,7 +221,7 @@ add(H1("4. Metodología y datos"),
 // ---------------- 5
 add(H1("5. Solución y resultados"),
   H2("5.1. Diseño funcional"),
-  P("El estimador opera en tres niveles: **cotización** con datos declarados, **diagnóstico** con una semana de registro y **verificación posventa** con la telemetría del kit. Seis estados de entrada (ok, con advertencia, no conviene, no aplica, fuera de dominio y datos insuficientes) deciden si hay cifra, advertencia, recomendación negativa o derivación al técnico, antes de que intervenga cualquier IA (Figura 1)."),
+  P("El estimador opera en tres niveles: **cotización** con datos declarados, **diagnóstico** con una semana de registro y **verificación posventa** con la telemetría del kit. Seis estados de entrada (ok, con advertencia, no conviene, no aplica, fuera de dominio y datos insuficientes) deciden si hay cifra, advertencia, recomendación negativa o derivación al técnico, antes de que intervenga cualquier IA (Figura 1). El MVP está publicado y operativo en claude.ai/artifact/82sohbXt5ctMKPTXnYzwYx, con los tres niveles funcionando en el navegador (Anexo G)."),
   figura("Diseño funcional del estimador: entradas, procesamiento, salidas y supervisión humana", "fig_diseno_funcional.png", 600,
     "Elaboración propia. H1 a H4 son los puntos de supervisión humana: técnico, asesor, gerencia e ingeniería."),
   H2("5.2. Del modelo matemático al mensaje"),
@@ -345,7 +345,7 @@ add(H1("8. Evaluación económica y KPIs"),
 add(H1("9. Conclusiones"),
   P(`**Respuesta a la pregunta.** Sí, con una condición. Un modelo de IA predictiva alimentado con una semana de conducción estima el ahorro de cada cliente con un error de ${cm(R11.MAE_mean, 2)} pp en conductores simulados y de 1,3 pp en jornadas reales una vez recalibrado, diez veces menos que la cifra genérica, y lo comunica sin distorsión gracias a una arquitectura donde la IA generativa no calcula. La condición es que el intervalo solo es confiable después de recalibrarlo con datos reales de Santiago, y que el efecto sobre la disposición a contratar, la segunda mitad de la pregunta, todavía debe medirse.`),
   P("**Recomendación.** Implementar con ajustes y por fases. La empresa debe retirar hoy el “hasta 25%” y reemplazarlo por la cotización con intervalo; medir con un A/B si la estimación personalizada aumenta el agendamiento; y habilitar el diagnóstico comercial solo cuando la telemetría de las primeras instalaciones confirme la cobertura. La promesa defendible para colectivos de Santiago es “alrededor de 20%, con tu propio rango”, y para conductores de aplicación y particulares, de 15% a 19%."),
-  P("**Límites del estudio.** El ahorro es simulado con un kit supuesto; los datos reales son secundarios y de otra ciudad; el levantamiento en terreno se eliminó del alcance; H3 no se contrastó; y la capa generativa se probó con una ejecución por caso. **Próximos pasos.** Obtener la ficha técnica de un proveedor del kit; consultar al 3CV sobre la compatibilidad con autos convertidos a gas; ejecutar el piloto A/B; instalar los primeros kits con telemetría; y publicar una versión v3.2 de las instrucciones que derive al técnico solo cuando corresponda."),
+  P("**Del proyecto al producto.** El trabajo ya alimenta el sitio comercial de Lumine (claude.ai/artifact/XGpgpuDtxJvtiAjbRDwJ2o): su calculadora usa la misma fórmula de gasto y la referencia de 20% que el estimador validó como mediana de los colectivos, promete no instalar cuando el kit no conviene, que es el estado “no conviene” del estimador, y verificar el ahorro con telemetría, su tercer nivel. El simulador, además, aportó al TIG los escenarios de ingeniería del kit. **Límites del estudio.** El ahorro es simulado con un kit supuesto; los datos reales son secundarios y de otra ciudad; el levantamiento en terreno se eliminó del alcance; H3 no se contrastó; y la capa generativa se probó con una ejecución por caso. **Próximos pasos.** Obtener la ficha técnica de un proveedor del kit; consultar al 3CV sobre la compatibilidad con autos convertidos a gas; ejecutar el piloto A/B; instalar los primeros kits con telemetría; y publicar una versión v3.2 de las instrucciones que derive al técnico solo cuando corresponda."),
 );
 
 // ================================================================== REFERENCIAS
@@ -524,7 +524,7 @@ ax(anexo("F", "Instrumentos para el piloto"),
 
 // G
 ax(anexo("G", "Evidencia del prototipo"),
-  P("El prototipo completo está en el repositorio del proyecto. La interfaz (entrega3/prototipo/app/index.html) es un archivo único que funciona sin conexión y corre el modelo en el navegador; se entrega en el archivo comprimido de anexos y basta abrirla en un navegador."),
+  P("El prototipo completo está en el repositorio del proyecto. La interfaz (entrega3/prototipo/app/index.html) es un archivo único que funciona sin conexión y corre el modelo en el navegador; se entrega en el archivo comprimido de anexos y basta abrirla en un navegador; también está publicada como MVP operativo en claude.ai/artifact/82sohbXt5ctMKPTXnYzwYx."),
   tabla(["Archivo", "Función"], [
     ["sim.py · dataset.py · validacion_fastsim.py", "Simulador del vehículo y del kit, datos de conducción y calibración contra FASTSim"],
     ["model.py · estimador.py", "Modelos, intervalos conformes, motor comercial, estados y plantilla de respaldo"],
