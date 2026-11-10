@@ -32,7 +32,8 @@ const cuerpo = [
   P("Antes de presentar", { size: 26, bold: true, color: "2B4C9B", after: 80 }),
   P("1. Abrir el MVP (claude.ai/artifact/82sohbXt5ctMKPTXnYzwYx) y el sitio (claude.ai/artifact/XGpgpuDtxJvtiAjbRDwJ2o) en pestañas del navegador, por si falla el video.", { after: 60 }),
   P("2. En la diapositiva 5, hacer clic en el video para reproducirlo (16 segundos) o cambiar a la pestaña del MVP y mostrar un caso en vivo.", { after: 60 }),
-  P("3. Preguntas probables: ¿por qué el ahorro es simulado? (no hay kit instalado; se verificará con telemetría); ¿por qué no hicieron terreno? (por tiempo, y con 40 encuestas la potencia era de 16%); ¿qué hizo cada IA? (tabla del capítulo 5.5 del informe).", { after: 240 }),
+  P("3. Cambios de expositor: no se anuncia al compañero. Cada bloque termina con una frase que abre el tema siguiente y quien sigue entra directo con su diapositiva.", { after: 60 }),
+  P("4. Preguntas probables: ¿por qué el ahorro es simulado? (no hay kit instalado; se verificará con telemetría); ¿por qué no hicieron terreno? (por tiempo, y con 40 encuestas la potencia era de 16%); ¿qué hizo cada IA? (tabla del capítulo 5.5 del informe).", { after: 240 }),
 ];
 diapos.forEach((d, i) => {
   cuerpo.push(P(`${i + 1}. ${d.titulo}`, { size: 24, bold: true, color: "1F2A44", after: 40 }));

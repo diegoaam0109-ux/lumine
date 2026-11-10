@@ -133,7 +133,7 @@ async function icono(nombre, color, px = 256) {
     s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 11.2, y: y + 0.22, w: 1.3, h: 0.42, rectRadius: 0.2, fill: { color: col }, line: { color: col }, objectName: "Estado " + (i + 1) });
     txt(s, e, { x: 11.2, y: y + 0.22, w: 1.3, h: 0.42, fontSize: 12, bold: true, color: C.background1, align: "center", valign: "middle", objectName: "Texto estado " + (i + 1) });
   });
-  s.addNotes("DIEGO (30 s). Nuestra pregunta tiene dos mitades: si la IA puede estimar el ahorro de cada cliente con precisión suficiente, y si eso cambia su disposición a contratar. Cumplimos tres de cinco objetivos. Los datos propios en terreno se eliminaron por tiempo y los sustituimos por jornadas reales de una base pública. La medición con clientes la rediseñamos: con 40 encuestas no habríamos detectado nada, así que proponemos un experimento A/B con 173 prospectos por grupo. Benjamín les muestra la herramienta.");
+  s.addNotes("DIEGO (30 s). Nuestra pregunta tiene dos mitades: si la IA puede estimar el ahorro de cada cliente con precisión suficiente, y si eso cambia su disposición a contratar. Cumplimos tres de cinco objetivos. Los datos propios en terreno se eliminaron por tiempo y los sustituimos por jornadas reales de una base pública. La medición con clientes la rediseñamos: con 40 encuestas no habríamos detectado nada, así que proponemos un experimento A/B con 173 prospectos por grupo. Para responderla construimos una herramienta de tres piezas.");
 
   // ---------------------------------------------------------------- 4. Herramienta
   pres.addSection({ title: "Herramienta" });
@@ -213,7 +213,7 @@ async function icono(nombre, color, px = 256) {
     txt(s, n, { x: 8.45, y: y + 0.15, w: 4.0, h: 0.55, fontSize: 24, bold: true, color: i === 1 ? C.accent1 : C.accent2, objectName: "Cifra resultado " + (i + 1) });
     txt(s, l, { x: 8.45, y: y + 0.72, w: 4.0, h: 0.7, fontSize: 14, color: i === 1 ? C.background1 : C.text2, objectName: "Texto resultado " + (i + 1) });
   });
-  s.addNotes("BENJAMÍN (40 s). En diez particiones de conductores que el modelo nunca vio, la cifra genérica erra por 7,9 puntos y nuestro modelo por 0,77. La regresión Ridge le ganó al gradient boosting en las diez, así que la adoptamos. El ahorro mediano es 19,6% en colectivos y 15 a 16% en el resto. En datos reales, al recalibrar, el error es 1,3 puntos y el intervalo cubre 78%. Lukas sigue.");
+  s.addNotes("BENJAMÍN (40 s). En diez particiones de conductores que el modelo nunca vio, la cifra genérica erra por 7,9 puntos y nuestro modelo por 0,77. La regresión Ridge le ganó al gradient boosting en las diez, así que la adoptamos. El ahorro mediano es 19,6% en colectivos y 15 a 16% en el resto. En datos reales, al recalibrar, el error es 1,3 puntos y el intervalo cubre 78%. Pero una buena cifra no sirve si la IA que la comunica la distorsiona.");
 
   // ---------------------------------------------------------------- 7. Capa generativa y auditoría
   s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Resultados" });
