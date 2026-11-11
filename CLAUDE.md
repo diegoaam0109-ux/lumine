@@ -157,19 +157,26 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   resultados de la simulación). La batería del kit es litio-titanato: no usar el precio LFP como argumento de costo.
 - Descripción del problema (1.1): máximo 2 a 2,5 páginas, solo lo necesario.
 - **Capítulo III (Fase 3) alineado (11-11-2026)**, sobre la versión entregada el 23-10-2026, con control de cambios:
-  - Misma vía regulatoria que los capítulos I y II: proyecto experimental (D.S. N° 67) → reglamento propio → venta, con
-    una «etapa de prueba» antes de la preapertura (rodaje de unos seis meses, ~33.000 km, medición por un tercero). El
-    borrador de 2021 queda solo como referencia técnica de umbrales: sin artículos ni anotación en el registro de vehículos.
+  - Misma vía regulatoria que los capítulos I y II: proyecto experimental (D.S. N° 67) → reglamento propio → venta. La
+    «etapa de prueba» (meses −12 a −4) es distinta de la preapertura (−3 a −1) y usa un equipo mínimo: los socios
+    postulan, el Responsable Técnico entra en el mes −12 y un técnico de alta tensión en el −9; seis vehículos de prueba,
+    ~33.000 km cada uno, medición por un tercero. La preapertura empieza con los resultados y el reglamento aprobado o en
+    camino (decisión del equipo, 11-11). Mismo calendario que el Plan Financiero en curso (rama `fase4-plan-financiero`).
+    El borrador de 2021 queda solo como referencia técnica: sin artículos ni anotación en el registro de vehículos.
   - Meses relativos: mes 1 = apertura comercial (ya no «enero de 2027»). Las cifras no se recalcularon; se declara que con
     una apertura posterior a abril de 2028 la jornada de 40 horas baja 4,8% la capacidad de los primeros 16 meses, y que
     la etapa de prueba se valoriza en el Plan Financiero.
-  - Expertos: hallazgos en el texto (apartado 3.1.3.2), cada uno una sola vez con nombre y cargo en una ficha; **sin notas
-    al pie ni bibliografía para las entrevistas** (prohibición expresa del equipo). La entrevista exploratoria no se nombra.
-    Encuesta y entrevistas en profundidad: sin resultados todavía; irán en un 3.1.3.3.
+  - Expertos: en el cuerpo (3.1.3.2) van la ficha con nombre y cargo, las conclusiones comunes y su efecto en el plan; el
+    detalle por experto va en el anexo de instrumentos (letra d). **Sin notas al pie ni bibliografía para las entrevistas**
+    (prohibición expresa del equipo). La entrevista exploratoria no se nombra. Encuesta y entrevistas en profundidad: sin
+    resultados todavía; irán en un 3.1.3.3. No se inventan entrevistas.
+  - Datos preliminares para el Plan Financiero en el Anexo 16 (costo de la etapa de prueba, local desde el mes −9, kits de
+    prueba, efecto de la jornada de 40 horas y del aporte del empleador). La Red Lumine queda abierta: número de talleres,
+    ritmo y cobros se fijan con el Plan Financiero.
   - Cifras compartidas con los capítulos I y II: bencina $1.538 (2-11-2026), MG3 Hybrid, gas hasta siete años desde la primera
     inscripción, 3,4 usados por cada nuevo, «Red Lumine». Colectivo de referencia de 213 km diarios como supuesto dentro del
     rango de 150 a 250 km del modelo de negocio; recuperación por kilometraje en la Tabla N° 9.
-  - Para unir: Tablas N° 1–24, Figuras N° 1–6 (los capítulos I y II no numeran tablas) y Anexos 6–15 con el formato
+  - Para unir: Tablas N° 1–24, Figuras N° 1–6 (los capítulos I y II no numeran tablas) y Anexos 6–16 con el formato
     «Anexo 6»; el 3.4 se llama «Síntesis de los planes funcionales». Las figuras se redibujaron en el estilo claro de los
     anexos de los capítulos I y II.
 
@@ -179,9 +186,10 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   Financiero o la versión final de la Fase 3 las contradicen (ahorro, financiamiento de la etapa sin ventas). Detalles que
   el equipo decidió no tocar: bencina citada a preciocombustible.cl (no a Bencina en Línea/CNE), nota de Movener sin enlace
   y cifra del gas de BioBioChile ($900.000 a $1,8 millones) sin confirmar. Actualizar el índice en Word antes de exportar.
-- Capítulo III: confirmar el cargo exacto del experto de mecánica y que el experto de transporte acepta aparecer con nombre
-  (se le pidió solo el cargo); sumar los resultados de la encuesta y de las entrevistas en profundidad; confirmar la
-  dotación adelantada de la etapa de prueba (propuesta del equipo del 01-11) y valorizarla en el Plan Financiero.
+- Capítulo III: confirmar los cargos de los expertos del Estado y de mecánica (no aparecen en la web); sumar los
+  resultados de la encuesta (el análisis con GPT se pidió en otro chat) y de las entrevistas en profundidad; al cerrar el
+  Plan Financiero, alinear lo que hoy difiere (apertura, red, rentas, costo del kit, dinamómetro, financiamiento al
+  cliente) y reemplazar los datos preliminares del Anexo 16.
 
 - Datos comerciales reales (precio, % de ahorro, garantía, tiempo de instalación, contacto): en proceso; no inventarlos.
 - ¿Agregar un tutor con IA dentro de los módulos de Habilita? Sin respuesta.
