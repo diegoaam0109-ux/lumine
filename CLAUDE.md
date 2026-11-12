@@ -234,6 +234,10 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   directo: 284 → 807 instalaciones, un taller, 6 dúos, 25 personas; VAN −$396 MM. VAN cero con el kit 5,5% más barato
   (≈USD 3.130). El rango del equipo (USD 1.800–2.500) corresponde a la especificación anterior (1,5/3 kW, 21 celdas). Pendiente: que el
   equipo elija cómo llevarlo al capítulo (A: condición de avance; B: punto medio; C: volver a la especificación menor).
+- **Capítulo III v6 (12-11, opción A aplicada; el equipo revisará los números).** Generador en el scratchpad (`r4/gen/`, datos de
+  `res6.json`, `mensual6.json` y `escenarios6.json`, exportados por `pf/.../exportar6.py`). Nuevo: resultados de la encuesta con
+  la tabla H1–H6, demanda por tres límites con escenarios, decisiones y umbrales en las conclusiones, textos de Lukas. Cuerpo de unas
+  69 páginas: falta el recorte a 58–60 (segmentación, actores, conclusiones de la investigación). Entrega en `entrega/fase3_v6/`.
 
 - Informe final, Fases 1 y 2 **cerradas** (09-11-2026, archivo «Corregida1» revisado). Se reabren solo si el Plan
   Financiero o la versión final de la Fase 3 las contradicen (ahorro, financiamiento de la etapa sin ventas). Detalles que
