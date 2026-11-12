@@ -201,7 +201,8 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
     nube y su idNorma no se pudo verificar). Si los capítulos I y II usan el formato antiguo, se pasan a este al unir el informe.
     Las referencias con corchetes ([INE], [Conjunto de datos]) cortaban las notas al pie; el generador ya cuenta la profundidad.
   - Investigación: 4 exploratorias (3 de las Fases 1–2 + conductor de aplicación con pauta larga); 4 en profundidad hechas
-    (ruta larga, dueña que no maneja, uso familiar, traslado al trabajo; faltan colectivo o taxi y la de Benjamín); ninguna
+    (ruta larga, dueña que no maneja, uso familiar, traslado al trabajo; la de la dueña que no maneja fue por audio; uso familiar y traslado al trabajo fueron
+    presenciales el 9-11; falta solo colectivo o taxi); ninguna
     pauta se envió antes y todas duraron más de 15 min. Hallazgo central: solo el alto kilometraje urbano recupera la inversión;
     la autopista rinde menos, por lo que la prioridad son colectivos y taxis urbanos. Encuesta sin resultados (faltan los datos).
   - Propuestas para que las decida el equipo y las recoja el Plan Financiero: Gerencia General $2.500.000 (v5: $1.900.000); alza real de 2%
@@ -215,9 +216,11 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   Financiero o la versión final de la Fase 3 las contradicen (ahorro, financiamiento de la etapa sin ventas). Detalles que
   el equipo decidió no tocar: bencina citada a preciocombustible.cl (no a Bencina en Línea/CNE), nota de Movener sin enlace
   y cifra del gas de BioBioChile ($900.000 a $1,8 millones) sin confirmar. Actualizar el índice en Word antes de exportar.
-- Capítulo III (12-11): pedir transcripciones de las exploratorias, exportación de la encuesta, rúbricas de las Fases 1, 2 y 4 y el
-  syllabus; Lukas valida organigrama y rentas.
-- Capítulo III: confirmar los cargos de los expertos del Estado y de mecánica (no aparecen en la web); sumar los
+- Capítulo III (12-11): falta la entrevista al colectivero o taxista; la encuesta llega el 13-11; faltan las transcripciones de las
+  exploratorias, el syllabus y la rúbrica de la Fase 4 (las de las Fases 1, 2, 3 y 5 ya están); Lukas valida organigrama y rentas.
+- Experto de mecánica: su nombre y cargo no aparecen en la web; confirmarlos con quien hizo la entrevista. El cargo del
+  experto de la industria ya se confirmó con fuentes públicas.
+- Capítulo III: sumar los
   resultados de la encuesta (el análisis con GPT se pidió en otro chat) y de las entrevistas en profundidad; al cerrar el
   Plan Financiero, alinear lo que hoy difiere (apertura, red, rentas, costo del kit, dinamómetro, financiamiento al
   cliente) y reemplazar los datos preliminares del Anexo 16.
