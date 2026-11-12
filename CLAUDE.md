@@ -212,6 +212,17 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 
 ## Pendientes y preguntas abiertas
 
+- **Plan de mejora del Capítulo III (12-11-2026, tras la revisión de Diego y Lukas).** El plan completo está en el scratchpad de la
+  sesión (`plan_fase3/PLAN_MEJORA_FASE3.md`) y se le envió al equipo; no se sube. Diagnóstico: en el modelo las instalaciones son la
+  demanda de Bass completa (la capacidad nunca limita y se supone captar el 100% de los adoptantes); el costo del kit usa un punto
+  medio con un mejor caso sin respaldo; la cartera del crédito directo al año 5 supera el EBITDA acumulado; conviven dos versiones
+  de remuneraciones. Método acordado para rehacer la demanda: ventas = el menor entre demanda adoptante, capacidad comercial
+  (embudo por canal) y capacidad operativa; mercado en bloques (colectivos y taxis de registro como núcleo, aplicaciones como cota
+  superior); cada filtro una sola vez; tres escenarios con supuestos con nombre. La encuesta (201 respuestas, 196 válidas, corte
+  12-11) es no probabilística: se usa como resultado de la muestra, nunca como tasa de compra. Decisiones que debe tomar el equipo
+  antes de ejecutar: costo central del kit, versión única de remuneraciones, crédito directo y quién actualiza el Plan Financiero.
+  Meta editorial: cuerpo de 58 a 60 páginas; lo repetido se elimina, no se manda a anexos.
+
 - Informe final, Fases 1 y 2 **cerradas** (09-11-2026, archivo «Corregida1» revisado). Se reabren solo si el Plan
   Financiero o la versión final de la Fase 3 las contradicen (ahorro, financiamiento de la etapa sin ventas). Detalles que
   el equipo decidió no tocar: bencina citada a preciocombustible.cl (no a Bencina en Línea/CNE), nota de Movener sin enlace
