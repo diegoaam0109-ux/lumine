@@ -182,14 +182,19 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
     y la sensibilidad (Anexo 18) salieron del cuerpo. El equipo pidió aplicar los cambios directamente (12-11) y comentar
     después sobre el documento: se entrega la versión con los cambios aplicados para sus comentarios en Word.
 - **Capítulo III reescrito (12-11-2026)** en respuesta a 110 comentarios de Diego y a la guía del compañero (base de supuestos →
-  demanda → operación → presupuestos; 7 reglas de concisión). 89 páginas: cuerpo 66, bibliografía 8 (solo lo citado), anexos 11.
+  demanda → operación → presupuestos; 7 reglas de concisión). 91 páginas: cuerpo 68, bibliografía 8 (solo lo citado), anexos 11.
   - Una sola versión de cifras con el Plan Financiero v5: año 0 = 2027 (prueba −12 a −4, preapertura −3 a −1), apertura en enero
     de 2028; Bass p = 0,0026 y q = 0,52 (ajuste propio a ventas de híbridos ANAC 2018–2025), techo 100% del segmento como cota
     superior más escenario de 50% (Talukdar et al., 2002); rampa mensual (22 → 35 en el año 1); 335 → 3.270 instalaciones;
     1 → 5 talleres, 3 → 28 dúos, 15 → 81 personas; red desde el año 3 (3, 5 y 8 talleres), cobrada por taller (entrada $6 M,
     $250.000 al mes, $45.000 por técnico); Lumine no revende kits.
   - Nunca «reglamento propio»: se dice «una norma que incluya los sistemas aditivos». Sin preguntas retóricas al iniciar, sin
-    negritas en el cuerpo, sin eslóganes. Notas al pie: solo la referencia APA sin URL; una fuente repetida va en forma breve.
+    negritas en el cuerpo, sin eslóganes.
+  - **Citas solo en APA 7** (pedido de Diego, 12-11): cada nota al pie lleva una referencia APA completa (con URL y «Recuperado el…»
+    si es web), repetida completa cuando se vuelve a citar. Ninguna cita informal: nada de «según el experto…», «como recomendó…»
+    ni frases textuales de entrevistados; lo propio se presenta como resultado de la investigación. Las fuentes de tablas con
+    datos externos también llevan su referencia. **Cero cursiva** en todo el informe (texto, títulos de tablas, «Fuente», notas y
+    bibliografía), igual que los capítulos I y II. La rúbrica de la Fase 5 exige APA 7 y que toda referencia esté citada.
   - Investigación: 4 exploratorias (3 de las Fases 1–2 + conductor de aplicación con pauta larga); 4 en profundidad hechas
     (ruta larga, dueña que no maneja, uso familiar, traslado al trabajo; faltan colectivo o taxi y la de Benjamín); ninguna
     pauta se envió antes y todas duraron más de 15 min. Hallazgo central: solo el alto kilometraje urbano recupera la inversión;
