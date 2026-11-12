@@ -195,6 +195,11 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
     ni frases textuales de entrevistados; lo propio se presenta como resultado de la investigación. Las fuentes de tablas con
     datos externos también llevan su referencia. **Cero cursiva** en todo el informe (texto, títulos de tablas, «Fuente», notas y
     bibliografía), igual que los capítulos I y II. La rúbrica de la Fase 5 exige APA 7 y que toda referencia esté citada.
+  - **Normas en APA 7, nunca «…Diario Oficial de la República de Chile, fecha»** (rechazado por Diego, 12-11): Organismo. (Año, día
+    de mes). Ley N° X: Título. Biblioteca del Congreso Nacional de Chile. https://www.bcn.cl/leychile/navegar?idLey=X (o idNorma).
+    El D.S. N° 67 enlaza a la página de proyectos experimentales de la Subsecretaría de Transportes (la BCN está bloqueada en la
+    nube y su idNorma no se pudo verificar). Si los capítulos I y II usan el formato antiguo, se pasan a este al unir el informe.
+    Las referencias con corchetes ([INE], [Conjunto de datos]) cortaban las notas al pie; el generador ya cuenta la profundidad.
   - Investigación: 4 exploratorias (3 de las Fases 1–2 + conductor de aplicación con pauta larga); 4 en profundidad hechas
     (ruta larga, dueña que no maneja, uso familiar, traslado al trabajo; faltan colectivo o taxi y la de Benjamín); ninguna
     pauta se envió antes y todas duraron más de 15 min. Hallazgo central: solo el alto kilometraje urbano recupera la inversión;
