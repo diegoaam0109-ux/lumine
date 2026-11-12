@@ -176,9 +176,11 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   - Cifras compartidas con los capítulos I y II: bencina $1.538 (2-11-2026), MG3 Hybrid, gas hasta siete años desde la primera
     inscripción, 3,4 usados por cada nuevo, «Red Lumine». Colectivo de referencia de 213 km diarios como supuesto dentro del
     rango de 150 a 250 km del modelo de negocio; recuperación por kilometraje en la Tabla N° 9.
-  - Para unir: Tablas N° 1–24, Figuras N° 1–6 (los capítulos I y II no numeran tablas) y Anexos 6–16 con el formato
+  - Para unir: Tablas N° 1–21, Figuras N° 1–6 (los capítulos I y II no numeran tablas) y Anexos 6–18 con el formato
     «Anexo 6»; el 3.4 se llama «Síntesis de los planes funcionales». Las figuras se redibujaron en el estilo claro de los
-    anexos de los capítulos I y II.
+    anexos de los capítulos I y II. Por concisión, los cobros a la red (Anexo 17), el uso de recursos críticos (Anexo 13)
+    y la sensibilidad (Anexo 18) salieron del cuerpo. El equipo pidió aplicar los cambios directamente (12-11) y comentar
+    después sobre el documento: se entrega la versión con los cambios aplicados para sus comentarios en Word.
 
 ## Pendientes y preguntas abiertas
 
