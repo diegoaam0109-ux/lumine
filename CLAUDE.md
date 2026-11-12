@@ -227,6 +227,13 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   (15-10 al 12-11) y solicitudes por correo a organizaciones del rubro el 9 y 10-11; se dice «se solicitó», nunca «colaboraron».
   Se ejecuta sin syllabus y sin la entrevista al colectivero (se declara como límite).
   Meta editorial: cuerpo de 58 a 60 páginas; lo repetido se elimina, no se manda a anexos.
+- **Números cerrados del plan (12-11, `plan_fase3/RESULTADOS_NUMEROS.md` en el scratchpad).** Modelo espejo del Plan Financiero
+  con demanda por bloques (techo 22.561: colectivos y taxis + 30% de autos de aplicación, × bencina 95,8% × intención definitiva con
+  precio 31,9%), Bass central p 0,03 / q 0,38 (Sultan et al., 1990) y bajo con p de híbridos, capacidad comercial ligada a la pauta
+  (cotización $10.000, conversión 30%), kit con costeo documentado, Gerencia $2.000.000 (INE ESI 2024), sin alza real y sin crédito
+  directo: 284 → 807 instalaciones, un taller, 6 dúos, 25 personas; VAN −$396 MM. VAN cero con el kit 5,5% más barato
+  (≈USD 3.130). El rango del equipo (USD 1.800–2.500) corresponde a la especificación anterior (1,5/3 kW, 21 celdas). Pendiente: que el
+  equipo elija cómo llevarlo al capítulo (A: condición de avance; B: punto medio; C: volver a la especificación menor).
 
 - Informe final, Fases 1 y 2 **cerradas** (09-11-2026, archivo «Corregida1» revisado). Se reabren solo si el Plan
   Financiero o la versión final de la Fase 3 las contradicen (ahorro, financiamiento de la etapa sin ventas). Detalles que
