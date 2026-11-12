@@ -234,6 +234,13 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   directo: 284 → 807 instalaciones, un taller, 6 dúos, 25 personas; VAN −$396 MM. VAN cero con el kit 5,5% más barato
   (≈USD 3.130). El rango del equipo (USD 1.800–2.500) corresponde a la especificación anterior (1,5/3 kW, 21 celdas). Pendiente: que el
   equipo elija cómo llevarlo al capítulo (A: condición de avance; B: punto medio; C: volver a la especificación menor).
+- **Capítulo III v7 (13-11, revisión integral).** Gerencia $2.470.000 bruta: la mediana del INE ESI ($2.000.000) es líquida.
+  p = 0,03 como central provisional: con p ≥ 0,015 los años 2–5 no cambian (limita la capacidad comercial); año 1 = meses 1–3
+  limitados por demanda y 4–12 por capacidad comercial; tres dúos desde la apertura. La segunda persona de Ingeniería entra por carga
+  (red ≥ 5 talleres). VAN cero con el kit −5,8% o con precio +5%, en un modelo auxiliar y con lo demás constante: no es prueba de
+  viabilidad. Intervención de 8,4 h frente a inmovilización objetivo de 1–2 días hábiles. Tablas nuevas: qué cambia en el auto, ruta
+  regulatoria (plazos verificados en el D.S. 67 y en el manual del MTT) y criterios del piloto. Fases 1–2 alineadas con control de
+  cambios (red sin venta de kits; sin «reglamento propio»). Entrega en `entrega/fase3_v7/`. Cuerpo de 72 páginas.
 - **Capítulo III v6 (12-11, opción A aplicada; el equipo revisará los números).** Generador en el scratchpad (`r4/gen/`, datos de
   `res6.json`, `mensual6.json` y `escenarios6.json`, exportados por `pf/.../exportar6.py`). Nuevo: resultados de la encuesta con
   la tabla H1–H6, demanda por tres límites con escenarios, decisiones y umbrales en las conclusiones, textos de Lukas. Cuerpo de unas
