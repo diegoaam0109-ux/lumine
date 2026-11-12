@@ -219,8 +219,13 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   de remuneraciones. Método acordado para rehacer la demanda: ventas = el menor entre demanda adoptante, capacidad comercial
   (embudo por canal) y capacidad operativa; mercado en bloques (colectivos y taxis de registro como núcleo, aplicaciones como cota
   superior); cada filtro una sola vez; tres escenarios con supuestos con nombre. La encuesta (201 respuestas, 196 válidas, corte
-  12-11) es no probabilística: se usa como resultado de la muestra, nunca como tasa de compra. Decisiones que debe tomar el equipo
-  antes de ejecutar: costo central del kit, versión única de remuneraciones, crédito directo y quién actualiza el Plan Financiero.
+  12-11) es no probabilística: se usa como resultado de la muestra, nunca como tasa de compra. Decisiones cerradas el 12-11: el costo del
+  kit se investiga con precios publicados y fuentes (el equipo espera USD 1.800 a 2.500, hipótesis por comprobar; el libro de
+  costos da más); las rentas se respaldan con datos por cargo (INE, mifuturo.cl, guías salariales), no con promedios genéricos;
+  el crédito directo sale del escenario central y se calcula el capital de trabajo de cada alternativa; el Plan Financiero se
+  recalcula en copia local y se entrega la lista de cambios. Difusión de la encuesta: redes sociales durante todo el período
+  (15-10 al 12-11) y solicitudes por correo a organizaciones del rubro el 9 y 10-11; se dice «se solicitó», nunca «colaboraron».
+  Se ejecuta sin syllabus y sin la entrevista al colectivero (se declara como límite).
   Meta editorial: cuerpo de 58 a 60 páginas; lo repetido se elimina, no se manda a anexos.
 
 - Informe final, Fases 1 y 2 **cerradas** (09-11-2026, archivo «Corregida1» revisado). Se reabren solo si el Plan
