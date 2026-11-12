@@ -181,6 +181,23 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
     anexos de los capítulos I y II. Por concisión, los cobros a la red (Anexo 17), el uso de recursos críticos (Anexo 13)
     y la sensibilidad (Anexo 18) salieron del cuerpo. El equipo pidió aplicar los cambios directamente (12-11) y comentar
     después sobre el documento: se entrega la versión con los cambios aplicados para sus comentarios en Word.
+- **Capítulo III reescrito (12-11-2026)** en respuesta a 110 comentarios de Diego y a la guía del compañero (base de supuestos →
+  demanda → operación → presupuestos; 7 reglas de concisión). 89 páginas: cuerpo 66, bibliografía 8 (solo lo citado), anexos 11.
+  - Una sola versión de cifras con el Plan Financiero v5: año 0 = 2027 (prueba −12 a −4, preapertura −3 a −1), apertura en enero
+    de 2028; Bass p = 0,0026 y q = 0,52 (ajuste propio a ventas de híbridos ANAC 2018–2025), techo 100% del segmento como cota
+    superior más escenario de 50% (Talukdar et al., 2002); rampa mensual (22 → 35 en el año 1); 335 → 3.270 instalaciones;
+    1 → 5 talleres, 3 → 28 dúos, 15 → 81 personas; red desde el año 3 (3, 5 y 8 talleres), cobrada por taller (entrada $6 M,
+    $250.000 al mes, $45.000 por técnico); Lumine no revende kits.
+  - Nunca «reglamento propio»: se dice «una norma que incluya los sistemas aditivos». Sin preguntas retóricas al iniciar, sin
+    negritas en el cuerpo, sin eslóganes. Notas al pie: solo la referencia APA sin URL; una fuente repetida va en forma breve.
+  - Investigación: 4 exploratorias (3 de las Fases 1–2 + conductor de aplicación con pauta larga); 4 en profundidad hechas
+    (ruta larga, dueña que no maneja, uso familiar, traslado al trabajo; faltan colectivo o taxi y la de Benjamín); ninguna
+    pauta se envió antes y todas duraron más de 15 min. Hallazgo central: solo el alto kilometraje urbano recupera la inversión;
+    la autopista rinde menos, por lo que la prioridad son colectivos y taxis urbanos. Encuesta sin resultados (faltan los datos).
+  - Propuestas para que las decida el equipo y las recoja el Plan Financiero: Gerencia General $2.500.000 (v5: $1.900.000); alza real de 2%
+    anual desde el año 2; Responsable Técnico desde el mes −12 (v5: −9); evaluar crédito directo a 36 meses.
+  - Organigrama: el Responsable Técnico es jefe de taller (con autoridad de detención); una sola Área Comercial.
+  - El generador del capítulo (texto completo) está en el scratchpad de la sesión y no se sube: el repositorio es público.
 
 ## Pendientes y preguntas abiertas
 
@@ -188,6 +205,8 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   Financiero o la versión final de la Fase 3 las contradicen (ahorro, financiamiento de la etapa sin ventas). Detalles que
   el equipo decidió no tocar: bencina citada a preciocombustible.cl (no a Bencina en Línea/CNE), nota de Movener sin enlace
   y cifra del gas de BioBioChile ($900.000 a $1,8 millones) sin confirmar. Actualizar el índice en Word antes de exportar.
+- Capítulo III (12-11): pedir transcripciones de las exploratorias, exportación de la encuesta, rúbricas de las Fases 1, 2 y 4 y el
+  syllabus; Lukas valida organigrama y rentas.
 - Capítulo III: confirmar los cargos de los expertos del Estado y de mecánica (no aparecen en la web); sumar los
   resultados de la encuesta (el análisis con GPT se pidió en otro chat) y de las entrevistas en profundidad; al cerrar el
   Plan Financiero, alinear lo que hoy difiere (apertura, red, rentas, costo del kit, dinamómetro, financiamiento al
