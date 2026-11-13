@@ -45,6 +45,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | `solemne-2/` | **Solemne 2 de Control de Gestión** (ICMA901): de la estrategia de Lumine a un CMI en red (17 objetivos, 20 relaciones). | `generador/deck.js` + `guion.js` + `render.sh` (mismo sistema que la Fase 3). `RESPALDO.md` tiene contradicciones, riesgos y respuestas para la defensa. El paquete del curso (docx, xlsx) no se sube. |
 | `control-3/` | **Control 3 de Control de Gestión** (ICMA901, Avance 1 del TIG, prof. Leonardo Lizana Contreras): puntos 3 a 6 del instructivo. | `generador/`: `deck.js` + `guion.js` + `guion-docx.js` + `render.sh`. El manual de defensa (`defensa-docx.js` y su .docx) cita el borrador del informe y no se sube, igual que el instructivo y el borrador. |
 | `tig-final/` | **Entrega final del TIG** de Control de Gestión (ICMA901): presentación del informe final, fondo claro «cuaderno de ingeniería» (17 láminas + bibliografía + anexo de 12). | `generador/`: `deck.js` + `guion.js` (guion, términos por integrante y banco de preguntas) + `guion-docx.js`; `render2.sh` para pruebas. El informe final (Word) y el Excel no se suben. |
+| `avance-2/` | **Solemne 2 = Avance 2 del TIG** (ICMA901, 17-11-2026): OVA, ejes, mapa y CMI. 10 láminas + portada, anexo de 14. `REGISTRO_CORRECCIONES.md` y `TIG_FINAL_INICIATIVAS_Y_STRATEX.md` (iniciativas y STRATEX para el 24-11). | `generador/`: `armar.sh` (arma `deck.js` desde el generador de `tig-final/` + `laminas.part.js` + `anexo.part.js`), `render2.sh`, `guion.js` (notas breves + texto ampliado), `guion-docx.js`. El informe v3 es local (`Descargas/Lumine_informes_TIG/informe-final-v3.js`, `MODO=avance2` para los puntos 1 a 9). |
 
 
 ## Artefactos publicados (cuenta de Diego)
@@ -149,6 +150,13 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - Cifras públicas verificadas: CNE (bencina 93 RM $1.168,9 → $1.538,9), CAVEM (3,5 usados por nuevo), Banco Central (PIB
   0,25%–0,75%; dólar $970,46), INE n.º 335 (desocupación 9,6%), BloombergNEF (LFP US$81/kWh). El «+9,7% de empleo en
   transporte» del instrumento 03 no tiene fuente chilena y se eliminó.
+
+**Avance 2 / Solemne 2 y TIG final** (12-11-2026, referencia: presentación del profesor «Control de Gestión Final 4118-1»):
+- Base común al 12-11-2026: la vía regulatoria es un proyecto experimental bajo el D.S. N° 67 (según el 3CV, el reglamento en trámite no
+  alcanza al kit) y después una norma propia, que en el mapa es condición externa (R03, R07), no objetivo. Batería de litio-titanato,
+  apertura en enero de 2028, visión 2032 con 2.934 instalaciones acumuladas y 16 talleres (Fase 3 v7). CMI de 17 objetivos y 21 relaciones
+  (7 habilitantes, 2 externas, 12 hipótesis). C2 mide el ahorro cumplido (el reporte pasa a P4); F1 por etapa; estados excluyentes por tipo.
+- Las matrices MEFE y MEFI justifican priorizar DO y DA, pero no autorizan la ofensiva: sin norma, la MEFE del escenario llegaría a 2,54.
 
 ## Pendientes y preguntas abiertas
 

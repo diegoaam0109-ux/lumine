@@ -1,0 +1,2 @@
+# render.sh se ejecuta con bash también en Windows (Git Bash): siempre con saltos de línea LF
+*.sh text eol=lf

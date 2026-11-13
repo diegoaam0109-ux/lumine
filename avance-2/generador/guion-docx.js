@@ -1,0 +1,99 @@
+// Escribe el guion de la Solemne 2 (Avance 2 del TIG) en Word desde guion.js: node guion-docx.js ../Lumine_Avance2_Solemne2_Guion.docx
+// Misma fuente que las notas del orador. Tamaño carta, Arial: se lee y se imprime en cualquier equipo.
+const fs = require('fs');
+const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType, PageBreak, Footer, PageNumber, TabStopType } = require('docx');
+const g = require('./guion.js');
+
+const OUT = process.argv[2] || '../Lumine_Avance2_Solemne2_Guion.docx';
+const AZUL = '0A6F9E', GRIS = '5F6B70', LINEA = 'C9D3D8', FONDO = 'EAF5FB', ANCHO = 9360;
+const quienes = [g.DIEGO, g.BENJA, g.LUKAS];
+const objetivo = { [g.DIEGO]: '≈ 4:00', [g.BENJA]: '≈ 4:00', [g.LUKAS]: '≈ 4:00' };
+const filas = g.PRINCIPAL.map((x, i) => Object.assign({ n: i + 1 }, x));
+const min = p => g.mmss(p / g.PALABRAS_POR_MINUTO * 60);
+const total = filas.reduce((a, x) => a + g.palabras(x.texto), 0);
+
+const p = (text, o = {}) => new Paragraph({ spacing: { before: o.before || 0, after: o.after ?? 120, line: o.line ?? 300 }, alignment: o.align, children: [new TextRun({ text, size: o.size || 22, bold: o.bold, italics: o.italics, color: o.color })] });
+const borde = { style: BorderStyle.SINGLE, size: 4, color: LINEA };
+function tabla(cols, filasT, o = {}) {
+  const celda = (t, w, head, bold) => new TableCell({
+    borders: { top: borde, bottom: borde, left: borde, right: borde }, width: { size: w, type: WidthType.DXA },
+    shading: head ? { fill: FONDO, type: ShadingType.CLEAR, color: 'auto' } : undefined,
+    margins: { top: 60, bottom: 60, left: 100, right: 100 },
+    children: [new Paragraph({ children: [new TextRun({ text: String(t), bold: head || bold, size: 19, color: head ? AZUL : undefined })] })],
+  });
+  return new Table({
+    width: { size: ANCHO, type: WidthType.DXA }, columnWidths: cols.map(c => c[1]),
+    rows: [new TableRow({ tableHeader: true, children: cols.map(([k, w]) => celda(k, w, true)) }),
+      ...filasT.map(f => new TableRow({ children: f.map((v, j) => celda(v, cols[j][1], false, o.negrita && o.negrita(f))) }))],
+  });
+}
+
+const hijos = [];
+hijos.push(p('LUMINE MOTORS · CONTROL DE GESTIÓN · ICMA901 · SECCIÓN 500 · NRC 4118', { size: 18, color: GRIS, after: 60 }));
+hijos.push(new Paragraph({ heading: HeadingLevel.TITLE, children: [new TextRun({ text: 'Guion · Solemne 2 · Avance 2 del TIG' })] }));
+hijos.push(p('Formulación OVA, ejes estratégicos, mapa y Cuadro de Mando Integral de Lumine Motors. Martes 17 de noviembre de 2026. Profesor Leonardo Lizana Contreras.', { italics: true, color: AZUL, size: 22, after: 200 }));
+hijos.push(p(`Exposición de unos 12 minutos (máximo 15): ${filas.length} láminas. La pauta pide no leer el relato. Por eso cada lámina tiene una nota breve para exponer (idea, evidencia, concepto del curso y transición), que es la que va en las notas del orador del PowerPoint, y un texto ampliado solo para ensayar: ${total.toLocaleString('es-CL')} palabras, unos ${min(total)} a ${g.PALABRAS_POR_MINUTO} palabras por minuto, más el tiempo de señalar las láminas. Diego abre y cierra. Cada integrante defiende un indicador completo: Diego P1, Benjamín C4 y Lukas C2 y F2.`));
+hijos.push(new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun({ text: 'Hoja de control de tiempos' })] }));
+hijos.push(tabla([['Lámina', 3300], ['Expositor', 1300], ['Apartado del informe', 2460], ['Palabras', 1150], ['Tiempo', 1150]],
+  [...filas.map(x => [`${x.n} · ${x.titulo}`, x.quien.split(' ')[0], x.seccion, g.palabras(x.texto), g.mmss(g.segundos(x.texto))]),
+    ['Total', '', '', total.toLocaleString('es-CL'), min(total)]], { negrita: f => f[0] === 'Total' }));
+hijos.push(p('', { after: 80 }));
+hijos.push(tabla([['Expositor', 2600], ['Láminas', 2160], ['Palabras', 1500], ['Tiempo estimado', 1600], ['Objetivo', 1500]],
+  quienes.map(q => { const f = filas.filter(x => x.quien === q), pal = f.reduce((s, x) => s + g.palabras(x.texto), 0); return [q, f.map(x => x.n).join(', '), pal, min(pal), objetivo[q]]; })));
+hijos.push(p('Cómo ensayar: lean el texto ampliado dos veces y después expongan solo con la nota breve. Cronometren el recorrido completo con los cambios de turno. Si alguien se pasa, recorta en su parte. No lean las 17 filas del CMI ni las 21 relaciones: muestren el conjunto y expliquen el caso de la lámina.', { color: GRIS, size: 20, before: 160 }));
+
+let anterior = null;
+filas.forEach(x => {
+  if (x.quien !== anterior) {
+    const f = filas.filter(y => y.quien === x.quien), pal = f.reduce((s, y) => s + g.palabras(y.texto), 0);
+    hijos.push(new Paragraph({ children: [new PageBreak()] }));
+    hijos.push(new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun({ text: x.quien + (anterior ? '' : ' · abre') + (x.d === 'cierre' ? ' · cierre' : '') })] }));
+    if (x.d !== 'cierre') {
+      hijos.push(p(`Láminas ${f.filter(y => y.d !== 'cierre').map(y => y.n).join(', ')} · unos ${min(pal)} en total (${pal} palabras).`, { color: GRIS, size: 20, after: 120 }));
+      hijos.push(p('Términos técnicos que debes dominar:', { size: 20, bold: true, after: 80 }));
+      hijos.push(tabla([['Término', 2600], ['Qué significa en nuestro trabajo', ANCHO - 2600]], g.TERMINOS[x.quien], { negrita: () => false }));
+      hijos.push(p('', { after: 120 }));
+    }
+    anterior = x.quien;
+  }
+  hijos.push(new Paragraph({
+    heading: HeadingLevel.HEADING_2, keepNext: true, tabStops: [{ type: TabStopType.RIGHT, position: ANCHO }],
+    children: [new TextRun({ text: `${x.n} · ${x.titulo}` }), new TextRun({ text: `\t${g.mmss(g.segundos(x.texto))}`, color: GRIS, bold: false })],
+  }));
+  hijos.push(p(`Informe: ${x.seccion}`, { size: 18, color: GRIS, after: 60 }));
+  const nb = (k, t) => new Paragraph({ spacing: { after: 50, line: 280 }, indent: { left: 240 }, children: [new TextRun({ text: k + '  ', bold: true, size: 21, color: AZUL }), new TextRun({ text: t, size: 22 })] });
+  hijos.push(p('Nota para exponer', { size: 18, bold: true, color: GRIS, after: 40 }));
+  hijos.push(nb('IDEA', x.idea), nb('EVIDENCIA', x.evidencia), nb('CONCEPTO', x.concepto), nb('TRANSICIÓN', x.transicion));
+  hijos.push(p('Texto ampliado para ensayar', { size: 18, bold: true, color: GRIS, before: 120, after: 40 }));
+  hijos.push(new Paragraph({ spacing: { after: 240, line: 312 }, children: [new TextRun({ text: x.texto, size: 22, color: '333333' })] }));
+});
+
+// Banco de preguntas probables, agrupado por quien responde
+hijos.push(new Paragraph({ children: [new PageBreak()] }));
+hijos.push(new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun({ text: 'Banco de preguntas probables' })] }));
+hijos.push(p('Responde quien expuso el tema. Respuesta corta, con la cifra y el autor; si piden detalle, se abre el anexo desde su índice (lámina del anexo indicada en la respuesta).', { color: GRIS, size: 20, after: 160 }));
+quienes.forEach(q => {
+  hijos.push(new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun({ text: `Responde ${q}` })] }));
+  g.PREGUNTAS.filter(x => x.quien === q).forEach((x, i) => {
+    hijos.push(new Paragraph({ keepNext: true, spacing: { before: 120, after: 40 }, children: [new TextRun({ text: `${i + 1}. ${x.p}`, bold: true, size: 22 })] }));
+    hijos.push(new Paragraph({ spacing: { after: 120, line: 300 }, indent: { left: 360 }, children: [new TextRun({ text: x.r, size: 22 })] }));
+  });
+});
+
+const doc = new Document({
+  creator: 'Diego Alarcón, Benjamín Torres y Lukas Verdugo', title: 'Guion · Solemne 2 · Lumine Motors',
+  styles: {
+    default: { document: { run: { font: 'Arial', size: 22 } } },
+    paragraphStyles: [
+      { id: 'Title', name: 'Title', basedOn: 'Normal', run: { size: 44, bold: true, color: '111111' }, paragraph: { spacing: { after: 120 } } },
+      { id: 'Heading1', name: 'Heading 1', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { size: 32, bold: true, color: AZUL }, paragraph: { spacing: { before: 120, after: 120 }, outlineLevel: 0 } },
+      { id: 'Heading2', name: 'Heading 2', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { size: 24, bold: true, color: '111111' }, paragraph: { spacing: { before: 240, after: 80 }, outlineLevel: 1, border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: LINEA, space: 4 } } } },
+    ],
+  },
+  sections: [{
+    properties: { page: { size: { width: 12240, height: 15840 }, margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 } } },
+    footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.RIGHT, children: [new TextRun({ text: 'Guion · Solemne 2 · Lumine Motors · página ', size: 16, color: GRIS }), new TextRun({ children: [PageNumber.CURRENT], size: 16, color: GRIS })] })] }) },
+    children: hijos,
+  }],
+});
+Packer.toBuffer(doc).then(b => { fs.writeFileSync(OUT, b); console.log('listo', OUT); });
