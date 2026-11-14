@@ -105,3 +105,28 @@ así:
   más caro, −$226,32 M.
 - **Colores del Tablero.** Quedaron fijos en el generador con la paleta del resto del libro (blanco, celeste y negro).
   La versión que retocó el complemento de Excel ya no hace falta.
+
+## Todo el libro con el formato del curso (14-11-2026, tarde)
+
+Diego observó que, aunque las hojas 1 a 7 ya estaban bien, el desglose de donde salían seguía siendo difícil de leer:
+tablas antiguas, en millones y con filas sin nombre. Los cambios:
+
+- **Todo en pesos.** El motor dejó de trabajar en millones, y ya no hay «/1000000» ni «*1000000» en las fórmulas
+  (solo quedan dentro de las etiquetas del gráfico de cascada). El presupuesto de software en Datos también pasó a
+  pesos.
+- **Sin duplicados en el motor.** «Motor inversión» y «Motor resultados» eran otra vez las hojas 1 y 2 del archivo
+  recibido, en millones. Se eliminaron y sus 255 fórmulas pasaron a «1 Inversión» y «2 Ingresos y costos», que ahora
+  leen directo el «Motor anual».
+- **Formato del curso en el motor.** Todas las hojas que quedan tienen títulos, encabezado celeste, secciones, pesos
+  sin decimales y rótulos en todas las filas.
+  - *Motor mensual:* encabezado con el mes en cada columna.
+  - *Motor anual:* formato según la unidad de cada fila.
+  - *Motor depreciación:* fila de meses y total por activo.
+  - *Motor financiero:* las 27 filas, que no tenían nombre, ahora lo tienen (resultado tributario, impuesto pagado,
+    flujo puro, préstamo, flujo del inversionista, cierres anuales), con una columna de total.
+  - *Motor sensibilidad:* cada uno de sus 47 bloques indica si es un caso de la tabla A5 o un paso de la búsqueda del
+    VAN = 0, y cada fila tiene su rótulo.
+  - *Datos, Controles, Notas y Datos del tablero:* misma paleta.
+- **Verificación.** `construir_v7.py` compara 19.935 valores: los de las hojas del curso y del Tablero son idénticos, y
+  los del motor son iguales o exactamente 1.000.000 de veces el valor anterior (el paso de millones a pesos). Sin
+  errores y sin hojas ocultas.

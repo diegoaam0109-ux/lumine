@@ -22,17 +22,25 @@ from openpyxl.utils import range_boundaries, get_column_letter as L, column_inde
 from openpyxl.styles import Font, PatternFill
 
 ENT, SAL = sys.argv[1], sys.argv[2]
+FASE = int(sys.argv[3]) if len(sys.argv) > 3 else 1
 w = openpyxl.load_workbook(ENT)
 
-PRES = ['Costos', 'Inversión', 'Calendario', 'Capital de trabajo', 'Flujo puro', 'Flujo inversionista', 'Deuda',
-        'Impuestos', '3 años', 'CT mensual', 'Equilibrio', 'Sensibilidad', 'Resumen']
-HOGAR = {'Costos': '2 Ingresos y costos', 'Inversión': '1 Inversión', 'Calendario': 'A1 Calendario inversión',
-         'Capital de trabajo': '3 Capital de trabajo', 'Flujo puro': '4 Flujo puro',
-         'Flujo inversionista': '5 Flujo financiado', 'Deuda': '5.1 Tabla de amortización', 'Impuestos': 'A4 Impuestos',
-         '3 años': 'A2 Caja mensual 3 años', 'CT mensual': 'A3 Capital trabajo mensual',
-         'Equilibrio': '7 Punto de equilibrio', 'Sensibilidad': 'A5 Sensibilidad', 'Resumen': '6 Tasa de descuento'}
-MOTOR_MM = {'Calc inversión', 'Calc resultados', 'Calc depreciación', 'Calc financiero', 'Calc sensibilidad'}
-CURSO = list(dict.fromkeys(HOGAR.values()))
+CURSO = ['1 Inversión', '2 Ingresos y costos', '3 Capital de trabajo', '4 Flujo puro', '5 Flujo financiado',
+         '5.1 Tabla de amortización', '6 Tasa de descuento', '7 Punto de equilibrio', 'A1 Calendario inversión',
+         'A2 Caja mensual 3 años', 'A3 Capital trabajo mensual', 'A4 Impuestos', 'A5 Sensibilidad']
+if FASE == 1:      # hojas duplicadas de la v6 (en millones) -> hojas del curso
+    PRES = ['Costos', 'Inversión', 'Calendario', 'Capital de trabajo', 'Flujo puro', 'Flujo inversionista', 'Deuda',
+            'Impuestos', '3 años', 'CT mensual', 'Equilibrio', 'Sensibilidad', 'Resumen']
+    HOGAR = {'Costos': '2 Ingresos y costos', 'Inversión': '1 Inversión', 'Calendario': 'A1 Calendario inversión',
+             'Capital de trabajo': '3 Capital de trabajo', 'Flujo puro': '4 Flujo puro',
+             'Flujo inversionista': '5 Flujo financiado', 'Deuda': '5.1 Tabla de amortización', 'Impuestos': 'A4 Impuestos',
+             '3 años': 'A2 Caja mensual 3 años', 'CT mensual': 'A3 Capital trabajo mensual',
+             'Equilibrio': '7 Punto de equilibrio', 'Sensibilidad': 'A5 Sensibilidad', 'Resumen': '6 Tasa de descuento'}
+    MOTOR_MM = {'Calc inversión', 'Calc resultados', 'Calc depreciación', 'Calc financiero', 'Calc sensibilidad'}
+else:              # hojas 1 y 2 del archivo recibido (ya en pesos) -> hojas 1 y 2 del curso
+    PRES = ['Calc inversión', 'Calc resultados']
+    HOGAR = {'Calc inversión': '1 Inversión', 'Calc resultados': '2 Ingresos y costos'}
+    MOTOR_MM = set()
 RENOMBRE = {'Mensual': 'Motor mensual', 'Anual': 'Motor anual', 'Calc inversión': 'Motor inversión',
             'Calc resultados': 'Motor resultados', 'Calc depreciación': 'Motor depreciación',
             'Calc financiero': 'Motor financiero', 'Calc sensibilidad': 'Motor sensibilidad',
@@ -75,12 +83,14 @@ def fila_de(hoja, etiqueta, inicio=False, col=2):
 # MAPA[(hoja_v6, col, fila)] = lista de (hoja_curso, col, fila, signo, escala)
 MAPA = defaultdict(list)
 ESPEJO = {}      # celda del curso -> (hoja_v6, col, fila, signo, escala)
-simple = re.compile(r"^=(-?)'([^']+)'!\$?([A-Z]+)\$?(\d+)(\*1000000)?$")
+simple = re.compile(r"^=(-?)\(*'([^']+)'!\$?([A-Z]+)\$?(\d+)(\*1000000)?\)*$")
 for h in CURSO:
     for row in w[h].iter_rows():
         for z in row:
             if isinstance(z.value, str):
                 m = simple.match(z.value)
+                if m and z.value.count('(') != z.value.count(')'):
+                    m = None
                 if m and m.group(2) in PRES:
                     s = -1 if m.group(1) else 1
                     k = M if m.group(5) else 1
@@ -100,43 +110,59 @@ def fila_equiv(h6, fila6, cols6, h, fila, cols, s=1, k=M):
         equivalente(h6, f'{a}{fila6}', h, f'{b}{fila}', s, k)
 
 
-AN = 'CDEFGH'
-for h6, h, fin in [('Flujo puro', '4 Flujo puro', 'Flujo de caja libre (FCL)'),
-                   ('Flujo inversionista', '5 Flujo financiado', 'Flujo de caja del inversionista')]:
-    fila_equiv(h6, 64, AN, h, fila_de(h, fin), AN)
-    fila_equiv(h6, 26, AN[1:], h, fila_de(h, 'EBITDA'), AN[1:])
-    fila_equiv(h6, 38, AN[1:], h, fila_de(h, 'Resultado antes de impuesto'), AN[1:])
-    fila_equiv(h6, 65, AN, h, fila_de(h, 'Flujo descontado'), AN)
-    fila_equiv(h6, 67, AN, h, fila_de(h, 'Flujo descontado acumulado'), AN)
-    equivalente(h6, 'C70', h, f"C{fila_de(h, 'VAN')}")
-    equivalente(h6, 'C71', h, f"C{fila_de(h, 'TIR')}", k=1)
-    equivalente(h6, 'C69', h, f"C{fila_de(h, 'Tasa de descuento', True)}", k=1)
-fila_equiv('Flujo puro', 6, AN[1:], '2 Ingresos y costos', fila_de('2 Ingresos y costos', 'Instalaciones'), AN[1:], k=1)
-fila_equiv('Flujo inversionista', 6, AN[1:], '2 Ingresos y costos', fila_de('2 Ingresos y costos', 'Instalaciones'), AN[1:], k=1)
-i1 = '1 Inversión'
-equivalente('Inversión', 'E13', i1, f"E{fila_de(i1, 'Total activo fijo')}")
-equivalente('Inversión', 'H39', i1, f"J{fila_de(i1, 'Total activo fijo')}")
-equivalente('Inversión', 'F24', i1, f"F{fila_de(i1, 'Total gastos de puesta en marcha')}")
-equivalente('Inversión', 'F29', i1, f"C{fila_de(i1, 'Desembolso total antes de abrir')}")
-equivalente('Inversión', 'F31', i1, f"C{fila_de(i1, 'Inversión equivalente en el año 0')}")
-c3 = '3 Capital de trabajo'
-fila_equiv('Capital de trabajo', 12, AN, c3, fila_de(c3, 'Capital de trabajo requerido al cierre'), AN)
-fila_equiv('Capital de trabajo', 13, AN, c3, fila_de(c3, 'Inversión en capital de trabajo (aumento del saldo)'), AN, s=-1)
-d5 = '5.1 Tabla de amortización'
-fila_equiv('Deuda', 50, AN, d5, fila_de(d5, 'Flujo neto de la deuda'), AN)
-equivalente('Deuda', 'C52', d5, f"C{fila_de(d5, 'VAN de la deuda (a Kd)')}")
-equivalente('Deuda', 'C53', d5, f"C{fila_de(d5, 'VAN ajustado', True)}")
-e7 = '7 Punto de equilibrio'
-fila_equiv('Equilibrio', 11, 'DEFGH', e7, fila_de(e7, 'Punto de equilibrio (instalaciones)'), 'CDEFG', k=1)
-c2 = '2 Ingresos y costos'
-fila_equiv('Costos', 23, 'EFGHI', c2, fila_de(c2, 'Margen de contribución'), 'DEFGH')
-fila_equiv('Costos', 41, 'EFGHI', c2, fila_de(c2, 'Resultado antes de depreciación', True), 'DEFGH')
-t6 = '6 Tasa de descuento'
-equivalente('Resumen', 'D38', t6, f"D{fila_de(t6, 'Flujo puro a WACC (referencia)')}")
+if FASE == 1:
+    AN = 'CDEFGH'
+    for h6, h, fin in [('Flujo puro', '4 Flujo puro', 'Flujo de caja libre (FCL)'),
+                       ('Flujo inversionista', '5 Flujo financiado', 'Flujo de caja del inversionista')]:
+        fila_equiv(h6, 64, AN, h, fila_de(h, fin), AN)
+        fila_equiv(h6, 26, AN[1:], h, fila_de(h, 'EBITDA'), AN[1:])
+        fila_equiv(h6, 38, AN[1:], h, fila_de(h, 'Resultado antes de impuesto'), AN[1:])
+        fila_equiv(h6, 65, AN, h, fila_de(h, 'Flujo descontado'), AN)
+        fila_equiv(h6, 67, AN, h, fila_de(h, 'Flujo descontado acumulado'), AN)
+        equivalente(h6, 'C70', h, f"C{fila_de(h, 'VAN')}")
+        equivalente(h6, 'C71', h, f"C{fila_de(h, 'TIR')}", k=1)
+        equivalente(h6, 'C69', h, f"C{fila_de(h, 'Tasa de descuento', True)}", k=1)
+    fila_equiv('Flujo puro', 6, AN[1:], '2 Ingresos y costos', fila_de('2 Ingresos y costos', 'Instalaciones'), AN[1:], k=1)
+    fila_equiv('Flujo inversionista', 6, AN[1:], '2 Ingresos y costos', fila_de('2 Ingresos y costos', 'Instalaciones'), AN[1:], k=1)
+    i1 = '1 Inversión'
+    equivalente('Inversión', 'E13', i1, f"E{fila_de(i1, 'Total activo fijo')}")
+    equivalente('Inversión', 'H39', i1, f"J{fila_de(i1, 'Total activo fijo')}")
+    equivalente('Inversión', 'F24', i1, f"F{fila_de(i1, 'Total gastos de puesta en marcha')}")
+    equivalente('Inversión', 'F29', i1, f"C{fila_de(i1, 'Desembolso total antes de abrir')}")
+    equivalente('Inversión', 'F31', i1, f"C{fila_de(i1, 'Inversión equivalente en el año 0')}")
+    c3 = '3 Capital de trabajo'
+    fila_equiv('Capital de trabajo', 12, AN, c3, fila_de(c3, 'Capital de trabajo requerido al cierre'), AN)
+    fila_equiv('Capital de trabajo', 13, AN, c3, fila_de(c3, 'Inversión en capital de trabajo (aumento del saldo)'), AN, s=-1)
+    d5 = '5.1 Tabla de amortización'
+    fila_equiv('Deuda', 50, AN, d5, fila_de(d5, 'Flujo neto de la deuda'), AN)
+    equivalente('Deuda', 'C52', d5, f"C{fila_de(d5, 'VAN de la deuda (a Kd)')}")
+    equivalente('Deuda', 'C53', d5, f"C{fila_de(d5, 'VAN ajustado', True)}")
+    e7 = '7 Punto de equilibrio'
+    fila_equiv('Equilibrio', 11, 'DEFGH', e7, fila_de(e7, 'Punto de equilibrio (instalaciones)'), 'CDEFG', k=1)
+    c2 = '2 Ingresos y costos'
+    fila_equiv('Costos', 23, 'EFGHI', c2, fila_de(c2, 'Margen de contribución'), 'DEFGH')
+    fila_equiv('Costos', 41, 'EFGHI', c2, fila_de(c2, 'Resultado antes de depreciación', True), 'DEFGH')
+    t6 = '6 Tasa de descuento'
+    equivalente('Resumen', 'D38', t6, f"D{fila_de(t6, 'Flujo puro a WACC (referencia)')}")
+else:
+    c2 = '2 Ingresos y costos'
+    D5 = 'DEFGH'
+    fila_equiv('Calc resultados', 14, D5, c2, fila_de(c2, 'Total ingresos'), D5, k=1)
+    fila_equiv('Calc resultados', 22, D5, c2, fila_de(c2, 'Total costos variables'), D5, s=-1, k=1)
+    fila_equiv('Calc resultados', 23, D5, c2, fila_de(c2, 'Margen de contribución'), D5, k=1)
+    fila_equiv('Calc resultados', 30, D5, c2, fila_de(c2, 'Total costos fijos de operación'), D5, s=-1, k=1)
+    fila_equiv('Calc resultados', 38, D5, c2, fila_de(c2, 'Total gastos de administración y ventas'), D5, s=-1, k=1)
+    fila_equiv('Calc resultados', 41, D5, c2, fila_de(c2, 'Resultado antes de depreciación', True), D5, k=1)
+    fila_equiv('Calc resultados', 42, D5, c2, fila_de(c2, 'EBITDA sobre ingresos'), D5, k=1)
+    i1 = '1 Inversión'
+    equivalente('Calc inversión', 'C13', i1, f"E{fila_de(i1, 'Total activo fijo')}", k=1)
+    equivalente('Calc inversión', 'F24', i1, f"F{fila_de(i1, 'Total gastos de puesta en marcha')}", k=1)
 
 
 def es_dinero(h6, c, r):
     """Unidad de una celda de la v6: por su espejo en el curso o, si no tiene, por su formato numérico."""
+    if FASE == 2:
+        return False                       # en la fase 2 todo ya está en pesos: no hay conversión
     for (_, _, _, s, k) in MAPA.get((h6, c, r), []):
         return k == M
     if str(w[h6].cell(r, 2).value or '').startswith('Payback'):
@@ -212,8 +238,8 @@ for h6, filas in AUX.items():
             MAPA[(h6, c, r)].append((HOGAR[h6], c, rr, 1, M if es_dinero(h6, c, r) else 1))
             orig = w[h6].cell(r, c)
             z = hc.cell(rr, c)
-            z.number_format = (r'_ "$"* #,##0_ ;_ "$"* \-#,##0_ ;_ "$"* "-"_ ;_ @_ ' if es_dinero(h6, c, r)
-                               else orig.number_format)
+            pesos = es_dinero(h6, c, r) if FASE == 1 else '%' not in orig.number_format
+            z.number_format = (r'_ "$"* #,##0_ ;_ "$"* \-#,##0_ ;_ "$"* "-"_ ;_ @_ ' if pesos else orig.number_format)
             z.font = Font(name='Calibri', size=9, color='595959')
         rr += 1
 print('Celdas auxiliares:', {h: sum(len(v) for v in f.values()) for h, f in AUX.items()})
@@ -429,6 +455,52 @@ restos = [(ws.title, z.coordinate, z.value[:80]) for ws in w.worksheets for row 
 assert not restos, f'quedan referencias a hojas eliminadas: {restos[:5]}'
 
 
+def sin_millones(formula):
+    """Quita las conversiones «/1000000» y «*1000000» (todo el libro pasa a pesos), salvo dentro de FIXED()."""
+    items = Tokenizer(formula).items
+    out, pila, i = [], [], 0
+    while i < len(items):
+        tk = items[i]
+        if tk.type == 'FUNC' and tk.subtype == 'OPEN':
+            pila.append(tk.value.upper())
+        elif tk.type == 'FUNC' and tk.subtype == 'CLOSE':
+            pila.pop()
+        if (tk.type == 'OPERATOR-INFIX' and tk.value in ('/', '*') and i + 1 < len(items)
+                and items[i + 1].type == 'OPERAND' and items[i + 1].value == '1000000' and 'FIXED(' not in pila):
+            i += 2
+            continue
+        out.append(tk.value)
+        i += 1
+    return '=' + ''.join(out)
+
+
+if FASE == 1:
+    # Todo el libro en pesos: el motor deja de trabajar en millones
+    for ws in w.worksheets:
+        for row in ws.iter_rows():
+            for z in row:
+                if isinstance(z.value, str) and z.value.startswith('=') and '1000000' in z.value:
+                    z.value = simplificar(sin_millones(z.value))
+    dd = w['Datos']
+    for r in DATOS_MM:
+        dd.cell(r, 4).value = '$'
+        dd.cell(r, 3).number_format = r'_ "$"* #,##0_ ;_ "$"* \-#,##0_ ;_ "$"* "-"_ ;_ @_ '
+    nt = w['Notas y cambios']
+    for row in nt.iter_rows():
+        if row[1].value in ('VAN puro', 'Inversión equivalente en t0', 'Déficit operativo (referencia)'):
+            for z in row[2:4]:
+                if isinstance(z.value, (int, float)):
+                    z.value = z.value * M
+                z.number_format = r'_ "$"* #,##0_ ;_ "$"* \-#,##0_ ;_ "$"* "-"_ ;_ @_ '
+        elif row[1].value == 'TIR pura':
+            for z in row[2:4]:
+                z.number_format = '0.00%'
+    w.calculation.fullCalcOnLoad = True
+    w.save(SAL)
+    print('Fase 1:', SAL, '·', len(nuevas), 'fórmulas movidas a las hojas del curso; libro en pesos')
+    sys.exit(0)
+
+
 # Renombrar el motor (y actualizar todas las referencias, incluidas las de los enlaces y gráficos)
 def renombrar_en(f):
     for viejo, nuevo in RENOMBRE.items():
@@ -469,11 +541,35 @@ orden = ['Tablero', 'Escenarios y cambios', 'Datos'] + CURSO[:0] + [
     '1 Inversión', '2 Ingresos y costos', '3 Capital de trabajo', '4 Flujo puro', '5 Flujo financiado',
     '5.1 Tabla de amortización', '6 Tasa de descuento', '7 Punto de equilibrio', 'A1 Calendario inversión',
     'A2 Caja mensual 3 años', 'A3 Capital trabajo mensual', 'A4 Impuestos', 'A5 Sensibilidad', 'Controles',
-    'Notas y cambios', 'Motor mensual', 'Motor anual', 'Motor inversión', 'Motor resultados', 'Motor depreciación',
+    'Notas y cambios', 'Motor mensual', 'Motor anual', 'Motor depreciación',
     'Motor financiero', 'Motor sensibilidad', 'Datos del tablero']
 assert sorted(orden) == sorted(w.sheetnames), set(w.sheetnames) ^ set(orden)
+
+# Paréntesis sobrantes alrededor de una sola referencia o de una sola función (no cambian el resultado)
+UNO = r"(?:'[^']+'!\$?[A-Z]{1,3}\$?\d+|[A-Za-z]+!\$?[A-Z]{1,3}\$?\d+|\$?[A-Z]{1,3}\$?\d+)"
+FUN = r"(?:SUM|INDEX|NPV|MIN|MAX)\((?:[^()]|\([^()]*\))*\)"
+
+
+def limpiar(f):
+    previo = None
+    while previo != f:
+        previo = f
+        f = re.sub(r"\(\(([^()]*)\)\)", r"(\1)", f)
+        f = re.sub(rf"-\(-({UNO})\)", r"+\1", f)
+        f = re.sub(rf"(?<![A-Za-z0-9_.])\(({UNO})\)", r"\1", f)
+        f = re.sub(rf"(?<![A-Za-z0-9_.])\(({FUN})\)", r"\1", f)
+        f = re.sub(rf"([(,])\((-{UNO})\)", r"\1\2", f)
+        f = f.replace('=+', '=').replace('(+', '(').replace(',+', ',')
+    return f
+
+
+for ws in w.worksheets:
+    for row in ws.iter_rows():
+        for z in row:
+            if isinstance(z.value, str) and z.value.startswith('=') and 'HYPERLINK' not in z.value and '"' not in z.value:
+                z.value = limpiar(z.value)
 w._sheets = [w[t] for t in orden]
 w.active = 0
 w.calculation.fullCalcOnLoad = True
 w.save(SAL)
-print('Transparente:', SAL, '·', len(nuevas), 'fórmulas movidas a las hojas del curso')
+print('Fase 2:', SAL, '·', len(nuevas), 'fórmulas movidas a las hojas 1 y 2; motor renombrado')

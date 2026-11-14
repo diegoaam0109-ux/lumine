@@ -77,12 +77,17 @@ with tempfile.TemporaryDirectory(prefix='lumine-v7-') as tmp:
     # 3) Libro transparente: fórmulas reales en las hojas del curso, sin hojas ocultas, mismos valores
     claro = tmp / 'claro' / V7.name
     claro.parent.mkdir()
-    subprocess.run([sys.executable, str(HERE / 'transparentar.py'), str(crudo), str(claro)], check=True)
+    fase1 = tmp / 'claro' / 'fase1.xlsx'
+    fase2 = tmp / 'claro' / 'fase2.xlsx'
+    subprocess.run([sys.executable, str(HERE / 'transparentar.py'), str(crudo), str(fase1), '1'], check=True)
+    subprocess.run([sys.executable, str(HERE / 'transparentar.py'), str(fase1), str(fase2), '2'], check=True)
+    subprocess.run([sys.executable, str(HERE / 'estilo_libro.py'), str(fase2), str(claro)], check=True)
     calc2 = recalcular(claro, tmp / 'calc_claro')
-    REN = {'Mensual': 'Motor mensual', 'Anual': 'Motor anual', 'Calc inversión': 'Motor inversión',
-           'Calc resultados': 'Motor resultados', 'Calc depreciación': 'Motor depreciación',
+    REN = {'Mensual': 'Motor mensual', 'Anual': 'Motor anual', 'Calc depreciación': 'Motor depreciación',
            'Calc financiero': 'Motor financiero', 'Calc sensibilidad': 'Motor sensibilidad',
            'Tablero datos': 'Datos del tablero'}
+    # Estas hojas pasaron de millones a pesos: sus valores son iguales o 1.000.000 veces el anterior
+    EN_PESOS = {'Motor depreciación', 'Motor financiero', 'Motor sensibilidad', 'Controles', 'Notas y cambios', 'Datos'}
     b = openpyxl.load_workbook(calc2, data_only=True)
     ocultas = [ws.title for ws in b.worksheets if ws.sheet_state != 'visible']
     assert not ocultas, f'quedaron hojas ocultas: {ocultas}'
@@ -99,13 +104,15 @@ with tempfile.TemporaryDirectory(prefix='lumine-v7-') as tmp:
                     # los controles de la capa anterior comparaban contra la v6; ahora son triviales
                     if t2 == 'Controles' and z.row > 46:
                         continue
-                    assert isinstance(y, (int, float)) and abs(x - y) <= 1e-6 * max(1, abs(x)), \
-                        f'cambió {t2}!{z.coordinate}: {x} -> {y}'
+                    igual = isinstance(y, (int, float)) and abs(x - y) <= 1e-6 * max(1, abs(x))
+                    escalado = (t2 in EN_PESOS and isinstance(y, (int, float))
+                                and abs(x * 1e6 - y) <= 1e-6 * max(1, abs(x * 1e6)))
+                    assert igual or escalado, f'cambió {t2}!{z.coordinate}: {x} -> {y}'
                     m += 1
     errores = [(ws.title, z.coordinate) for ws in b.worksheets for row in ws.iter_rows() for z in row
                if isinstance(z.value, str) and (z.value.startswith('#') or z.value.startswith('Err:'))]
     assert not errores, f'celdas con error en el libro transparente: {errores[:10]}'
-    print(f'Transparente verificado: {m} valores iguales, sin hojas ocultas ni errores')
+    print(f'Transparente verificado: {m} valores iguales (motor en pesos), sin hojas ocultas ni errores')
     shutil.copyfile(calc2, V7)
     (tmp / 'pdf').mkdir()
     subprocess.run(soffice + ['--convert-to', 'pdf', '--outdir', str(tmp / 'pdf'), str(V7)], check=True, timeout=300)
