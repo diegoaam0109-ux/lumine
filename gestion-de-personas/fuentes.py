@@ -1,4 +1,6 @@
 FUENTES = {
+ 'ine_parque': 'Instituto Nacional de Estadísticas (2025), *Parque de vehículos en circulación 2024* [conjunto de datos].',
+ 'hitt': 'Hitt, M. A., Ireland, R. D., y Hoskisson, R. E. (2004), *Administración estratégica: competitividad y conceptos de globalización* (5.ª ed.), Thomson.',
  'cnn': 'CNN Chile (septiembre de 2026), [«Mercado automotriz nacional creció 2,9% en agosto y acumula casi un millón de operaciones este 2026»](https://www.cnnchile.com/negocios/mercado-automotor-nacional-crecio-29-agosto-acumula-casi-un-millon-de-operaciones-este-2026/), con datos de la Cámara de Comercio Automotriz de Chile.',
  'emol': 'Garretón, M., Emol (24 de marzo de 2026), [«Combustibles se disparan: revisa cuánto costará llenar el estanque y los nuevos precios por región»](https://www.emol.com/noticias/Economia/2026/03/24/1195196/precios-bencinas-por-region.html).',
  'tig': 'Lumine Motors (noviembre de 2026), *Informe final TIG de Control de Gestión: sistema de control de gestión para una empresa preoperativa*, documento del equipo (capítulos 4 a 9 y anexos C, E y F).',

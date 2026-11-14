@@ -83,7 +83,12 @@ Esteban Gómez Sotta). Entrega: viernes 20-11-2026, 18:00, por correo, en Word (
   puntos de suspenso ni remates; primera persona plural en la metodología, alguna pregunta al lector y largos de frase variados.
   Las cifras, citas y tablas no se tocan. Mantener ese estilo en cualquier cambio.
 - Notas al pie: el número va pegado a la última palabra y la puntuación después («motor³».). Fuentes con enlace al final,
-  numeradas por orden de aparición (34 hoy). Toda afirmación se justifica o se cita; nada de citas inventadas.
+  numeradas por orden de aparición (32 hoy). Toda afirmación se justifica o se cita; nada de citas inventadas. **No citar
+  documentos internos del equipo** (informes de Control de Gestión, Fase 3, Informes 1 a 3): el profesor no los tiene; lo
+  que salía de ellos va como análisis propio o con su fuente pública original (INE, Hitt et al.).
+- Edición 80/20 (14-11-2026): se distingue hecho externo, estimación del equipo, decisión de diseño y resultado no medido
+  (la sección 4.2 es «debería resolver»); el nivel 3 instala sin supervisión pero siempre en duo; la habilitación es
+  interna y no reemplaza la licencia SEC ni la autorización del taller; aprobación 80% y rotación 10% son metas preliminares.
 - Contenido que el profesor pidió y ya está: ejemplos extranjeros (IMI en el Reino Unido, DGUV en Alemania), por qué Ishikawa y
   no árbol de problemas, cómo se seleccionaron las 39 competencias (de las 35 tareas del duo, contrastadas con O*NET, DGUV y
   NF C 18-550) y cuáles son las principales por etapa, cuántas personas cubre el sistema (2 → 36 técnicos según la Fase 3),
