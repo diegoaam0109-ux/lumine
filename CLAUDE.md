@@ -68,6 +68,61 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
 - Dos técnicos de nivel 1 nunca forman duo (salvo el arranque, bajo el Responsable Técnico).
 - Revalidación del core de seguridad cada 24 meses; período autónomo del nivel 3: 90 días; 392 h si se cursa todo.
 
+**Informe de Habilita para Gestión de Personas** (Gestión de Personas (Taller) · ICMA902 · Sección 601 · NRC 4121, profesor
+Esteban Gómez Sotta). Entrega: viernes 20-11-2026, 18:00, por correo, en Word (para comentar) y PDF (lo revisan con IA).
+- **Versión 2 (14-11-2026)**, rehecha con sus 15 comentarios (GA1–GA15) y su guía de formato. **Máximo 10 páginas** sin
+  portada, índice ni fuentes; orden obligatorio: 1 Introducción · 2 Contexto del caso (organización, problema y evidencia,
+  personas en la estrategia) · 3 Metodología de análisis y construcción de métricas (Ishikawa, selección de competencias,
+  correspondencia con módulos, reglas, métricas) · 4 Reflexiones finales (por qué el problema es relevante) · 5 Conclusiones ·
+  Fuentes. Sin resumen ejecutivo ni anexos (no caben); la demo va como nota al pie.
+- Rúbrica de redacción (como una respuesta de solemne): introducción que reformula la pregunta, cada párrafo enlazado con el
+  anterior, sin ideas sueltas ni repetidas, conclusión que sintetiza sin ideas nuevas. **Nada de etiquetas en negrita al
+  inicio de párrafo** («El país.»): el profesor las marcó. Usar IA con moderación: el texto debe sonar propio y con postura
+  crítica (límites de la solución incluidos).
+- Notas al pie: el número va pegado a la última palabra y la puntuación después («motor³».). Fuentes con enlace al final,
+  numeradas por orden de aparición (34 hoy). Toda afirmación se justifica o se cita; nada de citas inventadas.
+- Contenido que el profesor pidió y ya está: ejemplos extranjeros (IMI en el Reino Unido, DGUV en Alemania), por qué Ishikawa y
+  no árbol de problemas, cómo se seleccionaron las 39 competencias (de las 35 tareas del duo, contrastadas con O*NET, DGUV y
+  NF C 18-550) y cuáles son las principales por etapa, cuántas personas cubre el sistema (2 → 36 técnicos según la Fase 3),
+  fórmula y unidad de cada indicador, y por qué esas cinco dimensiones de impacto.
+- Metas (las ajustó el equipo): autonomía en 8 meses (2 + 3 + 90 días); si se exigen 12 meses en nivel 2, sube a unos 17.
+  9 indicadores (la app sigue con 8). Misión, visión y valores, del informe final TIG de Control de Gestión.
+- Textos del curso: Chiavenato 2019 (10.ª ed.) y 2020 (5.ª ed.), Robbins y Judge 2023 (18.ª ed.); además Katz, Kirkpatrick,
+  Bandura, Meyer y Allen, Ulrich, Spencer y Spencer, Kaplan y Norton. El Word se arma con `gestion-de-personas/`.
+
+**Página comercial** (Vite + React 19 + TS + Tailwind 4 + framer-motion + Radix, estructura shadcn hecha a mano). | `npm run typecheck`, `npm run build:artefacto` (un HTML en `dist-artefacto/`), `npm run e2e`. Ver `ventas/README.md`. |
+| `control-de-gestion/` | **Presentación del curso** Control de Gestión (Teoría, ICMA901, Sección 500, NRC 4118): PPT, PDF, `GUION.md`, `fuentes/`. | `generador/`: `deck.js` (pptxgenjs) + `guion.js` (fuente única del guion y las notas) + `render.sh`. |
+| `integrador-2/` | **Integrador II: Taller de Empresas** (ICMA 1001, Grupo 1, prof. Roberto Brito), Fase 3 cap. III. `identidad/`: kit de marca listo (logo, fondos, 20 imágenes, fuentes, `paleta.css`). | Presentación en `presentacion/`, mismo método que `control-de-gestion/generador/`. El .docx del informe no se sube. |
+| `.claude/skills/ui-ux-pro-max/` | Skill de diseño de interfaces (MIT). | `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<consulta>" --design-system` |
+| `.claude/skills/presentaciones/` | Skill con el método de presentaciones del equipo: lámina como apoyo y no como guion, tiempo según la rúbrica, anexo para la defensa y un plan aprobado antes de construir. | Úsala con `lumine-marca` para cualquier presentación nueva. |
+| `.claude/skills/lumine-marca/` | Skill con el sistema visual de Lumine (colores, tipografías, motivos, recursos). | Úsala para cualquier pieza nueva con la marca. |
+| `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada** (UNAB, Grupo 1, NRC 4153): estimador de ahorro con IA, prototipo, informe técnico del modelo matemático y revisión cruzada con varias IA. | Pasos para reproducir en `entrega3/README.md`; resultados de la Entrega 4 en `entrega4/Resultados_mejoras_modelo_E4.md`. |
+| `gestion-de-personas/` | Scripts que arman el Word del informe de Habilita para Gestión de Personas. | Ver `gestion-de-personas/README.md`. |
+| `fase-3/` | **Presentación de la Fase 3** de Integrador II: Taller de Empresas (ICMA 1001, Grupo 1, profesor Roberto Brito): Capítulo III, Plan de Marketing, Operaciones y RR.HH. | Generador propio copiado del de Control de Gestión: `generador/deck.js` + `guion.js` + `render.sh` (también en Git Bash para Windows). El informe .docx no se sube. |
+
+
+## Artefactos publicados (cuenta de Diego)
+
+| Qué | Link | Se publica desde |
+|---|---|---|
+| Página comercial | https://claude.ai/artifact/XGpgpuDtxJvtiAjbRDwJ2o | `ventas/dist-artefacto/index.html` |
+| Lumine Habilita (demo) | https://claude.ai/artifact/JpdUMVYztFtjQYkcAehELb | `dist/lumine-habilita-demo.html` |
+| Lumine Habilita (real) | https://claude.ai/artifact/KrYbLr84sVrfJoRT2wvhP9 | `dist/lumine-habilita.html` (capacidades `db` con `DB_RULES`, `user` con `profile`, `downloads`) |
+| Guion de la presentación | https://claude.ai/code/artifact/e0db2f29-05e7-42d1-b4a7-9cfcb5d1741b | documento editable |
+| Informe de Habilita (Gestión de Personas) | https://claude.ai/artifact/TjjPEZUvxSV6jx6mubNEJP | documento de Claude Docs; se exporta a Word para entregar |
+
+Para republicar en el mismo link hay que publicar el mismo archivo desde una sesión con permiso de edición sobre el
+artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la versión real.
+
+## Decisiones ya tomadas
+
+**Lumine Habilita** (detalle en `CAMBIOS.md`):
+- 39 competencias, 35 tareas, 17 reglas, 8 indicadores, 4 tipos de usuario; 4 niveles (aprendiz a formador).
+- D18: el nivel 3 firma su propio trabajo; el nivel 4 firma revisiones cruzadas; lo legal es solo del Responsable Técnico (D17).
+- D13: rotación de duos voluntaria, cada 4 meses como mínimo, por solicitud escrita al Responsable Técnico.
+- Dos técnicos de nivel 1 nunca forman duo (salvo el arranque, bajo el Responsable Técnico).
+- Revalidación del core de seguridad cada 24 meses; período autónomo del nivel 3: 90 días; 392 h si se cursa todo.
+
 **Informe de Habilita para Gestión de Personas** (profesor Esteban Gómez Sotta; revisado el 25-10-2026 con sus comentarios del 16-10):
 - **Sigue la rúbrica del profesor (38 puntos)**, que manda sobre todo lo demás: 1 Organización de lo macro a lo micro con misión,
   visión y valores (3) · 2 Problema con métricas y evidencia (6) · 3 Por qué es un problema: impacto estratégico, financiero, ético y
