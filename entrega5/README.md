@@ -9,7 +9,6 @@
 | `TIG_IA_Grupo01_LumineMotors_Guion.docx` | Guion de la exposición por integrante y diapositiva |
 | MVP | claude.ai/artifact/82sohbXt5ctMKPTXnYzwYx (público) |
 | Sitio comercial | claude.ai/artifact/XGpgpuDtxJvtiAjbRDwJ2o (público) |
-| Zip de anexos (opcional) | `entrega3/prototipo/` sin `__pycache__`, `entrega4/redteam/`, `entrega5/analisis/` y `entrega5/figuras/` |
 
 ## Reparto de la exposición (notas en cada diapositiva)
 - Diego: diapositivas 1 a 3, 12 y 13 (2 min 25 s)
