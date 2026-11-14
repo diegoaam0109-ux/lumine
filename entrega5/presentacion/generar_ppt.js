@@ -165,7 +165,7 @@ async function icono(nombre, color, px = 256) {
   // ---------------------------------------------------------------- 5. Demostración
   s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Herramienta" });
   s.addText("El MVP funcionando: un colectivo de 213 km diarios", { placeholder: "title" });
-  s.addMedia({ type: "video", path: path.join(FIG5, "demo_mvp.mp4"), cover: "data:image/png;base64," + fs.readFileSync(path.join(FIG5, "demo_mvp_poster.png")).toString("base64"), x: 0.6, y: 1.5, w: 6.2, h: 3.49, objectName: "Video del MVP" });
+  s.addImage({ path: path.join(FIG5, "app_diagnostico_ridge.png"), x: 0.6, y: 1.5, w: 6.2, h: 3.49, sizing: { type: "contain", w: 6.2, h: 3.49 }, altText: "Captura del MVP: diagnóstico de un colectivo con 19,7% de ahorro", objectName: "Captura del MVP" });
   s.addImage({ path: path.join(FIG5, "qr_mvp.png"), x: 0.6, y: 5.2, w: 1.45, h: 1.45, altText: "Código QR del MVP publicado", objectName: "QR MVP" });
   txt(s, [
     { text: "Pruébalo en vivo", options: { bold: true, color: C.accent2, breakLine: true } },
@@ -185,7 +185,7 @@ async function icono(nombre, color, px = 256) {
     txt(s, t, { x: 8.05, y: y, w: 4.65, h: 0.42, fontSize: 17, bold: true, color: C.text2, objectName: "Título paso " + n });
     txt(s, d, { x: 8.05, y: y + 0.43, w: 4.65, h: 0.65, fontSize: 15, color: C.text2, objectName: "Texto paso " + n });
   });
-  s.addNotes("BENJAMÍN (45 s). Este es el MVP funcionando, publicado como artefacto de Claude: pueden abrirlo con el código QR. [Reproducir el video o abrir el link.] Un colectivo registra una semana con su celular; el sistema calcula once variables y borra la ruta. El modelo estima 19,7% de ahorro, con un rango de 18,4% a 21%. El motor comercial lo traduce a lo que entiende el cliente: 159 mil pesos al mes y recuperar el kit en 22 meses con el escenario conservador. Si el técnico ajusta la cifra, el cambio queda registrado con su motivo.");
+  s.addNotes("BENJAMÍN (45 s). Este es el MVP funcionando, publicado como artefacto de Claude: pueden abrirlo con el código QR. [Abrir el link del MVP y mostrar un caso.] Un colectivo registra una semana con su celular; el sistema calcula once variables y borra la ruta. El modelo estima 19,7% de ahorro, con un rango de 18,4% a 21%. El motor comercial lo traduce a lo que entiende el cliente: 159 mil pesos al mes y recuperar el kit en 22 meses con el escenario conservador. Si el técnico ajusta la cifra, el cambio queda registrado con su motivo.");
 
   // ---------------------------------------------------------------- 6. Resultados del modelo
   pres.addSection({ title: "Resultados" });

@@ -30,8 +30,8 @@ const cuerpo = [
   P(`Duración total estimada: ${Math.floor(total / 60)} min ${total % 60} s para ${diapos.length} diapositivas (máximo 7 minutos). Ensayar con cronómetro: si se pasan, acorten las diapositivas 9 y 10.`, { after: 160 }),
   resumen,
   P("Antes de presentar", { size: 26, bold: true, color: "2B4C9B", after: 80 }),
-  P("1. Abrir el MVP (claude.ai/artifact/82sohbXt5ctMKPTXnYzwYx) y el sitio (claude.ai/artifact/XGpgpuDtxJvtiAjbRDwJ2o) en pestañas del navegador, por si falla el video.", { after: 60 }),
-  P("2. En la diapositiva 5, hacer clic en el video para reproducirlo (16 segundos) o cambiar a la pestaña del MVP y mostrar un caso en vivo.", { after: 60 }),
+  P("1. Abrir el MVP (claude.ai/artifact/82sohbXt5ctMKPTXnYzwYx) y el sitio (claude.ai/artifact/XGpgpuDtxJvtiAjbRDwJ2o) en pestañas del navegador, antes de empezar.", { after: 60 }),
+  P("2. En la diapositiva 5, cambiar a la pestaña del MVP y mostrar un caso en vivo (unos 15 segundos).", { after: 60 }),
   P("3. Cambios de expositor: no se anuncia al compañero. Cada bloque termina con una frase que abre el tema siguiente y quien sigue entra directo con su diapositiva.", { after: 60 }),
   P("4. Preguntas probables: ¿por qué el ahorro es simulado? (no hay kit instalado; se verificará con telemetría); ¿por qué no hicieron terreno? (por tiempo, y con 40 encuestas la potencia era de 16%); ¿qué hizo cada IA? (tabla del capítulo 5.5 del informe).", { after: 240 }),
 ];
