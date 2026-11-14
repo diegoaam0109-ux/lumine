@@ -79,6 +79,9 @@ Esteban Gómez Sotta). Entrega: viernes 20-11-2026, 18:00, por correo, en Word (
   anterior, sin ideas sueltas ni repetidas, conclusión que sintetiza sin ideas nuevas. **Nada de etiquetas en negrita al
   inicio de párrafo** («El país.»): el profesor las marcó. Usar IA con moderación: el texto debe sonar propio y con postura
   crítica (límites de la solución incluidos).
+- Revisión de tics de IA (14-11-2026, skill `revisar-tics-ia`): sin «no X, sino Y», sin tríadas encadenadas, sin dos
+  puntos de suspenso ni remates; primera persona plural en la metodología, alguna pregunta al lector y largos de frase variados.
+  Las cifras, citas y tablas no se tocan. Mantener ese estilo en cualquier cambio.
 - Notas al pie: el número va pegado a la última palabra y la puntuación después («motor³».). Fuentes con enlace al final,
   numeradas por orden de aparición (34 hoy). Toda afirmación se justifica o se cita; nada de citas inventadas.
 - Contenido que el profesor pidió y ya está: ejemplos extranjeros (IMI en el Reino Unido, DGUV en Alemania), por qué Ishikawa y
@@ -89,64 +92,6 @@ Esteban Gómez Sotta). Entrega: viernes 20-11-2026, 18:00, por correo, en Word (
   9 indicadores (la app sigue con 8). Misión, visión y valores, del informe final TIG de Control de Gestión.
 - Textos del curso: Chiavenato 2019 (10.ª ed.) y 2020 (5.ª ed.), Robbins y Judge 2023 (18.ª ed.); además Katz, Kirkpatrick,
   Bandura, Meyer y Allen, Ulrich, Spencer y Spencer, Kaplan y Norton. El Word se arma con `gestion-de-personas/`.
-
-**Página comercial** (Vite + React 19 + TS + Tailwind 4 + framer-motion + Radix, estructura shadcn hecha a mano). | `npm run typecheck`, `npm run build:artefacto` (un HTML en `dist-artefacto/`), `npm run e2e`. Ver `ventas/README.md`. |
-| `control-de-gestion/` | **Presentación del curso** Control de Gestión (Teoría, ICMA901, Sección 500, NRC 4118): PPT, PDF, `GUION.md`, `fuentes/`. | `generador/`: `deck.js` (pptxgenjs) + `guion.js` (fuente única del guion y las notas) + `render.sh`. |
-| `integrador-2/` | **Integrador II: Taller de Empresas** (ICMA 1001, Grupo 1, prof. Roberto Brito), Fase 3 cap. III. `identidad/`: kit de marca listo (logo, fondos, 20 imágenes, fuentes, `paleta.css`). | Presentación en `presentacion/`, mismo método que `control-de-gestion/generador/`. El .docx del informe no se sube. |
-| `.claude/skills/ui-ux-pro-max/` | Skill de diseño de interfaces (MIT). | `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<consulta>" --design-system` |
-| `.claude/skills/presentaciones/` | Skill con el método de presentaciones del equipo: lámina como apoyo y no como guion, tiempo según la rúbrica, anexo para la defensa y un plan aprobado antes de construir. | Úsala con `lumine-marca` para cualquier presentación nueva. |
-| `.claude/skills/lumine-marca/` | Skill con el sistema visual de Lumine (colores, tipografías, motivos, recursos). | Úsala para cualquier pieza nueva con la marca. |
-| `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada** (UNAB, Grupo 1, NRC 4153): estimador de ahorro con IA, prototipo, informe técnico del modelo matemático y revisión cruzada con varias IA. | Pasos para reproducir en `entrega3/README.md`; resultados de la Entrega 4 en `entrega4/Resultados_mejoras_modelo_E4.md`. |
-| `gestion-de-personas/` | Scripts que arman el Word del informe de Habilita para Gestión de Personas. | Ver `gestion-de-personas/README.md`. |
-| `fase-3/` | **Presentación de la Fase 3** de Integrador II: Taller de Empresas (ICMA 1001, Grupo 1, profesor Roberto Brito): Capítulo III, Plan de Marketing, Operaciones y RR.HH. | Generador propio copiado del de Control de Gestión: `generador/deck.js` + `guion.js` + `render.sh` (también en Git Bash para Windows). El informe .docx no se sube. |
-
-
-## Artefactos publicados (cuenta de Diego)
-
-| Qué | Link | Se publica desde |
-|---|---|---|
-| Página comercial | https://claude.ai/artifact/XGpgpuDtxJvtiAjbRDwJ2o | `ventas/dist-artefacto/index.html` |
-| Lumine Habilita (demo) | https://claude.ai/artifact/JpdUMVYztFtjQYkcAehELb | `dist/lumine-habilita-demo.html` |
-| Lumine Habilita (real) | https://claude.ai/artifact/KrYbLr84sVrfJoRT2wvhP9 | `dist/lumine-habilita.html` (capacidades `db` con `DB_RULES`, `user` con `profile`, `downloads`) |
-| Guion de la presentación | https://claude.ai/code/artifact/e0db2f29-05e7-42d1-b4a7-9cfcb5d1741b | documento editable |
-| Informe de Habilita (Gestión de Personas) | https://claude.ai/artifact/TjjPEZUvxSV6jx6mubNEJP | documento de Claude Docs; se exporta a Word para entregar |
-
-Para republicar en el mismo link hay que publicar el mismo archivo desde una sesión con permiso de edición sobre el
-artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la versión real.
-
-## Decisiones ya tomadas
-
-**Lumine Habilita** (detalle en `CAMBIOS.md`):
-- 39 competencias, 35 tareas, 17 reglas, 8 indicadores, 4 tipos de usuario; 4 niveles (aprendiz a formador).
-- D18: el nivel 3 firma su propio trabajo; el nivel 4 firma revisiones cruzadas; lo legal es solo del Responsable Técnico (D17).
-- D13: rotación de duos voluntaria, cada 4 meses como mínimo, por solicitud escrita al Responsable Técnico.
-- Dos técnicos de nivel 1 nunca forman duo (salvo el arranque, bajo el Responsable Técnico).
-- Revalidación del core de seguridad cada 24 meses; período autónomo del nivel 3: 90 días; 392 h si se cursa todo.
-
-**Informe de Habilita para Gestión de Personas** (profesor Esteban Gómez Sotta; revisado el 25-10-2026 con sus comentarios del 16-10):
-- **Sigue la rúbrica del profesor (38 puntos)**, que manda sobre todo lo demás: 1 Organización de lo macro a lo micro con misión,
-  visión y valores (3) · 2 Problema con métricas y evidencia (6) · 3 Por qué es un problema: impacto estratégico, financiero, ético y
-  de bienestar a corto, mediano y largo plazo (12, el que más pesa) · 4 Diagnóstico gráfico, Ishikawa con causa raíz (6) ·
-  5 Propuesta con modelos del curso (6) · 6 Por qué la solución elimina cada causa raíz, ética y RR.HH. como socio estratégico (5).
-  La evidencia del problema debe tener menos de 5 años y salir de noticias o estudios, nunca de blogs de listas.
-- Estructura actual (04-11-2026): resumen ejecutivo · 1 Organización · 2 Problema · 3 Por qué es un problema · 4 Ishikawa (dibujado
-  en el documento) · 5 Propuesta = alcance, objetivos y marco de procedimiento · 6 De la causa a la solución · 7 Pendientes ·
-  Fuentes (25) · anexos técnicos. Misión, visión y valores salen del informe final TIG de Control de Gestión (nov. 2026).
-- Autores integrados en su sección (no en un capítulo aparte): Spencer y Spencer, Kaplan y Norton, Kirkpatrick, Bandura, Meyer y
-  Allen, Ulrich. Falta la edición de Chiavenato y de Robbins y Judge que usa el curso.
-- Todo lo técnico de la plataforma (enlaces, arquitectura, guía de uso, pruebas) va en **anexos**.
-- El centro es la **correspondencia entre competencias y módulos de capacitación**, explicada con por qué, para qué, cómo, dónde
-  y quiénes. Cada decisión se explica con qué establece, qué significa en la práctica y para qué existe.
-- Escribir como si la empresa ya operara («Lumine instala…»). Usar el temario del curso como guía, no como sección.
-- Todo hecho externo lleva cita con enlace en nota al pie numerada (no APA). Afirmaciones de contexto: parafrasear y llevarlas a
-  oportunidades y restricciones (un FODA dentro del párrafo).
-- **9 indicadores en el informe** (el 9.º, preventivo: casi accidentes y observaciones de seguridad); la app sigue con 8 hasta
-  implementarlo. Las metas de la sección 5.2 son una **propuesta del equipo, por aprobar** (rotuladas así); las de los objetivos
-  6 y 7 coinciden con el CMI de Control de Gestión. El costo por técnico y el bono siguen «Por confirmar».
-- Textos del curso citados: Chiavenato, *Administración de RR.HH.* (10.ª ed., 2017) y *Gestión del talento humano* (5.ª ed., 2020),
-  y Robbins y Judge, *Comportamiento organizacional* (18.ª ed., 2023); ediciones sacadas de catálogos de bibliotecas, por verificar
-  contra el libro. 28 fuentes, numeradas por orden de aparición.
-- El Word de entrega se arma con `gestion-de-personas/` (portada, índice con páginas, estilos). Falta la sección o NRC en la portada.
 
 **Página comercial**:
 - Oscuro por defecto, con interruptor claro/oscuro visible; estilo cinematográfico (referencias Lamborghini, Ferrari, AWE y Apple)
