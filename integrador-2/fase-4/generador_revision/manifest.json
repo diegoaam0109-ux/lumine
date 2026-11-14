@@ -1,0 +1,30 @@
+{
+  "source": "revision-13-11-2026/fuentes/base/Lumine_Plan_Financiero_Fase4_recibido.xlsx",
+  "sha256": "745d517b4ed9891f005ca026ed22e47ed3ff3af6bb21eec9580a82d7df4894ce",
+  "output": "excel/v6_academico_conciliado.xlsx",
+  "original_results": {
+    "tir": 0.113775139494807,
+    "van": 60.0574561467833,
+    "i0": -474.369931643529,
+    "ct": 259.985549673229
+  },
+  "formulas": 17114,
+  "visible_sheets": [
+    "Resumen",
+    "Datos",
+    "Costos",
+    "Inversión",
+    "Calendario",
+    "Capital de trabajo",
+    "Flujo puro",
+    "Flujo inversionista",
+    "Deuda",
+    "Impuestos",
+    "3 años",
+    "CT mensual",
+    "Equilibrio",
+    "Sensibilidad",
+    "Controles",
+    "Notas y cambios"
+  ]
+}

@@ -1,0 +1,31 @@
+clave,concepto,unidad,ene 2027,feb 2027,mar 2027,abr 2027,may 2027,jun 2027,jul 2027,ago 2027,sep 2027,oct 2027,nov 2027,dic 2027,ene 2028,feb 2028,mar 2028,abr 2028,may 2028,jun 2028,total 18 meses
+,etapa,,Piloto,Piloto,Piloto,Piloto,Piloto,Piloto,Piloto,Piloto,Piloto,Piloto,Piloto,Piloto,Transición,Transición,Transición,Preapertura,Preapertura,Preapertura,
+x_kit,Piloto: kits de prueba y repuestos,$,0,6807376,15883878,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,22691255
+x_esp,Piloto: puesto técnico arrendado por uso,$,0,0,0,900000,900000,150000,150000,150000,150000,900000,900000,0,0,0,0,0,0,0,4200000
+x_ens,"Piloto: ensayos controlados de consumo, antes y después",$,0,0,0,2400000,0,0,0,0,0,2400000,0,0,0,0,0,0,0,0,4800000
+x_ter,Piloto: medición independiente,$,0,0,1800000,0,0,0,2400000,0,0,0,1800000,0,0,0,0,0,0,0,6000000
+x_tel,Piloto: telemetría,$,0,0,450000,90000,90000,90000,90000,90000,90000,90000,0,0,0,0,0,0,0,0,1080000
+x_tec,"Piloto: técnicos por servicio (instalación, inspección y retiro)",$,0,0,0,840000,840000,0,0,0,0,0,840000,0,0,0,0,0,0,0,2520000
+x_seg,"Piloto: seguro, trámites y compensación a conductores",$,0,500000,0,2100000,0,0,0,0,0,0,600000,0,0,0,0,0,0,0,3200000
+x_for,Piloto: formación en alta tensión y elementos de protección,$,0,0,3000000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3000000
+x_tra,Transición: bodegaje,$,0,0,0,0,0,0,0,0,0,0,0,0,100000,100000,100000,0,0,0,300000
+x_aut,Preapertura: trámites de autorización y selección,$,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1000000,0,0,1000000
+s_hon,Honorarios del Responsable Técnico y de Ingeniería de Calibración,$,2350000,2350000,2350000,3200000,3200000,800000,800000,800000,800000,800000,1225000,1225000,320000,320000,320000,0,0,0,20860000
+s_tot,Nómina y honorarios,$,2350000,2350000,2350000,3200000,3200000,800000,800000,800000,800000,800000,1225000,1225000,320000,320000,320000,3524160,5065980,5065980,34516120
+o_arr,Arriendo,$,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3600000,3600000,3600000,10800000
+o_ser,Servicios básicos,$,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,700000,700000,700000,2100000
+o_seg,Seguros,$,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,600000,600000,600000,1800000
+o_cur,Cursos externos y elementos de protección de técnicos nuevos,$,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1500000,0,0,1500000
+o_tot,Gasto de operación,$,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6400000,4900000,4900000,16200000
+k_tot,"Marketing fijo, con pauta",$,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1500000,1500000
+e_tot,Inversión en equipamiento,$,0,0,2629000,0,0,0,0,0,0,0,0,0,0,0,0,19000000,26423170,2150000,50202170
+e_gar,"Garantía de arriendo (un mes, recuperable)",$,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3600000,0,0,3600000
+pprov,Pagos al proveedor (anticipo y saldo),$,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10375057,22750133,10375057,43500247
+v_caj,Efecto del IVA en la caja del mes,$,0,-1293402,-3602947,-473100,-17100,-17100,-17100,-17100,-17100,-473100,0,0,0,0,0,-3728750,-5020402,-6987286,-21664487
+flujo,Flujo de caja del mes,$,-2350000,-10950778,-29715825,-10003100,-5047100,-1057100,-3457100,-1057100,-1057100,-4663100,-5365000,-1225000,-420000,-420000,-420000,-47627967,-64159685,-30978323,-219974279
+acum,Flujo acumulado (su mínimo es el financiamiento requerido),$ saldo,-2350000,-13300778,-43016603,-53019703,-58066803,-59123903,-62581003,-63638103,-64695203,-69358303,-74723303,-75948303,-76368303,-76788303,-77208303,-124836270,-188995955,-219974279,
+s_soc,"Aporte de trabajo de los socios, valorizado (no es caja)",$ no caja,1852500,1852500,1852500,1852500,1852500,1852500,1852500,1852500,1852500,1852500,1852500,1852500,741000,741000,741000,7410000,7410000,7410000,46683000
+compra,Pedido al proveedor,kits,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,0,10,20
+recep,Kits recibidos,kits,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10
+ifin,Inventario comercial al cierre,kits,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,
+trans,Kits en tránsito al cierre,kits,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,10,

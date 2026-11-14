@@ -1,5 +1,13 @@
 # Lumine Motors · contexto para Claude
 
+> **Fase 4 actualizada 14-11-2026:** leer [README de Fase 4](integrador-2/fase-4/README.md) y [traspaso §6](integrador-2/fase-4/TRASPASO_FASE4.md#6-estado-vigente-v6-académica-conciliada).
+> Vigente: `excel/v6_academico_conciliado.xlsx` (+ PDF), basado en `Lumine_Plan_Financiero_Fase4 (3).xlsx` recibido de Diego.
+> **TIR pura 13,42%; VAN $86,05 M; fondos máximos sin deuda $484,42 M.** Kit +5% vuelve negativo el VAN.
+> El CT recuperable se separa del déficit de caja. El piloto vigente tiene 3 autos; software $26,65 M estimado está incluido.
+> v4/v5 y su TIR 20% son históricos. La identidad/web antigua LFP no decide la tecnología del informe actual LTO.
+> Código, fuente financiera y auditoría en Fase 4; los DOCX, encuesta y Excel antiguo de referencia no se publicaron.
+> No afirmar que existen cotizaciones o créditos aprobados. Rama `fase4-plan-financiero`, sin PR.
+
 Lee esto antes de trabajar. Resume lo que el equipo le fue enseñando a Claude en las sesiones anteriores:
 la app de capacitación y la página comercial (chat "A") y la presentación de Control de Gestión.
 
@@ -8,8 +16,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 - **Lumine Motors Chile SpA**: kit de hibridación aditiva para autos a combustión de **tracción delantera**. Suma un motor
   eléctrico en el **eje trasero**, un banco de baterías **LFP** y una unidad de control; el motor original, la transmisión
   y la alimentación quedan intactos. El freno, el ABS y el control de estabilidad originales siempre mandan sobre el kit.
-- La empresa es **preoperativa**: sin taller, personal, clientes ni flujo de caja. No hay estados financieros (el Plan
-  Financiero no existe aún).
+- La empresa es **preoperativa**: sin taller, personal, clientes ni flujo real observado. Hay un modelo proyectado de Plan Financiero; ver Fase 4 arriba.
 - Equipo: **Diego Alarcón** (dueño de esta cuenta y del repositorio), **Benjamín Torres** y **Lukas Verdugo**. UNAB.
 - Segmento: alto kilometraje, prioridad a colectiveros y conductores de aplicación; luego taxi básico y particular de
   trayecto largo. La página comercial vende a **particulares y flotas, nunca a talleres**.
@@ -42,7 +49,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | `.claude/skills/presentaciones/` | Skill con el método de presentaciones del equipo: lámina como apoyo y no como guion, tiempo según la rúbrica, anexo para la defensa y un plan aprobado antes de construir. | Úsala con `lumine-marca` para cualquier presentación nueva. |
 | `.claude/skills/lumine-marca/` | Skill con el sistema visual de Lumine (colores, tipografías, motivos, recursos). | Úsala para cualquier pieza nueva con la marca. |
 | `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada** (UNAB, Grupo 1, NRC 4153): estimador de ahorro con IA, prototipo, informe técnico del modelo matemático y revisión cruzada con varias IA. | Pasos para reproducir en `entrega3/README.md`; resultados de la Entrega 4 en `entrega4/Resultados_mejoras_modelo_E4.md`. |
-| `integrador-2/fase-4/` | **Fase 4 · Plan Financiero**: versiones del modelo (actual: `excel/v5_presentacion_09-11-2026.xlsx` = v4 con presentación simplificada y los mismos números; kit al punto medio y 30% a crédito), libro de costeo del kit, prompts y traspaso de decisiones. | **Leer primero `integrador-2/fase-4/TRASPASO_FASE4.md`** (decisiones, fuentes y estado de la v5). La v5 se genera y verifica con `generador/generar.py` (openpyxl + LibreOffice), que se detiene si un número se aparta de la v4; las hojas grises del Excel no se tocan (se copian byte a byte desde la v3). Cada hoja visible cabe en Carta horizontal a 100% (~128 unidades de ancho). |
+| `integrador-2/fase-4/` | **Plan Financiero vigente:** `excel/v6_academico_conciliado.xlsx` (+ PDF). Último archivo recibido, operaciones conservadas, flujos conciliados. | Leer `README.md`, traspaso §6 y `revision-13-11-2026/auditoria/actual_v6.md`. Reproducir con `generador_revision/construir.py`. No forzar TIR ni usar v4/v5 como actuales. |
 | `fase-3/` | **Presentación de la Fase 3** de Integrador II: Taller de Empresas (ICMA 1001, Grupo 1, profesor Roberto Brito): Capítulo III, Plan de Marketing, Operaciones y RR.HH. | Generador propio copiado del de Control de Gestión: `generador/deck.js` + `guion.js` + `render.sh` (también en Git Bash para Windows). El informe .docx no se sube. |
 
 

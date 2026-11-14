@@ -1,0 +1,37 @@
+{
+  "errors": [],
+  "missing_formula_cache": [],
+  "control_count": 38,
+  "max_control_abs": 1.35020172820077e-09,
+  "unchanged_operating_cells": 11073,
+  "independent_pure_flows_mm": [
+    -219.78682303812394,
+    -269.12216910499416,
+    18.094173985882417,
+    141.88989448535494,
+    33.445555663454705,
+    611.1451104044686
+  ],
+  "independent_equity_flows_mm": [
+    -79.00793524440604,
+    -280.28734173358174,
+    -24.641984673893145,
+    99.24171047551876,
+    -1.5551398092255226,
+    569.8160856815431
+  ],
+  "pure_irr": 0.13424265615086528,
+  "pure_npv_mm": 86.05417060221404,
+  "equity_irr": 0.1555378357791798,
+  "equity_npv_mm": 64.41777238268472,
+  "previous_cash_mm": 214.38438197029998,
+  "capitalized_i0_mm": 219.78682303812394,
+  "funding_peak_mm": 484.4199316435295,
+  "opening_ct_mm": 61.2004646003,
+  "final_ct_mm": 401.3773465,
+  "loan_mm": 141.9768865116692,
+  "equity_peak_mm": 377.336821866106,
+  "npv_without_terminal_mm": -203.525456360437,
+  "break_even_price_change": -0.0119538600980832,
+  "formulas": 17114
+}

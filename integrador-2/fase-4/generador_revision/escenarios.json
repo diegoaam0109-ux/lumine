@@ -1,0 +1,138 @@
+{
+  "kit_mas_5pct": {
+    "inputs": {
+      "C50": 3182579.4,
+      "C51": 3565813.6500000004
+    },
+    "tir": -0.0319126147926452,
+    "van_mm": -226.316362387438,
+    "caja_max_mm": 638.828216431824,
+    "unidades": [
+      291,
+      516,
+      660,
+      660,
+      804
+    ],
+    "controles_excluidos": {
+      "VAN_0_por_rango": -2.51921505878272e-09,
+      "anticipos_limite_sensibilidad": 0
+    }
+  },
+  "kit_mas_10pct": {
+    "inputs": {
+      "C50": 3334130.8000000003,
+      "C51": 3735614.3000000003
+    },
+    "tir": -0.227537551540514,
+    "van_mm": -604.007466379221,
+    "caja_max_mm": 1043.963683494,
+    "unidades": [
+      291,
+      516,
+      660,
+      660,
+      804
+    ],
+    "controles_excluidos": {
+      "VAN_0_por_rango": -6.16296347288881e-10,
+      "anticipos_limite_sensibilidad": 0
+    }
+  },
+  "precio_menos_5pct": {
+    "inputs": {
+      "C46": 4360500.0,
+      "C47": 5025500.0
+    },
+    "tir": -0.0788268260842028,
+    "van_mm": -305.1798329146,
+    "caja_max_mm": 698.348480065882,
+    "unidades": [
+      291,
+      516,
+      660,
+      660,
+      804
+    ],
+    "controles_excluidos": {
+      "VAN_0_por_rango": 2.21882601181278e-09,
+      "anticipos_limite_sensibilidad": 0
+    }
+  },
+  "embudo_bajo": {
+    "inputs": {
+      "C43": 1
+    },
+    "tir": -0.26147715462241,
+    "van_mm": -441.869906772341,
+    "caja_max_mm": 663.595491217647,
+    "unidades": [
+      143,
+      252,
+      312,
+      312,
+      372
+    ],
+    "controles_excluidos": {
+      "VAN_0_por_rango": 1.28622446027293e-09,
+      "anticipos_limite_sensibilidad": 0
+    }
+  },
+  "comision_tarjeta_2_35pct_bruto": {
+    "inputs": {
+      "C54": 0.027965
+    },
+    "tir": 0.101728215163589,
+    "van_mm": 27.546813402905,
+    "caja_max_mm": 493.080313743361,
+    "unidades": [
+      291,
+      516,
+      660,
+      660,
+      804
+    ],
+    "controles_excluidos": {
+      "VAN_0_por_rango": 2.7687860892911e-09,
+      "anticipos_limite_sensibilidad": 0
+    }
+  },
+  "recuperacion_CT_75pct": {
+    "inputs": {
+      "C34": 0.75
+    },
+    "tir": 0.0982344601367246,
+    "van_mm": 19.7888574826734,
+    "caja_max_mm": 484.419931643529,
+    "unidades": [
+      291,
+      516,
+      660,
+      660,
+      804
+    ],
+    "controles_excluidos": {
+      "VAN_0_por_rango": 2.13540829463454e-09,
+      "anticipos_limite_sensibilidad": 0
+    }
+  },
+  "sin_deuda": {
+    "inputs": {
+      "C9": 0
+    },
+    "tir": 0.134242656150865,
+    "van_mm": 86.0541706022134,
+    "caja_max_mm": 484.419931643529,
+    "unidades": [
+      291,
+      516,
+      660,
+      660,
+      804
+    ],
+    "controles_excluidos": {
+      "VAN_0_por_rango": 1.35020172820077e-09,
+      "anticipos_limite_sensibilidad": 0
+    }
+  }
+}
