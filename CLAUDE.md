@@ -1,7 +1,7 @@
 # Lumine Motors · contexto para Claude
 
 > **Fase 4 actualizada 14-11-2026:** leer [README de Fase 4](integrador-2/fase-4/README.md) y [traspaso §6](integrador-2/fase-4/TRASPASO_FASE4.md#6-estado-vigente-v6-académica-conciliada).
-> Vigente: `excel/v7_formato_curso.xlsx` (+ PDF) = v6 con formato del curso, mismos números (ver `OBSERVACIONES_V7.md`). Base: `excel/v6_academico_conciliado.xlsx`, basado en `Lumine_Plan_Financiero_Fase4 (3).xlsx` recibido de Diego.
+> Vigente: `excel/v7_formato_curso.xlsx` (+ PDF) = v6 con formato del curso, mismos números, Tablero y **sin hojas ocultas** (fórmulas reales en las hojas del curso; motor visible). Ver `OBSERVACIONES_V7.md`. Base: `excel/v6_academico_conciliado.xlsx`, basado en `Lumine_Plan_Financiero_Fase4 (3).xlsx` recibido de Diego.
 > **TIR pura 13,42%; VAN $86,05 M; fondos máximos sin deuda $484,42 M.** Kit +5% vuelve negativo el VAN.
 > El CT recuperable se separa del déficit de caja. El piloto vigente tiene 3 autos; software $26,65 M estimado está incluido.
 > v4/v5 y su TIR 20% son históricos. La identidad/web antigua LFP no decide la tecnología del informe actual LTO.

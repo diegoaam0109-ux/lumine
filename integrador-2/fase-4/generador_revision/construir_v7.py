@@ -74,18 +74,50 @@ with tempfile.TemporaryDirectory(prefix='lumine-v7-') as tmp:
     assert not errores, f'celdas con error: {errores[:10]}'
     print(f'Verificado: controles nuevos {total:.2e}, controles v6 {c["C46"].value:.2e}, {n} valores de la v6 sin cambios')
 
-    shutil.copyfile(calc, V7)
+    # 3) Libro transparente: fórmulas reales en las hojas del curso, sin hojas ocultas, mismos valores
+    claro = tmp / 'claro' / V7.name
+    claro.parent.mkdir()
+    subprocess.run([sys.executable, str(HERE / 'transparentar.py'), str(crudo), str(claro)], check=True)
+    calc2 = recalcular(claro, tmp / 'calc_claro')
+    REN = {'Mensual': 'Motor mensual', 'Anual': 'Motor anual', 'Calc inversión': 'Motor inversión',
+           'Calc resultados': 'Motor resultados', 'Calc depreciación': 'Motor depreciación',
+           'Calc financiero': 'Motor financiero', 'Calc sensibilidad': 'Motor sensibilidad',
+           'Tablero datos': 'Datos del tablero'}
+    b = openpyxl.load_workbook(calc2, data_only=True)
+    ocultas = [ws.title for ws in b.worksheets if ws.sheet_state != 'visible']
+    assert not ocultas, f'quedaron hojas ocultas: {ocultas}'
+    m = 0
+    for ws in v.worksheets:
+        t2 = REN.get(ws.title, ws.title)
+        if t2 not in b.sheetnames:
+            continue
+        for row in ws.iter_rows():
+            for z in row:
+                x = z.value
+                if isinstance(x, (int, float)) and not isinstance(x, bool):
+                    y = b[t2][z.coordinate].value
+                    # los controles de la capa anterior comparaban contra la v6; ahora son triviales
+                    if t2 == 'Controles' and z.row > 46:
+                        continue
+                    assert isinstance(y, (int, float)) and abs(x - y) <= 1e-6 * max(1, abs(x)), \
+                        f'cambió {t2}!{z.coordinate}: {x} -> {y}'
+                    m += 1
+    errores = [(ws.title, z.coordinate) for ws in b.worksheets for row in ws.iter_rows() for z in row
+               if isinstance(z.value, str) and (z.value.startswith('#') or z.value.startswith('Err:'))]
+    assert not errores, f'celdas con error en el libro transparente: {errores[:10]}'
+    print(f'Transparente verificado: {m} valores iguales, sin hojas ocultas ni errores')
+    shutil.copyfile(calc2, V7)
     (tmp / 'pdf').mkdir()
     subprocess.run(soffice + ['--convert-to', 'pdf', '--outdir', str(tmp / 'pdf'), str(V7)], check=True, timeout=300)
     pdf = tmp / 'pdf' / V7.with_suffix('.pdf').name
-    # LibreOffice también imprime las hojas ocultas; se dejan solo las páginas de las hojas visibles (van primero).
+    # El PDF de lectura llega hasta Notas; las hojas «Motor ...» (miles de celdas) quedan solo en el Excel.
     paginas = int(next(l for l in subprocess.run(['pdfinfo', str(pdf)], capture_output=True, text=True).stdout.splitlines()
                        if l.startswith('Pages')).split()[-1])
     ultima = paginas
     for i in range(1, paginas + 1):
         texto = subprocess.run(['pdftotext', '-f', str(i), '-l', str(i), '-layout', str(pdf), '-'], capture_output=True, text=True).stdout
         primera = next((l.strip() for l in texto.splitlines() if l.strip()), '')
-        if primera.startswith(('LUMINE MOTORS · Plan financiero', 'LUMINE · Ingresos y costos')):
+        if 'MOTOR DE CÁLCULO' in texto:
             ultima = i - 1
             break
     sep = tmp / 'sep'

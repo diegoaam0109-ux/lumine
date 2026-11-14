@@ -25,7 +25,6 @@ from openpyxl.chart.legend import Legend
 from openpyxl.chart.series import SeriesLabel
 from openpyxl.drawing.line import LineProperties
 from openpyxl.drawing.text import Paragraph, ParagraphProperties, CharacterProperties, Font as DFont
-from openpyxl.drawing.image import Image as XLImage
 
 ap = argparse.ArgumentParser()
 ap.add_argument('entrada'); ap.add_argument('salida')
@@ -34,10 +33,10 @@ ap.add_argument('--base'); ap.add_argument('--fotos')
 args = ap.parse_args()
 HERE = Path(__file__).resolve().parent
 
-# Paleta de Lumine (modo oscuro)
-BG, SURF, WELL, CTRL = '020304', '0A0D0F', '101417', '1A1E22'
-FG, MUTED, DIM, LINE, LINE2 = 'ECECEC', '8B9598', '4B5154', '1F2427', '2E3438'
-ACC, ONACC, OK, CRIT = '22B8F0', '031015', '4ADE80', 'F87171'
+# Paleta del libro (la misma de las hojas 1 a 7): blanco, celeste Lumine y negro
+BG, SURF, WELL, CTRL = 'FFFFFF', 'EAF7FD', 'F2F2F2', 'FFFFFF'
+FG, MUTED, DIM, LINE, LINE2 = '000000', '595959', 'A6A6A6', 'D9D9D9', 'D9D9D9'
+ACC, ONACC, OK, CRIT = '12AAE9', 'FFFFFF', '157A46', 'B42318'
 F = 'Calibri'
 M = 1000000
 MM = r'"$ "#,##0.0,," M";"$ -"#,##0.0,," M";"$ 0"'
@@ -277,7 +276,7 @@ def rtxt(color=MUTED, size=900, bold=False):
 
 
 def oscurecer(ch, leyenda=True, fmt='#,##0,,'):
-    ch.graphical_properties = GraphicalProperties(solidFill=SURF, ln=LineProperties(solidFill=LINE2))
+    ch.graphical_properties = GraphicalProperties(solidFill='FFFFFF', ln=LineProperties(solidFill=LINE2))
     ch.plot_area.graphicalProperties = GraphicalProperties(noFill=True, ln=LineProperties(noFill=True))
     for ax in (ch.x_axis, ch.y_axis):
         ax.delete = False
@@ -313,7 +312,7 @@ NAV = [('Tablero', 'Tablero'), ('Escenarios y cambios', 'Escenarios y cambios'),
        ('3  Capital de trabajo', '3 Capital de trabajo'), ('4  Flujo puro', '4 Flujo puro'),
        ('5  Flujo financiado', '5 Flujo financiado'), ('5.1  Amortización', '5.1 Tabla de amortización'),
        ('6  Tasas de descuento', '6 Tasa de descuento'), ('7  Punto de equilibrio', '7 Punto de equilibrio'),
-       ('Anexos', 'A1 Calendario inversión'), ('Controles', 'Controles')]
+       ('Anexos', 'A1 Calendario inversión'), ('Controles', 'Controles'), ('Motor de cálculo', 'Mensual')]
 
 
 def lienzo(nombre, activo, alto=70, ancho_col='U'):
@@ -326,18 +325,19 @@ def lienzo(nombre, activo, alto=70, ancho_col='U'):
     s.column_dimensions['A'].width = 2
     s.column_dimensions['B'].width = 30
     s.column_dimensions['C'].width = 3
-    img = XLImage(str(HERE / 'recursos/logo_tablero.png'))
-    img.width, img.height = 170, 34
-    s.add_image(img, 'B3')
+    put(s, 'B3', 'LUMINE MOTORS', ACC, 16, bold=True, fill=SURF)
     put(s, 'B6', 'PLAN FINANCIERO · FASE 4', MUTED, 8, fill=SURF)
     r0 = 8
     for i, (et, hoja) in enumerate(NAV):
-        put(s, f'B{r0 + i * 2}', f'=HYPERLINK("#\'{hoja}\'!A1","   {et}")', ONACC if hoja == activo else FG, 10,
-            bold=hoja == activo, fill=ACC if hoja == activo else CTRL)
+        z = put(s, f'B{r0 + i * 2}', f'=HYPERLINK("#\'{hoja}\'!A1","   {et}")', ONACC if hoja == activo else FG, 10,
+                bold=hoja == activo, fill=ACC if hoja == activo else CTRL)
+        if hoja != activo:
+            lado = Side(style='thin', color=ACC)
+            z.border = Border(left=lado, right=lado, top=lado, bottom=lado)
         s.row_dimensions[r0 + i * 2].height = 20
-    put(s, 'B38', 'Los selectores de arriba recalculan todo el libro (escenario) o cambian lo que se muestra (flujo y año).',
+    put(s, 'B40', 'Los selectores de arriba recalculan todo el libro (escenario) o cambian lo que se muestra (flujo y año).',
         MUTED, 8, wrap=True, v_al='top', fill=SURF)
-    s.merge_cells('B38:B42')
+    s.merge_cells('B40:B44')
     s.page_setup.orientation = 'landscape'
     s.page_setup.paperSize = s.PAPERSIZE_LETTER
     s.page_setup.fitToWidth = 1
@@ -355,7 +355,7 @@ for c in 'FILOR':
     s.column_dimensions[c].width = 1.6
 s.column_dimensions['U'].width = 2
 
-put(s, 'D2', 'PLAN FINANCIERO', FG, 24, bold=True)
+put(s, 'D2', 'PLAN FINANCIERO', ACC, 16, bold=True)
 put(s, 'D3', 'Lumine Motors · tablero de evaluación · pesos de 2026, netos de IVA', MUTED, 10)
 # Selectores
 for etq, c1, c2, val, lista in [('ESCENARIO DE DEMANDA', 'M', 'N', args.escenario, '"Pesimista,Central,Optimista"'),
@@ -389,7 +389,7 @@ def tarjeta(fila, par, etiqueta, valor, fmt, delta=None, fmt_delta=None, mejor=N
         for c in (a, b):
             s[f'{c}{rr}'].fill = PatternFill('solid', fgColor=SURF)
     for c in (a, b):
-        s[f'{c}{fila}'].border = Border(top=Side(style='medium', color=ACC if destaca else LINE2))
+        s[f'{c}{fila}'].border = Border(top=Side(style='medium', color=ACC))
     s.merge_cells(f'{a}{fila}:{b}{fila}')
     put(s, f'{a}{fila}', etiqueta, MUTED, 8, bold=True, h='left', fill=SURF)
     s[f'{a}{fila}'].alignment = Alignment(horizontal='left', vertical='center', indent=1)
@@ -443,7 +443,7 @@ tarjeta(10, PAR[5], 'DEUDA / PATRIMONIO', f'={esc("dp")}', PCT, sub=f'="βu "&FI
 
 
 def seccion(ref, num, texto, formula=False):
-    put(s, ref, f'="{num}  ——  "&{texto}' if formula else f'{num}  ——  {texto}', MUTED, 9, bold=True)
+    put(s, ref, f'="{num}  ——  "&{texto}' if formula else f'{num}  ——  {texto}', ACC, 9, bold=True)
 
 
 seccion('D14', '01', f'IF({FLU}=1,"FLUJO DE CAJA PURO Y ACUMULADO DESCONTADO (MM$)","FLUJO DEL INVERSIONISTA Y ACUMULADO DESCONTADO (MM$)")', True)
@@ -478,7 +478,7 @@ for i, sr in enumerate(c2.series):
     if i in (0, 2):
         sr.graphicalProperties = GraphicalProperties(noFill=True, ln=LineProperties(noFill=True))
     else:
-        color_serie(sr, MUTED)
+        color_serie(sr, DIM)
         for p, (_, _, total) in enumerate(pasos):
             if total:
                 pt = DataPoint(idx=p)
@@ -530,10 +530,10 @@ filas_tabla = [('Ingresos', 'ing', False), ('EBITDA', 'eb', False), ('Resultado 
                ('Flujo descontado acumulado', 'acum', False)]
 for i, (et, k, tot) in enumerate(filas_tabla):
     rr = 56 + i
-    put(s, f'B{rr}', et, FG if tot else MUTED, 10, bold=tot, fill=SURF if tot else None)
+    put(s, f'B{rr}', et, FG, 10, bold=tot, fill=SURF if tot else None)
     for y, (a, bb) in enumerate(PAR):
         s.merge_cells(f'{a}{rr}:{bb}{rr}')
-        z = put(s, f'{a}{rr}', f"={q('Tablero datos', HB[y] + str(ROW[k + '_S']))}", FG if tot else 'C9CED1', 10,
+        z = put(s, f'{a}{rr}', f"={q('Tablero datos', HB[y] + str(ROW[k + '_S']))}", FG, 10,
                 bold=tot, fmt=MMT, h='right')
         if tot:
             for c in (a, bb):
@@ -551,7 +551,7 @@ s.print_area = 'A1:U68'
 e = lienzo('Escenarios y cambios', 'Escenarios y cambios', alto=60, ancho_col='K')
 for c, wd in zip('DEFGHIJ', [46, 16, 16, 22, 22, 22, 2]):
     e.column_dimensions[c].width = wd
-put(e, 'D2', 'ESCENARIOS Y CAMBIOS', FG, 24, bold=True)
+put(e, 'D2', 'ESCENARIOS Y CAMBIOS', ACC, 16, bold=True)
 put(e, 'D3', 'Cada indicador frente a la base (supuestos vigentes al construir la v7, escenario central). Las columnas de '
              'escenario son fotos tomadas al construir.', MUTED, 10)
 e.merge_cells('D4:J4')
@@ -576,7 +576,7 @@ for i, (clave, et, _, fmt, fdel, mejor) in enumerate(ESC):
         e.conditional_formatting.add(z.coordinate, CellIsRule(operator='greaterThan', formula=['0'], font=Font(color=arriba)))
         e.conditional_formatting.add(z.coordinate, CellIsRule(operator='lessThan', formula=['0'], font=Font(color=abajo)))
     for j, nombre in enumerate(['Pesimista', 'Optimista']):
-        put(e, f'{"HI"[j]}{rr}', FOTOS.get(nombre, {}).get(clave), 'C9CED1', 10, fmt=fmt, h='right')
+        put(e, f'{"HI"[j]}{rr}', FOTOS.get(nombre, {}).get(clave), FG, 10, fmt=fmt, h='right')
     for c in 'DEFGHI':
         e[f'{c}{rr}'].border = Border(bottom=Side(style='thin', color=LINE))
 # la fórmula del aviso usa la columna Cambio (G)

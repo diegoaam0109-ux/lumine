@@ -18,7 +18,7 @@
 - «CTN» pasa a llamarse capital de trabajo en todo el libro.
 - La hoja Datos conserva sus valores; solo cambió el formato de los números según su unidad.
 
-**Ningún número cambió.** Las hojas de la v6 siguen en el libro, ocultas y sin modificar. Las hojas nuevas solo las leen.
+**Ningún número cambió.** Desde el 14-11-2026 (tarde) el libro no tiene hojas ocultas: ver la sección «Libro transparente».
 Hay 39 controles nuevos al pie de la hoja Controles, y todos dan cero. Además, `construir_v7.py` compara los 19.533
 valores numéricos de la v6 antes y después, y no encuentra diferencias. 
 
@@ -80,3 +80,28 @@ TIR −3,19%. Es el mismo resultado que `kit_mas_5pct` de Codex.
 **Botones.** Un botón que cambia el escenario con un clic necesita macros (.xlsm), y Excel las bloquea en archivos
 descargados o compartidos. Por eso los selectores son listas desplegables, que funcionan en Excel de escritorio, Excel
 en la web y LibreOffice.
+
+## Libro transparente (14-11-2026, tarde)
+
+Diego observó que las hojas del curso leían de hojas ocultas: «3 Capital de trabajo» copiaba la hoja oculta «Capital de
+trabajo» de la v6, y esa a su vez leía el motor. Con eso no se podía revisar el cálculo. `transparentar.py` lo corrige
+así:
+
+- **Fórmulas reales en el curso.** Cada celda de las hojas 1 a 7 y de los anexos A1 a A5 tiene ahora la fórmula real,
+  en pesos. Por ejemplo, el inventario de «3 Capital de trabajo» es `='Motor mensual'!U45`. Son 2.656 fórmulas
+  trasladadas.
+- **Sin duplicados.** Se eliminaron las 12 hojas duplicadas de la v6 (Costos, Inversión, Calendario, Capital de
+  trabajo, Flujo puro, Flujo inversionista, Deuda, Impuestos, 3 años, CT mensual, Equilibrio y Sensibilidad) y el
+  Resumen antiguo.
+- **Celdas auxiliares.** Las 65 celdas intermedias que usaban esas hojas (por ejemplo, los auxiliares del payback o los
+  aportes de los socios) quedan al pie de su hoja del curso, bajo «Cálculos auxiliares».
+- **Motor visible.** El motor de cálculo se ve y tiene nombres claros: Motor mensual, Motor anual, Motor inversión,
+  Motor resultados, Motor depreciación, Motor financiero y Motor sensibilidad. Trabaja en millones y lee sus
+  parámetros desde Datos y desde las hojas del curso (por ejemplo, la vida útil y el monto de cada activo salen de
+  «1 Inversión»). «Datos del tablero» también quedó visible.
+- **Nada oculto.** Cualquier cifra se sigue con «Rastrear precedentes» o Ctrl + [ hasta su origen.
+- **Verificación.** `construir_v7.py` compara 20.160 valores antes y después de transparentar: todos iguales, sin
+  errores y sin hojas ocultas. Los selectores siguen funcionando. En pesimista, el VAN es −$441,87 M; con el kit un 5%
+  más caro, −$226,32 M.
+- **Colores del Tablero.** Quedaron fijos en el generador con la paleta del resto del libro (blanco, celeste y negro).
+  La versión que retocó el complemento de Excel ya no hace falta.
