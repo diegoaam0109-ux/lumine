@@ -20,8 +20,7 @@
 
 **Ningún número cambió.** Las hojas de la v6 siguen en el libro, ocultas y sin modificar. Las hojas nuevas solo las leen.
 Hay 39 controles nuevos al pie de la hoja Controles, y todos dan cero. Además, `construir_v7.py` compara los 19.533
-valores numéricos de la v6 antes y después, y no encuentra diferencias. El Resumen (dashboard) no se tocó porque
-queda para el paso siguiente.
+valores numéricos de la v6 antes y después, y no encuentra diferencias. 
 
 ## Incongruencias con lo enseñado en clases (para decidir; no se cambió nada)
 
@@ -46,3 +45,38 @@ queda para el paso siguiente.
 6. **Punto de equilibrio en ventas.** La estructura pide el equilibrio en unidades y en ventas. La v6 solo daba
    unidades, así que la hoja 7 agrega las ventas de equilibrio (Q de equilibrio × ingreso neto promedio). Es una cifra
    derivada, no un supuesto nuevo.
+
+## Tablero (14-11-2026)
+
+Las primeras dos hojas del libro son el Tablero y la hoja «Escenarios y cambios». El Resumen de la v6 quedó oculto.
+
+- **Selectores:** son listas desplegables, una por cada opción que se puede cambiar.
+  - *Escenario de demanda* (Pesimista, Central u Optimista): reemplaza el número que antes se escribía en Datos!C43 y
+    recalcula todo el libro. Cambia el embudo comercial (Datos, filas 62 a 75); no toca precios, costo del kit ni tasas.
+  - *Flujo* (Puro o Inversionista) y *Año* (1 a 5): solo cambian lo que se muestra.
+- **Doce tarjetas:**
+  - Primera fila: VAN, TIR, tasa (Ku o Ke), payback descontado, inversión o aporte del año 0, y financiamiento
+    máximo o aportes totales.
+  - Segunda fila, para el año elegido: ingresos, EBITDA, resultado neto y flujo de caja. Al final de esa fila van el
+    WACC y la relación D/P (con βu y βl).
+  - Cada tarjeta muestra el cambio frente a la base: verde si mejora y rojo si empeora.
+- **Cuatro gráficos y una tabla:**
+  - Flujo de caja con el acumulado descontado.
+  - Cascada del ingreso al resultado neto del año elegido.
+  - Ingresos, costos operacionales y EBITDA.
+  - Instalaciones frente al punto de equilibrio.
+  - Tabla del flujo elegido para los años 0 a 5.
+- **Escenarios y cambios:** 27 indicadores con su valor actual, la base, el cambio y las fotos de los escenarios pesimista
+  y optimista. Un aviso indica cuándo las fotos quedaron desactualizadas.
+- **Menú lateral:** enlaces a todas las hojas. Cada hoja tiene un «◀ Volver al Tablero».
+
+**Base y fotos.** Se calculan al construir, con `construir_v7.py`: tres recálculos, uno por escenario. Pesimista: VAN
+−$441,87 M y TIR −26,15%, igual al `embudo_bajo` de `escenarios.json`. Central: VAN $86,05 M y TIR 13,42%.
+Optimista: VAN $393,67 M y TIR 27,67%. Para fijar una nueva base después de una corrección, hay que reconstruir.
+
+**Prueba de auditoría.** Con el kit un 5% más caro, el tablero muestra VAN −$226,32 M (▼ $312,4 M frente a la base) y
+TIR −3,19%. Es el mismo resultado que `kit_mas_5pct` de Codex.
+
+**Botones.** Un botón que cambia el escenario con un clic necesita macros (.xlsm), y Excel las bloquea en archivos
+descargados o compartidos. Por eso los selectores son listas desplegables, que funcionan en Excel de escritorio, Excel
+en la web y LibreOffice.

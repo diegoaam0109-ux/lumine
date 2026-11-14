@@ -404,7 +404,8 @@ def flujo(nombre, titulo, bajada, src, financiado):
     van = r
     control(f'{nombre}: VAN', f"=C{van}-{S('C', 70)}*{M}", nombre)
     r += 1
-    fila(s, r, 'TIR', [f'=IRR(C{fcl}:H{fcl})'], fmt=PCT, tipo='sub')
+    rng = f'C{fcl}:H{fcl}'
+    fila(s, r, 'TIR', [f'=IFERROR(IRR({rng}),IFERROR(IRR({rng},-0.1),IFERROR(IRR({rng},-0.5),"TIR no converge")))'], fmt=PCT, tipo='sub')
     put(s, r, 4, f'=IF(C{r}>C{tasa_r},"TIR > tasa de descuento: rentable","TIR < tasa de descuento")', italic=True, color=GRIS)
     control(f'{nombre}: TIR (puntos básicos)', f"=(C{r}-{S('C', 71)})*10000", nombre)
     r += 1

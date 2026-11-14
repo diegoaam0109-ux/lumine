@@ -5,7 +5,7 @@ Verificaciones: (1) los controles nuevos de la hoja Controles suman ~0; (2) los 
 (3) cada valor numérico de las hojas de la v6 es idéntico antes y después. Si algo falla, no se publica nada.
 """
 from pathlib import Path
-import shutil, subprocess, sys, tempfile
+import json, shutil, subprocess, sys, tempfile
 import openpyxl
 
 HERE = Path(__file__).resolve().parent
@@ -20,11 +20,36 @@ with tempfile.TemporaryDirectory(prefix='lumine-v7-') as tmp:
     perfil = tmp / 'perfil'
     shutil.copytree(PERFIL_ES, perfil)
     soffice = ['soffice', f'-env:UserInstallation={perfil.as_uri()}', '--headless']
+    formato = tmp / 'formato.xlsx'
+    subprocess.run([sys.executable, str(HERE / 'formato_profesor.py'), str(V6), str(formato)], check=True)
+
+    def recalcular(entrada, carpeta):
+        carpeta.mkdir()
+        subprocess.run(soffice + ['--convert-to', 'xlsx', '--outdir', str(carpeta), str(entrada)], check=True, timeout=300,
+                       stdout=subprocess.DEVNULL)
+        return carpeta / entrada.name
+
+    def leer(calc, mapa):
+        m = json.load(open(mapa))
+        d = openpyxl.load_workbook(calc, data_only=True)['Tablero datos']
+        out = {k: [d.cell(r, c).value or 0 for c in range(2, 8)] for k, r in m['series'].items()}
+        out.update({k: d.cell(r, 2).value for k, r in m['escalares'].items()})
+        return out
+
+    # 1) Tres pasadas, una por escenario de demanda, para la base y las fotos
+    lecturas = {}
+    for nombre in ('Pesimista', 'Central', 'Optimista'):
+        x = tmp / f'esc_{nombre}.xlsx'
+        subprocess.run([sys.executable, str(HERE / 'tablero.py'), str(formato), str(x), '--escenario', nombre], check=True)
+        lecturas[nombre] = leer(recalcular(x, tmp / f'calc_{nombre}'), x.with_suffix('.mapa.json'))
+        print(f"  {nombre}: VAN puro {lecturas[nombre]['van_p'] / 1e6:,.2f} MM, TIR {lecturas[nombre]['tir_p']}")
+    json.dump(lecturas['Central'], open(tmp / 'base.json', 'w'))
+    json.dump({k: lecturas[k] for k in ('Pesimista', 'Optimista')}, open(tmp / 'fotos.json', 'w'))
+    # 2) Libro final, en escenario central, con base y fotos
     crudo = tmp / 'v7_formato_curso.xlsx'
-    subprocess.run([sys.executable, str(HERE / 'formato_profesor.py'), str(V6), str(crudo)], check=True)
-    (tmp / 'calc').mkdir()
-    subprocess.run(soffice + ['--convert-to', 'xlsx', '--outdir', str(tmp / 'calc'), str(crudo)], check=True, timeout=300)
-    calc = tmp / 'calc' / crudo.name
+    subprocess.run([sys.executable, str(HERE / 'tablero.py'), str(formato), str(crudo), '--escenario', 'Central',
+                    '--base', str(tmp / 'base.json'), '--fotos', str(tmp / 'fotos.json')], check=True)
+    calc = recalcular(crudo, tmp / 'calc')
 
     v = openpyxl.load_workbook(calc, data_only=True)
     c = v['Controles']
@@ -42,6 +67,11 @@ with tempfile.TemporaryDirectory(prefix='lumine-v7-') as tmp:
                     assert isinstance(y, (int, float)) and abs(z.value - y) <= 1e-6 * max(1, abs(z.value)), \
                         f'cambió {ws.title}!{z.coordinate}: {z.value} -> {y}'
                     n += 1
+    e = v['Escenarios y cambios']
+    assert str(e['D4'].value).startswith('Sin cambios'), f'el tablero no coincide con la base: {e["D4"].value}'
+    errores = [(ws.title, z.coordinate) for ws in v.worksheets for row in ws.iter_rows() for z in row
+               if isinstance(z.value, str) and (z.value.startswith('#') or z.value.startswith('Err:'))]
+    assert not errores, f'celdas con error: {errores[:10]}'
     print(f'Verificado: controles nuevos {total:.2e}, controles v6 {c["C46"].value:.2e}, {n} valores de la v6 sin cambios')
 
     shutil.copyfile(calc, V7)
@@ -55,7 +85,7 @@ with tempfile.TemporaryDirectory(prefix='lumine-v7-') as tmp:
     for i in range(1, paginas + 1):
         texto = subprocess.run(['pdftotext', '-f', str(i), '-l', str(i), '-layout', str(pdf), '-'], capture_output=True, text=True).stdout
         primera = next((l.strip() for l in texto.splitlines() if l.strip()), '')
-        if primera.startswith('LUMINE · Ingresos y costos'):
+        if primera.startswith(('LUMINE MOTORS · Plan financiero', 'LUMINE · Ingresos y costos')):
             ultima = i - 1
             break
     sep = tmp / 'sep'
