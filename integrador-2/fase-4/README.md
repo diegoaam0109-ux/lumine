@@ -1,5 +1,8 @@
 # Plan financiero de Lumine · versión para revisar
 
+> **14-11-2026 · v7 con formato del curso:** [v7_formato_curso.xlsx](excel/v7_formato_curso.xlsx) · [PDF](excel/v7_formato_curso.pdf). Mismos números que la v6 (39 controles en cero y 19.533 valores comparados), presentados con las hojas 1 a 7 de la Fase 4, en pesos y con los formatos de clases. Incongruencias con la metodología del curso, pendientes de decisión: [OBSERVACIONES_V7.md](OBSERVACIONES_V7.md). Reproducir: `python integrador-2/fase-4/generador_revision/construir_v7.py`.
+
+
 **Archivo vigente: [v6_academico_conciliado.xlsx](excel/v6_academico_conciliado.xlsx)** · [PDF de lectura](excel/v6_academico_conciliado.pdf).
 
 Se construyó sobre **Lumine_Plan_Financiero_Fase4 (3).xlsx**, el último archivo entregado por el equipo. El Excel del curso se usó sólo como referencia de formato. Las antiguas v4/v5 y su TIR del 20% corresponden a otro modelo.

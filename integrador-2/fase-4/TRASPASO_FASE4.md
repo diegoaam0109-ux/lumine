@@ -144,3 +144,7 @@ Ainslie (2002) · Bosch Car Service, Manual do credenciado 2026 · redcapacitaci
 Maxus y Mazda (términos y condiciones de financiamiento 2025–2026) · Transbank (comisiones, julio 2026) · Ley 20.241
 (extensión a 2035) · CORFO Crea y Valida 2026 · Indeed y Chiletrabajos (sueldos 2026) · AIRe / La Tribune Auto (retrofit
 en Francia: 400 vehículos en 2023).
+
+## 9. v7 · formato del curso (14-11-2026)
+
+`excel/v7_formato_curso.xlsx` es la v6 con una capa de presentación según las clases de Evaluación de Proyectos (hojas 1 a 7, pesos sin decimales, tabla de amortización y flujo en el orden del curso). No cambia números: las hojas de la v6 quedan ocultas e intactas y 39 controles nuevos dan cero. Se genera con `generador_revision/construir_v7.py` (`formato_profesor.py` + recálculo es-CL + verificación). Las decisiones de método abiertas están en `OBSERVACIONES_V7.md`. Siguiente paso pedido por Diego: rehacer el Resumen (dashboard).
