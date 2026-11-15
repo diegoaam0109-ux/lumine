@@ -38,17 +38,5 @@ for ws in w.worksheets:
         if dim.height:
             dim.height = round(dim.height * 1.2, 1)
     ws.sheet_format.defaultRowHeight = 16
-# Imagen ilustrativa del kit en la hoja 1.2 (debajo de su rótulo)
-from pathlib import Path
-from openpyxl.drawing.image import Image as XLImage
-IMG = Path(__file__).resolve().parents[2] / 'identidad/imagenes/lumine-02-despiece.jpg'
-if '1.2 Costo del kit' in w.sheetnames and IMG.exists():
-    k = w['1.2 Costo del kit']
-    fila = next(z.row for z in k['B'] if isinstance(z.value, str) and z.value.startswith('Imagen ilustrativa del kit'))
-    im = XLImage(str(IMG))
-    im.width, im.height = 480, 270
-    k.add_image(im, f'C{fila + 1}')
-    from openpyxl.worksheet.pagebreak import Break
-    k.row_breaks.append(Break(id=fila - 1))
 w.save(SAL)
 print(f'Tipografía: {n} celdas en {FUENTE} con mínimo {MINIMO} pt')

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Decisiones del equipo sobre la v6 (14-11-2026), aplicadas con fórmulas antes de dar formato.
 
-1. El piloto y la transición quedan fuera de la evaluación financiera (acuerdo con el profesor guía): el flujo
+1. El piloto y la transición quedan fuera de la evaluación financiera (decisión del equipo): el flujo
    parte con la preapertura, cuando ya existe el reglamento. Selector en Datos!C24 (0 = fuera, 1 = dentro).
    Los costos de esas etapas se multiplican por el selector en el motor mensual; el escáner y las herramientas
    de alta tensión, que compraba el piloto, se compran en el primer mes de preapertura.
@@ -42,9 +42,9 @@ def fila_dato(r, etiqueta, valor, unidad, estado, fuente, alcance=None, plantill
 assert d['B24'].value is None and d['B25'].value.startswith('Software'), 'Datos!B24 no está libre'
 fila_dato(24, 'Piloto y transición dentro de la evaluación (1 = sí; 0 = no)', 0, 'selector',
           'Decisión del equipo (14-11-2026)',
-          'Acuerdo con el profesor guía (14-11-2026): el flujo parte con la preapertura, cuando ya existe el reglamento. '
-          'Se evalúa la etapa comercial. El piloto y la espera del reglamento se financiarían con un fondo público de I+D, '
-          'no adjudicado; una evaluación del desarrollo completo tendría que sumar esa etapa.',
+          'Se evalúa la decisión de abrir el taller una vez publicada la norma. El piloto es un proyecto experimental que no '
+          'puede vender (D.S. N° 67 de 2020), se financiaría con un fondo público de I+D no reembolsable y, al momento de '
+          'decidir la apertura, sería un costo ya incurrido. Con 1 se suma al flujo: el VAN puro sigue positivo.',
           'Con 1 se recupera la evaluación anterior (meses −17 a 0).')
 
 EXCLUIDAS = ('Piloto', 'Transición')
@@ -82,7 +82,7 @@ m['A124'] = ('Escáner y herramientas de alta tensión (los compra el piloto; si
 assert d['B23'].value is None and d['C23'].value is None, 'Datos!B23 no está libre'
 fila_dato(23, 'Capital de trabajo por déficit acumulado máximo (1 = sí; 0 = saldo de inventario)', 1, 'selector',
           'Decisión del equipo (15-11-2026)',
-          'Método del curso pedido por el profesor guía: al abrir se invierte el stock comprado antes de la apertura más el '
+          'Método del déficit acumulado máximo (Sapag, 2014): al abrir se invierte el stock comprado antes de la apertura más el '
           'mayor déficit operativo acumulado; desde el año 2 se suma el aumento del saldo de inventario, tránsito e IVA por '
           'crecimiento. Todo se recupera al cierre del año 5.',
           'Con 0 se recupera el método del saldo de inventario.')
@@ -224,9 +224,9 @@ def celda(h, r, c, v, fmt=None, bold=False, wrap=False, italic=False, color='000
 # ---------------------------------------------------------------- 4. Respaldo de la inversión en equipos
 h = hoja('1.1 Respaldo inversión', '1.1 Respaldo de la inversión en equipos: proveedor, precio y método',
          'Precio del eslabón más cercano al fabricante que publica precio. Pesos netos de IVA. Fondo celeste: dato publicado editable.',
-         [30, 34, 34, 13, 8, 7, 11, 9, 15, 16, 16, 15, 70])
+         [30, 34, 34, 13, 8, 7, 11, 9, 15, 16, 80])
 cab(h, 4, ['Ítem', 'Especificación', 'Proveedor (eslabón de la cadena)', 'Precio publicado', 'Moneda', 'Cant.',
-           'Tipo de cambio', 'Arancel', 'Internación (pesos)', 'Valor neto (pesos)', 'Valor anterior', 'Diferencia',
+           'Tipo de cambio', 'Arancel', 'Internación (pesos)', 'Valor neto (pesos)',
            'Fuente, método y mes de consulta'])
 EQ = [
     ('e_din', 'Dinamómetro de chasis', 'Dynocom 2WD 5000 Series (rodillos para tracción delantera, freno de corrientes de Foucault)',
@@ -261,7 +261,7 @@ EQ = [
      'Lenovo Agencia en Chile, fabricante (computadores); mobiliario sin proveedor identificado', '=5*1799990/1.19+4000000', 'CLP', 1, 0, 0,
      'Computadores: precio normal de $1.799.990 con IVA publicado directamente por Lenovo (consultado el 14-11-2026), cinco '
      'puestos (gerencia, administración, comercial, Responsable Técnico e Ingeniería de Calibración). Mobiliario: $4.000.000, '
-     'supuesto del equipo por confirmar (el valor que antes cubría todo el ítem).'),
+     'supuesto del equipo por confirmar.'),
 ]
 fila_d = {r: d.cell(r, 1).value for r in range(42, 160)}
 fila_clave = {v: k for k, v in fila_d.items() if v}
@@ -279,9 +279,7 @@ for clave, item, esp, prov, precio, mon, cant, ara, intern, nota_ in EQ:
     celda(h, r, 9, ara, '0%')
     celda(h, r, 10, intern, PESO)
     celda(h, r, 11, f'=E{r}*G{r}*H{r}*(1+I{r})+J{r}', PESO, bold=True)
-    celda(h, r, 12, anterior, PESO, color=GRIS)
-    celda(h, r, 13, f'=K{r}-L{r}', PESO)
-    celda(h, r, 14, nota_, wrap=True)
+    celda(h, r, 12, nota_, wrap=True)
     h.row_dimensions[r].height = 92
     d.cell(rd, 3).value = f"='1.1 Respaldo inversión'!K{r}"
     d.cell(rd, 3).fill = PatternFill(fill_type=None)
@@ -301,23 +299,23 @@ for rv in range(160, 180):
         d.cell(rv, 6).value = f'Tabla de vida útil del SII: {clase}. Valor de compra y fuente en la hoja 1.1.'
         d.cell(rv, 8).value = 'Dato publicado (tabla del SII); la clase asignada a cada bien es criterio del equipo.'
 celda(h, r, 2, 'Inversión inicial en equipos (un puesto)', bold=True)
-for c, f in [(11, f'=SUM(K5:K{r-1})'), (12, f'=SUM(L5:L{r-1})'), (13, f'=SUM(M5:M{r-1})')]:
+for c, f in [(11, f'=SUM(K5:K{r-1})')]:
     celda(h, r, c, f, PESO, bold=True, fill=CLARO)
 r += 2
 celda(h, r, 2, 'Método: se busca primero al fabricante; si no publica precio, al importador o distribuidor; las tiendas '
                'minoristas y los avisos de Mercado Libre se descartan. Los precios en moneda extranjera se convierten con el tipo '
                'de cambio de Datos (filas 14 y 15). El IVA es crédito fiscal y no se suma.', italic=True, color=GRIS, wrap=True)
-h.merge_cells(start_row=r, start_column=2, end_row=r, end_column=14)
+h.merge_cells(start_row=r, start_column=2, end_row=r, end_column=12)
 h.row_dimensions[r].height = 36
 h.freeze_panes = 'C5'
 
 # ---------------------------------------------------------------- 5. Costo del kit pieza por pieza
 k = hoja('1.2 Costo del kit', '1.2 Costo directo del kit, pieza por pieza (Esencial y Plus)',
-         'Kit de la Fase 3: dos motores en las ruedas traseras y batería de litio-titanato de 31 celdas (71,3 V; 2,14 kWh). '
-         'Pesos netos de IVA.', [16, 30, 34, 36, 8, 8, 12, 8, 12, 8, 15, 15, 70])
+         'Kit: dos motores en las ruedas traseras y batería de litio-titanato de 31 celdas (71,3 V; 2,14 kWh). '
+         'Pesos netos de IVA.', [16, 30, 34, 36, 8, 8, 12, 8, 12, 8, 15, 15, 60, 48])
 cab(k, 4, ['Bloque', 'Componente', 'Especificación', 'Proveedor (eslabón de la cadena)', 'Moneda', 'Cant. Esencial',
            'Precio unitario Esencial', 'Cant. Plus', 'Precio unitario Plus', 'Arancel', 'Subtotal Esencial (pesos)',
-           'Subtotal Plus (pesos)', 'Fuente, método y mes de consulta'])
+           'Subtotal Plus (pesos)', 'Fuente, método y mes de consulta', 'Enlace'])
 P = [
     ('Tren motriz', 'Motor en la rueda trasera', 'QS273 V3, 72 V: 4.000 W (Esencial) y 6.000 W (Plus)', 'QS Motor, fabricante (China)',
      'US$', 2, 514.54, 2, 583.77, 0, 'Precio oficial en cnqsmotor.com (consultado el 14-11-2026). Arancel 0% por el TLC Chile–China.'),
@@ -326,23 +324,23 @@ P = [
      'Precio oficial de lista en cnqsmotor.com; la oferta vigente es de US$285,97 y no se usa. QS lo vende junto a su motor de 4.000 W. '
      'Consultado el 14-11-2026.'),
     ('Batería', 'Celda de litio-titanato 2,3 V y 30 Ah', 'Yinlong 66160H; 31 en serie = 71,3 V y 2,14 kWh',
-     'Gobel Power, distribuidor de fábrica', 'US$', 31, 14, 31, 14, 0, 'Precio publicado por celda (2026), el mismo de la Fase 3.'),
+     'Gobel Power, distribuidor de fábrica', 'US$', 31, 14, 31, 14, 0, 'Precio publicado por Gobel Power: US$14,00 por celda, modelo YL-66160H-30 (consultado el 15-11-2026).'),
     ('Batería', 'Sistema de gestión de la batería (BMS)', 'ANT de 10 a 32 series, 200 A, apto para LTO',
      'Vendedor comercial (eBay)', 'US$', 1, 149.28, 1, 149.28, 0,
-     'Precio publicado (consultado el 14-11-2026). El fabricante no publica precio; es el único dato encontrado para 31 series.'),
+     'Precio publicado por el vendedor idealmall8 en eBay: US$149,28 la versión de 200 A (consultado el 15-11-2026). El fabricante, Shiyan Ant IoT, no publica precio; es el único dato encontrado para 31 series.'),
     ('Batería', 'Contactor principal 200 A', 'Tipo Albright SW200', 'EV Drives, distribuidor (EE.UU.)',
      'US$', 1, 110, 1, 110, 0.06, 'Precio publicado (septiembre de 2026). Arancel general de 6% por prudencia.'),
     ('Control', 'Unidad de control (hardware)', 'Macchina M2 Under-the-Hood, 2 CAN', 'Macchina, fabricante (EE.UU.)',
      'US$', 1, 99, 1, 99, 0.06, 'Precio publicado por el fabricante (septiembre de 2026). El software es desarrollo propio.'),
     ('Control', 'Sensor de presión de freno', 'Transductor 0,5–4,5 V con sello para líquido de frenos', 'DATAQ, fabricante (EE.UU.)',
-     'US$', 1, 68, 1, 68, 0.06, 'Precio publicado por el fabricante (septiembre de 2026).'),
+     'US$', 1, 68, 1, 68, 0.06, 'Precio publicado por DATAQ para el modelo 2000361-H de 0,5 a 4,5 V: US$68 (consultado el 15-11-2026).'),
     ('Mecánica', 'Brida motor–mangueta y soporte de pinza (par)', 'Mecanizado CNC en aluminio 6061 T6',
      'Referencia: WSP Separadores de Rueda (€104 el par con IVA)', '€', 2, 85.9504, 2, 85.9504, 0,
      'Estimación por pieza de complejidad equivalente (septiembre de 2026); por confirmar con un taller de mecanizado.'),
     ('Mecánica', 'Pinza de freno trasera', 'Pinza de repuesto sobre el disco del motor', 'eBay Chile, tramos publicados',
      'CLP', 2, 52800, 2, 52800, 0, 'Punto medio del rango publicado de $33.600 a $72.000 (septiembre de 2026).'),
     ('Mecánica', 'Cable de potencia 35 mm² (metro)', 'H01N2-D flexible', 'Vitel Energía, distribuidor en Chile',
-     'CLP', 5, 10094.96, 5, 10094.96, 0, 'Precio publicado $12.013 con IVA por metro (septiembre de 2026).'),
+     'CLP', 5, 10094.96, 5, 10094.96, 0, 'Precio publicado por Vitel Energía: $12.013 con IVA por metro (septiembre de 2026); se usa neto de IVA ($10.095). Ficha del producto en el enlace.'),
     ('Mecánica', 'Fusible ANL con portafusible', 'ANL con portafusible', 'Soliot, comercio en Chile',
      'CLP', 1, 11756.30, 1, 11756.30, 0, 'Precio publicado $13.990 con IVA (septiembre de 2026).'),
     ('Mecánica', 'Cortacorriente de batería 300 A', 'Desconectador manual de emergencia', 'Ferretools, comercio en Chile',
@@ -359,13 +357,19 @@ P = [
     ('Logística', 'Recargos de carga peligrosa clase 9, prorrateados', 'Baterías de litio: manejo, documentos y recargo',
      'Great Hensen, transitario', 'US$', 1, 20.75, 1, 20.75, 0, 'Tarifa publicada de US$230 a 600 por embarque (julio de 2026); US$415 / 20 kits.'),
     ('Logística', 'Courier de los ítems de EE.UU.', 'Contactor, unidad de control y sensor', 'Sin tarifa publicada',
-     'US$', 1, 45, 1, 45, 0, 'Supuesto del equipo.'),
+     'US$', 1, 45, 1, 45, 0, 'Supuesto del equipo: las tres piezas pesan cerca de 1,5 kg por kit (el contactor pesa 1,28 kg según la ficha de Arc Components; la unidad de control y el sensor, menos de 0,2 kg entre ambos). Se suponen US$30 por kilo puerta a puerta, con los envíos consolidados; sin tarifa consultada.'),
     ('Puesta en regla', 'Alineación después de la instalación', 'Taller externo', 'Neumax, servicio en Chile',
      'CLP', 1, 19998, 1, 19998, 0, 'Precio publicado (septiembre de 2026).'),
     ('Puesta en regla', 'Revisión técnica después de la instalación', 'Planta de revisión, Región Metropolitana',
      'Autofact con datos de las plantas', 'CLP', 1, 16250, 1, 16250, 0, 'Valor promedio publicado (enero de 2026).'),
 ]
 r = 5
+ENLACE = {
+    'Celda de litio-titanato 2,3 V y 30 Ah': 'https://www.gobelpower.com/yinlong-23v-30ah-lto-66160h-cells-for-diy-car-audio-battery_p26.html',
+    'Sistema de gestión de la batería (BMS)': 'https://www.ebay.de/itm/204568705372',
+    'Sensor de presión de freno': 'https://www.dataq.com/products/accessories/pressure-sensor/5vindex.html',
+    'Cable de potencia 35 mm² (metro)': 'https://vitelenergia.com/es/productpagepdf/product/printaction/product_id/4331/',
+}
 for blo, comp, esp, prov, mon, ce, pe, cp, pp, ara, nota_ in P:
     for c, v in [(2, blo), (3, comp), (4, esp), (5, prov)]:
         celda(k, r, c, v, wrap=True)
@@ -380,20 +384,17 @@ for blo, comp, esp, prov, mon, ce, pe, cp, pp, ara, nota_ in P:
     celda(k, r, 12, f'=G{r}*H{r}*{tc}*(1+K{r})', PESO)
     celda(k, r, 13, f'=I{r}*J{r}*{tc}*(1+K{r})', PESO)
     celda(k, r, 14, nota_, wrap=True)
+    if comp in ENLACE:
+        z = celda(k, r, 15, ENLACE[comp], wrap=True, color='0A6F9E')
+        z.hyperlink = ENLACE[comp]
+    else:
+        celda(k, r, 15, 'Por agregar', wrap=True, color=GRIS, italic=True)
     k.row_dimensions[r].height = 48
     r += 1
 tot = r
 celda(k, r, 3, 'Costo directo por kit', bold=True)
 for c, col in [(12, 'L'), (13, 'M')]:
     celda(k, r, c, f'=SUM({col}5:{col}{r-1})', PESO, bold=True, fill=CLARO)
-r += 1
-celda(k, r, 3, 'Valor usado antes (Fase 3, dólar $981,58)', color=GRIS)
-celda(k, r, 12, 3031028, PESO, color=GRIS)
-celda(k, r, 13, 3396013, PESO, color=GRIS)
-r += 1
-celda(k, r, 3, 'Diferencia')
-celda(k, r, 12, f'=L{tot}-L{tot+1}', PESO)
-celda(k, r, 13, f'=M{tot}-M{tot+1}', PESO)
 r += 1
 celda(k, r, 3, 'Costo de la mezcla de ventas (participación de Plus en Datos)')
 celda(k, r, 12, f'=(1-Datos!$C$48)*L{tot}+Datos!$C$48*M{tot}', PESO, bold=True)
@@ -405,11 +406,8 @@ r += 2
 celda(k, r, 2, 'Método: cada pieza se cotiza en el eslabón más cercano al fabricante que publica precio. Las piezas sin precio '
                'publicado quedan como supuesto o estimación y lo dicen en su fila. No incluye la mano de obra del dúo (va en '
                'remuneraciones) ni la garantía (Datos, 3% del costo del kit).', italic=True, color=GRIS, wrap=True)
-k.merge_cells(start_row=r, start_column=2, end_row=r, end_column=14)
+k.merge_cells(start_row=r, start_column=2, end_row=r, end_column=15)
 k.row_dimensions[r].height = 36
-r += 2
-celda(k, r, 2, 'Imagen ilustrativa del kit (conceptual): el kit real lleva un motor en cada rueda trasera.', italic=True, color=GRIS)
-KIT_IMG_FILA = r + 1
 k.freeze_panes = 'D5'
 assert d['A50'].value == 'k_es' and d['A51'].value == 'k_pl'
 for rd, col in [(50, 'L'), (51, 'M')]:
@@ -446,9 +444,9 @@ def metodo(tipo, fuente):
     if 'supuesto' in f or 'no tarifa contratada' in f:
         return 'Supuesto del equipo, sin cotización ni contrato.'
     if 'escenario ilustrativo' in f or 'interés pagado' in f:
-        return 'Supuesto del equipo: crédito ilustrativo, sin aprobación de un banco.'
+        return 'Supuesto del equipo: crédito propuesto, sin aprobación de un banco.'
     if 'convención' in f or 'método contable' in f:
-        return 'Criterio de evaluación del curso (convención académica), no un dato de mercado.'
+        return 'Criterio de evaluación de proyectos (Sapag, 2014), no un dato de mercado.'
     if 'abril del año siguiente' in f:
         return 'Norma tributaria: la renta anual se declara y paga en abril (SII).'
     return 'Dato publicado: fuente y fecha en la columna F.'
@@ -465,6 +463,117 @@ for rr in list(range(6, 41)) + list(range(43, 172)):
     if m_:
         estilo_como(d.cell(rr, 8), d.cell(rr, 6))
         d.cell(rr, 8).value = m_
+
+
+# ---------------------------------------------------------------- 7. Beta y D/P ponderados por la composición del ingreso (15-11-2026)
+assert all(d.cell(rr, 2).value is None for rr in range(241, 247)), 'Datos!B241:B246 no está libre'
+d['B241'] = 'Ponderación de industrias para el beta y la relación deuda / patrimonio (decisión del equipo, 15-11-2026)'
+estilo_como(d['B241'], d['B42'])
+DAM = 'Damodaran, «Betas by Sector (US)», enero de 2026: '
+fila_dato(242, 'Peso de autopartes: participación del kit en el ingreso por instalación', '=C52/C49', '%', 'Cálculo',
+          'Costo directo del kit (mezcla, fila 52: $3,26 millones) dividido por el ingreso neto por instalación (fila 49: '
+          '$4,21 millones) = 77,3%. El resto del ingreso (22,7%) remunera la instalación, la calibración y el servicio.',
+          'Con 1 se vuelve a la sola industria de autopartes.')
+fila_dato(243, 'Beta desapalancado, autopartes («Auto Parts», corregido por caja)', 1.13, 'beta', 'Dato publicado',
+          DAM + '35 empresas, beta desapalancado corregido por caja 1,13.')
+fila_dato(244, 'Beta desapalancado, comercio y servicio automotriz («Retail (Automotive)», corregido por caja)', 0.71, 'beta',
+          'Dato publicado', DAM + '34 empresas de venta y servicio automotriz, beta desapalancado corregido por caja 0,71.')
+fila_dato(245, 'Deuda / patrimonio, autopartes', 0.4146, '%', 'Dato publicado', DAM + 'D/E de 41,46%.')
+fila_dato(246, 'Deuda / patrimonio, comercio y servicio automotriz', 0.4536, '%', 'Dato publicado', DAM + 'D/E de 45,36%.')
+for rr in (242, 245, 246):
+    d.cell(rr, 3).number_format = '0.00%'
+d['B8'] = 'Beta desapalancado (βu), ponderado: autopartes y comercio y servicio automotriz'
+d['C8'] = '=C242*C243+(1-C242)*C244'
+d['E8'] = 'Cálculo'
+d['F8'] = ('Promedio ponderado de dos industrias de Damodaran (filas 242 a 244): el kit es una autoparte y la instalación, un '
+           'servicio automotriz. Pesos según la composición del ingreso por instalación.')
+d['B9'] = 'Relación deuda / patrimonio (D/P), ponderada'
+d['C9'] = '=C242*C245+(1-C242)*C246'
+d['E9'] = 'Cálculo'
+d['F9'] = ('Promedio ponderado de la estructura de capital de las mismas dos industrias (filas 245 y 246): se supone que la '
+           'empresa se financiaría como las que ya operan en su negocio, que llegaron a esa relación por experiencia.')
+
+# ---------------------------------------------------------------- 8. Preapertura de seis meses, escalonada (15-11-2026)
+# La norma se supone publicada al inicio del mes 13 (enero de 2028), tres meses antes que en el calendario anterior, y la
+# preapertura dura seis meses (meses 13 a 18; −5 a 0): la apertura sigue en julio de 2028.
+mes = {m.cell(3, c).value: c for c in range(4, m.max_column + 1) if isinstance(m.cell(3, c).value, int)}
+P13, P14, P15, P16, P17, P18 = (mes[k] for k in range(13, 19))
+CL = lambda c: get_column_letter(c)
+m['A2'] = 'CALENDARIO BASE (enero de 2027 = mes 1; la norma se supone publicada al inicio del mes 13)'
+for c in (P13, P14, P15):
+    m.cell(5, c).value = 'Preapertura'
+d['C161'] = 5
+d['F161'] = ('El local se arrienda cinco meses antes de abrir: las obras de habilitación toman los meses −4 y −3, y en los dos '
+             'últimos se instalan los equipos y se forman los técnicos.')
+d['B161'] = 'Meses de arriendo del local antes de abrir'
+assert d['A163'].value is None and d['B163'].value is None
+d['A163'] = 'adin'
+fila_dato(163, 'Anticipo al pedir el dinamómetro (el saldo se paga al recibirlo, tres meses después)', 0.5, '%', 'Supuesto',
+          'Supuesto del equipo: los fabricantes de dinamómetros de chasis informan de 8 a 12 semanas de fabricación desde la '
+          'orden, más el traslado desde EE.UU.; se pide en el mes −5 y se recibe en el −2. Pago en dos partes, sin cotización.',
+          'De 30% a 100%.')
+d['C163'].number_format = '0%'
+# Personas: Responsable Técnico desde el mes −5; Ingeniería de Calibración desde el −3
+for c in (P13, P14, P15):
+    x = CL(c)
+    m[f'{x}68'] = '=Datos!$C$228'
+    m[f'{x}66'] = '=Datos!$C$226'
+    m[f'{x}86'] = f'={x}66*Datos!$C$104'
+    m[f'{x}88'] = f'={x}68*Datos!$C$105*{x}8'
+    m[f'{x}89'] = f'={x}69*Datos!$C$106*{x}8'
+    m[f'{x}85'] = 0
+    m[f'{x}120'] = 0
+for c in range(4, m.max_column + 1):
+    v = m.cell(69, c).value
+    if isinstance(v, str) and '<16,' in v:
+        m.cell(69, c).value = v.replace('<16,', '<15,')
+# Arriendo, servicios y seguros desde el mes −4 (con el contrato de arriendo)
+for c in (P13, P14, P15, P16, P17, P18):
+    x, n_ = CL(c), m.cell(3, c).value
+    m[f'{x}96'] = f'=IF({n_}>=19-Datos!$C$161,Datos!$C$121,0)'
+    m[f'{x}97'] = f'=IF({n_}>=19-Datos!$C$161,Datos!$C$122,0)'
+    m[f'{x}98'] = f'=IF({n_}>=19-Datos!$C$161,Datos!$C$123,0)'
+# Trámites de autorización: al publicarse la norma (mes −5)
+m[f'{CL(P13)}121'] = '=Datos!$C$157'
+m[f'{CL(P16)}121'] = 0
+# Garantía de arriendo: con el contrato (mes −4)
+m[f'{CL(P14)}130'] = '=Datos!$C$121'
+m[f'{CL(P16)}130'] = 0
+# Equipos escalonados: habilitación en −4 y −3; bodega en −3; escáner y herramientas en −3; mobiliario en −2;
+# dinamómetro con anticipo en −5 y saldo en −2; elevador en 0 (sin cambio)
+esc = m[f'{CL(P16)}124'].value     # el paso 1 llevó el escáner y las herramientas al mes 16 (antes, primer mes de preapertura)
+assert isinstance(esc, str) and 'Datos!$C$129' in esc, esc
+m[f'{CL(P15)}124'] = esc
+for c in (P13, P14, P16, P17, P18):
+    if c != P15:
+        m[f'{CL(c)}124'] = 0
+m[f'{CL(P13)}125'] = 0
+m[f'{CL(P14)}125'] = '=0.5*Datos!$C$131'
+m[f'{CL(P15)}125'] = '=0.5*Datos!$C$131+Datos!$C$130'
+m[f'{CL(P16)}125'] = '=Datos!$C$132'
+m[f'{CL(P17)}125'] = 0
+m[f'{CL(P13)}126'] = '=Datos!$C$163*Datos!$C$128'
+m[f'{CL(P16)}126'] = '=(1-Datos!$C$163)*Datos!$C$128'
+m[f'{CL(P17)}126'] = 0
+
+
+# Totales del calendario calculados directo del motor: el anexo A1 muestra solo los meses de preapertura
+cal = w['Calendario']
+assert cal['U6'].value == '=SUM(C6:T6)' and cal['U15'].value == '=SUM(C15:T15)'
+cal['U6'] = '=SUM(Mensual!D128:U128)/1000000'
+cal['U7'] = '=(SUM(Mensual!D137:U137)+SUM(Mensual!D138:U138))/1000000'
+cal['U8'] = '=Mensual!U150/1000000'
+cal['U9'] = '=SUM(Mensual!D130:U130)/1000000'
+cal['U10'] = '=T10'
+cal['U12'] = '=SUM(U6:U10)'
+for fila_, tasa in ((15, 'Datos!$C$16'), (18, 'Datos!$C$18')):
+    f_ = lambda rng: f'(1+{tasa})^(-{rng}/12)'
+    cal[f'U{fila_}'] = ('=(SUMPRODUCT((Mensual!D128:U128+Mensual!D137:U137+Mensual!D138:U138+Mensual!D130:U130)*'
+                        + f_('Mensual!D7:U7') + ')+Mensual!D150*' + f_('Mensual!D7')
+                        + '+SUMPRODUCT((Mensual!E150:U150-Mensual!D150:T150)*' + f_('Mensual!E7:U7') + '))/1000000+T10')
+
+# ---------------------------------------------------------------- 9. Rótulos del capital de trabajo
+ct['B16'] = 'Capital de trabajo comprado antes de abrir (ya incluido en la inversión del año 0)'
 
 # ---------------------------------------------------------------- Notas
 nt = w['Notas y cambios']

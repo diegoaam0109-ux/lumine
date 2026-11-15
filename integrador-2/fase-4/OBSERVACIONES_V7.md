@@ -390,3 +390,39 @@ supuesto provisional), 95,8% a bencina y 31,9% con intención definitiva y preci
 central con p = 0,03 y q = 0,38 (Sultan, Farley y Lehmann, 1990). Demanda atendible: 586, 890, 1.181, 1.492 y 1.770, igual que la
 Tabla N° 20 de la Fase 3. Las instalaciones del modelo son entre 44% y 57% de esa demanda. No cambia ningún flujo.
 
+
+## Comentarios del equipo (15-11-2026)
+
+Diego y Lukas devolvieron el libro y el informe con comentarios. Cambios en el libro (`decisiones.py`, `formato_profesor.py`,
+`tipografia.py` y el nuevo `textos.py`):
+
+- Preapertura de seis meses (meses −5 a 0; norma supuesta en enero de 2028, apertura en julio de 2028), con desembolsos
+  escalonados: Responsable Técnico y trámites en el mes −5; anticipo de 50% del dinamómetro en el mes −5 y saldo a la
+  recepción en el mes −2 (`Datos!C163`, supuesto de tres meses de fabricación, sin confirmar con el fabricante); arriendo
+  desde el mes −4 (`Datos!C161` = 5 meses); habilitación en los meses −4 y −3; bodega, escáner y herramientas en el −3;
+  Ingeniería de Calibración desde el −3; mobiliario en el −2; primer dúo desde el −1; kits pedidos en el −1 y el 0 (carga
+  consolidada desde China, 40 a 50 días). La hoja A1 muestra solo esos seis meses.
+- Beta y D/P ponderados: w = costo del kit / ingreso neto = 77,3% (`Datos!C242` es fórmula); βu = w × 1,13 + (1 − w) × 0,71 =
+  1,035; D/P = w × 41,46% + (1 − w) × 45,36% = 42,34% (Damodaran, «Auto Parts» y «Retail (Automotive)», enero de 2026).
+- Payback simple y descontado con su cálculo por año a la vista, junto al resultado.
+- Hoja 1.2: columna de enlaces (gobelpower, eBay, DATAQ y Vitel verificados; el resto dice «Por agregar»), courier de EE.UU.
+  como supuesto desarrollado, sin la imagen ni las columnas de valor anterior.
+- Textos: sin «Fase 3» suelto (ahora «Capítulo III, Tabla N° …»), sin la instrucción de `Datos!A2`, sin la hoja «Notas y
+  cambios», sin citas al curso ni al profesor (Sapag, 2014, donde corresponde).
+
+| Indicador | 14-11 (noche) | 15-11 |
+|---|---:|---:|
+| Ku / Ke | 8,65% / 10,58% | 8,15% / 9,94% |
+| VAN puro / TIR pura | $134,99 M / 16,73% | $129,76 M / 15,59% |
+| VAN inversionista / TIR | $111,91 M / 19,48% | $106,22 M / 18,05% |
+| VAN ajustado | $140,77 M | $135,67 M |
+| Activo nominal | $59,6 M | $76,7 M |
+| Inversión total del año 0 | $385,3 M | $403,9 M |
+| Préstamo / aporte de socios año 0 | $116,3 M / $269,3 M | $123,1 M / $281,5 M |
+| Payback descontado (puro / inversionista) | 4,51 / 4,51 años | 4,54 / 4,55 años |
+| Baja de precio que lleva el VAN a 0 | 1,92% | 1,81% |
+
+La TIR con deuda baja 1,4 puntos: la preapertura más larga agrega $17,1 M de activo nominal (personas, arriendo y servicios
+de los seis meses), que además sube la amortización de los años 1 a 3; la tasa más baja compensa solo en parte. Con el piloto
+dentro de la evaluación (`Datos!C24 = 1`), el VAN puro sería $94,4 M y la TIR 13,22%. Con un alza de 3% en el costo del kit,
+−$52,9 M (TIR financiada 4,94%); con una baja de 3%, $311,0 M.

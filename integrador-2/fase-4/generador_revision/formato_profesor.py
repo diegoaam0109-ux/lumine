@@ -217,8 +217,8 @@ fila(s, r, 'Inversión total del año 0 en el flujo de caja', [f'=C{ieq}+C{r-1}'
 control('1 Inversión: inversión del año 0 = flujo puro año 0', f"=C{r}+{q('Flujo puro', 'C64')}*{M}")
 r += 1
 nota(s, r, '=IF(Datos!$C$24=1,"Los desembolsos ocurren durante 18 meses antes de abrir (detalle en A1 Calendario inversión).",'
-           '"Alcance: se evalúa la etapa comercial. El piloto y la espera del reglamento quedan fuera (selector en Datos) y se financiarían con un fondo público de I+D no adjudicado; el flujo parte con los 3 meses de preapertura (detalle en A1 Calendario inversión).")'
-           '&" Se llevan al momento cero con la tasa del proyecto, como en el calendario de inversiones visto en clases."', 10, 30)
+           '"Alcance: se evalúa la etapa comercial. El piloto y la espera del reglamento quedan fuera (selector en Datos) y se financiarían con un fondo público de I+D no adjudicado; el flujo parte con los 6 meses de preapertura (detalle en A1 Calendario inversión).")'
+           '&" Cada desembolso se lleva al momento cero con la tasa del flujo."', 10, 30)
 r += 2
 cabecera(s, r, ['Reinversiones', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'])
 r += 1
@@ -563,9 +563,10 @@ def flujo(nombre, titulo, bajada, src, financiado):
     control(f'{nombre}: flujo de caja', f"=SUMPRODUCT(ABS(C{fcl}:H{fcl}-{q(src, 'C64:H64')}*{M}))", nombre)
     control(f'{nombre}: resultado antes de impuesto', f"=SUM(D{rai}:H{rai})-SUM({q(src, 'D38:H38')})*{M}", nombre)
     r += 1
-    tasa_r = r + 4
+    tasa_r = r + 5
     fila(s, r, 'Flujo descontado', [f'={c}{fcl}/(1+$C${tasa_r})^{n}' for n, c in enumerate(AN)]); fd = r; r += 1
-    fila(s, r, 'Flujo descontado acumulado', [f'=SUM($C${fd}:{c}{fd})' for c in AN], tipo='memo'); r += 2
+    fila(s, r, 'Flujo descontado acumulado', [f'=SUM($C${fd}:{c}{fd})' for c in AN], tipo='memo'); acd = r; r += 1
+    fila(s, r, 'Flujo acumulado (sin descontar)', [f'=SUM($C${fcl}:{c}{fcl})' for c in AN], tipo='memo'); acs = r; r += 2
     seccion(s, r, 'Evaluación', 8); r += 1
     etiqueta_tasa = 'Tasa de descuento: Ke (costo del patrimonio, CAPM con beta apalancado)' if financiado else \
         'Tasa de descuento: Ku (CAPM con beta desapalancado)'
@@ -581,8 +582,20 @@ def flujo(nombre, titulo, bajada, src, financiado):
     put(s, r, 4, f'=IF(C{r}>C{tasa_r},"TIR > tasa de descuento: rentable","TIR < tasa de descuento")', italic=True, color=GRIS)
     control(f'{nombre}: TIR (puntos básicos)', f"=(C{r}-{S('C', 71)})*10000", nombre)
     r += 1
-    fila(s, r, 'Payback simple', [f"={S('C', 72)}"], fmt=ANOS); r += 1
-    fila(s, r, 'Payback descontado', [f"={S('C', 73)}"], fmt=ANOS); r += 1
+    hs, hd = r + 2, r + 3
+    fila(s, r, 'Payback simple', [f'=IF(COUNT(D{hs}:H{hs})=0,"No recupera en 5 años",MIN(D{hs}:H{hs}))'], fmt=ANOS)
+    put(s, r, 4, 'Año previo a la recuperación + saldo por recuperar ÷ flujo del año (filas de abajo)', italic=True, color=GRIS)
+    pbs = r; r += 1
+    fila(s, r, 'Payback descontado', [f'=IF(COUNT(D{hd}:H{hd})=0,"No recupera en 5 años",MIN(D{hd}:H{hd}))'], fmt=ANOS)
+    put(s, r, 4, 'Mismo cálculo con los flujos descontados', italic=True, color=GRIS)
+    r += 1
+    fila(s, r, '   Cálculo del payback simple, por año', [None] + [
+        f'=IF(AND({p}{acs}<0,{c}{acs}>=0,{c}{fcl}>0),{n}-{p}{acs}/{c}{fcl},"")'
+        for n, (p, c) in enumerate(zip(AN[:-1], AN[1:]))], fmt=ANOS, tipo='memo'); r += 1
+    fila(s, r, '   Cálculo del payback descontado, por año', [None] + [
+        f'=IF(AND({p}{acd}<0,{c}{acd}>=0,{c}{fd}>0),{n}-{p}{acd}/{c}{fd},"")'
+        for n, (p, c) in enumerate(zip(AN[:-1], AN[1:]))], fmt=ANOS, tipo='memo'); r += 1
+    _ = pbs
     fila(s, r, 'VAN sin recuperaciones de cierre (sensibilidad)', [f"={S('C', 74)}*{M}"], tipo='memo'); r += 1
     s.freeze_panes = 'C5'
     s.print_title_rows = '1:4'
@@ -599,7 +612,7 @@ p5 = flujo('5 Flujo financiado', '5. Flujo de caja financiado (proyecto apalanca
 # ---------------------------------------------------------------------------------------------
 # Hoja 5.1 · Tabla de amortización (formato de la clase)
 s = nueva('5.1 Tabla de amortización', '5.1 Préstamo y tabla de amortización',
-          'Crédito ilustrativo indexado (cuota constante en pesos de 2026). Tasa real por Fisher. Formato de la clase de tablas de amortización.',
+          'Crédito propuesto, indexado (cuota constante en pesos de 2026). Tasa real por Fisher. Sin aprobación de un banco.',
           [40, 17, 17, 17, 17, 17, 17])
 r = 4
 put(s, r, 2, 'Monto'); put(s, r, 3, f"={q('Deuda', 'C6')}*{M}", PESO); monto = r; r += 1
@@ -655,8 +668,9 @@ fila(s, r, 'VAN ajustado = VAN puro + VAN de la deuda', [f'=C{vd}+C{r-1}'], tipo
 control('5.1 Financiamiento: VAN ajustado', f"=C{r}-{q('Deuda', 'C53')}*{M}")
 r += 1
 nota(s, r, 'El ahorro tributario es el menor impuesto que efectivamente se paga por deducir los intereses; en los años con '
-           'pérdida de arrastre no hay ahorro inmediato. El VAN ajustado (método de clases) no coincide con el VAN del flujo '
-           'financiado a Ke de la hoja 5: son dos métodos distintos y la diferencia está anotada en OBSERVACIONES_V7.', 8, 30)
+           'pérdida de arrastre no hay ahorro inmediato. El VAN ajustado (VAN puro más VAN de la deuda) no coincide con el VAN del '
+           'flujo financiado a Ke de la hoja 5: el primero mide cuánto agrega la deuda al proyecto; el segundo, cuánto gana el '
+           'socio sobre su aporte. Son dos preguntas distintas.', 8, 30)
 s.freeze_panes = 'B4'
 
 # ---------------------------------------------------------------------------------------------
@@ -684,12 +698,17 @@ def par(clave, etiqueta, valor, fmt, formula_txt='', fuente=None):
 
 par('rf', 'Tasa libre de riesgo (Rf)', '=Datos!C6', PCT, '', '=Datos!F6')
 par('prm', 'Premio por riesgo de mercado (Rm − Rf)', '=Datos!C7', PCT, '', '=Datos!F7')
-par('bu', 'Beta desapalancado (βu)', '=Datos!C8', DEC, '', '=Datos!F8')
+par('w', 'Peso de autopartes en el ingreso por instalación (w)', '=Datos!C242', PCT, '', '=Datos!F242')
+par('bu1', 'βu autopartes («Auto Parts»)', '=Datos!C243', DEC, '', '=Datos!F243')
+par('bu2', 'βu comercio y servicio automotriz («Retail (Automotive)»)', '=Datos!C244', DEC, '', '=Datos!F244')
+par('bu', 'Beta desapalancado ponderado (βu)', '=Datos!C8', DEC, 'βu = w × βu autopartes + (1 − w) × βu servicio', '=Datos!F8')
 par('ku', 'Ku: costo del capital sin deuda', f"={T['rf']}+{T['bu']}*{T['prm']}", PCT, 'Ku = Rf + βu × (Rm − Rf)', 'Tasa del flujo puro (hoja 4)')
 estilo_fila(s, r - 1, 2, 5, 'sub')
 control('6 Tasas: Ku (puntos básicos)', f"=({T['ku']}-Datos!C16)*10000")
 r += 1
-par('dp', 'Relación deuda / patrimonio (D/P)', '=Datos!C9', PCT, '', '=Datos!F9')
+par('dp1', 'D/P autopartes', '=Datos!C245', PCT, '', '=Datos!F245')
+par('dp2', 'D/P comercio y servicio automotriz', '=Datos!C246', PCT, '', '=Datos!F246')
+par('dp', 'Relación deuda / patrimonio ponderada (D/P)', '=Datos!C9', PCT, 'D/P = w × D/P autopartes + (1 − w) × D/P servicio', '=Datos!F9')
 par('t', 'Tasa de impuesto (t)', '=Datos!C10', PCT, '', '=Datos!F10')
 par('bl', 'Beta apalancado (βl)', f"={T['bu']}*(1+(1-{T['t']})*{T['dp']})", DEC, 'βl = βu × [1 + (1 − t) × D/P]  (Hamada)')
 par('ke', 'Ke: costo del patrimonio', f"={T['rf']}+{T['bl']}*{T['prm']}", PCT, 'Ke = Rf + βl × (Rm − Rf)', 'Tasa del flujo financiado (hoja 5)')
@@ -794,10 +813,11 @@ def espejo(src, nombre, titulo, bajada, cabeza, cols, filas, ancho_b=44, ancho=1
     return s, r
 
 
-cols = [L(c) for c in range(3, 22)]
+_pre = next(c for c in range(4, w['Mensual'].max_column + 1) if w['Mensual'].cell(5, c).value == 'Preapertura')
+cols = [L(c - 1) for c in range(_pre, 22)] + ['U']
 s, r = espejo('Calendario', 'A1 Calendario inversión', 'Anexo 1. Calendario de inversiones antes de la apertura',
-              'Pesos de 2026. Meses −17 a 0; desembolsos al cierre del mes. Los factores llevan cada pago al momento cero. '
-              'Con el piloto fuera de la evaluación, los meses −17 a −3 quedan en cero.',
+              'Pesos de 2026. Meses de la preapertura (−5 a 0); desembolsos al cierre del mes. Los factores llevan cada pago al '
+              'momento cero con la tasa del flujo (Ku o Ke).',
               5, cols, [(6, 'peso'), (7, 'peso'), (8, 'peso'), (9, 'peso'), (10, 'peso'), (12, 'peso-sub'), (0, 'blank'),
                         (14, 'fac'), (15, 'peso-sub'), (0, 'blank'), (17, 'fac'), (18, 'peso-sub')], ancho=13, fmt_cab=UNI)
 s.cell(4, 2 + len(cols)).number_format = 'General'
