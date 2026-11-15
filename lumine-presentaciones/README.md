@@ -60,3 +60,14 @@ con una entrada por lámina y activar la tarjeta de la Fase 5 en `index.html`.
 - **QR del cierre:** SVG local con corrección M, generado una sola vez. Abre en otra pestaña https://diegoaam0109-ux.github.io/lumine/ventas/. La presentación y el QR se ven sin internet; visitar la página comercial requiere conexión.
 
 El motor usa únicamente APIs del navegador; no hay bibliotecas, CDN ni peticiones de red para abrir la presentación desde un pendrive. Copia la carpeta completa, incluido `fase3/qr-comercial.svg`.
+
+## Fase 4 (propuesta visual, 15-11-2026)
+
+`fase4/index.html` es una presentación propia, hecha en HTML y SVG (no usa `engine/` ni láminas en JPG), para poder
+animar los gráficos: 14 láminas y un anexo de defensa (A1 a A3). Se avanza con `→`, `←`, espacio o clic.
+No lleva tablas del Excel: cada cifra sale del libro `integrador-2/fase-4/excel/v7_formato_curso.xlsx`.
+
+Para cambiarla, editar `integrador-2/fase-4/presentacion/plantilla.html` y ejecutar
+`python3 integrador-2/fase-4/presentacion/armar.py`, que vuelve a escribir `fase4/index.html` (fuentes en `fase4/fuentes/`,
+imágenes en `fase4/img/`) y una versión de un solo archivo en `/tmp/propuesta_fase4.html` para el artefacto de Claude.
+La curva de caja mensual se lee directo del libro; las demás cifras están en la plantilla.
