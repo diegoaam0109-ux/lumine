@@ -6,7 +6,7 @@ Salidas:
   /tmp/propuesta_fase4.html               (una sola página con todo incrustado, para el artefacto de Claude)
 La curva de caja mensual se lee del libro v7 (hoja A3 Capital trabajo mensual, fila 16).
 """
-import base64, json, pathlib, shutil, re
+import base64, json, pathlib, shutil, re, hashlib
 import openpyxl
 
 AQUI = pathlib.Path(__file__).resolve().parent
@@ -51,8 +51,9 @@ def main():
     nombres = json.loads(re.search(r'const nombres = (\[.*?\]);', base).group(1).replace("'", '\"'))
     notas = re.findall(r"L.push\(\{ rol: '[^']*', clara: (?:true|false), nota: '([^']*)'", base)
     assert len(nombres) == len(notas) == 17
+    version = hashlib.sha256((sitio + (SITIO.parent / 'engine/deck.js').read_text() + (SITIO.parent / 'engine/deck.css').read_text()).encode()).hexdigest()[:12]
     datos = dict(title='Lumine · Fase 4 · Plan financiero', mainSlides=14,
-        slides=[dict(title=n, frame=f'renderer.html?embed#lamina-{i+1}',
+        slides=[dict(title=n, frame=f'renderer.html?embed&v={version}#lamina-{i+1}',
                      notes='<p><b>Nota de diseño (no es un guion):</b></p><p>'+notas[i]+'</p>')
                 for i, n in enumerate(nombres)],
         annex=[dict(code=f'A{i-13}', title=nombres[i], slide=i+1,
@@ -65,10 +66,10 @@ def main():
 <html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lumine · Fase 4 · Plan financiero</title>
-<link rel="stylesheet" href="../engine/deck.css"></head><body>
-<script src="deck-data.js"></script><script src="../engine/deck.js"></script>
+<link rel="stylesheet" href="../engine/deck.css?v=__VERSION__"></head><body>
+<script src="deck-data.js?v=__VERSION__"></script><script src="../engine/deck.js?v=__VERSION__"></script>
 </body></html>
-''', encoding='utf-8')
+'''.replace('__VERSION__', version), encoding='utf-8')
     pathlib.Path('/tmp/propuesta_fase4.html').write_text(unico, encoding='utf-8')
     print('ok', SITIO, 'visor + datos + renderer', len(sitio) // 1024, 'KB')
 
