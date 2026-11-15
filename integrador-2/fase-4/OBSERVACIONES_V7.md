@@ -2,8 +2,9 @@
 
 **Archivo:** `excel/v7_formato_curso.xlsx` (+ PDF de 35 páginas). Se genera con `generador_revision/construir_v7.py`.
 
-> **14-11-2026, noche: cifras vigentes** (secciones «Decisiones del 14-11-2026» y «Respaldo con fuentes primarias», al final):
-> VAN puro $185,53 M y TIR pura 19,56%; inversionista $160,38 M a Ke y TIR 23,98%. Las cifras de las secciones anteriores
+> **14-11-2026, noche: cifras vigentes** (secciones «Decisiones del 14-11-2026», «Respaldo con fuentes primarias» y
+> «Local, bodega, mobiliario y demanda de arriba hacia abajo», al final): VAN puro $161,94 M y TIR pura 17,51%;
+> inversionista $137,0 M a Ke y TIR 21,14%. Las cifras de las secciones anteriores
 > son de antes de esos cambios; los criterios descritos siguen vigentes.
 
 ## Qué se hizo (solo formato)
@@ -198,8 +199,7 @@ Pedido del equipo después de la reunión: hacer todo lo conversado, sin dejar p
    - Elevador: Importadora JAK, precio normal $2.390.000 + IVA (antes la oferta de $2.150.000, sin vigencia informada).
    - Herramientas de alta tensión por puesto: Wiha 91890 (US$693,31) y Fluke 1587 FC (US$1.080,55), tiendas oficiales.
      $1,75 M (antes $1,20 M). Los guantes y la protección personal ya estaban en el curso de alta tensión.
-   - Bodega, habilitación y mobiliario: siguen como supuesto del equipo, por confirmar; la bodega tiene como referencia un
-     armario asecos ION-STORE-90 (US$8.560 en DENIOS), que no alcanza para el inventario.
+   - Bodega, habilitación y mobiliario: ver la sección «Local, bodega, mobiliario y demanda de arriba hacia abajo».
    - Las notas de vida útil que contradecían los valores aplicados (incongruencia 5) se reemplazaron.
 2. **Hoja 1.2 Costo del kit, pieza por pieza**, para el kit de la Fase 3 (dos motores en las ruedas, 31 celdas de
    litio-titanato, 71,3 V): motores QS273 de 4.000 W (US$514,54) y 6.000 W (US$583,77) y controladores Fardriver ND72680
@@ -232,3 +232,44 @@ Pedido del equipo después de la reunión: hacer todo lo conversado, sin dejar p
 | Optimista (VAN / TIR) | $537,23 M / 36,85% | $514,23 M / 34,98% |
 | Kit +3% / +5% | $26,86 M / −$93,15 M | $7,34 M / −$113,14 M |
 | Baja de precio que lleva el VAN a 0 | 2,83% | 2,56% |
+
+## Local, bodega, mobiliario y demanda de arriba hacia abajo (14-11-2026, noche)
+
+Los tres ítems que seguían como supuesto ahora tienen respaldo en la hoja 1.1, con fuente y mes:
+
+| Ítem | Antes | Ahora | Respaldo |
+|---|---:|---:|---|
+| Bodega de baterías clase 9 | $4,00 M | $17,03 M | Dos armarios asecos ION-STORE-90 (US$8.560 c/u, DENIOS) + arancel máximo de la autorización sanitaria de la SEREMI (D.S. N° 43, $177.300, ChileAtiende). La capacidad de dos armarios frente al inventario de kits no está verificada. |
+| Habilitación del local | $15,00 M | $26,60 M | Piso epóxico 360 m² a $25.000/m² (Cronoshare), eléctrica e iluminación 400 m² a $9.000/m² (tope del rango de Jobbing), oficina 40 m² a $350.000/m² (Jobbing). El local se arrienda construido: no hay obra gruesa. |
+| Mobiliario y computadores | $4,00 M | $11,56 M | Cinco ThinkPad E14 Gen 7 a $1.799.990 con IVA (Lenovo) + muebles $4,00 M (supuesto del equipo). |
+
+Las notas de vida útil de Datos (filas 165 a 171) ahora citan la clase de la tabla del SII y remiten a la hoja 1.1.
+
+**Demanda de arriba hacia abajo en la hoja 2.1.** Se agregó, antes del embudo, el tamaño de mercado del informe de la Fase 3:
+TAM 4.409.729 vehículos (INE 2025), SAM Región Metropolitana 1.685.930, segmento laboral 162.780 (taxis 22.838, colectivos
+12.982 y conductores de aplicación 126.960, estimación) y la curva de Bass con p = 0,0026 y q = 0,709 (Massiani y Gohs, 2015).
+La demanda atendible (Bass × cobertura de la biblioteca) es 447, 990, 1.971, 3.835 y 7.137 vehículos; las instalaciones del
+modelo (291, 516, 660, 660, 804) son el 65%, 52%, 33%, 17% y 11% de ella. El pronóstico sigue siendo el menor entre el embudo
+comercial, la capacidad y los kits, mes a mes; Bass no entra por fórmula al flujo, sirve de techo y contraste. La CAGR no se usa
+porque exige una serie histórica que un producto nuevo no tiene.
+
+| Indicador | Con fuentes primarias | Con local, bodega y mobiliario |
+|---|---:|---:|
+| VAN puro (Ku 8,65%) | $185,53 M | $161,94 M |
+| TIR pura | 19,56% | 17,51% |
+| VAN inversionista (Ke) | $160,38 M | $137,0 M |
+| TIR inversionista | 23,98% | 21,14% |
+| VAN ajustado (puro + deuda) | $192,09 M | $169,0 M |
+| Inversión equivalente en el año 0 | $183,22 M | $222,0 M |
+| Fondos máximos sin deuda | $447,94 M | $483,1 M |
+| Préstamo | $131,29 M | $141,6 M |
+| Payback descontado | 4,56 años | 4,63 años |
+| VAN sin recuperaciones de cierre | −$108,69 M | −$141,8 M |
+| Pesimista (VAN / TIR) | −$362,73 M / −21,17% | −$390,56 M / −20,95% |
+| Optimista (VAN / TIR) | $514,23 M / 34,98% | $490,74 M / 32,11% |
+| Kit +3% / +5% | $7,34 M / −$113,14 M | −$16,41 M / −$137,14 M |
+| Baja de precio que lleva el VAN a 0 | 2,56% | ≈2,2% (precio −2% da VAN $17,21 M) |
+
+Lectura: el local, la bodega y los muebles suman $32,2 M a la inversión y bajan el VAN en $23,6 M (13%). Lo que manda sobre el
+resultado sigue siendo el margen por kit: un alza de 3% en el costo del kit o una baja de 2,2% en el precio dejan el VAN en cero.
+

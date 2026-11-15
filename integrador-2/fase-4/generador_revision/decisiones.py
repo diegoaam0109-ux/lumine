@@ -182,17 +182,21 @@ EQ = [
      'Precios regulares de wihatools.com (US$693,31) y shop.fluke.com (US$1.080,55), consultados el 14-11-2026. Los guantes '
      'dieléctricos y la protección personal ya están en «Curso externo de alta tensión y elementos de protección» (Datos), por '
      'eso no se suman. Arancel 0% por TLC con certificado de origen; envío por confirmar.'),
-    ('e_bod', 'Bodega de baterías clase 9', 'Sala habilitada para guardar baterías de litio',
-     'Sin proveedor identificado', 4000000, 'CLP', 1, 0, 0,
-     'Supuesto del equipo (octubre de 2026), por confirmar. Referencia: un armario certificado asecos ION-STORE-90 para baterías '
-     'de litio cuesta US$8.560 sin impuestos en DENIOS, distribuidor del fabricante (consultado el 14-11-2026); un solo armario '
-     'no alcanza para el inventario de kits, por eso no reemplaza a la bodega.'),
-    ('e_hab', 'Habilitación del local', 'Obras para seis puestos de trabajo en un taller de 400 m²',
-     'Sin proveedor identificado', 15000000, 'CLP', 1, 0, 0,
-     'Supuesto del equipo (octubre de 2026), por confirmar: no hay un precio publicado comparable para la obra.'),
-    ('e_mob', 'Mobiliario y computadores', 'Mobiliario de oficina y computadores del equipo',
-     'Sin proveedor identificado', 4000000, 'CLP', 1, 0, 0,
-     'Supuesto del equipo (octubre de 2026), por confirmar.'),
+    ('e_bod', 'Bodega de baterías clase 9', 'Dos armarios certificados para baterías de litio (90 minutos de resistencia al fuego) y autorización sanitaria',
+     'asecos (fabricante), vendido por DENIOS, su distribuidor', 8560, 'US$', 2, 0, 177300,
+     'Armario asecos ION-STORE-90: US$8.560 sin impuestos, envío incluido (DENIOS, consultado el 14-11-2026). Las baterías '
+     'de litio son clase 9 y su bodega requiere autorización sanitaria de la SEREMI de Salud (D.S. N° 43): se suma el arancel '
+     'máximo para hasta 3 bodegas, $177.300 (ChileAtiende). La capacidad de dos armarios frente al inventario de kits está por confirmar.'),
+    ('e_hab', 'Habilitación del local', 'Piso epóxico del taller (360 m²), instalación eléctrica e iluminación (400 m²) y oficina con atención de clientes (40 m²)',
+     'Guías de precios publicadas por plataformas de cotización', '=360*25000+400*9000+40*350000', 'CLP', 1, 0, 0,
+     'Suma por partida con precios por m² publicados (consultados el 14-11-2026): piso de resina epóxica $25.000/m², precio medio en '
+     'Santiago (Cronoshare); instalación eléctrica e iluminación $9.000/m², tope del rango de $4.000 a $9.000 (Jobbing); habilitación '
+     'estándar de oficina $350.000/m², piso del rango de $350.000 a $650.000 (Jobbing). El local se arrienda ya construido.'),
+    ('e_mob', 'Mobiliario y computadores', 'Cinco notebooks ThinkPad E14 Gen 7 (un puesto por cargo de oficina al abrir) y mobiliario',
+     'Lenovo Agencia en Chile, fabricante (computadores); mobiliario sin proveedor identificado', '=5*1799990/1.19+4000000', 'CLP', 1, 0, 0,
+     'Computadores: precio normal de $1.799.990 con IVA publicado directamente por Lenovo (consultado el 14-11-2026), cinco '
+     'puestos (gerencia, administración, comercial, Responsable Técnico e Ingeniería de Calibración). Mobiliario: $4.000.000, '
+     'supuesto del equipo por confirmar (el valor que antes cubría todo el ítem).'),
 ]
 fila_d = {r: d.cell(r, 1).value for r in range(42, 160)}
 fila_clave = {v: k for k, v in fila_d.items() if v}
@@ -216,10 +220,21 @@ for clave, item, esp, prov, precio, mon, cant, ara, intern, nota_ in EQ:
     h.row_dimensions[r].height = 92
     d.cell(rd, 3).value = f"='1.1 Respaldo inversión'!K{r}"
     d.cell(rd, 3).fill = PatternFill(fill_type=None)
-    d.cell(rd, 5).value = 'Precio publicado' if 'Supuesto' not in nota_[:9] else 'Supuesto del equipo'
+    d.cell(rd, 5).value = {'e_hab': 'Guía de precios publicada',
+                           'e_mob': 'Precio publicado (computadores) y supuesto (muebles)'}.get(
+        clave, 'Precio publicado' if 'Supuesto' not in nota_[:9] else 'Supuesto del equipo')
+    d.cell(rd, 7).value = None   # el rango de trabajo anterior queda reemplazado por el respaldo de la hoja 1.1
     d.cell(rd, 6).value = ('Respaldo en la hoja 1.1 (proveedor, precio, tipo de cambio y mes). La vida útil aplicada está en '
                            'las filas 165 a 171 de esta hoja.')
     r += 1
+# Notas de vida útil (Datos, filas 165 a 171): la clase de la tabla del SII y dónde está el valor de compra
+for rv in range(160, 180):
+    txt = d.cell(rv, 6).value
+    if isinstance(txt, str) and d.cell(rv, 3).value is not None and '. ' in txt and \
+            any(t in txt for t in ('Supuesto del equipo', 'Precio publicado', 'Valor de referencia')):
+        clase = txt.split('. ')[0]
+        d.cell(rv, 6).value = f'Tabla de vida útil del SII: {clase}. Valor de compra y fuente en la hoja 1.1.'
+        d.cell(rv, 8).value = 'Dato publicado (tabla del SII); la clase asignada a cada bien es criterio del equipo.'
 celda(h, r, 2, 'Inversión inicial en equipos (un puesto)', bold=True)
 for c, f in [(11, f'=SUM(K5:K{r-1})'), (12, f'=SUM(L5:L{r-1})'), (13, f'=SUM(M5:M{r-1})')]:
     celda(h, r, c, f, PESO, bold=True, fill=CLARO)

@@ -307,8 +307,8 @@ s.print_title_rows = '1:4'
 # ---------------------------------------------------------------------------------------------
 # Hoja 2.1 · Proyección de demanda: de dónde sale cada instalación
 s = nueva('2.1 Proyección de demanda', '2.1 Proyección de demanda: de la pauta a las instalaciones',
-          'Embudo comercial mes a mes (Motor mensual) resumido por año de operación. Los supuestos están en Datos, filas 62 a 101, '
-          'y en los calendarios de la fila 181 en adelante.', [62, 13, 15, 15, 15, 15, 15, 16])
+          'Mercado de arriba hacia abajo (TAM, SAM, segmento y Bass) y embudo comercial de abajo hacia arriba (Motor mensual), '
+          'por año de operación. Supuestos del embudo en Datos, filas 62 a 101.', [62, 13, 15, 15, 15, 15, 15, 16])
 YR = ['D', 'E', 'F', 'G', 'H']
 AA = ['F', 'G', 'H', 'I', 'J']      # años 1 a 5 en la hoja Anual
 MES = lambda f: q('Mensual', f'$D${f}:$CC${f}')
@@ -329,11 +329,50 @@ seccion(s, r, 'Resumen', 9); r += 1
 cabecera(s, r, ['Indicador', 'Unidad', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5', 'Total'])
 r += 1
 res21 = r
-r += 4
+r += 6
 cabecera(s, r, ['Ítem', 'Unidad', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5', 'Total'])
 cab21 = r
 r += 1
-seccion(s, r, '1. De la pauta digital y las visitas a las cotizaciones', 9); r += 1
+# Tamaño de mercado y adopción (de arriba hacia abajo): TAM, SAM, segmento y curva de Bass
+seccion(s, r, '1. Tamaño del mercado (de arriba hacia abajo): TAM, SAM y segmento de entrada', 9); r += 1
+CEL_IN = PatternFill('solid', fgColor=CLARO)
+
+
+def dato(r, etiqueta, unidad, valor, fuente, fmt=UNI):
+    put(s, r, 3, unidad, color=GRIS, size=10)
+    put(s, r, 2, etiqueta)
+    z = put(s, r, 4, valor, fmt=fmt)
+    z.fill = CEL_IN
+    put(s, r, 5, fuente, italic=True, color=GRIS, size=10)
+    return r
+
+
+tam = dato(r, 'TAM: autos, station wagon, todo terreno y taxis del país, sin eléctricos ni híbridos', 'vehículos', 4409729,
+           'INE (2025), Parque de vehículos en circulación 2024; tracción delantera supuesta como estándar del parque liviano.'); r += 1
+sam = dato(r, 'SAM: la misma flota en la Región Metropolitana (alcance del taller propio)', 'vehículos', 1685930,
+           'INE (2025), Parque de vehículos en circulación 2024.'); r += 1
+tx = dato(r, 'Taxis básicos y de turismo, Región Metropolitana', 'vehículos', 22838, 'INE (2025).'); r += 1
+co = dato(r, 'Taxis colectivos, Región Metropolitana', 'vehículos', 12982, 'INE (2025).'); r += 1
+ap = dato(r, 'Conductores de aplicación, Región Metropolitana (estimación)', 'conductores', 126960,
+          'Estimación del equipo: 136.000 cuentas activas de Uber y 115.000 de inDrive, más 60% de su promedio para DiDi y Cabify; '
+          '÷ 1,217 por quienes usan dos plataformas; × participación de la Región Metropolitana en el parque.'); r += 1
+fila3(r, 'Segmento de entrada: uso laboral en la Región Metropolitana (techo de la adopción)', 'vehículos',
+      [f'=D{tx}+D{co}+D{ap}'], tipo='sub'); seg = r; r += 1
+fila3(r, 'Segmento sobre el SAM', '%', [f'=D{seg}/D{sam}'], PCT); r += 1
+bp = dato(r, 'Coeficiente de innovación de Bass (p)', 'coeficiente', 0.0026,
+          'Massiani y Gohs (2015), coeficientes estimados para vehículos híbridos en EE.UU.', '0.0000'); r += 1
+bq = dato(r, 'Coeficiente de imitación de Bass (q)', 'coeficiente', 0.709, 'Massiani y Gohs (2015).', '0.000'); r += 1
+r += 1
+seccion(s, r, '2. Demanda del segmento (curva de Bass) y demanda que Lumine puede atender', 9); r += 1
+FB = lambda t: f'(1-EXP(-($D${bp}+$D${bq})*{t}))/(1+$D${bq}/$D${bp}*EXP(-($D${bp}+$D${bq})*{t}))'
+fila3(r, 'Adopción acumulada del segmento (Bass)', '%', [f'={FB(n)}' for n in range(1, 6)], PCT); acu = r; r += 1
+fila3(r, 'Demanda anual del segmento (nuevos adoptantes)', 'vehículos',
+      [f'=$D${seg}*({FB(n)}-{FB(n - 1) if n > 1 else 0})' for n in range(1, 6)], total=f'=SUM(D{r}:H{r})'); dseg = r; r += 1
+cob_fila = r   # se llena después con la cobertura del embudo
+r += 1
+fila3(r, 'Demanda atendible (modelos calibrados)', 'vehículos', [f'={c}{dseg}*{c}{cob_fila}' for c in YR], tipo='sub',
+      total=f'=SUM(D{r}:H{r})'); date = r; r += 2
+seccion(s, r, '3. De la pauta digital y las visitas a las cotizaciones (de abajo hacia arriba: lo que el canal comercial alcanza)', 9); r += 1
 fila3(r, 'Pauta digital', '$', [sumifs(10, n) for n in range(1, 6)], PESO, total=f'=SUM(D{r}:H{r})'); pauta = r; r += 1
 fila3(r, 'Costo por cotización digital (escenario activo)', '$', ['=Datos!$C$65'] * 5, PESO); r += 1
 fila3(r, 'Cotizaciones digitales (pauta / costo por cotización)', 'cotizaciones', [sumifs(11, n) for n in range(1, 6)], total=f'=SUM(D{r}:H{r})'); dig = r; r += 1
@@ -341,15 +380,16 @@ fila3(r, 'Cotizaciones por visitas a líneas de colectivos', 'cotizaciones', [su
 fila3(r, 'Cotizaciones totales', 'cotizaciones', [f'={c}{dig}+{c}{vis}' for c in YR], tipo='sub', total=f'=SUM(D{r}:H{r})'); cot = r
 control('2.1 Demanda: cotizaciones = motor anual', f"=I{cot}-SUM({q('Anual', 'F3:J3')})")
 r += 2
-seccion(s, r, '2. De las cotizaciones a los pedidos', 9); r += 1
+seccion(s, r, '4. De las cotizaciones a los pedidos', 9); r += 1
 fila3(r, 'Cotizaciones de modelos ya calibrados (cubiertas por la biblioteca)', 'cotizaciones',
       [f"=SUMPRODUCT(({MES(6)}={n})*{MES(13)}*{MES(14)})" for n in range(1, 6)], DEC, total=f'=SUM(D{r}:H{r})'); cub = r; r += 1
-fila3(r, 'Cobertura promedio de la biblioteca', '%', [f'=IF({c}{cot}=0,0,{c}{cub}/{c}{cot})' for c in YR], PCT); r += 1
+fila3(r, 'Cobertura promedio de la biblioteca', '%', [f'=IF({c}{cot}=0,0,{c}{cub}/{c}{cot})' for c in YR], PCT); cobr = r; r += 1
+fila3(cob_fila, 'Cobertura de la biblioteca de calibraciones (la misma del embudo)', '%', [f'={c}{cobr}' for c in YR], PCT)
 fila3(r, 'Pedidos nuevos', 'pedidos', [f"={q('Anual', f'{c}4')}" for c in AA], total=f'=SUM(D{r}:H{r})'); ped = r; r += 1
 fila3(r, 'Conversión promedio de cotización cubierta a pedido', '%', [f'=IF({c}{cub}=0,0,{c}{ped}/{c}{cub})' for c in YR], PCT); r += 1
 fila3(r, 'Cancelaciones de pedidos pendientes', 'pedidos', [f"={q('Anual', f'{c}5')}" for c in AA], total=f'=SUM(D{r}:H{r})'); r += 1
 r += 1
-seccion(s, r, '3. De los pedidos a las instalaciones: capacidad del taller', 9); r += 1
+seccion(s, r, '5. De los pedidos a las instalaciones: capacidad del taller', 9); r += 1
 fila3(r, 'Dúos de técnicos en operación al cierre', 'dúos', [f"={q('Anual', f'{c}8')}" for c in AA]); r += 1
 fila3(r, 'Capacidad operativa de los dúos', 'instalaciones', [f"={q('Anual', f'{c}9')}" for c in AA], total=f'=SUM(D{r}:H{r})'); cap = r; r += 1
 fila3(r, 'Instalaciones (el menor entre pedidos, capacidad y kits disponibles, mes a mes)', 'instalaciones',
@@ -358,7 +398,7 @@ fila3(r, 'Uso de la capacidad', '%', [f'=IF({c}{cap}=0,0,{c}{ins}/{c}{cap})' for
 fila3(r, 'Pedidos pendientes al cierre', 'pedidos', [f"={q('Anual', f'{c}7')}" for c in AA]); r += 1
 fila3(r, 'Parque instalado acumulado', 'autos', [f"={q('Anual', f'{c}12')}" for c in AA]); r += 1
 r += 1
-seccion(s, r, '4. De las instalaciones a los ingresos', 9); r += 1
+seccion(s, r, '6. De las instalaciones a los ingresos', 9); r += 1
 fila3(r, 'Instalaciones Plus (participación de Datos)', 'instalaciones', [f'={c}{ins}*Datos!$C$48' for c in YR], DEC, total=f'=SUM(D{r}:H{r})'); r += 1
 fila3(r, 'Instalaciones Esencial', 'instalaciones', [f'={c}{ins}*(1-Datos!$C$48)' for c in YR], DEC, total=f'=SUM(D{r}:H{r})'); r += 1
 fila3(r, 'Ingreso neto promedio por instalación (mezcla, sin IVA)', '$', ['=Datos!$C$49'] * 5, PESO); r += 1
@@ -366,15 +406,27 @@ fila3(r, 'Clientes piloto comerciales (50% de descuento, un modelo nuevo cada un
 fila3(r, 'Ingresos por instalaciones', '$', [f"={q('Anual', f'{c}37')}" for c in AA], PESO, tipo='total', total=f'=SUM(D{r}:H{r})'); ingd = r
 control('2.1 Demanda: ingresos = motor anual', f"=I{ingd}-{q('Anual', 'K37')}")
 r += 2
+seccion(s, r, '7. Contraste: participación de Lumine (SOM) frente al mercado', 9); r += 1
+fila3(r, 'Instalaciones sobre la demanda atendible del segmento', '%', [f'=IF({c}{date}=0,0,{c}{ins}/{c}{date})' for c in YR], PCT); som1 = r; r += 1
+fila3(r, 'Parque instalado sobre el segmento de entrada', '%', [f"={q('Anual', f'{c}12')}/$D${seg}" for c in AA], PCT); som2 = r; r += 1
+fila3(r, 'Parque instalado sobre el SAM', '%', [f"={q('Anual', f'{c}12')}/$D${sam}" for c in AA], PCT); r += 1
+r += 1
+nota(s, r, 'Lectura: la curva de Bass y el TAM, SAM y segmento dicen cuánto mercado hay; el embudo comercial y la capacidad dicen '
+           'cuánto de ese mercado alcanza Lumine con su pauta y sus dúos. El pronóstico usa el menor de los dos, mes a mes, porque '
+           'el tamaño de un proyecto queda acotado por la demanda y por la capacidad (Sapag). La tasa de crecimiento compuesta (CAGR) no '
+           'se usa: exige una serie histórica que un producto nuevo no tiene.', 9, 62)
+r += 2
 nota(s, r, 'Cómo se calcula cada mes: pedidos = (pauta ÷ costo por cotización + visitas) × cobertura de la biblioteca × conversión, '
            'que sube desde la conversión inicial hasta la de régimen en los meses de rampa (Datos, filas 62 a 79). Las instalaciones '
            'son el menor valor entre los pedidos acumulados, la capacidad de los dúos (Datos, filas 81 a 93) y los kits en bodega. '
            'El selector «Escenario de demanda» del Tablero cambia el costo por cotización, la conversión y la rampa.', 9, 62)
 r += 2
-nota(s, r, 'Sustento de mercado: el techo de adopción que mide la encuesta (29 de 91 conductores del foco a bencina con intención '
-           'definitiva y precio aceptado) se contrasta en el informe; no está conectado por fórmula al embudo.', 9, 34)
+nota(s, r, 'Respaldo de la encuesta: 29 de 91 conductores del foco a bencina (31,9%) declaran intención definitiva y aceptan el precio; '
+           'la adopción acumulada de Bass al quinto año (fila de adopción acumulada) queda por debajo de ese techo.', 9, 34)
 # Resumen arriba
-for i, (et, uni, fila_, fmt, tot) in enumerate([('Instalaciones', 'instalaciones', ins, UNI, True),
+for i, (et, uni, fila_, fmt, tot) in enumerate([('Demanda atendible del segmento (Bass)', 'vehículos', date, UNI, True),
+                                                 ('Instalaciones', 'instalaciones', ins, UNI, True),
+                                                 ('Instalaciones sobre la demanda atendible', '%', som1, PCT, False),
                                                  ('Uso de la capacidad', '%', uso, PCT, False),
                                                  ('Ingresos por instalaciones', '$', ingd, PESO, True)]):
     rr = res21 + i
