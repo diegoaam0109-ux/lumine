@@ -382,3 +382,11 @@ Decisiones del equipo sobre el abastecimiento del kit:
 Contraste: con compras de tres meses y el mismo pago, VAN puro $138,95 M, TIR inversionista 17,88% y capital de trabajo
 inicial $318,3 M, sin pedidos esperando.
 
+## Hoja 2.1 alineada con la Fase 3 v10 (15-11-2026)
+
+El bloque de mercado de la hoja 2.1 usaba los coeficientes y el segmento de una versión anterior de la Fase 3. Ahora sigue la
+Fase 3 v10: mercado potencial de 73.908 vehículos (35.820 taxis y colectivos más 30% de los 126.960 autos de aplicación,
+supuesto provisional), 95,8% a bencina y 31,9% con intención definitiva y precio aceptado, techo de adopción de 22.561; Bass
+central con p = 0,03 y q = 0,38 (Sultan, Farley y Lehmann, 1990). Demanda atendible: 586, 890, 1.181, 1.492 y 1.770, igual que la
+Tabla N° 20 de la Fase 3. Las instalaciones del modelo son entre 44% y 57% de esa demanda. No cambia ningún flujo.
+

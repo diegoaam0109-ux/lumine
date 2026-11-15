@@ -362,18 +362,31 @@ co = dato(r, 'Taxis colectivos, Región Metropolitana', 'vehículos', 12982, 'IN
 ap = dato(r, 'Conductores de aplicación, Región Metropolitana (estimación)', 'conductores', 126960,
           'Estimación del equipo: 136.000 cuentas activas de Uber y 115.000 de inDrive, más 60% de su promedio para DiDi y Cabify; '
           '÷ 1,217 por quienes usan dos plataformas; × participación de la Región Metropolitana en el parque.'); r += 1
-fila3(r, 'Segmento de entrada: uso laboral en la Región Metropolitana (techo de la adopción)', 'vehículos',
+fila3(r, 'Segmento de entrada: uso laboral en la Región Metropolitana', 'vehículos',
       [f'=D{tx}+D{co}+D{ap}'], tipo='sub'); seg = r; r += 1
 fila3(r, 'Segmento sobre el SAM', '%', [f'=D{seg}/D{sam}'], PCT); r += 1
-bp = dato(r, 'Coeficiente de innovación de Bass (p)', 'coeficiente', 0.0026,
-          'Massiani y Gohs (2015), coeficientes estimados para vehículos híbridos en EE.UU.', '0.0000'); r += 1
-bq = dato(r, 'Coeficiente de imitación de Bass (q)', 'coeficiente', 0.709, 'Massiani y Gohs (2015).', '0.000'); r += 1
+alto = dato(r, 'Autos de aplicación de alto kilometraje (jornada completa)', '%', 0.30,
+            'Supuesto provisional del equipo (Fase 3): no hay registro de conductores de jornada completa; sensibilidad de 15% a 45%.',
+            '0%'); r += 1
+fila3(r, 'Mercado potencial: taxis y colectivos más autos de aplicación de alto kilometraje', 'vehículos',
+      [f'=D{tx}+D{co}+D{ap}*D{alto}'], tipo='sub'); mpot = r; r += 1
+comp = dato(r, 'Compatibles: conductores del foco que usan bencina', '%', '=91/95',
+            'Encuesta del equipo (octubre de 2026): 91 de 95 colectiveros y conductores de aplicación.', '0.0%'); r += 1
+adop = dato(r, 'Adoptantes potenciales: intención definitiva y precio aceptado', '%', '=29/91',
+            'Encuesta del equipo: 29 de 91; el nivel de intención más exigente. Intención declarada, no compra.', '0.0%'); r += 1
+fila3(r, 'Techo de adopción (adoptantes a lo largo de toda la curva)', 'vehículos',
+      [f'=D{mpot}*D{comp}*D{adop}'], tipo='sub'); seg_techo = r; r += 1
+bp = dato(r, 'Coeficiente de innovación de Bass (p), escenario central', 'coeficiente', 0.03,
+          'Sultan, Farley y Lehmann (1990): promedio de 213 aplicaciones del modelo.', '0.0000'); r += 1
+bq = dato(r, 'Coeficiente de imitación de Bass (q), escenario central', 'coeficiente', 0.38,
+          'Sultan, Farley y Lehmann (1990). Contraste bajo de la Fase 3: auto híbrido, p = 0,0026 (Massiani y Gohs, 2015) y q = 0,53.',
+          '0.000'); r += 1
 r += 1
 seccion(s, r, '2. Demanda del segmento (curva de Bass) y demanda que Lumine puede atender', 9); r += 1
 FB = lambda t: f'(1-EXP(-($D${bp}+$D${bq})*{t}))/(1+$D${bq}/$D${bp}*EXP(-($D${bp}+$D${bq})*{t}))'
-fila3(r, 'Adopción acumulada del segmento (Bass)', '%', [f'={FB(n)}' for n in range(1, 6)], PCT); acu = r; r += 1
-fila3(r, 'Demanda anual del segmento (nuevos adoptantes)', 'vehículos',
-      [f'=$D${seg}*({FB(n)}-{FB(n - 1) if n > 1 else 0})' for n in range(1, 6)], total=f'=SUM(D{r}:H{r})'); dseg = r; r += 1
+fila3(r, 'Adopción acumulada del techo (Bass)', '%', [f'={FB(n)}' for n in range(1, 6)], PCT); acu = r; r += 1
+fila3(r, 'Demanda anual (nuevos adoptantes)', 'vehículos',
+      [f'=$D${seg_techo}*({FB(n)}-{FB(n - 1) if n > 1 else 0})' for n in range(1, 6)], total=f'=SUM(D{r}:H{r})'); dseg = r; r += 1
 cob_fila = r   # se llena después con la cobertura del embudo
 r += 1
 fila3(r, 'Demanda atendible (modelos calibrados)', 'vehículos', [f'={c}{dseg}*{c}{cob_fila}' for c in YR], tipo='sub',
@@ -414,7 +427,8 @@ control('2.1 Demanda: ingresos = motor anual', f"=I{ingd}-{q('Anual', 'K37')}")
 r += 2
 seccion(s, r, '7. Contraste: participación de Lumine (SOM) frente al mercado', 9); r += 1
 fila3(r, 'Instalaciones sobre la demanda atendible del segmento', '%', [f'=IF({c}{date}=0,0,{c}{ins}/{c}{date})' for c in YR], PCT); som1 = r; r += 1
-fila3(r, 'Parque instalado sobre el segmento de entrada', '%', [f"={q('Anual', f'{c}12')}/$D${seg}" for c in AA], PCT); som2 = r; r += 1
+fila3(r, 'Parque instalado sobre el techo de adopción', '%', [f"={q('Anual', f'{c}12')}/$D${seg_techo}" for c in AA], PCT); som2 = r; r += 1
+fila3(r, 'Parque instalado sobre el segmento de entrada', '%', [f"={q('Anual', f'{c}12')}/$D${seg}" for c in AA], PCT); r += 1
 fila3(r, 'Parque instalado sobre el SAM', '%', [f"={q('Anual', f'{c}12')}/$D${sam}" for c in AA], PCT); r += 1
 r += 1
 nota(s, r, 'Lectura: la curva de Bass y el TAM, SAM y segmento dicen cuánto mercado hay; el embudo comercial y la capacidad dicen '
@@ -427,10 +441,11 @@ nota(s, r, 'Cómo se calcula cada mes: pedidos = (pauta ÷ costo por cotización
            'son el menor valor entre los pedidos acumulados, la capacidad de los dúos (Datos, filas 81 a 93) y los kits en bodega. '
            'El selector «Escenario de demanda» del Tablero cambia el costo por cotización, la conversión y la rampa.', 9, 62)
 r += 2
-nota(s, r, 'Respaldo de la encuesta: 29 de 91 conductores del foco a bencina (31,9%) declaran intención definitiva y aceptan el precio; '
-           'la adopción acumulada de Bass al quinto año (fila de adopción acumulada) queda por debajo de ese techo.', 9, 34)
+nota(s, r, 'El techo es la cantidad de adoptantes a lo largo de toda la curva, no una tasa de compra anual: la muestra no es '
+           'probabilística y la intención declarada sobrestima la compra. La curva de Bass reparte ese techo en el tiempo y solo acota '
+           'el pronóstico; las ventas las fija el embudo comercial, la capacidad y los kits.', 9, 46)
 # Resumen arriba
-for i, (et, uni, fila_, fmt, tot) in enumerate([('Demanda atendible del segmento (Bass)', 'vehículos', date, UNI, True),
+for i, (et, uni, fila_, fmt, tot) in enumerate([('Demanda atendible (Bass sobre el techo)', 'vehículos', date, UNI, True),
                                                  ('Instalaciones', 'instalaciones', ins, UNI, True),
                                                  ('Instalaciones sobre la demanda atendible', '%', som1, PCT, False),
                                                  ('Uso de la capacidad', '%', uso, PCT, False),
