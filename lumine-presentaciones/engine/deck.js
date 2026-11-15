@@ -79,7 +79,7 @@
   }
 
   document.body.innerHTML = `<div id="stage"><div id="frame" tabindex="-1" aria-label="Presentación"></div></div>
-    <button id="fs" title="Pantalla completa (F)">⛶ Pantalla completa</button><div id="black"></div>
+    <button id="fs" title="Pantalla completa (F)">⛶ Pantalla completa · F</button><div id="fs-status" role="alert" hidden></div><div id="black"></div>
     <div id="bar"><i></i></div><div id="hud" aria-live="polite"></div><div id="jump"></div>
     <div id="help" role="note"><b>→ / Espacio / AvPág</b> siguiente · saltar apertura<br><b>← / RePág</b> anterior<br>
     <b>O</b> vista del orador (guion y reloj)<br><b>F</b> pantalla completa<br><b>N</b> pantalla negra<br>
@@ -184,7 +184,21 @@
     animations[0].onfinish = finish;
   }
   const step = d => go(Math.max(0, cur + d));
-  function toggleFs() { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {}); }
+  async function toggleFs() {
+    const status = $('fs-status'); status.hidden = true;
+    try {
+      if (document.fullscreenElement) await document.exitFullscreen();
+      else {
+        if (!document.fullscreenEnabled || !document.documentElement.requestFullscreen) throw new Error('Fullscreen unavailable');
+        await document.documentElement.requestFullscreen();
+      }
+    } catch (error) {
+      status.replaceChildren(document.createTextNode('Este navegador o vista integrada bloqueó la pantalla completa. Abre la presentación directamente en tu navegador. '));
+      const link = document.createElement('a');
+      link.href = location.href; link.target = '_blank'; link.rel = 'noopener';
+      link.textContent = 'Abrir presentación'; status.appendChild(link); status.hidden = false;
+    }
+  }
   $('fs').onclick = toggleFs;
   frame.addEventListener('dblclick', e => { if (!zoom && !laser && cur >= 0) { e.preventDefault(); toggleFs(); } });
   document.addEventListener('fullscreenchange', () => document.body.classList.toggle('is-fs', !!document.fullscreenElement));
