@@ -75,12 +75,12 @@ D.ova = () => {
     mono(s, tag, { x: x + 0.2, y: y + h - 0.34, w: w - 0.3, h: 0.24, fontSize: 11, charSpacing: 0.3 });
   };
   card(0, 'OBJETIVO', '¿qué queremos lograr y para cuándo?', '2.934', 'instalaciones acumuladas con ahorro verificado hacia 2032', '16 talleres en la red y un retorno superior al costo del capital.', 'ESCENARIO CENTRAL · TASA POR FIJAR');
-  card(1, 'VENTAJA', '¿por qué nos elegirían?', 'EVIDENCIA', 'el mismo auto, con un ahorro medido en el vehículo del cliente', 'y una calibración hecha para su modelo, sostenida por calibración, medición y Lumine Habilita.', 'POTENCIAL · BIBLIOTECA POR CONSTRUIR', true, true);
+  card(1, 'VENTAJA', '¿por qué nos elegirían?', 'EVIDENCIA', 'el mismo auto, con un ahorro medido en el vehículo del cliente', 'y una calibración hecha para su modelo, sostenida por calibración, medición y Lumine Habilita.', 'VENTAJA POTENCIAL · POR CONSTRUIR', true, true);
   card(2, 'ALCANCE', '¿dónde competimos?', '73.908', 'taxis, colectivos y autos de aplicación de jornada completa en la RM', 'Solo modelos calibrados. Regiones, a través de la red desde el tercer año.', 'INE (2025) · SUPUESTO DEL EQUIPO');
   const yb = y + h + 0.1;
   T(s, [{ text: 'ESTRATEGIA GENÉRICA   ', options: { fontFace: F_MONO, bold: true, color: K.azul, fontSize: 12, charSpacing: 2 } }, { text: 'Diferenciación enfocada. No podemos competir por costo: el kit cuesta entre 81% y 84% del precio neto.' }], { x: M, y: yb, w: 7.45, h: 0.6, fontSize: 15 });
   T(s, [{ text: 'RENUNCIAS   ', options: { fontFace: F_MONO, bold: true, color: K.azul, fontSize: 12, charSpacing: 2 } }, { text: 'precio contra el gas · bajo kilometraje · inmediatez' }], { x: 8.6, y: yb, w: R - 8.6, h: 0.6, fontSize: 15 });
-  fuente(s, 'Kaplan y Norton (2008) · Porter (1996) · Plan del equipo al 12-11-2026');
+  fuente(s, 'Kaplan y Norton (2008) · Collis y Rukstad (2008) · Porter (1996)');
   return s;
 };
 
@@ -113,7 +113,7 @@ D.ejes = () => {
 
 D.mapa = () => {
   const s = contenido('11 · MAPA ESTRATÉGICO · SE LEE DE ABAJO HACIA ARRIBA', '17 OBJETIVOS, 21 RELACIONES', null);
-  const w = 11.6, h = w * 1572 / 3660;
+  const w = 11.6, h = w * 1572 / 3678;
   s.addImage({ path: A('mapa-ejes.png'), x: (W - w) / 2, y: 1.55, w, h, altText: 'Mapa estratégico de Lumine Motors por ejes' });
   fuente(s, 'Kaplan y Norton (2008) · Relaciones R01 a R21: anexo A2');
   return s;
@@ -138,18 +138,18 @@ D.cmiA = () => {
   const s = contenido('12 · CUADRO DE MANDO INTEGRAL', 'CUADRO DE MANDO:', 'financiera y clientes.', { unaLinea: true });
   tablaCMIBase(s, [
     ['FINANCIERA · ¿cómo creamos valor para los socios?', [
-      ['F1', 'Rentar sobre el costo del capital', 'Antes de invertir: VAN del plan. Operando: retorno sobre el capital empleado', 'VAN a la tasa exigida · retorno sobre el capital − costo del capital', 'VAN > 0 antes de invertir; diferencia positiva desde el año 3', 'Gerencia General'],
+      ['F1', 'Rentar sobre el costo del capital', 'Antes de invertir: VAN del plan. En operación: retorno sobre el capital empleado', 'VAN a la tasa exigida · retorno sobre el capital − costo del capital', 'VAN > 0 antes de invertir; diferencia positiva desde el año 3', 'Gerencia General'],
       ['F2', 'Margen positivo por servicio', 'Margen de contribución por servicio', 'Precio neto − costo directo del servicio', 'Positivo; kit cotizado bajo $2.866.010 (Esencial) y $3.211.125 (Plus)', 'Gerencia General'],
-      ['F3', 'Expandir la red solo con evaluación positiva', 'Talleres con VAN incremental positivo', 'Talleres incorporados con VAN incremental > 0 ÷ talleres incorporados × 100', '100%', 'Gerencia General'],
+      ['F3', 'Expandir la red solo con evaluación positiva', 'Talleres con VAN incremental positivo. Complementaria: talleres en la red frente al plan', 'Talleres con VAN incremental > 0 ÷ incorporados × 100 · talleres en la red ÷ talleres del plan × 100', '100%; 16 talleres en 2032', 'Gerencia General'],
     ]],
     ['CLIENTES · ¿qué debe vivir el conductor?', [
       ['C1', 'Cumplir la promesa técnica', 'Entregas conformes', 'Entregas con acta de conformidad ÷ entregas × 100', '100%', 'Responsable Técnico'],
       ['C2', 'Cumplir la promesa de ahorro', 'Clientes con ahorro igual o superior al mínimo informado', 'Clientes con ahorro a 3 meses ≥ mínimo ÷ clientes medidos × 100', '80% (provisional)', 'Comercial y Postventa'],
       ['C3', 'Ganar la confianza del cliente', 'Confianza declarada; complementaria: reclamos', 'Clientes que califican 4 o 5 ÷ encuestados × 100 · reclamos por cada 100 entregas', '80% (provisional); reclamos: línea base del 1.er trimestre', 'Comercial y Postventa'],
-      ['C4', 'Captar el segmento de alto kilometraje', 'Conversión de cotizaciones', 'Instalaciones ÷ cotizaciones de modelos calibrados del trimestre × 100', '30% (provisional)', 'Comercial y Postventa'],
+      ['C4', 'Captar el segmento de alto kilometraje', 'Conversión de cotizaciones. Complementaria: instalaciones acumuladas frente al plan', 'Instalaciones ÷ cotizaciones de modelos calibrados del trimestre × 100 · acumuladas ÷ pronóstico acumulado × 100', '30% (provisional); 2.934 acumuladas en 2032', 'Comercial y Postventa'],
     ]],
   ]);
-  fuente(s, 'Kaplan y Norton (2008) · En azul: meta provisional, se confirma con el dato indicado');
+  fuente(s, 'Kaplan y Norton (2008) · Anthony y Govindarajan (2003) · En azul: meta provisional');
   return s;
 };
 D.cmiB = () => {
@@ -157,7 +157,7 @@ D.cmiB = () => {
   tablaCMIBase(s, [
     ['PROCESOS INTERNOS · ¿en qué debemos ser excelentes?', [
       ['P1', 'Ejecutar el proyecto experimental', 'Avance del proyecto (hito)', 'Resolución + vehículos medidos + informe entregado al 3CV', 'Solicitud: 1.er trim. 2027; informe antes del mes −4', 'Gerencia General'],
-      ['P2', 'Autorizar taller y primer par', 'Autorización vigente (hito)', 'Resolución del taller y del par kit-modelo', 'Ambas antes de vender ese modelo', 'Ingeniería de Calibración'],
+      ['P2', 'Autorizar taller y primer par', 'Autorización vigente (hito)', 'Resolución del taller y del par kit-modelo', 'Ambas antes de vender ese modelo', 'Responsable Técnico'],
       ['P3', 'Instalar con control técnico completo', 'Órdenes con control completo', 'Órdenes con los cuatro controles críticos ÷ órdenes cerradas × 100', '100%', 'Responsable Técnico'],
       ['P4', 'Cerrar cada servicio con su medición', 'Servicios con expediente y reporte', 'Servicios con expediente y reporte ÷ servicios con medición exigible × 100', '100%', 'Ingeniería de Calibración'],
       ['P5', 'Preparar la réplica en la red', 'Paquete de incorporación validado (hito)', 'Manual, formación y auditoría validados', 'Antes del primer taller de la red', 'Gerencia General'],
@@ -176,7 +176,7 @@ D.cmiB = () => {
 
 D.tablero = () => {
   const s = contenido('14 · LECTURA DEL TABLERO', 'SE ENCIENDE POR ETAPAS:', 'lo que aún no corresponde medir no se pinta.');
-  const E = [['1', 'Preparación', 'hoy y 2027', 'A3 · A4 · P1 · P6 · F1 (VAN)', 'Proyecto autorizado, protocolo aprobado y VAN > 0'], ['2', 'Proyecto experimental', '2027', 'A1 · A2 · P4', 'Ahorro medido, informe entregado, norma y par (P2)'], ['3', 'Taller propio', 'desde 2028', 'P2 · P3 · C1–C4 · F2', 'C2 cumplida, margen positivo y conversión estable'], ['4', 'Red de talleres', 'desde el 3.er año', 'P5 · F3 · F1 (retorno)', 'VAN incremental positivo por cada taller']];
+  const E = [['1', 'Preparación', 'hoy y 2027', 'A3 · A4 · P1 · P6 · F1 (VAN)', 'Proyecto autorizado, protocolo aprobado y VAN > 0'], ['2', 'Proyecto experimental', '2027', 'A1 · A2 · P4 · P2', 'Ahorro medido, informe entregado, norma y par autorizado'], ['3', 'Taller propio', 'desde 2028', 'P3 · C1–C4 · F2', 'C2 cumplida, margen positivo y conversión estable'], ['4', 'Red de talleres', 'desde el 3.er año', 'P5 · F3 · F1 (retorno)', 'VAN incremental positivo por cada taller']];
   E.forEach(([n, t, cu, ob, pasa], i) => {
     const y = Y0 + 0.05 + i * 1.03;
     s.addShape(S.chevron, { x: M, y, w: 1.0, h: 0.85, fill: { color: i === 0 ? K.cel : K.blanco }, line: { color: i === 0 ? K.cel : K.tx, width: 1.25 } });
@@ -188,7 +188,7 @@ D.tablero = () => {
   });
   const xR = 9.0, wR = R - xR;
   mono(s, 'TIPOS DE INDICADOR', { x: xR, y: Y0, w: wR, h: 0.28, bold: true, color: K.azul, charSpacing: 2 });
-  [['7', 'críticos al 100%', 'protegen la seguridad o la promesa técnica', K.tx], ['5', 'hitos con fecha', 'cumplen solo con el documento', K.tx], ['4', 'metas provisionales', 'C2 · C3 · C4 · F1, con fundamento y fecha', K.cel]].forEach(([n, t, d, c], i) => {
+  [['7', 'críticos al 100%', 'toda brecha es incumplimiento', K.tx], ['5', 'hitos con fecha', 'cumplen solo con el documento', K.tx], ['4', 'metas provisionales', 'C2 · C3 · C4 · F1, con fundamento y fecha', K.cel]].forEach(([n, t, d, c], i) => {
     const y = Y0 + 0.4 + i * 0.86;
     num(s, n, { x: xR, y, w: 0.7, h: 0.75, fontSize: 48, color: c, valign: 'middle' });
     T(s, [{ text: t, options: { bold: true, breakLine: true } }, { text: d, options: { color: K.gris, fontSize: 14 } }], { x: xR + 0.8, y, w: wR - 0.8, h: 0.75, fontSize: 16, valign: 'middle' });
@@ -197,7 +197,7 @@ D.tablero = () => {
   let xx = xR; const u = wR / 21;
   [[7, K.cel], [2, K.tx], [12, K.medio]].forEach(([n, c]) => { s.addShape(S.rect, { x: xx, y: Y0 + 3.42, w: n * u, h: 0.36, fill: { color: c }, line: { color: K.blanco, width: 1 } }); xx += n * u; });
   T(s, '7 habilitantes · 2 externas · 12 hipótesis', { x: xR, y: Y0 + 3.9, w: wR, h: 0.3, fontSize: 13, color: K.gris });
-  fuente(s, 'Ciclo de control: observar · comparar · explicar · decidir · volver a medir');
+  fuente(s, 'Ciclo: observar · comparar · explicar · decidir · volver a medir · Simons (1995)');
   return s;
 };
 

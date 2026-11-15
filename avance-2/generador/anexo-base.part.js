@@ -1,10 +1,12 @@
 // ===================================================================== BIBLIOGRAFÍA
 const REFS = [
+  'Anthony, R. N., y Govindarajan, V. (2003). Sistemas de control de gestión. McGraw-Hill.',
   'Autofact. (2026, 25 de marzo). Los autos eléctricos más baratos en Chile en 2026.',
   'Banco Central de Chile. (2026a). Informe de Política Monetaria, septiembre 2026.',
   'BioBioChile. (2026, 24 de marzo). GLP o bencina: lo que debes tener en cuenta si estás considerando cambiarte al gas vehicular.',
   'BloombergNEF. (2025, 9 de diciembre). Lithium-ion battery pack prices fall to $108 per kilowatt-hour despite rising metal prices.',
   'CNN Chile. (2026, septiembre). Mercado automotriz nacional creció 2,9% en agosto y acumula casi un millón de operaciones este 2026.',
+  'Collis, D. J., y Rukstad, M. G. (2008). Can you say what your strategy is? Harvard Business Review, 86(4), 82–90.',
   'David, F. R. (1997). Conceptos de administración estratégica (5.ª ed.). Prentice Hall Hispanoamericana.',
   'Decreto Supremo N° 55. (1988). Establece normas para la conversión de vehículos a gas. Ministerio de Transportes y Telecomunicaciones.',
   'Francés, A. (2006). Estrategia y planes para la empresa con el cuadro de mando integral. Pearson Educación.',
@@ -20,15 +22,16 @@ const REFS = [
   'Osterwalder, A., Pigneur, Y., Bernarda, G., y Smith, A. (2014). Value proposition design. John Wiley & Sons.',
   'Porter, M. E. (1996). What is strategy? Harvard Business Review, 74(6), 61–78.',
   'Porter, M. E. (2008). The five competitive forces that shape strategy. Harvard Business Review, 86(1), 78–93.',
+  'Simons, R. (1995). Levers of control: How managers use innovative control systems to drive strategic renewal. Harvard Business School Press.',
 ];
 const biblio = (parte, refs) => () => {
   const s = contenido(`BIBLIOGRAFÍA · APA 7 · ${parte}`, 'BIBLIOGRAFÍA', null);
-  T(s, refs.map((r, i) => ({ text: r, options: { breakLine: i < refs.length - 1, paraSpaceAfter: 7 } })), { x: M, y: 1.7, w: CW, h: 4.9, fontSize: 14, color: K.tx });
+  T(s, refs.map((r, i) => ({ text: r, options: { breakLine: i < refs.length - 1, paraSpaceAfter: 7 } })), { x: M, y: 1.7, w: CW, h: 4.95, fontSize: 13, color: K.tx });
   fuente(s, 'APA 7 · Enlaces completos en la bibliografía del informe');
   return s;
 };
-D.biblio1 = biblio('1 DE 2', REFS.slice(0, 10));
-D.biblio2 = biblio('2 DE 2', REFS.slice(10));
+D.biblio1 = biblio('1 DE 2', REFS.slice(0, 12));
+D.biblio2 = biblio('2 DE 2', REFS.slice(12));
 
 // ===================================================================== ANEXO
 D.indice = () => {
@@ -54,7 +57,7 @@ function tablaLimpia(s, cols, filas, x, y, o = {}) {
 D['a-contingencia'] = () => {
   const s = anexo();
   tablaLimpia(s, [['ESCENARIO', 1.3], ['SEÑAL TEMPRANA', 3.6], ['EFECTO EN EL CMI', 3.2], ['RESPUESTA', CW - 8.1]], [
-    ['E1 · base', 'Se publica una norma propia sin exclusiones', 'Ninguno bloqueado', 'Avanzar par por par; apertura en enero de 2028'],
+    ['E1 · base', 'Se publica una norma propia sin exclusiones', 'Ninguno bloqueado', 'Avanzar par por par; evaluar las estrategias FO con la evidencia del proyecto experimental'],
     ['E2', 'El borrador de la norma mantiene exclusiones', 'P2 y C4 se limitan al parque elegible', 'Priorizar modelos sin esos sistemas y ajustar la meta de captación'],
     ['E3', 'Un año después del informe del proyecto experimental no hay tramitación', 'P2, P3 y lo que depende de ellos quedan sin activar', 'Prolongar la preparación sin arrendar ni contratar; buscar autorización caso a caso'],
     ['E4', 'La autoridad rechaza toda vía', 'Se detiene lo que depende de la vía legal', 'No subir metas comerciales y reevaluar la continuidad del proyecto'],
@@ -99,21 +102,21 @@ D['a-canvas'] = () => {
     mono(s, titulo, { x: x + 0.1, y: y + 0.08, w: bw - 0.2, h: 0.26, fontSize: 12, bold: true, color: K.azul });
     T(s, items.map((t, i) => ({ text: t, options: { bullet: { indent: 12 }, breakLine: i < items.length - 1, paraSpaceAfter: 3 } })), { x: x + 0.12, y: y + 0.38, w: bw - 0.26, h: bh - 0.46, fontSize: o.size || 13 });
   };
-  bloque(x0, y0, w, hT, 'SOCIOS CLAVE', ['Proveedores del kit (motores, batería de litio-titanato, unidad de control)', 'Aseguradoras y plantas de revisión técnica', 'Entidad financiera', 'Talleres licenciados (segunda etapa)']);
+  bloque(x0, y0, w, hT, 'SOCIOS CLAVE', ['Proveedores del kit (motores, batería de litio-titanato, unidad de control)', 'Aseguradoras y plantas de revisión técnica', 'Entidad financiera', 'Talleres de la red (desde el tercer año)']);
   bloque(x0 + w, y0, w, hT / 2, 'ACTIVIDADES', ['Diagnóstico de compatibilidad', 'Instalación y calibración por modelo', 'Homologación por par modelo-kit'], { size: 12 });
   bloque(x0 + w, y0 + hT / 2, w, hT / 2, 'RECURSOS', ['Biblioteca y base de consumo medido', 'Estimador y Lumine Habilita', 'Técnicos en alta tensión'], { size: 12 });
   bloque(x0 + 2 * w, y0, w, hT, 'PROPUESTA DE VALOR', ['Ahorrar combustible con el mismo auto, sin tocar el motor', 'Calibración para su modelo', 'Ahorro medido, no prometido', 'Respaldo formal ante el seguro y la revisión técnica'], { azul: true, size: 14 });
   bloque(x0 + 3 * w, y0, w, hT / 2, 'RELACIÓN', ['Diagnóstico previo y reporte de ahorro', 'Seguimiento posventa', 'Recomendación entre conductores'], { size: 12 });
-  bloque(x0 + 3 * w, y0 + hT / 2, w, hT / 2, 'CANALES', ['Canal digital con estimador', 'Convenios con flotas y líneas de colectivos', 'Taller propio; luego la red'], { size: 12 });
-  bloque(x0 + 4 * w, y0, w, hT, 'SEGMENTOS', ['Conductores de uso intensivo en la RM: aplicación, taxis y colectivos', 'Particulares de alto kilometraje', 'Talleres que licencian el método (segunda línea)']);
+  bloque(x0 + 3 * w, y0 + hT / 2, w, hT / 2, 'CANALES', ['Canal digital con estimador', 'Acuerdos con líneas de colectivos', 'Taller propio; luego la red'], { size: 12 });
+  bloque(x0 + 4 * w, y0, w, hT, 'SEGMENTOS', ['Conductores de uso laboral de la RM: taxis, colectivos y autos de aplicación de jornada completa', 'Talleres que licencian el método (segunda línea, desde el tercer año)']);
   bloque(x0, y0 + hT, CW / 2, hB, 'COSTOS', ['Kit importado, pagado en dólares · personal técnico y formación', 'Calibración y homologación por modelo · taller y reciclaje de baterías']);
-  bloque(x0 + CW / 2, y0 + hT, CW / 2, hB, 'INGRESOS', ['Venta e instalación del kit Esencial o Plus', 'Posventa y recalibración · licencias y kits para la red de talleres']);
+  bloque(x0 + CW / 2, y0 + hT, CW / 2, hB, 'INGRESOS', ['Venta e instalación del kit Esencial o Plus · posventa y recalibración', 'Red de talleres: incorporación, cuota y Lumine Habilita, sin cobro por kit']);
   fuente(s, 'Adaptado de Osterwalder y Pigneur (2010) · Informe, anexo A');
   return s;
 };
 
 // ---------- orden, notas del orador y anexo ----------
-const nota = x => `${x.quien.toUpperCase()} · Informe: ${x.seccion}\n\nIDEA: ${x.idea}\nEVIDENCIA: ${x.evidencia}\nCONCEPTO: ${x.concepto}\nTRANSICIÓN: ${x.transicion}`;
+const nota = x => `${x.quien.toUpperCase()} · unos ${G.mmss(G.segundos(x.texto))} · Informe: ${x.seccion}\n\nIDEA: ${x.idea}\nEVIDENCIA: ${x.evidencia}\nCONCEPTO: ${x.concepto}\nTRANSICIÓN: ${x.transicion}`;
 let quienAnterior = null, parte = 0;
 G.PRINCIPAL.forEach(x => {
   if (x.quien !== quienAnterior) { abrirSeccion(`${++parte} · ${x.quien}`); quienAnterior = x.quien; }

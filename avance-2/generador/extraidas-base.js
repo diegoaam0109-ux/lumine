@@ -18,8 +18,8 @@ D.lienzo = () => {
   const s = contenido('04 · PROPUESTA DE VALOR', 'CADA FRUSTRACIÓN TIENE SU ALIVIADOR', null);
   const Z = 13, RH = 0.32;
   const item = (x, y, cod, t, w) => {
-    mono(s, cod, { x, y, w: 0.34, h: RH, fontSize: 11, bold: true, color: K.cel, valign: 'middle' });
-    T(s, t, { x: x + 0.34, y, w, h: RH, fontSize: Z, valign: 'middle' });
+    mono(s, cod, { x, y, w: 0.4, h: RH, fontSize: 11, bold: true, color: K.cel, valign: 'middle', charSpacing: 0 });
+    T(s, t, { x: x + 0.4, y, w: w + 0.14, h: RH, fontSize: Z, valign: 'middle' });
   };
   // cuadrado: mapa de valor (4,4 in, con 0,2 in de aire en el borde interior)
   const sx = M, sy = 2.15, sq = 4.4, cx = sx + sq / 2, cy = sy + sq / 2;
@@ -33,10 +33,10 @@ D.lienzo = () => {
   linea(s, cx, cy - 0.17, 0, 0.39, K.tx, 1.5);
   const tx0 = cx - 0.05, tw = sx + sq - 0.2 - tx0 - 0.34;
   mono(s, 'CREADORES DE ALEGRÍAS', { x: tx0, y: sy + 0.18, w: sx + sq - 0.1 - tx0, h: 0.24, fontSize: 11, bold: true, color: K.tx, charSpacing: 0 });
-  [['C1', 'Reporte de consumo'], ['C2', 'Calibración propia'], ['C3', 'Cuota comparable'], ['C4', 'Garantía escrita']].forEach(([k, t], i) => item(tx0, sy + 0.55 + i * 0.36, k, t, tw));
+  [['Cr1', 'Reporte de consumo'], ['Cr2', 'Calibración propia'], ['Cr3', 'Cuota comparable'], ['Cr4', 'Garantía escrita']].forEach(([k, t], i) => item(tx0, sy + 0.55 + i * 0.36, k, t, tw));
   mono(s, 'ALIVIADORES', { x: cx + 0.34, y: cy + 0.1, w: 2, h: 0.24, fontSize: 11, bold: true, color: K.tx });
   const yr = [cy + 0.42, cy + 0.78, cy + 1.14, cy + 1.5];
-  [['R1', 'Hasta −20% bencina'], ['R2', 'No cambia de auto'], ['R3', 'Respaldo formal'], ['R4', 'Ahorro medido']].forEach(([k, t], i) => item(tx0, yr[i], k, t, tw));
+  [['Al1', 'Hasta −20% bencina'], ['Al2', 'No cambia de auto'], ['Al3', 'Respaldo formal'], ['Al4', 'Ahorro medido']].forEach(([k, t], i) => item(tx0, yr[i], k, t, tw));
   mono(s, 'PRODUCTOS', { x: sx + 0.2, y: cy - 0.55, w: 1.6, h: 0.24, fontSize: 11, bold: true, color: K.tx });
   ['Kit e instalación', 'Diagnóstico', 'Medición'].forEach((t, i) => T(s, t, { x: sx + 0.2, y: cy - 0.27 + i * 0.3, w: 1.6, h: 0.28, fontSize: 13, valign: 'middle' }));
   // círculo: perfil del cliente
@@ -54,19 +54,19 @@ D.lienzo = () => {
   mono(s, 'ALEGRÍAS', { x: xFila(oy - 2.0), y: oy - 2.0, w: 1.4, h: 0.24, fontSize: 11, bold: true, color: K.tx });
   ['Ver el ahorro cada mes', 'Seguir con su auto', 'Cuota menor al ahorro', 'Taller que responde'].forEach((t, i) => {
     const y = oy - 1.7 + i * 0.36;
-    item(xFila(y), y, `G${i + 1}`, t, 2.2);
+    item(xFila(y), y, `Ag${i + 1}`, t, 2.2);
   });
   mono(s, 'FRUSTRACIONES', { x: xFila(oy + 0.1), y: oy + 0.1, w: 1.8, h: 0.24, fontSize: 11, bold: true, color: K.tx });
   ['La bencina sube', 'Sin capital para cambiar', 'Teme perder el seguro', 'No sabe cuánto ahorra'].forEach((t, i) => {
     const y = yr[i], x = xFila(y);
-    item(x, y, `F${i + 1}`, t, 2.25);
+    item(x, y, `Fr${i + 1}`, t, 2.25);
     flecha(s, x - 0.08, y + RH / 2, sx + sq + 0.08, y + RH / 2, K.cel, 1.5);
   });
   // trabajos: en la parte ancha de la cuña derecha
   mono(s, 'TRABAJOS', { x: ox + 0.95, y: oy - 0.5, w: 1.0, h: 0.22, fontSize: 11, bold: true, color: K.tx });
   ['Muchos km', 'Costo por km'].forEach((t, i) => T(s, t, { x: ox + 0.95, y: oy - 0.22 + i * 0.3, w: 1.05, h: 0.28, fontSize: 12, valign: 'middle' }));
   flecha(s, sx + sq + 0.3, oy - 0.3, ox - r - 0.3, oy - 0.3, K.tx, 1.25, { doble: true });
-  fuente(s, 'Adaptado de Osterwalder et al. (2014) · Investigación del equipo · R1: estimación');
+  fuente(s, 'Osterwalder et al. (2014) · Investigación del equipo · Al1: techo de ingeniería');
   return s;
 };
 
@@ -111,9 +111,9 @@ D.entorno = () => {
   serif(s, 'Ayuda la tecnología (baterías de litio a US$108/kWh); frena la economía (desocupación de 9,6%).', { x: M, y: Y0 + 3.6, w: 5.6, h: 0.7, fontSize: 18 });
   // MEFE
   const xR = 7.0, wR = R - xR - 0.2;
-  mono(s, 'MEFE · 7 OPORTUNIDADES Y 9 AMENAZAS NUMERADAS', { x: xR, y: Y0, w: wR + 0.2, h: 0.28, bold: true, color: K.azul });
+  mono(s, 'MEFE · 7 OPORTUNIDADES Y 9 AMENAZAS PRIORIZADAS', { x: xR, y: Y0, w: wR + 0.2, h: 0.28, bold: true, color: K.azul });
   regla(s, xR + 0.1, Y0 + 2.35, wR - 0.2, [{ v: 2.03, n: '2,03', t: 'HOY' }, { v: 2.75, n: '2,75', t: 'ESCENARIO', color: K.cel, hueco: true, dash: 'dash' }], { alto: 1.45 });
-  T(s, [{ text: 'Mayor peso: ', options: { bold: true } }, { text: 'O3 vacío de oferta formal y A1 sin norma propia no se vende (0,079 cada uno).' }], { x: xR, y: Y0 + 3.05, w: wR + 0.2, h: 0.65, fontSize: 16 });
+  T(s, [{ text: 'Mayor peso: ', options: { bold: true } }, { text: 'O3 vacío de oferta formal y Am1 sin norma propia no se vende (0,079 cada uno).' }], { x: xR, y: Y0 + 3.05, w: wR + 0.2, h: 0.65, fontSize: 16 });
   marca(s, 'CALIFICACIONES DEL EQUIPO · POR VALIDAR', xR, Y0 + 3.85, { dash: 'sysDot' });
   fuente(s, 'BloombergNEF (2025) · Banco Central (2026a) · INE (2026) · David (1997)');
   return s;
@@ -156,10 +156,10 @@ D.cruces = () => {
     marca(s, hoy ? 'HOY' : 'CON EVIDENCIA', x + cw - 0.12, y + 0.1, { derecha: true, color: hoy ? K.tx : K.azul, dash: hoy ? 'solid' : 'dash', size: 11, h: 0.28 });
     T(s, items.map(([k, t], n) => ({ text: '', options: {} }) && [{ text: k + ' ', options: { fontFace: F_MONO, bold: true, fontSize: 12, color: K.azul } }, { text: t, options: { breakLine: n < items.length - 1 } }]).flat(), { x: x + 0.15, y: y + 0.48, w: cw - 0.3, h: ch - 0.55, fontSize: 14, paraSpaceAfter: 3 });
   };
-  celda(0, 0, 'FO', [['FO1', 'Calibración para tu modelo'], ['FO2', 'Ejecutar el proyecto experimental'], ['FO3', 'Licenciar tras validar el piloto']], false);
-  celda(0, 1, 'DO', [['DO1', 'Medir el ahorro en el piloto'], ['DO2', 'Expediente del primer par'], ['DO3', 'Cuotas con un financista']], true);
+  celda(0, 0, 'FO', [['FO1', 'Calibración para tu modelo'], ['FO2', 'Ejecutar el proyecto experimental'], ['FO3', 'Licenciar tras el proyecto experimental']], false);
+  celda(0, 1, 'DO', [['DO1', 'Medir el ahorro en el proyecto experimental'], ['DO2', 'Expediente del primer par'], ['DO3', 'Cuotas con un financista']], true);
   celda(1, 0, 'FA', [['FA1', 'Mismo auto, sin enchufe ni límite de antigüedad'], ['FA2', 'Habilita y franquicia SENCE']], false);
-  celda(1, 1, 'DA', [['DA1', 'Cobertura cambiaria'], ['DA2', 'Convenios con casos piloto'], ['DA3', 'Proteger las calibraciones']], true);
+  celda(1, 1, 'DA', [['DA1', 'Cobertura cambiaria'], ['DA2', 'Convenios con casos medidos'], ['DA3', 'Proteger las calibraciones']], true);
   const xR = 8.35, wR = R - xR;
   caja(s, xR, y0, wR, 1.7);
   mono(s, 'HOY · DEFENSIVA', { x: xR + 0.2, y: y0 + 0.12, w: wR - 0.4, h: 0.28, bold: true, color: K.tx });
