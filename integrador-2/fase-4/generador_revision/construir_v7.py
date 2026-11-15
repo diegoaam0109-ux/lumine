@@ -101,7 +101,9 @@ with tempfile.TemporaryDirectory(prefix='lumine-v7-') as tmp:
     subprocess.run([sys.executable, str(HERE / 'estilo_libro.py'), str(fase2), str(estilo)], check=True)
     tipo = tmp / 'claro' / 'tipografia.xlsx'
     subprocess.run([sys.executable, str(HERE / 'tipografia.py'), str(estilo), str(tipo)], check=True)
-    subprocess.run([sys.executable, str(HERE / 'textos.py'), str(tipo), str(claro)], check=True)
+    textos_ = tmp / 'claro' / 'textos.xlsx'
+    subprocess.run([sys.executable, str(HERE / 'textos.py'), str(tipo), str(textos_)], check=True)
+    subprocess.run([sys.executable, str(HERE / 'supuestos.py'), str(textos_), str(claro)], check=True)
     calc2 = recalcular(claro, tmp / 'calc_claro')
     REN = {'Mensual': 'Motor mensual', 'Anual': 'Motor anual', 'Calc depreciación': 'Motor depreciación',
            'Calc financiero': 'Motor financiero', 'Calc sensibilidad': 'Motor sensibilidad',

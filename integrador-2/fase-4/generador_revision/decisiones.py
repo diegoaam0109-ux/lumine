@@ -230,38 +230,48 @@ cab(h, 4, ['Ítem', 'Especificación', 'Proveedor (eslabón de la cadena)', 'Pre
            'Fuente, método y mes de consulta'])
 EQ = [
     ('e_din', 'Dinamómetro de chasis', 'Dynocom 2WD 5000 Series (rodillos para tracción delantera, freno de corrientes de Foucault)',
-     'Dynocom Industries, fabricante (EE.UU.)', 29995, 'US$', 1, 0, '=(750+1.24*180+0.02*29995)*Datos!$C$14',
+     'Dynocom Industries, fabricante (EE.UU.)', 29995, 'US$', 1, 0, '=(750+1.24*312.48+0.02*29995)*Datos!$C$14',
      'Precio de lista publicado por el fabricante en dynocom.net (consultado el 14-11-2026). Arancel 0% por el TLC Chile–EE.UU. '
-     'con certificado de origen. Internación: cargos locales promedio de US$750 por embarque (Cargo Partner, tarifa LCL 2026). '
-     'Flete marítimo desde EE.UU.: por confirmar, no incluido.'),
+     'con certificado de origen. Internación = cargos locales + flete + seguro: (1) cargos locales US$750, punto medio del rango de '
+     'US$600 a US$900 por embarque que publica Cargo Partner (cargopartner.cl/importar-desde/china); (2) flete marítimo consolidado '
+     'desde EE.UU. a San Antonio: 1,24 m³ × US$312,48 por m³ = US$387 (AB Group Shipping, octubre de 2026: US$625 por 2 m³, 27 días '
+     'de tránsito); el volumen sale de las medidas publicadas del 5000 Series, 116 × 35,5 × 17,5 pulgadas = 1,17 m³, más 6% de '
+     'embalaje; pesa 2.200 libras (998 kg), menos de una tonelada, por lo que se cobra por volumen; (3) seguro de 2% del valor, supuesto '
+     'del equipo. Plazo: ver Datos, fila 163.'),
     ('e_esc', 'Escáner automotriz', 'Launch X431 PRO V 5.0 (diagnóstico bidireccional, CAN FD y DoIP)',
-     'Proveedor en China por Alibaba, tramo de 1 a 9 unidades', 679, 'US$', 1, 0, '=0.1*679*Datos!$C$14',
+     'Proveedor en China por Alibaba, tramo de 1 a 9 unidades', 679, 'US$', 1, 0, '=6.118*16*Datos!$C$14',
      'Precio publicado en Alibaba (consultado el 14-11-2026). Reemplaza al precio al público de una tienda minorista '
-     '($1.429.000). Arancel 0% por el TLC Chile–China. Envío courier: provisión de 10% del precio, supuesto del equipo (sin tarifa publicada para este envío).'),
+     '($1.429.000). Arancel 0% por el TLC Chile–China. Envío courier: peso bruto publicado de 6,118 kg × US$16 por kilo, punto medio del '
+     'rango de US$15 a US$17 por kilo que publica Tonlexing para courier exprés de China a Chile (2026) = US$97,89.'),
     ('e_ele', 'Elevador, por puesto', 'JAK 2 columnas, paso superior, 4,2 toneladas',
      'Importadora JAK, importador directo en Chile', 2390000, 'CLP', 1, 0, 0,
      'Precio normal publicado, más IVA (página actualizada el 11-10-2026, consultada el 14-11-2026). La oferta de $2.150.000 no '
      'informa vigencia, por eso se usa el precio normal.'),
     ('e_her', 'Herramientas de alta tensión, por puesto', 'Juego aislado Wiha 91890 de 26 piezas a 1.000 V y multímetro de aislamiento Fluke 1587 FC',
-     'Tiendas oficiales de Wiha y de Fluke (fabricantes)', '=693.31+1080.55', 'US$', 1, 0, '=0.1*(693.31+1080.55)*Datos!$C$14',
+     'Tiendas oficiales de Wiha y de Fluke (fabricantes)', '=693.31+1080.55', 'US$', 1, 0, '=66*Datos!$C$14',
      'Precios regulares de wihatools.com (US$693,31) y shop.fluke.com (US$1.080,55), consultados el 14-11-2026. Los guantes '
      'dieléctricos y la protección personal ya están en «Curso externo de alta tensión y elementos de protección» (Datos), por '
-     'eso no se suman. Arancel 0% por TLC con certificado de origen. Envío courier: provisión de 10% del precio, supuesto del equipo.'),
+     'eso no se suman. Arancel 0% por TLC con certificado de origen. Envío: el juego Wiha pesa 10,4 libras (4,7 kg) y el Fluke, 2,52 '
+     'libras con embalaje (1,1 kg); 5,9 kg por casilla en Miami cuestan US$66 (eShopex, tramo hasta 6 kg, consultado el 15-11-2026).'),
     ('e_bod', 'Bodega de baterías clase 9', 'Dos armarios certificados para baterías de litio (90 minutos de resistencia al fuego) y autorización sanitaria',
      'asecos (fabricante), vendido por DENIOS, su distribuidor', 8560, 'US$', 2, 0, 177300,
      'Armario asecos ION-STORE-90: US$8.560 sin impuestos, envío incluido (DENIOS, consultado el 14-11-2026). Las baterías '
      'de litio son clase 9 y su bodega requiere autorización sanitaria de la SEREMI de Salud (D.S. N° 43): se suma el arancel '
-     'máximo para hasta 3 bodegas, $177.300 (ChileAtiende). La capacidad de dos armarios frente al inventario de kits está por confirmar.'),
+     'máximo para hasta 3 bodegas, $177.300 (ChileAtiende). Capacidad publicada por asecos: 600 kg por armario y 75 kg por repisa; '
+     'una batería de 31 celdas de 1,24 kg pesa 38 kg, de modo que cada repisa recibe una batería y los dos armarios, unas ocho. '
+     'Alcanza con un dúo (15 instalaciones al mes); con más dúos, la llegada de cada lote exige más armarios o una bodega certificada.'),
     ('e_hab', 'Habilitación del local', 'Piso epóxico del taller (360 m²), instalación eléctrica e iluminación (400 m²) y oficina con atención de clientes (40 m²)',
      'Guías de precios publicadas por plataformas de cotización', '=360*25000+400*9000+40*350000', 'CLP', 1, 0, 0,
      'Suma por partida con precios por m² publicados (consultados el 14-11-2026): piso de resina epóxica $25.000/m², precio medio en '
      'Santiago (Cronoshare); instalación eléctrica e iluminación $9.000/m², tope del rango de $4.000 a $9.000 (Jobbing); habilitación '
      'estándar de oficina $350.000/m², piso del rango de $350.000 a $650.000 (Jobbing). El local se arrienda ya construido.'),
     ('e_mob', 'Mobiliario y computadores', 'Cinco notebooks ThinkPad E14 Gen 7 (un puesto por cargo de oficina al abrir) y mobiliario',
-     'Lenovo Agencia en Chile, fabricante (computadores); mobiliario sin proveedor identificado', '=5*1799990/1.19+4000000', 'CLP', 1, 0, 0,
+     'Lenovo Agencia en Chile, fabricante (computadores); Sodimac (mobiliario)', '=5*1799990/1.19+(5*79990+5*67990+6*76990)/1.19', 'CLP', 1, 0, 0,
      'Computadores: precio normal de $1.799.990 con IVA publicado directamente por Lenovo (consultado el 14-11-2026), cinco '
-     'puestos (gerencia, administración, comercial, Responsable Técnico e Ingeniería de Calibración). Mobiliario: $4.000.000, '
-     'supuesto del equipo por confirmar.'),
+     'puestos (gerencia, administración, comercial, Responsable Técnico e Ingeniería de Calibración). Mobiliario, precios publicados por '
+     'Sodimac con IVA (consultados el 15-11-2026): cinco escritorios con cajonera de 120 cm a $79.990, cinco sillas ergonómicas a $67.990 '
+     'y seis mesones de trabajo de taller con cajón y panel a $76.990, uno por puesto de dúo (el local admite seis): $1.201.840 con IVA, '
+     '$1.009.950 netos. No se suman estanterías de kits: el kit se instala al llegar y el inventario en bodega es cero al cierre de cada año.'),
 ]
 fila_d = {r: d.cell(r, 1).value for r in range(42, 160)}
 fila_clave = {v: k for k, v in fila_d.items() if v}
@@ -318,53 +328,79 @@ cab(k, 4, ['Bloque', 'Componente', 'Especificación', 'Proveedor (eslabón de la
            'Subtotal Plus (pesos)', 'Fuente, método y mes de consulta', 'Enlace'])
 P = [
     ('Tren motriz', 'Motor en la rueda trasera', 'QS273 V3, 72 V: 4.000 W (Esencial) y 6.000 W (Plus)', 'QS Motor, fabricante (China)',
-     'US$', 2, 514.54, 2, 583.77, 0, 'Precio oficial en cnqsmotor.com (consultado el 14-11-2026). Arancel 0% por el TLC Chile–China.'),
+     'US$', 2, 514.54, 2, 583.77, 0, 'Precio oficial publicado por QS Motor en cnqsmotor.com (consultado el 15-11-2026): QS273 de 4.000 W para auto eléctrico liviano, US$514,54 (enlace); QS273 de 6.000 W, US$583,77 (cnqsmotor.com/product/electric-car-hub-motor-72v-6000-watt-v3-electric-hub-motor/). Plazo de producción publicado: 10 a 12 días hábiles. Arancel 0% por el TLC Chile–China.'),
     ('Tren motriz', 'Controlador del motor', 'Fardriver ND72680, 72 V, para motores de 4 a 6 kW, con regeneración',
      'QS Motor, distribuidor oficial de Fardriver', 'US$', 2, 328.70, 2, 328.70, 0,
-     'Precio oficial de lista en cnqsmotor.com; la oferta vigente es de US$285,97 y no se usa. QS lo vende junto a su motor de 4.000 W. '
-     'Consultado el 14-11-2026.'),
+     'Precio oficial de lista publicado por QS Motor: US$328,70; la oferta vigente es de US$285,97 y no se usa (consultado el 15-11-2026). '
+     'Fardriver lo indica para motores QS de 4 a 6 kW, con regeneración.'),
     ('Batería', 'Celda de litio-titanato 2,3 V y 30 Ah', 'Yinlong 66160H; 31 en serie = 71,3 V y 2,14 kWh',
      'Gobel Power, distribuidor de fábrica', 'US$', 31, 14, 31, 14, 0, 'Precio publicado por Gobel Power: US$14,00 por celda, modelo YL-66160H-30 (consultado el 15-11-2026).'),
     ('Batería', 'Sistema de gestión de la batería (BMS)', 'ANT de 10 a 32 series, 200 A, apto para LTO',
      'Vendedor comercial (eBay)', 'US$', 1, 149.28, 1, 149.28, 0,
      'Precio publicado por el vendedor idealmall8 en eBay: US$149,28 la versión de 200 A (consultado el 15-11-2026). El fabricante, Shiyan Ant IoT, no publica precio; es el único dato encontrado para 31 series.'),
     ('Batería', 'Contactor principal 200 A', 'Tipo Albright SW200', 'EV Drives, distribuidor (EE.UU.)',
-     'US$', 1, 110, 1, 110, 0.06, 'Precio publicado (septiembre de 2026). Arancel general de 6% por prudencia.'),
+     'US$', 1, 110, 1, 110, 0.06, 'Precio publicado por EV Drives en eBay: US$110, modelo SW200 (código SOL-SW200S), fabricado en China (consultado el 15-11-2026). Arancel general de 6%: al ser de origen chino, no califica para el TLC con EE.UU.'),
     ('Control', 'Unidad de control (hardware)', 'Macchina M2 Under-the-Hood, 2 CAN', 'Macchina, fabricante (EE.UU.)',
-     'US$', 1, 99, 1, 99, 0.06, 'Precio publicado por el fabricante (septiembre de 2026). El software es desarrollo propio.'),
+     'US$', 1, 99, 1, 99, 0.06, 'Precio publicado por el fabricante en macchina.cc: US$99 (consultado el 15-11-2026). El software es desarrollo propio. Arancel general de 6% por prudencia: no hay certificado de origen confirmado.'),
     ('Control', 'Sensor de presión de freno', 'Transductor 0,5–4,5 V con sello para líquido de frenos', 'DATAQ, fabricante (EE.UU.)',
      'US$', 1, 68, 1, 68, 0.06, 'Precio publicado por DATAQ para el modelo 2000361-H de 0,5 a 4,5 V: US$68 (consultado el 15-11-2026).'),
     ('Mecánica', 'Brida motor–mangueta y soporte de pinza (par)', 'Mecanizado CNC en aluminio 6061 T6',
-     'Referencia: WSP Separadores de Rueda (€104 el par con IVA)', '€', 2, 85.9504, 2, 85.9504, 0,
-     'Estimación por pieza de complejidad equivalente (septiembre de 2026); por confirmar con un taller de mecanizado.'),
-    ('Mecánica', 'Pinza de freno trasera', 'Pinza de repuesto sobre el disco del motor', 'eBay Chile, tramos publicados',
-     'CLP', 2, 52800, 2, 52800, 0, 'Punto medio del rango publicado de $33.600 a $72.000 (septiembre de 2026).'),
+     'Referencia: WSP Separadores de Rueda (España), mecanizado CNC en aluminio 6061 T6', '€', 2, 72.7273, 2, 72.7273, 0,
+     'Estimación por analogía: WSP publica pares de separadores de rueda mecanizados en CNC en aluminio 6061 T6 desde €88 con IVA '
+     'de España (21%), es decir €72,73 netos (consultado el 15-11-2026). Supuesto del equipo: una brida exige un volumen de aluminio '
+     'y de horas de máquina parecido al de un par de separadores, por lo que se valoriza cada brida al precio de un par.'),
+    ('Mecánica', 'Pinza de freno trasera', 'Pinza de repuesto sobre el disco del motor', 'Mercado Libre Chile, avisos de pinzas traseras de auto',
+     'CLP', 2, 53762, 2, 53762, 0, 'Promedio de cuatro precios publicados de pinzas traseras de auto y camioneta (consultados el 15-11-2026): '
+     '$40.450 (par de Suzuki Nomade a $80.900), $47.500 (par de Ford F150 a $95.000), $76.960 (Maxus T60/T80) y $91.000 (Maxus T60): '
+     '$63.978 con IVA, $53.762 netos.'),
     ('Mecánica', 'Cable de potencia 35 mm² (metro)', 'H01N2-D flexible', 'Vitel Energía, distribuidor en Chile',
      'CLP', 5, 10094.96, 5, 10094.96, 0, 'Precio publicado por Vitel Energía: $12.013 con IVA por metro (septiembre de 2026); se usa neto de IVA ($10.095). Ficha del producto en el enlace.'),
-    ('Mecánica', 'Fusible ANL con portafusible', 'ANL con portafusible', 'Soliot, comercio en Chile',
-     'CLP', 1, 11756.30, 1, 11756.30, 0, 'Precio publicado $13.990 con IVA (septiembre de 2026).'),
+    ('Mecánica', 'Fusible ANL con portafusible', 'Portafusible ANL con fusible de 200 A, corriente continua', 'Mercado Libre Chile',
+     'CLP', 1, 11554.62, 1, 11554.62, 0, 'Precio publicado de $13.750 con IVA por el conjunto portafusible y fusible ANL de 200 A (consultado el 15-11-2026); se usa neto, $11.555.'),
     ('Mecánica', 'Cortacorriente de batería 300 A', 'Desconectador manual de emergencia', 'Ferretools, comercio en Chile',
-     'CLP', 1, 24690, 1, 24690, 0, 'Precio publicado $24.690 más IVA (septiembre de 2026).'),
-    ('Mecánica', 'Caja metálica de la batería', 'Mecanizado, misma referencia que la brida', 'Referencia: WSP Separadores de Rueda',
-     '€', 1, 85.9504, 1, 85.9504, 0, 'Estimación por pieza equivalente (septiembre de 2026); por confirmar.'),
-    ('Mecánica', 'Consumibles de conexión', 'Terminales de cobre, termocontraíble y arnés', 'Sin precio unitario publicado',
-     'CLP', 1, 20000, 1, 20000, 0, 'Supuesto del equipo: cerca del 1% del costo del kit.'),
+     'CLP', 1, 24690, 1, 24690, 0, 'Precio publicado por Ferretools: $24.690 más IVA, corta corriente reforzado de 300 A a 12/36 V e IP67 (consultado el 15-11-2026; sin stock ese día). Contraste con stock: TTP publica uno de 300 A a $28.280 con IVA ($23.765 netos).'),
+    ('Mecánica', 'Caja metálica de la batería', 'Mecanizado, misma referencia que la brida', 'Referencia: WSP Separadores de Rueda (España)',
+     '€', 1, 72.7273, 1, 72.7273, 0, 'Mismo método que la brida: se valoriza como un par de separadores mecanizados, €88 con IVA de España, €72,73 netos (consultado el 15-11-2026). Supuesto del equipo sobre la equivalencia de mecanizado.'),
+    ('Mecánica', 'Consumibles de conexión', '10 terminales de cobre de 35 mm², un set de termocontraíble y 10 m de cable de señal 18 AWG',
+     'Comercios en Chile (Mercado Libre, Easy y Líder)', 'CLP', 1, '=(7500+3990+27990*10/31)/1.19', 1, '=(7500+3990+27990*10/31)/1.19', 0,
+     'Precios publicados con IVA (consultados el 15-11-2026): pack de 10 terminales de ojo para 35 mm², $7.500; kit de 530 tubos '
+     'termocontraíbles, $3.990; cable automotriz 18 AWG, dos carretes de 15,5 m a $27.990 ($903 el metro). Cantidades, supuesto del '
+     'equipo según el circuito: diez extremos de cable de potencia (batería, fusible, contactor, cortacorriente y dos controladores, '
+     'ida y vuelta) y diez metros de señal entre la unidad de control, el sensor y los controladores. Total $17.243 netos.'),
     ('Logística', 'Flete marítimo LCL China–San Antonio', '0,19 m³ por kit (cajas de 43 × 43 × 43 cm de los motores)',
-     'Cargo Partner, transitario', 'US$', 1, 19.95, 1, 19.95, 0,
-     'Tarifa publicada de US$80 a 130 por W/M (2026); se usa US$105 × 0,19 m³.'),
+     'Cargo Partner, transitario', 'US$', 1, 34.2, 1, 34.2, 0,
+     'Cargo Partner publica, para un envío consolidado típico de 5 m³ desde Shanghái, un flete de US$700 a US$1.100 (consultado el '
+     '15-11-2026): punto medio US$900 / 5 m³ = US$180 por m³. Por kit: US$180 × 0,19 m³ = US$34,20. Contraste: SLC Logística '
+     'publica US$180 a US$250 por W/M desde puertos chinos, con unos 40 días de tránsito (agosto de 2026).'),
     ('Logística', 'Cargos locales por embarque, prorrateados en 20 kits', 'Desconsolidación, agente de aduana y transporte',
-     'Cargo Partner, transitario', 'US$', 1, 37.5, 1, 37.5, 0, 'Tarifa publicada de US$600 a 900 por embarque (2026); US$750 / 20 kits.'),
+     'Cargo Partner, transitario', 'US$', 1, 37.5, 1, 37.5, 0, 'Cargo Partner publica US$600 a US$900 de cargos locales chilenos por embarque consolidado (consultado el 15-11-2026); punto medio US$750 repartido en un embarque de 20 kits (Datos, fila 101) = US$37,50 por kit.'),
     ('Logística', 'Recargos de carga peligrosa clase 9, prorrateados', 'Baterías de litio: manejo, documentos y recargo',
-     'Great Hensen, transitario', 'US$', 1, 20.75, 1, 20.75, 0, 'Tarifa publicada de US$230 a 600 por embarque (julio de 2026); US$415 / 20 kits.'),
-    ('Logística', 'Courier de los ítems de EE.UU.', 'Contactor, unidad de control y sensor', 'Sin tarifa publicada',
-     'US$', 1, 45, 1, 45, 0, 'Supuesto del equipo: las tres piezas pesan cerca de 1,5 kg por kit (el contactor pesa 1,28 kg según la ficha de Arc Components; la unidad de control y el sensor, menos de 0,2 kg entre ambos). Se suponen US$30 por kilo puerta a puerta, con los envíos consolidados; sin tarifa consultada.'),
+     'Great Hensen, transitario', 'US$', 1, '=0.275*34.2', 1, '=0.275*34.2', 0, 'Great Hensen publica que la carga peligrosa por mar lleva un recargo de 15% a 40% sobre la carga normal (consultado el 15-11-2026); punto medio 27,5% sobre el flete por kit de US$34,20 = US$9,41. Se aplica a todo el kit, aunque solo la batería es clase 9: queda del lado conservador.'),
+    ('Logística', 'Courier de los ítems de EE.UU.', 'Contactor, unidad de control y sensor', 'eShopex, casilla en Miami',
+     'US$', 1, '=(106+20*8.5)/20', 1, '=(106+20*8.5)/20', 0, 'Peso por kit: cerca de 1,5 kg (el contactor pesa 1,28 kg según la ficha de Arc Components; la unidad de control y el sensor, menos de 0,2 kg entre ambos). Tarifa publicada por eShopex desde Miami (consultada el 15-11-2026): US$106 hasta 10 kg y US$8,50 por kilo adicional. Un envío consolidado de 20 kits pesa 30 kg: US$106 + 20 × US$8,50 = US$276, US$13,80 por kit.'),
     ('Puesta en regla', 'Alineación después de la instalación', 'Taller externo', 'Neumax, servicio en Chile',
-     'CLP', 1, 19998, 1, 19998, 0, 'Precio publicado (septiembre de 2026).'),
+     'CLP', 1, 16806.72, 1, 16806.72, 0, 'Precio publicado por Neumax para la alineación de un auto: $20.000 con IVA (consultado el 15-11-2026); se usa neto, $16.807.'),
     ('Puesta en regla', 'Revisión técnica después de la instalación', 'Planta de revisión, Región Metropolitana',
-     'Autofact con datos de las plantas', 'CLP', 1, 16250, 1, 16250, 0, 'Valor promedio publicado (enero de 2026).'),
+     'Tarifas de las plantas de la Región Metropolitana publicadas por PracticaTest', 'CLP', 1, 14705.88, 1, 14705.88, 0, 'Promedio de las tarifas de referencia de nueve concesionarias de la Región Metropolitana para autos, agosto de 2026: de $12.700 a $23.250, promedio $17.500 (consultado el 15-11-2026). Precio al público con IVA; se usa neto, $14.706.'),
 ]
 r = 5
 ENLACE = {
+    'Motor en la rueda trasera': 'https://www.cnqsmotor.com/product/4000-watt-72v-80kph-qs273-hub-motor-for-electric-light-car/',
+    'Controlador del motor': 'https://www.cnqsmotor.com/product/fardriver-controller-nd72680-nd84680-nd96680-sine-wave-controller/',
+    'Contactor principal 200 A': 'https://www.ebay.com/itm/271860011296',
+    'Unidad de control (hardware)': 'https://www.macchina.cc/catalog/m2-boards/m2-under-hood',
+    'Brida motor–mangueta y soporte de pinza (par)': 'https://www.separadoresderueda.com/separadores/mini/',
+    'Pinza de freno trasera': 'https://listado.mercadolibre.cl/caliper-trasero',
+    'Fusible ANL con portafusible': 'https://listado.mercadolibre.cl/fusible-anl',
+    'Cortacorriente de batería 300 A': 'https://ferretools.cl/producto/corta-corriente-reforzado-300amp/',
+    'Caja metálica de la batería': 'https://www.separadoresderueda.com/separadores/mini/',
+    'Consumibles de conexión': 'https://articulo.mercadolibre.cl/MLC-2631488778-pack-10-terminal-ojo-compresion-2-awg-35mm-para-cables-_JM',
+    'Flete marítimo LCL China–San Antonio': 'https://www.cargopartner.cl/importar-desde/china',
+    'Cargos locales por embarque, prorrateados en 20 kits': 'https://www.cargopartner.cl/importar-desde/china',
+    'Recargos de carga peligrosa clase 9, prorrateados': 'https://www.greathensen.com/en/services/dangerous-goods-freight-from-china.html',
+    'Courier de los ítems de EE.UU.': 'https://eshopex.cl/tarifas/',
+    'Alineación después de la instalación': 'https://neumax.cl/tienda/nuevos-productos/alineacion-auto-2/',
+    'Revisión técnica después de la instalación': 'https://practicatest.cl/blog/tramites-y-renovaciones/valores-revision-tecnica-santiago',
     'Celda de litio-titanato 2,3 V y 30 Ah': 'https://www.gobelpower.com/yinlong-23v-30ah-lto-66160h-cells-for-diy-car-audio-battery_p26.html',
     'Sistema de gestión de la batería (BMS)': 'https://www.ebay.de/itm/204568705372',
     'Sensor de presión de freno': 'https://www.dataq.com/products/accessories/pressure-sensor/5vindex.html',
@@ -388,7 +424,7 @@ for blo, comp, esp, prov, mon, ce, pe, cp, pp, ara, nota_ in P:
         z = celda(k, r, 15, ENLACE[comp], wrap=True, color='0A6F9E')
         z.hyperlink = ENLACE[comp]
     else:
-        celda(k, r, 15, 'Por agregar', wrap=True, color=GRIS, italic=True)
+        raise SystemExit(f'Falta el enlace de la pieza {comp}')
     k.row_dimensions[r].height = 48
     r += 1
 tot = r
@@ -471,8 +507,8 @@ d['B241'] = 'Ponderación de industrias para el beta y la relación deuda / patr
 estilo_como(d['B241'], d['B42'])
 DAM = 'Damodaran, «Betas by Sector (US)», enero de 2026: '
 fila_dato(242, 'Peso de autopartes: participación del kit en el ingreso por instalación', '=C52/C49', '%', 'Cálculo',
-          'Costo directo del kit (mezcla, fila 52: $3,26 millones) dividido por el ingreso neto por instalación (fila 49: '
-          '$4,21 millones) = 77,3%. El resto del ingreso (22,7%) remunera la instalación, la calibración y el servicio.',
+          'Costo directo del kit de la mezcla de ventas (fila 52) dividido por el ingreso neto por instalación (fila 49); con '
+          'los precios vigentes, $3,18 / $4,21 millones = 75,5%. El resto del ingreso remunera la instalación, la calibración y el servicio.',
           'Con 1 se vuelve a la sola industria de autopartes.')
 fila_dato(243, 'Beta desapalancado, autopartes («Auto Parts», corregido por caja)', 1.13, 'beta', 'Dato publicado',
           DAM + '35 empresas, beta desapalancado corregido por caja 1,13.')
@@ -508,10 +544,13 @@ d['F161'] = ('El local se arrienda cinco meses antes de abrir: las obras de habi
 d['B161'] = 'Meses de arriendo del local antes de abrir'
 assert d['A163'].value is None and d['B163'].value is None
 d['A163'] = 'adin'
-fila_dato(163, 'Anticipo al pedir el dinamómetro (el saldo se paga al recibirlo, tres meses después)', 0.5, '%', 'Supuesto',
-          'Supuesto del equipo: los fabricantes de dinamómetros de chasis informan de 8 a 12 semanas de fabricación desde la '
-          'orden, más el traslado desde EE.UU.; se pide en el mes −5 y se recibe en el −2. Pago en dos partes, sin cotización.',
-          'De 30% a 100%.')
+fila_dato(163, 'Anticipo al pedir el dinamómetro (el saldo se paga al recibirlo, tres meses después)', '=3000/29995', '%', 'Dato y cálculo',
+          'Dynocom no publica plazo ni anticipo; se usa el de Mustang Dynamometer, otro fabricante de EE.UU. de dinamómetros de '
+          'chasis, que para un modelo 2WD pide un depósito de US$3.000 y lo deja listo para despachar en 6 a 8 semanas (mustangdyne.com). '
+          'Anticipo: US$3.000 / US$29.995 = 10%. Plazo total desde la orden = 6 a 8 semanas de fabricación + 27 días de flete marítimo '
+          'a San Antonio (AB Group Shipping, octubre de 2026) + cerca de una semana de aduana y traslado = 11 a 13 semanas, es decir, '
+          'unos tres meses: se pide en el mes −5 y se recibe en el −2.',
+          'Con stock en fábrica, el plazo bajaría a unas cinco semanas.')
 d['C163'].number_format = '0%'
 # Personas: Responsable Técnico desde el mes −5; Ingeniería de Calibración desde el −3
 for c in (P13, P14, P15):

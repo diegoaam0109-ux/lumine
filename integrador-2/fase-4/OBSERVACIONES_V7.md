@@ -397,16 +397,17 @@ Diego y Lukas devolvieron el libro y el informe con comentarios. Cambios en el l
 `tipografia.py` y el nuevo `textos.py`):
 
 - Preapertura de seis meses (meses −5 a 0; norma supuesta en enero de 2028, apertura en julio de 2028), con desembolsos
-  escalonados: Responsable Técnico y trámites en el mes −5; anticipo de 50% del dinamómetro en el mes −5 y saldo a la
-  recepción en el mes −2 (`Datos!C163`, supuesto de tres meses de fabricación, sin confirmar con el fabricante); arriendo
+  escalonados: Responsable Técnico y trámites en el mes −5; anticipo de 10% del dinamómetro en el mes −5 y saldo a la
+  recepción en el mes −2 (`Datos!C163`: depósito de US$3.000 y 6–8 semanas de Mustang Dynamometer, 27 días de flete de
+  AB Group Shipping y una semana de aduana = 11–13 semanas); arriendo
   desde el mes −4 (`Datos!C161` = 5 meses); habilitación en los meses −4 y −3; bodega, escáner y herramientas en el −3;
   Ingeniería de Calibración desde el −3; mobiliario en el −2; primer dúo desde el −1; kits pedidos en el −1 y el 0 (carga
   consolidada desde China, 40 a 50 días). La hoja A1 muestra solo esos seis meses.
 - Beta y D/P ponderados: w = costo del kit / ingreso neto = 77,3% (`Datos!C242` es fórmula); βu = w × 1,13 + (1 − w) × 0,71 =
-  1,035; D/P = w × 41,46% + (1 − w) × 45,36% = 42,34% (Damodaran, «Auto Parts» y «Retail (Automotive)», enero de 2026).
+  1,027; D/P = w × 41,46% + (1 − w) × 45,36% = 42,41% (con w = 75,5% tras los precios respaldados) (Damodaran, «Auto Parts» y «Retail (Automotive)», enero de 2026).
 - Payback simple y descontado con su cálculo por año a la vista, junto al resultado.
-- Hoja 1.2: columna de enlaces (gobelpower, eBay, DATAQ y Vitel verificados; el resto dice «Por agregar»), courier de EE.UU.
-  como supuesto desarrollado, sin la imagen ni las columnas de valor anterior.
+- Hoja 1.2: las 20 piezas con enlace al proveedor; si falta uno, `decisiones.py` detiene el armado. Sin la imagen ni las
+  columnas de valor anterior.
 - Textos: sin «Fase 3» suelto (ahora «Capítulo III, Tabla N° …»), sin la instrucción de `Datos!A2`, sin la hoja «Notas y
   cambios», sin citas al curso ni al profesor (Sapag, 2014, donde corresponde).
 
@@ -426,3 +427,33 @@ La TIR con deuda baja 1,4 puntos: la preapertura más larga agrega $17,1 M de ac
 de los seis meses), que además sube la amortización de los años 1 a 3; la tasa más baja compensa solo en parte. Con el piloto
 dentro de la evaluación (`Datos!C24 = 1`), el VAN puro sería $94,4 M y la TIR 13,22%. Con un alza de 3% en el costo del kit,
 −$52,9 M (TIR financiada 4,94%); con una baja de 3%, $311,0 M.
+
+### Precios respaldados (15-11-2026, tarde)
+
+Cada supuesto de `Datos` tiene ahora origen, razón y cálculo (`supuestos.py`), y las citas al Capítulo III llevan el título de
+la tabla. Precios nuevos con fuente y enlace: contactor (EV Drives), Macchina, bridas y caja (WSP, sin IVA español), pinza
+(promedio de cuatro avisos), fusible ANL, cortacorriente (Ferretools), consumibles, flete LCL (Cargo Partner, US$180/m³ ×
+0,19 m³), cargos locales (US$750 por embarque de 20 kits), recargo de carga peligrosa (Great Hensen, 27,5% del flete),
+courier desde Miami (eShopex, US$13,80 por kit), alineación (Neumax) y revisión técnica (promedio de 9 plantas). Equipos:
+internación del dinamómetro por partida, escáner por courier exprés, herramientas por casilla en Miami, mobiliario de Sodimac.
+
+| Indicador | 15-11 (mañana) | 15-11 (tarde) |
+|---|---:|---:|
+| Kit mezcla | $3.256.425 | $3.179.575 |
+| Ku / Ke | 8,15% / 9,94% | 8,10% / 9,89% |
+| VAN puro / TIR pura | $129,76 M / 15,59% | $275,32 M / 24,29% |
+| VAN inversionista / TIR | $106,22 M / 18,05% | $245,76 M / 29,20% |
+| VAN ajustado | $135,67 M | $281,15 M |
+| Inversión total del año 0 | $403,9 M | $381,5 M |
+| Préstamo / aporte de socios año 0 | $123,1 M / $281,5 M | $116,6 M / $265,5 M |
+| Payback simple / descontado (puro) | 4,18 / 4,54 años | 3,44 / 4,07 años |
+| Baja de precio que lleva el VAN a 0 | 1,81% | 3,86% |
+
+Descomposición: con el kit de la mañana y todo lo demás nuevo, el modelo da VAN puro $132,8 M y TIR con deuda 18,34%. El
+salto es el kit: −$76.850 por unidad (courier −30.716, bridas −28.816, caja −14.408, carga peligrosa −11.169, alineación,
+revisión y consumibles −7.492; flete +14.029, pinza +1.924) sobre 2.850 kits. Sensibilidad: kit +3% → VAN puro $98,3 M y TIR
+financiada 15,77%; kit −3% → $452,3 M y 43,45%; kit +4,7% → VAN puro cero; sin recuperaciones de cierre, VAN puro $133,7 M y
+financiado $115,3 M; con el piloto dentro, VAN puro $240,6 M, TIR 21,35%, año 0 $423,0 M.
+
+Abierto para el equipo: dos armarios asecos guardan ~8 baterías (600 kg por armario, 75 kg por repisa; batería de 38 kg), lo
+que alcanza para un dúo. Escalar exige más armarios o una bodega certificada.

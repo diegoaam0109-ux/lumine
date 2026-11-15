@@ -121,9 +121,10 @@ Hoja Datos única para entradas; flujos simétricos por activo, tablas francesa/
 
 **Verificación:** sin errores de Excel, 38 controles a cero dentro de precisión numérica, 11.073 valores operativos conservados, flujo y rentabilidad reconstruidos independientemente en Python. No se tocaron las hojas grises ni v3–v5. Trabajar en `fase4-plan-financiero`; no abrir PR.
 
-**Actualización 15-11-2026:** comentarios del equipo aplicados (ver OBSERVACIONES_V7.md, «Comentarios del equipo»). Cifras
-vigentes: Ku 8,15%, Ke 9,94%, VAN puro $129,76 M (TIR 15,59%), VAN inversionista $106,22 M (TIR 18,05%), año 0 $403,9 M,
-préstamo $123,1 M. Preapertura de seis meses con norma en enero de 2028.
+**Actualización 15-11-2026 (tarde):** precios del kit y de los equipos respaldados con enlace y supuestos explicados (ver
+OBSERVACIONES_V7.md). Cifras vigentes: Ku 8,10%, Ke 9,89%, VAN puro $275,32 M (TIR 24,29%), VAN inversionista $245,76 M
+(TIR 29,20%), VAN ajustado $281,15 M, año 0 $381,5 M, préstamo $116,6 M, kit mezcla $3,18 M. Preapertura de seis meses con
+norma en enero de 2028. Las cifras de la mañana (VAN $129,76 M, TIR 18,05%) son históricas.
 
 ## 7. Pendientes históricos de v3–v5 (actuales: ver §6 y Decisiones)
 
