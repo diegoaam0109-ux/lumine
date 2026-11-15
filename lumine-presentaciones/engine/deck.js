@@ -5,7 +5,7 @@
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   const clamp = i => Math.max(D.intro ? -1 : 0, Math.min(N - 1, i));
   const fromHash = () => {
-    const value = location.hash.slice(1);
+    const value = location.hash.slice(1).replace(/^lamina-/, '');
     return !value || value === '0' ? clamp(-1) : clamp((parseInt(value, 10) || 1) - 1);
   };
   const pad = n => String(Math.floor(n)).padStart(2, '0');
@@ -26,6 +26,18 @@
     const $ = id => document.getElementById(id);
     let t0 = Date.now(), ts = t0;
     const send = m => window.opener && window.opener.postMessage({lumine: m}, '*');
+    function preview(id, slide) {
+      let node = $(id);
+      const tag = slide.frame ? 'IFRAME' : 'IMG';
+      if (node.tagName !== tag) {
+        const next = document.createElement(tag.toLowerCase());
+        next.id = id; node.replaceWith(next); node = next;
+      }
+      node.title = slide.title || 'Lámina';
+      const src = slide.frame || slide.img;
+      if (node.getAttribute('src') !== src) node.src = src;
+      node.hidden = false;
+    }
     function show(i, origin = null) {
       if (!Number.isInteger(i)) return;
       i = clamp(i);
@@ -33,9 +45,9 @@
       cur = i;
       const s = D.slides[i], nx = D.slides[i + 1];
       $('ic').hidden = i < 0; $('iv').hidden = i >= 0;
-      if (s) { $('ic').src = s.img; $('iv').pause(); }
+      if (s) { preview('ic', s); $('iv').pause(); }
       else if (!$('iv').getAttribute('src')) $('iv').src = D.intro;
-      if (nx) $('in').src = nx.img;
+      if (nx) preview('in', nx);
       else $('in').removeAttribute('src');
       $('in').style.visibility = nx ? 'visible' : 'hidden';
       $('cnt').textContent = s ? `${i + 1} / ${N}${i + 1 > D.mainSlides ? ' · ANEXO' : ''}` : 'Apertura';
@@ -86,7 +98,7 @@
   let scene = null, transition = null, speakerWin = null, typed = '';
   let zoom = false, laser = false, returnOrigin = null;
   const cached = new Map();
-  const preload = i => { if (D.slides[i] && !cached.has(i)) { const img = new Image(); img.src = D.slides[i].img; cached.set(i, img); } };
+  const preload = i => { if (D.slides[i]?.img && !cached.has(i)) { const img = new Image(); img.src = D.slides[i].img; cached.set(i, img); } };
   const place = (el, b) => Object.assign(el.style, {left: b.x + '%', top: b.y + '%', width: b.w + '%', ...(b.h ? {height: b.h + '%'} : {})});
   const notifySpeaker = () => { if (speakerWin && !speakerWin.closed) speakerWin.postMessage({lumine: {type: 'goto', i: cur, origin: returnOrigin}}, '*'); };
   const finishTransition = () => transition?.finish();
@@ -109,9 +121,18 @@
     }
     if (i < 0) video(D.intro, true);
     else {
-      const s = D.slides[i], img = document.createElement('img');
-      img.className = 'slide'; img.src = s.img; img.alt = s.title || `Lámina ${i + 1}`; img.draggable = false;
-      content.appendChild(img);
+      const s = D.slides[i];
+      if (s.frame) {
+        const embedded = document.createElement('iframe');
+        embedded.className = 'slide-frame'; embedded.src = s.frame;
+        embedded.title = s.title || `Lámina ${i + 1}`;
+        embedded.tabIndex = -1; content.classList.add('embedded-slide');
+        content.appendChild(embedded);
+      } else {
+        const img = document.createElement('img');
+        img.className = 'slide'; img.src = s.img; img.alt = s.title || `Lámina ${i + 1}`; img.draggable = false;
+        content.appendChild(img);
+      }
       if (s.video?.src) video(s.video.src, false);
       for (const l of s.links || []) {
         const a = document.createElement('a'); a.className = 'hot'; a.href = '#' + l.to;
@@ -191,7 +212,7 @@
       const y = Math.max(0, Math.min(100, (e.clientY - r.top) / r.height * 100));
       content.style.transformOrigin = `${x}% ${y}%`; content.style.transform = 'scale(2.5)';
     } else if (laser) { e.preventDefault(); e.stopPropagation(); }
-    else if (e.target.matches('img.slide')) {
+    else if (e.target.matches('img.slide, .embedded-slide')) {
       const r = frame.getBoundingClientRect(); step(e.clientX - r.left > r.width * 0.3 ? 1 : -1);
     }
   }, true);

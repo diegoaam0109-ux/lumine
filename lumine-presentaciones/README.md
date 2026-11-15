@@ -71,3 +71,22 @@ Para cambiarla, editar `integrador-2/fase-4/presentacion/plantilla.html` y ejecu
 `python3 integrador-2/fase-4/presentacion/armar.py`, que vuelve a escribir `fase4/index.html` (fuentes en `fase4/fuentes/`,
 imágenes en `fase4/img/`) y una versión de un solo archivo en `/tmp/propuesta_fase4.html` para el artefacto de Claude.
 La curva de caja mensual se lee directo del libro; las demás cifras están en la plantilla.
+
+## Fase 4: formato de exposición compartido
+
+`fase4/index.html` usa el mismo motor de Fase 3. Sus 14 láminas principales y 3 anexos mantienen gráficos HTML/SVG animados, alojados en `renderer.html?embed` para aislar sus estilos. El escenario ocupa la pantalla conservando 16:9; las notas de diseño no se proyectan. La vista del orador las identifica como notas de diseño, no como guion.
+
+Controles: flechas o espacio para avanzar; F pantalla completa; O orador; P buscar anexos; Esc volver; Z lupa; L láser; número + Enter para saltar. Se conservan enlaces anteriores `#lamina-N`. `renderer.html` sin parámetros conserva la vista de revisión.
+
+Regenerar desde `integrador-2/fase-4/presentacion/armar.py`: produce el visor, los datos y el contenido, además del HTML autónomo de revisión en `/tmp/propuesta_fase4.html`. Editar la plantilla, no el renderer generado. Este cambio no modifica cifras, supuestos ni el Excel.
+
+Verificar con un servidor HTTP desde la raíz del repositorio:
+
+```sh
+python -m http.server 8765 --bind 127.0.0.1
+# En otra terminal, con Playwright disponible:
+node lumine-presentaciones/engine/tests/fase4.cjs
+LUMINE_DECK_URL=http://127.0.0.1:8765/lumine-presentaciones/fase3/ node lumine-presentaciones/engine/tests/deck.cjs
+```
+
+Publicación: el workflow de Pages sólo despliega `main`. Subir esta implementación a `fase4-plan-financiero` no cambia por sí solo el sitio público.
