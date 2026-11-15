@@ -24,7 +24,7 @@ const H = [];
 H.push(p('LUMINE MOTORS · CONTROL DE GESTIÓN · ICMA901 · SECCIÓN 500 · NRC 4118', { size: 18, color: GRIS, after: 60 }));
 H.push(new Paragraph({ heading: HeadingLevel.TITLE, children: [new TextRun({ text: 'Guion · Solemne 2 · Avance 2 del TIG' })] }));
 H.push(p('Versión con Declaraciones, Entorno, Cinco fuerzas y Cruces del FODA. Coherente con el informe del Avance 2 del 15-11-2026. Profesor Leonardo Lizana Contreras.', { italics: true, color: AZUL, after: 200 }));
-H.push(p(`Guion listo para decir, lámina por lámina: ${filas.length} láminas y ${total.toLocaleString('es-CL')} palabras, unos ${min(total)} de texto a ${g.PALABRAS_POR_MINUTO} palabras por minuto y cerca de 13 minutos con los cambios de turno, dentro de los 15. La pauta pide no leer: ensayen con este texto y expongan con la nota breve que va en el PowerPoint.`));
+H.push(p(`Guion listo para decir, lámina por lámina: ${filas.length} láminas y ${total.toLocaleString('es-CL')} palabras, unos ${min(total)} de texto a ${g.PALABRAS_POR_MINUTO} palabras por minuto, más los cambios de turno, dentro de los 15. Las láminas 5 a 8 (declaraciones, entorno, cinco fuerzas y cruces) solo se nombran: una o dos frases cada una. La pauta pide no leer: ensayen con este texto y expongan con la nota breve del PowerPoint.`));
 H.push(tabla([['Expositor', 3000], ['Láminas', 2760], ['Palabras', 1600], ['Tiempo', 2000]],
   [...bloques.map(b => [b.quien, b.f.length > 1 ? `${b.f[0].n} a ${b.f[b.f.length - 1].n}` : String(b.f[0].n), pal(b.f), min(pal(b.f))]), ['Total', '', total, min(total)]]));
 bloques.forEach((b, k) => {
