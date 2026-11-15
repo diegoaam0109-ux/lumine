@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
-"""v7: aplica el formato del curso sobre la v6, recalcula con LibreOffice (es-CL), verifica y exporta el PDF.
+"""v7: aplica las decisiones del equipo y el formato del curso sobre la v6, recalcula con LibreOffice (es-CL),
+verifica y exporta el PDF.
 
+Paso 0: decisiones.py aplica sobre la v6, con fórmulas, las decisiones del 14-11-2026 (piloto fuera de la evaluación
+y medios de pago ponderados). La v6 decidida y recalculada es la referencia de los pasos siguientes.
 Verificaciones: (1) los controles nuevos de la hoja Controles suman ~0; (2) los controles de la v6 siguen en ~0;
-(3) cada valor numérico de las hojas de la v6 es idéntico antes y después. Si algo falla, no se publica nada.
+(3) cada valor numérico de las hojas de la v6 decidida es idéntico antes y después del formato. Si algo falla,
+no se publica nada.
 """
 from pathlib import Path
 import json, shutil, subprocess, sys, tempfile
@@ -20,14 +24,22 @@ with tempfile.TemporaryDirectory(prefix='lumine-v7-') as tmp:
     perfil = tmp / 'perfil'
     shutil.copytree(PERFIL_ES, perfil)
     soffice = ['soffice', f'-env:UserInstallation={perfil.as_uri()}', '--headless']
-    formato = tmp / 'formato.xlsx'
-    subprocess.run([sys.executable, str(HERE / 'formato_profesor.py'), str(V6), str(formato)], check=True)
-
     def recalcular(entrada, carpeta):
         carpeta.mkdir()
         subprocess.run(soffice + ['--convert-to', 'xlsx', '--outdir', str(carpeta), str(entrada)], check=True, timeout=300,
                        stdout=subprocess.DEVNULL)
         return carpeta / entrada.name
+
+    # 0) Decisiones del equipo sobre la v6 y su recálculo, que pasa a ser la referencia
+    decidida = tmp / 'v6_decidida.xlsx'
+    subprocess.run([sys.executable, str(HERE / 'decisiones.py'), str(V6), str(decidida)], check=True)
+    ref = recalcular(decidida, tmp / 'calc_decidida')
+    rv = openpyxl.load_workbook(ref, data_only=True)
+    v6v = openpyxl.load_workbook(V6, data_only=True)
+    for et, celda in [('VAN puro (MM)', 'C70'), ('TIR pura', 'C71')]:
+        print(f"  {et}: v6 {v6v['Flujo puro'][celda].value:,.4f} -> decidida {rv['Flujo puro'][celda].value:,.4f}")
+    formato = tmp / 'formato.xlsx'
+    subprocess.run([sys.executable, str(HERE / 'formato_profesor.py'), str(decidida), str(formato)], check=True)
 
     def leer(calc, mapa):
         m = json.load(open(mapa))
@@ -57,7 +69,7 @@ with tempfile.TemporaryDirectory(prefix='lumine-v7-') as tmp:
     assert c.cell(c.max_row, 2).value.startswith('Suma absoluta de estos'), 'no se encontró el total de controles nuevos'
     assert abs(total) < 0.01, f'controles nuevos fuera de tolerancia: {total}'
     assert abs(c['C46'].value) < 1e-6, f'controles de la v6 fuera de tolerancia: {c["C46"].value}'
-    a = openpyxl.load_workbook(V6, data_only=True)
+    a = rv
     n = 0
     for ws in a.worksheets:
         for row in ws.iter_rows():
@@ -72,7 +84,7 @@ with tempfile.TemporaryDirectory(prefix='lumine-v7-') as tmp:
     errores = [(ws.title, z.coordinate) for ws in v.worksheets for row in ws.iter_rows() for z in row
                if isinstance(z.value, str) and (z.value.startswith('#') or z.value.startswith('Err:'))]
     assert not errores, f'celdas con error: {errores[:10]}'
-    print(f'Verificado: controles nuevos {total:.2e}, controles v6 {c["C46"].value:.2e}, {n} valores de la v6 sin cambios')
+    print(f'Verificado: controles nuevos {total:.2e}, controles v6 {c["C46"].value:.2e}, {n} valores de la v6 decidida sin cambios')
 
     # 3) Libro transparente: fórmulas reales en las hojas del curso, sin hojas ocultas, mismos valores
     claro = tmp / 'claro' / V7.name
@@ -81,7 +93,9 @@ with tempfile.TemporaryDirectory(prefix='lumine-v7-') as tmp:
     fase2 = tmp / 'claro' / 'fase2.xlsx'
     subprocess.run([sys.executable, str(HERE / 'transparentar.py'), str(crudo), str(fase1), '1'], check=True)
     subprocess.run([sys.executable, str(HERE / 'transparentar.py'), str(fase1), str(fase2), '2'], check=True)
-    subprocess.run([sys.executable, str(HERE / 'estilo_libro.py'), str(fase2), str(claro)], check=True)
+    estilo = tmp / 'claro' / 'estilo.xlsx'
+    subprocess.run([sys.executable, str(HERE / 'estilo_libro.py'), str(fase2), str(estilo)], check=True)
+    subprocess.run([sys.executable, str(HERE / 'tipografia.py'), str(estilo), str(claro)], check=True)
     calc2 = recalcular(claro, tmp / 'calc_claro')
     REN = {'Mensual': 'Motor mensual', 'Anual': 'Motor anual', 'Calc depreciación': 'Motor depreciación',
            'Calc financiero': 'Motor financiero', 'Calc sensibilidad': 'Motor sensibilidad',

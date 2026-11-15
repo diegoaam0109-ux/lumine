@@ -2,8 +2,8 @@
 
 > **Fase 4 actualizada 14-11-2026:** leer [README de Fase 4](integrador-2/fase-4/README.md) y [traspaso §6](integrador-2/fase-4/TRASPASO_FASE4.md#6-estado-vigente-v6-académica-conciliada).
 > Vigente: `excel/v7_formato_curso.xlsx` (+ PDF) = v6 con formato del curso, mismos números, Tablero y **sin hojas ocultas** (fórmulas reales en las hojas del curso; motor visible). Ver `OBSERVACIONES_V7.md`. Base: `excel/v6_academico_conciliado.xlsx`, basado en `Lumine_Plan_Financiero_Fase4 (3).xlsx` recibido de Diego.
-> **TIR pura 13,42%; VAN $86,05 M; fondos máximos sin deuda $484,42 M.** Kit +5% vuelve negativo el VAN.
-> El CT recuperable se separa del déficit de caja. El piloto vigente tiene 3 autos; software $26,65 M estimado está incluido.
+> **Decisiones del 14-11-2026 (noche):** piloto y transición fuera de la evaluación (`Datos!C24`), medios de pago ponderados por la encuesta (0,88% en vez de 2%), Arial 12. **TIR pura 20,99%; VAN $204,53 M; fondos máximos sin deuda $435,62 M.** Kit +5% vuelve negativo el VAN (−$93,15 M). La v6 sin decisiones: TIR 13,42%, VAN $86,05 M.
+> El CT recuperable se separa del déficit de caja. El piloto (3 autos) queda fuera del flujo; software $26,65 M estimado está incluido. Pendiente: si el pesimista suma el alza del kit y con qué flujo (uno solo) se presentan los escenarios.
 > v4/v5 y su TIR 20% son históricos. La identidad/web antigua LFP no decide la tecnología del informe actual LTO.
 > Código, fuente financiera y auditoría en Fase 4; los DOCX, encuesta y Excel antiguo de referencia no se publicaron.
 > No afirmar que existen cotizaciones o créditos aprobados. Rama `fase4-plan-financiero`, sin PR.

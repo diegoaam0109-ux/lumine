@@ -15,7 +15,7 @@ ENT, SAL = sys.argv[1], sys.argv[2]
 w = openpyxl.load_workbook(ENT)
 
 CEL, CLARO, GRIS = '12AAE9', 'EAF7FD', '595959'
-F = 'Calibri'
+F = 'Arial'
 PESO = r'_ "$"* #,##0_ ;_ "$"* \-#,##0_ ;_ "$"* "-"_ ;_ @_ '
 UNI = r'#,##0_ ;\-#,##0_ ;"-"_ '
 DEC = r'#,##0.00_ ;\-#,##0.00_ ;"-"_ '

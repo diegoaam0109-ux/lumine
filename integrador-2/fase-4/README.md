@@ -1,5 +1,7 @@
 # Plan financiero de Lumine · versión para revisar
 
+> **14-11-2026, noche · decisiones del equipo:** piloto y transición fuera de la evaluación y medios de pago ponderados por la encuesta (0,88% de la venta en vez de 2%). **VAN puro $204,53 M, TIR pura 20,99%**; inversionista $178,68 M (Ke) y 25,96%; fondos máximos sin deuda $435,62 M. Arial 12 en todo el libro. Detalle y tabla antes/después: [OBSERVACIONES_V7.md](OBSERVACIONES_V7.md#decisiones-del-14-11-2026-noche-tras-la-reunión-con-el-profesor-guía). La tabla de abajo es de la v6 sin decisiones.
+>
 > **14-11-2026 · v7 con formato del curso:** [v7_formato_curso.xlsx](excel/v7_formato_curso.xlsx) · [PDF](excel/v7_formato_curso.pdf). Mismos números que la v6 (39 controles en cero y 19.533 valores comparados), presentados con las hojas 1 a 7 de la Fase 4, en pesos y con los formatos de clases, más un **Tablero** con selectores de escenario, flujo y año y cambios frente a la base. **Sin hojas ocultas:** las hojas del curso tienen las fórmulas reales y el motor está visible. Incongruencias con la metodología del curso, pendientes de decisión: [OBSERVACIONES_V7.md](OBSERVACIONES_V7.md). Reproducir: `python integrador-2/fase-4/generador_revision/construir_v7.py`.
 
 

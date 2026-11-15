@@ -1,6 +1,10 @@
 # v7 · formato del curso: qué cambió y qué no calza con la metodología de clases
 
-**Archivo:** `excel/v7_formato_curso.xlsx` (+ PDF de 32 páginas). Se genera con `generador_revision/construir_v7.py`.
+**Archivo:** `excel/v7_formato_curso.xlsx` (+ PDF de 29 páginas). Se genera con `generador_revision/construir_v7.py`.
+
+> **14-11-2026, noche: cambian los números por dos decisiones del equipo** (sección «Decisiones del 14-11-2026», al final).
+> VAN puro $204,53 M, TIR pura 20,99%; inversionista $178,68 M a Ke y TIR 25,96%. Las cifras de las secciones anteriores
+> son de antes de esas decisiones; los criterios descritos siguen vigentes.
 
 ## Qué se hizo (solo formato)
 
@@ -23,6 +27,8 @@ Hay 39 controles nuevos al pie de la hoja Controles, y todos dan cero. Además, 
 valores numéricos de la v6 antes y después, y no encuentra diferencias. 
 
 ## Incongruencias con lo enseñado en clases (para decidir; no se cambió nada)
+
+Las cifras de esta sección son de antes de las decisiones del 14-11-2026.
 
 1. **Momento del capital de trabajo.** En clases el capital de trabajo se invierte un período antes de usarlo y se
    recupera al final. La v6 registra cada aumento en el mismo año en que ocurre (los $202 M del año 1 caen en el
@@ -130,3 +136,52 @@ tablas antiguas, en millones y con filas sin nombre. Los cambios:
 - **Verificación.** `construir_v7.py` compara 19.935 valores: los de las hojas del curso y del Tablero son idénticos, y
   los del motor son iguales o exactamente 1.000.000 de veces el valor anterior (el paso de millones a pesos). Sin
   errores y sin hojas ocultas.
+
+## Decisiones del 14-11-2026 (noche, tras la reunión con el profesor guía)
+
+Se aplican con fórmulas sobre la v6 antes de dar formato (`generador_revision/decisiones.py`). La v6 decidida y
+recalculada pasa a ser la referencia: `construir_v7.py` comprueba que el formato no cambia ninguno de sus 19.539 valores.
+
+1. **El piloto y la transición quedan fuera de la evaluación.** Acuerdo con el profesor: el flujo parte con la
+   preapertura, cuando ya existe el reglamento. El piloto (12 meses) y la espera del reglamento (3 meses) se
+   financiarían aparte con un fondo público de investigación y desarrollo, sin afirmar que esté adjudicado (el que
+   nombró el profesor es Startup Ciencia de ANID: hasta $134 millones por proyecto y exige una persona jurídica).
+   - Selector en `Datos!C24` (0 = fuera; 1 = dentro, que recupera el cálculo anterior). En el motor mensual, los costos
+     de esas etapas se multiplican por el selector (214 celdas).
+   - El escáner y las herramientas de alta tensión, que compraba el piloto, se compran en el primer mes de preapertura
+     (criterio conservador: el proyecto sigue pagando esos equipos).
+   - La hoja 1 conserva las columnas Piloto y Transición, ahora en cero, para que se vea la decisión.
+2. **Medios de pago ponderados por la encuesta.** El profesor indicó que no se ofrece crédito propio y que la alianza con
+   una financiera no paga comisión: Lumine recibe el total. El 2% supuesto se reemplaza por un promedio ponderado
+   (`Datos`, filas 37 a 40, y `C54`):
+   - Encuesta del equipo, foco de aplicaciones y colectivos (95 casos), P32: 38 tarjeta de crédito en cuotas (40,0%),
+     42 crédito bancario propio (44,2%) y 15 contado (15,8%). Son preferencias, no cupos ni aprobaciones.
+   - Tarjeta de crédito: 2,19% + IVA, tarifa publicada por SumUp Chile («comisiones vigentes en 2026») para ventas sobre
+     $15 millones al mes. Contraste: Mercado Pago Chile publica 2,69% bajo $2 millones al mes y ofrece comisión especial
+     sobre $25 millones. Cuotas del emisor: el interés lo paga el cliente. El IVA de la comisión es crédito fiscal.
+   - Crédito bancario y contado llegan por transferencia, sin comisión por venta.
+   - Resultado: 40,0% × 2,19% = 0,88% de la venta neta.
+3. **Tipografía.** Arial en todo el libro, 12 pt como mínimo; los títulos y las cifras grandes del Tablero conservan su
+   tamaño. Columnas y filas de alto fijo se ensancharon en la misma proporción (`tipografia.py`).
+
+| Indicador | Antes | Ahora |
+|---|---:|---:|
+| VAN puro (Ku 8,65%) | $86,05 M | $204,53 M |
+| TIR pura | 13,42% | 20,99% |
+| VAN inversionista (Ke) | $64,42 M | $178,68 M |
+| TIR inversionista | 15,55% | 25,96% |
+| Inversión equivalente en el año 0 | $219,79 M | $173,70 M |
+| Fondos máximos sin deuda | $484,42 M | $435,62 M |
+| Préstamo | $141,98 M | $127,67 M |
+| Payback descontado | 4,79 años | 4,51 años |
+| VAN sin recuperaciones de cierre | −$203,53 M | −$85,05 M |
+| Pesimista (VAN / TIR) | −$441,87 M / −26,15% | −$348,62 M / −20,74% |
+| Optimista (VAN / TIR) | $393,67 M / 27,67% | $537,23 M / 36,85% |
+| Kit +3% / +5% | — / −$226,32 M | $26,86 M / −$93,15 M |
+| Baja de precio que lleva el VAN a 0 | ~1,2% | 2,83% |
+
+Descomposición: los medios de pago aportan $81,8 M de VAN (con el piloto dentro, el VAN sería $167,86 M) y sacar el
+piloto y la transición, $36,7 M más.
+
+**Pendiente de decisión:** si el escenario pesimista suma el alza del costo del kit (el profesor lo sugirió, justificado
+con la historia del dólar) y con qué flujo se presentan los escenarios (el profesor pidió uno solo, el más realista).

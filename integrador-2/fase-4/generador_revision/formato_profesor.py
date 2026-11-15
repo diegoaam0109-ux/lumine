@@ -31,7 +31,7 @@ ANOS = '0.00 "años"'
 FECHA = 'mmm-yy'
 
 CEL = '12AAE9'; CLARO = 'EAF7FD'; GRIS = '595959'
-F = 'Calibri'
+F = 'Arial'
 LINEA = Side(style='thin', color=CEL)
 DOBLE = Side(style='double', color='000000')
 
@@ -211,8 +211,9 @@ fila(s, r, 'Costo financiero de la inversión previa (calendario de inversiones 
 fila(s, r, 'Inversión equivalente en el año 0', [f'=C{des}+C{r-1}'], tipo='total')
 control('1 Inversión: inversión del año 0 = flujo puro año 0', f"=C{r}+{q('Flujo puro', 'C64')}*{M}")
 r += 1
-nota(s, r, 'Los desembolsos ocurren durante 18 meses antes de abrir (detalle en A1 Calendario inversión). Se llevan al '
-           'momento cero con la tasa del proyecto, como en el calendario de inversiones visto en clases.', 10, 30)
+nota(s, r, '=IF(Datos!$C$24=1,"Los desembolsos ocurren durante 18 meses antes de abrir (detalle en A1 Calendario inversión).",'
+           '"El piloto y la espera del reglamento quedan fuera de la evaluación (selector en Datos): el flujo parte con los 3 meses de preapertura (detalle en A1 Calendario inversión).")'
+           '&" Se llevan al momento cero con la tasa del proyecto, como en el calendario de inversiones visto en clases."', 10, 30)
 r += 2
 cabecera(s, r, ['Reinversiones', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'])
 r += 1
@@ -253,7 +254,7 @@ fila(s, r, 'Total ingresos', [f'=SUM({c}{i1}:{c}{r-1})' for c in 'DEFGH'], tipo=
 r += 1
 seccion(s, r, 'Costos variables', 8); r += 1
 v1 = r
-for rr, et in [(17, 'Costo de los kits'), (18, 'Garantía (3% del costo del kit)'), (19, 'Comisión de medios de pago (2% de la venta)'),
+for rr, et in [(17, 'Costo de los kits'), (18, 'Garantía (3% del costo del kit)'), (19, 'Comisión de medios de pago (ventas con tarjeta de crédito)'),
                (20, 'Comisión de venta, sello, referidos y flete'), (21, 'Comisión por incorporación de talleres')]:
     fila2(r, et, '$', [q('Costos', f'{c}{rr}') + f'*{M}' for c in CO], signo='-'); r += 1
 fila(s, r, 'Total costos variables', [f'=SUM({c}{v1}:{c}{r-1})' for c in 'DEFGH'], tipo='sub', c0=4); cv = r; r += 1
@@ -624,7 +625,8 @@ def espejo(src, nombre, titulo, bajada, cabeza, cols, filas, ancho_b=44, ancho=1
 
 cols = [L(c) for c in range(3, 22)]
 s, r = espejo('Calendario', 'A1 Calendario inversión', 'Anexo 1. Calendario de inversiones antes de la apertura',
-              'Pesos de 2026. Meses −17 a 0; desembolsos al cierre del mes. Los factores llevan cada pago al momento cero.',
+              'Pesos de 2026. Meses −17 a 0; desembolsos al cierre del mes. Los factores llevan cada pago al momento cero. '
+              'Con el piloto fuera de la evaluación, los meses −17 a −3 quedan en cero.',
               5, cols, [(6, 'peso'), (7, 'peso'), (8, 'peso'), (9, 'peso'), (10, 'peso'), (12, 'peso-sub'), (0, 'blank'),
                         (14, 'fac'), (15, 'peso-sub'), (0, 'blank'), (17, 'fac'), (18, 'peso-sub')], ancho=13, fmt_cab=UNI)
 s.cell(4, 2 + len(cols)).number_format = 'General'
@@ -671,6 +673,8 @@ for row in d.iter_rows(min_row=6):
         z.number_format = PESO
     elif u == 'factor':
         z.number_format = FAC
+    elif u == 'selector':
+        z.number_format = '0'
     elif isinstance(z.value, (int, float)) and float(z.value).is_integer():
         z.number_format = UNI
     elif z.number_format.startswith('#,##0.00'):
