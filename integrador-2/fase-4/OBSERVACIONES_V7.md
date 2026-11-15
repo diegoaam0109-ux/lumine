@@ -3,8 +3,9 @@
 **Archivo:** `excel/v7_formato_curso.xlsx` (+ PDF de 36 páginas). Se genera con `generador_revision/construir_v7.py`.
 
 > **14-11-2026, noche: cifras vigentes** (secciones «Decisiones del 14-11-2026», «Respaldo con fuentes primarias» y
-> «Local, bodega, mobiliario y demanda de arriba hacia abajo», «Correcciones de la revisión cruzada» y «Capital de trabajo por
-> déficit acumulado máximo», al final): VAN puro $114,24 M y TIR pura 13,65%; inversionista $83,84 M a Ke y TIR 15,34%. Las cifras de las secciones anteriores
+> «Local, bodega, mobiliario y demanda de arriba hacia abajo», «Correcciones de la revisión cruzada», «Capital de trabajo por
+> déficit acumulado máximo» y «Compras y pago al proveedor», al final): VAN puro $134,99 M y TIR pura 16,73%; inversionista
+> $111,91 M a Ke y TIR 19,48%. Las cifras de las secciones anteriores
 > son de antes de esos cambios; los criterios descritos siguen vigentes.
 
 ## Qué se hizo (solo formato)
@@ -345,4 +346,39 @@ cada peso vale 0,66 de hoy a Ku.
 
 Sensibilidad a la política de compras (no aplicada; decisión del equipo): con compras que cubren dos meses de pedidos en vez
 de tres, el capital de trabajo inicial baja a $229,3 M y la TIR inversionista sube a 16,50% (VAN puro $112,47 M).
+
+## Compras y pago al proveedor (15-11-2026)
+
+Decisiones del equipo sobre el abastecimiento del kit:
+
+- Cada compra cubre dos meses de pedidos (`Datos!C96` = 2, antes 3): inventario acorde a la demanda. Costo: el stock al cierre de
+  cada año queda en cero, hay entre 15 y 26 pedidos esperando kit al cierre y las cancelaciones de pendientes restan 81
+  instalaciones en cinco años (2.850 frente a 2.931).
+- Pago al proveedor: 30% de anticipo al pedir; el 70% contra copia del conocimiento de embarque en los primeros doce meses de
+  operación y, desde el mes 13 (`Datos!C162`), a 30 días del embarque, que coincide con la llegada (`Datos!C97` = 2). Es la
+  práctica habitual al importar desde China: 30/70 en los primeros pedidos y plazo para el saldo cuando hay historial de pagos.
+  Supuesto del equipo, sin cotización; el contrato de suministro tendría que fijarlo.
+- Las filas 44 y 46 de la hoja Mensual (motor) cambian de plazo en el mes de la fila 162 sin pagar dos veces el mismo saldo.
+- El control 22 de la v6 (anticipos de clientes al cierre) pasa a informativo: con menos stock hay pedidos pendientes al cierre
+  y la tabla de sensibilidad de precio los mantiene fijos.
+- El préstamo es la necesidad máxima de financiamiento sin deuda por D/V (29,31%, de la D/P de autopartes): con la menor
+  necesidad ($396,8 M) baja a $116,3 M.
+
+| Indicador | Déficit, compras de 3 meses, saldo al mes siguiente | Compras de 2 meses, saldo a la llegada desde el mes 13 |
+|---|---:|---:|
+| VAN puro (Ku) | $114,24 M | $134,99 M |
+| TIR pura | 13,65% | 16,73% |
+| VAN inversionista (Ke) | $83,84 M | $111,91 M |
+| TIR inversionista | 15,34% | 19,48% |
+| VAN ajustado | $121,37 M | $140,77 M |
+| Capital de trabajo inicial | $318,3 M | $229,3 M |
+| Inversión total del año 0 | $475,2 M | $385,3 M |
+| Préstamo | $142,6 M | $116,3 M |
+| Necesidad máxima sin deuda | $486,4 M | $396,8 M |
+| Payback descontado (puro / inversionista) | 4,76 / 4,79 años | 4,51 / 4,51 años |
+| Instalaciones en cinco años | 2.931 | 2.850 |
+| Baja de precio que lleva el VAN a 0 | 1,58% | 1,92% |
+
+Contraste: con compras de tres meses y el mismo pago, VAN puro $138,95 M, TIR inversionista 17,88% y capital de trabajo
+inicial $318,3 M, sin pedidos esperando.
 

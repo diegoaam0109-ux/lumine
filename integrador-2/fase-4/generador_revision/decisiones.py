@@ -13,7 +13,9 @@ Uso: decisiones.py ENTRADA SALIDA
 """
 import copy
 import sys
+import re
 import openpyxl
+from openpyxl.utils import get_column_letter
 import openpyxl.utils
 
 ENT, SAL = sys.argv[1:3]
@@ -98,9 +100,43 @@ co = w['Controles']
 assert co['C7'].value == "='Flujo puro'!C64+Calendario!U15" and co['C12'].value.startswith("='Flujo puro'!H57-")
 co['C7'] = "='Flujo puro'!C64+Calendario!U15+Datos!$C$23*'Capital de trabajo'!C20"
 co['C12'] = "='Flujo puro'!H57-'Capital de trabajo'!H17"
+assert co['C22'].value == "=SUM('Capital de trabajo'!C10:H10)"
+co['B22'] = 'Anticipos de clientes al cierre (informativo: la sensibilidad de precio los mantiene fijos)'
+co['C22'] = '=0'
+co['D22'] = "=SUM('Capital de trabajo'!C10:H10)"
 for rr, h in ((24, 'Flujo puro'), (25, 'Flujo inversionista')):   # el aumento del año 1 ya está en el déficit del año 0
     assert co[f'C{rr}'].value.startswith(f"='{h}'!D64-SUM(")
     co[f'C{rr}'] = co[f'C{rr}'].value + "-Datos!$C$23*('Capital de trabajo'!D12-'Capital de trabajo'!C12)"
+
+# ---------------------------------------------------------------- 1c. Compras y pago al proveedor (decisión del 15-11-2026)
+assert d['A96'].value == 'hcob' and d['A97'].value == 'lsal' and d['B162'].value is None
+d['C96'] = 2
+d['E96'] = 'Decisión del equipo (15-11-2026)'
+d['F96'] = ('Cada compra cubre dos meses de pedidos: inventario acorde a la demanda, sin inmovilizar capital de trabajo de más. '
+            'Con 1 se compra solo lo pedido y el cliente espera la llegada del kit.')
+d['B97'] = ('Meses entre el pedido y el pago del saldo, con historial de pagos (1 = contra copia del conocimiento de embarque; '
+            '2 = 30 días después del embarque, a la llegada)')
+d['C97'] = 2
+d['F97'] = ('Práctica habitual al importar desde China: 30% de anticipo y 70% contra copia del conocimiento de embarque en los '
+            'primeros pedidos; con historial de pagos el proveedor suele aceptar el saldo a 30 días del embarque. Rige desde el '
+            'mes de operación de la fila 162; antes, el saldo se paga al mes siguiente del pedido.')
+d['A162'] = 'lsal_m'
+fila_dato(162, 'Mes de operación desde el que el saldo se paga 30 días después del embarque', 13, 'mes', 'Supuesto',
+          'Supuesto del equipo: doce pedidos mensuales pagados a tiempo dan el historial para negociar el plazo (net 30 desde '
+          'el embarque) en el contrato de suministro. Sin cotización.', '13 a 25')
+NUM = re.compile(r'([A-Z]+)(\d+)')
+def col(n):
+    return get_column_letter(n)
+L = lambda x: f'OR(Datos!$C$97=1,{x}$7<Datos!$C$162)'
+for c in range(6, m.max_column + 1):
+    x, p1, p2 = col(c), col(c - 1), col(c - 2)
+    viejo44 = f'=Datos!$C$100*{x}39*Datos!$C$52+(1-Datos!$C$100)*IF(Datos!$C$97=1,{p1}39,{p2}39)*Datos!$C$52+{x}43'
+    if m[f'{x}44'].value != viejo44:
+        continue
+    m[f'{x}44'] = (f'=Datos!$C$100*{x}39*Datos!$C$52+(1-Datos!$C$100)*(IF({L(x)},{p1}39,0)'
+                   f'+IF(AND(NOT({L(x)}),NOT({L(p1)})),{p2}39,0))*Datos!$C$52+{x}43')
+    assert m[f'{x}46'].value == f'=(Datos!$C$100*{x}39+IF(Datos!$C$97=1,1,Datos!$C$100)*{p1}39)*Datos!$C$52'
+    m[f'{x}46'] = f'=(Datos!$C$100*{x}39+IF({L(x)},1,Datos!$C$100)*{p1}39)*Datos!$C$52'
 
 # ---------------------------------------------------------------- 2. Medios de cobro
 assert all(d.cell(r, 2).value is None for r in range(36, 41)), 'Datos!B36:B40 no está libre'
@@ -454,7 +490,7 @@ nt['B62'] = ('1) El piloto y la transición quedan fuera de la evaluación: el f
              'con el dólar y el euro de Datos (filas 14 y 15).')
 nt.merge_cells('B62:H62')
 nt.row_dimensions[62].height = 122
-for r, alto in {23: 62, 24: 46, 37: 32, 38: 32, 39: 32, 40: 62, 54: 32}.items():
+for r, alto in {23: 62, 24: 46, 96: 46, 97: 76, 162: 62, 37: 32, 38: 32, 39: 32, 40: 62, 54: 32}.items():
     d.row_dimensions[r].height = alto
     for c in (6, 7):
         al = copy.copy(d.cell(r, c).alignment)
