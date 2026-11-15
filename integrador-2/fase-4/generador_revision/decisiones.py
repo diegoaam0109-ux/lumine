@@ -41,7 +41,8 @@ assert d['B24'].value is None and d['B25'].value.startswith('Software'), 'Datos!
 fila_dato(24, 'Piloto y transición dentro de la evaluación (1 = sí; 0 = no)', 0, 'selector',
           'Decisión del equipo (14-11-2026)',
           'Acuerdo con el profesor guía (14-11-2026): el flujo parte con la preapertura, cuando ya existe el reglamento. '
-          'El piloto y la espera del reglamento se financiarían con un fondo público de I+D, sin afirmar que esté adjudicado.',
+          'Se evalúa la etapa comercial. El piloto y la espera del reglamento se financiarían con un fondo público de I+D, '
+          'no adjudicado; una evaluación del desarrollo completo tendría que sumar esa etapa.',
           'Con 1 se recupera la evaluación anterior (meses −17 a 0).')
 
 EXCLUIDAS = ('Piloto', 'Transición')
@@ -92,12 +93,14 @@ fila_dato(40, 'Comisión por venta con tarjeta de crédito, neta de IVA', 0.0219
           'SumUp Chile, «comisiones vigentes en 2026»: crédito nacional 2,19% + IVA con ventas sobre $15 millones al mes. '
           'Contraste: Mercado Pago Chile publica 2,69% en crédito bajo $2 millones al mes y ofrece una comisión especial '
           'sobre $25 millones. Las cuotas son del emisor (el interés lo paga el cliente).',
-          'El IVA de la comisión es crédito fiscal; no se suma al costo neto.')
+          'El IVA de la comisión es crédito fiscal; no se suma al costo neto. La tasa se cobra sobre el monto pagado con '
+          'tarjeta, que incluye el IVA de la venta.')
 assert d['A54'].value == 'medios'
-d['C54'] = '=C37*C40+C38*0+C39*0'
+d['C54'] = '=C37*C40*(1+Datos!$C$44)+C38*0+C39*0'
 d['E54'] = 'Cálculo'
-d['F54'] = ('Promedio ponderado de los medios de cobro (filas 37 a 40): solo la venta con tarjeta de crédito paga '
-            'comisión. Reemplaza el 2% supuesto de la versión anterior.')
+d['F54'] = ('Promedio ponderado de los medios de cobro (filas 37 a 40), expresado sobre el ingreso neto: solo la venta con '
+            'tarjeta de crédito paga comisión, y la paga sobre el precio con IVA (2,19% × 1,19 = 2,61% del ingreso neto de esa '
+            'venta). Reemplaza el 2% supuesto de la versión anterior.')
 d['G54'] = 'De 0% (todo por transferencia) a 2,19% (todo con tarjeta).'
 d['B54'] = 'Comisión de medios de pago (promedio ponderado de los medios de cobro)'
 m['A60'] = 'Medios de pago: comisión de las ventas con tarjeta de crédito'
@@ -165,23 +168,23 @@ cab(h, 4, ['Ítem', 'Especificación', 'Proveedor (eslabón de la cadena)', 'Pre
            'Fuente, método y mes de consulta'])
 EQ = [
     ('e_din', 'Dinamómetro de chasis', 'Dynocom 2WD 5000 Series (rodillos para tracción delantera, freno de corrientes de Foucault)',
-     'Dynocom Industries, fabricante (EE.UU.)', 29995, 'US$', 1, 0, '=750*Datos!$C$14',
+     'Dynocom Industries, fabricante (EE.UU.)', 29995, 'US$', 1, 0, '=(750+1.24*180+0.02*29995)*Datos!$C$14',
      'Precio de lista publicado por el fabricante en dynocom.net (consultado el 14-11-2026). Arancel 0% por el TLC Chile–EE.UU. '
      'con certificado de origen. Internación: cargos locales promedio de US$750 por embarque (Cargo Partner, tarifa LCL 2026). '
      'Flete marítimo desde EE.UU.: por confirmar, no incluido.'),
     ('e_esc', 'Escáner automotriz', 'Launch X431 PRO V 5.0 (diagnóstico bidireccional, CAN FD y DoIP)',
-     'Proveedor en China por Alibaba, tramo de 1 a 9 unidades', 679, 'US$', 1, 0, 0,
+     'Proveedor en China por Alibaba, tramo de 1 a 9 unidades', 679, 'US$', 1, 0, '=0.1*679*Datos!$C$14',
      'Precio publicado en Alibaba (consultado el 14-11-2026). Reemplaza al precio al público de una tienda minorista '
-     '($1.429.000). Arancel 0% por el TLC Chile–China. Envío courier: por confirmar.'),
+     '($1.429.000). Arancel 0% por el TLC Chile–China. Envío courier: provisión de 10% del precio, supuesto del equipo (sin tarifa publicada para este envío).'),
     ('e_ele', 'Elevador, por puesto', 'JAK 2 columnas, paso superior, 4,2 toneladas',
      'Importadora JAK, importador directo en Chile', 2390000, 'CLP', 1, 0, 0,
      'Precio normal publicado, más IVA (página actualizada el 11-10-2026, consultada el 14-11-2026). La oferta de $2.150.000 no '
      'informa vigencia, por eso se usa el precio normal.'),
     ('e_her', 'Herramientas de alta tensión, por puesto', 'Juego aislado Wiha 91890 de 26 piezas a 1.000 V y multímetro de aislamiento Fluke 1587 FC',
-     'Tiendas oficiales de Wiha y de Fluke (fabricantes)', '=693.31+1080.55', 'US$', 1, 0, 0,
+     'Tiendas oficiales de Wiha y de Fluke (fabricantes)', '=693.31+1080.55', 'US$', 1, 0, '=0.1*(693.31+1080.55)*Datos!$C$14',
      'Precios regulares de wihatools.com (US$693,31) y shop.fluke.com (US$1.080,55), consultados el 14-11-2026. Los guantes '
      'dieléctricos y la protección personal ya están en «Curso externo de alta tensión y elementos de protección» (Datos), por '
-     'eso no se suman. Arancel 0% por TLC con certificado de origen; envío por confirmar.'),
+     'eso no se suman. Arancel 0% por TLC con certificado de origen. Envío courier: provisión de 10% del precio, supuesto del equipo.'),
     ('e_bod', 'Bodega de baterías clase 9', 'Dos armarios certificados para baterías de litio (90 minutos de resistencia al fuego) y autorización sanitaria',
      'asecos (fabricante), vendido por DENIOS, su distribuidor', 8560, 'US$', 2, 0, 177300,
      'Armario asecos ION-STORE-90: US$8.560 sin impuestos, envío incluido (DENIOS, consultado el 14-11-2026). Las baterías '
@@ -361,7 +364,7 @@ def metodo(tipo, fuente):
         return 'Cálculo con otras celdas del libro.'
     if 'encuesta' in t:
         return 'Dato de la encuesta del equipo (octubre de 2026); preferencia declarada, no compra observada.'
-    if 'publicad' in t or t.startswith('dato'):
+    if ('publicad' in t or t.startswith('dato')) and 'supuesto' not in t:
         return 'Dato publicado: fuente y fecha en la columna F.'
     if 'decisión' in t or 'decision' in t:
         return 'Decisión del equipo; la fecha va en la columna E (si no la indica, octubre de 2026).'
@@ -371,7 +374,22 @@ def metodo(tipo, fuente):
         return 'Supuesto del equipo, sin cotización ni medición (octubre de 2026); la columna G da el rango de prueba.'
     if 'selector' in t:
         return 'Selector del Tablero.'
-    return 'Dato publicado: fuente y fecha en la columna F.' if fuente else None
+    f = (fuente or '').lower()
+    if not f:
+        return None
+    if 'fase 3' in f and 'dato y supuesto' in t:
+        return 'Dato de mercado y supuesto del equipo, tomados del informe de la Fase 3 (sin cotización).'
+    if 'estimación' in f or 'estimacion' in f:
+        return 'Estimación del equipo, sin cotización ni contrato.'
+    if 'supuesto' in f or 'no tarifa contratada' in f:
+        return 'Supuesto del equipo, sin cotización ni contrato.'
+    if 'escenario ilustrativo' in f or 'interés pagado' in f:
+        return 'Supuesto del equipo: crédito ilustrativo, sin aprobación de un banco.'
+    if 'convención' in f or 'método contable' in f:
+        return 'Criterio de evaluación del curso (convención académica), no un dato de mercado.'
+    if 'abril del año siguiente' in f:
+        return 'Norma tributaria: la renta anual se declara y paga en abril (SII).'
+    return 'Dato publicado: fuente y fecha en la columna F.'
 
 
 d.column_dimensions['H'].width = 46
@@ -394,7 +412,7 @@ for row in nt.iter_rows():
             z.value = ('Financiamiento por terceros; no cartera propia. 30% al agendar y saldo al instalar. Desde el '
                        '14-11-2026 la comisión de medios de pago se pondera por la encuesta (40,0% tarjeta de crédito, '
                        '44,2% crédito bancario del cliente y 15,8% contado) con la tarifa publicada de 2,19% + IVA para '
-                       'tarjeta de crédito: 0,88% de la venta neta. El crédito bancario y el contado llegan por '
+                       'tarjeta de crédito, cobrada sobre el precio con IVA: 1,04% de la venta neta. El crédito bancario y el contado llegan por '
                        'transferencia y no pagan comisión.')
 assert nt['B61'].value is None and nt['B62'].value is None and nt['B63'].value.startswith('Conciliación')
 estilo_como(nt['B61'], nt['B57'])
@@ -402,12 +420,14 @@ estilo_como(nt['B62'], nt['B58'])
 nt['B61'] = 'Decisiones del 14-11-2026 (reunión con el profesor guía)'
 nt['B62'] = ('1) El piloto y la transición quedan fuera de la evaluación: el flujo parte con la preapertura, cuando ya existe '
              'el reglamento (Datos!C24 = 0; con 1 se recupera el cálculo anterior). El escáner y las herramientas que '
-             'compraba el piloto se compran al iniciar la preapertura. 2) La comisión de medios de pago pasa de 2% supuesto '
-             'a 0,88% ponderado por la encuesta y la tarifa publicada (Datos, filas 37 a 40). 3) Los equipos se respaldan con el '
+             'compraba el piloto se compran al iniciar la preapertura. Alcance: se evalúa la etapa comercial, una vez terminado el '
+             'piloto y publicado el reglamento. La etapa previa se financiaría con un fondo público de I+D aún no adjudicado; '
+             'una evaluación del desarrollo completo tendría que sumarla. 2) La comisión de medios de pago pasa de 2% supuesto '
+             'a 1,04% del ingreso neto, ponderada por la encuesta y la tarifa publicada sobre el precio con IVA (Datos, filas 37 a 40). 3) Los equipos se respaldan con el '
              'precio del fabricante, importador o distribuidor (hoja 1.1) y el costo del kit se arma pieza por pieza (hoja 1.2), '
              'con el dólar y el euro de Datos (filas 14 y 15).')
 nt.merge_cells('B62:H62')
-nt.row_dimensions[62].height = 92
+nt.row_dimensions[62].height = 122
 for r, alto in {24: 46, 37: 32, 38: 32, 39: 32, 40: 62, 54: 32}.items():
     d.row_dimensions[r].height = alto
     for c in (6, 7):

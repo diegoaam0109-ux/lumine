@@ -424,7 +424,7 @@ sel2 = lambda kp, ki, base=False: f'CHOOSE({FLU},{esc(kp, base)},{esc(ki, base)}
 # Fila 1 de tarjetas: rentabilidad del flujo elegido
 tarjeta(6, PAR[0], f'=IF({FLU}=1,"VAN · FLUJO PURO","VAN · INVERSIONISTA")', '=' + sel2('van_p', 'van_i'), MM,
         dif(sel2('van_p', 'van_i'), sel2('van_p', 'van_i', True)), DM, True, destaca=True)
-tarjeta(6, PAR[1], f'=IF({FLU}=1,"TIR · FLUJO PURO","TIR · INVERSIONISTA")', texto_si_no(sel2('tir_p', 'tir_i'), 'No converge'), PCT,
+tarjeta(6, PAR[1], f'=IF({FLU}=1,"TIR · FLUJO PURO","TIR · INVERSIONISTA")', texto_si_no(sel2('tir_p', 'tir_i'), 'No definida'), PCT,
         dif(sel2('tir_p', 'tir_i'), sel2('tir_p', 'tir_i', True), 100, 0.005), DPP, True, destaca=True)
 tarjeta(6, PAR[2], f'=IF({FLU}=1,"TASA · KU","TASA · KE")', '=' + sel2('ku', 'ke'), PCT,
         dif(sel2('ku', 'ke'), sel2('ku', 'ke', True), 100, 0.005), DPP, False)

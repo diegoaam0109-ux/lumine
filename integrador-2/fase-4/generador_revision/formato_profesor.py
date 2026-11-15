@@ -214,7 +214,7 @@ fila(s, r, 'Inversión equivalente en el año 0', [f'=C{des}+C{r-1}'], tipo='tot
 control('1 Inversión: inversión del año 0 = flujo puro año 0', f"=C{r}+{q('Flujo puro', 'C64')}*{M}")
 r += 1
 nota(s, r, '=IF(Datos!$C$24=1,"Los desembolsos ocurren durante 18 meses antes de abrir (detalle en A1 Calendario inversión).",'
-           '"El piloto y la espera del reglamento quedan fuera de la evaluación (selector en Datos): el flujo parte con los 3 meses de preapertura (detalle en A1 Calendario inversión).")'
+           '"Alcance: se evalúa la etapa comercial. El piloto y la espera del reglamento quedan fuera (selector en Datos) y se financiarían con un fondo público de I+D no adjudicado; el flujo parte con los 3 meses de preapertura (detalle en A1 Calendario inversión).")'
            '&" Se llevan al momento cero con la tasa del proyecto, como en el calendario de inversiones visto en clases."', 10, 30)
 r += 2
 cabecera(s, r, ['Reinversiones', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'])
@@ -554,7 +554,8 @@ def flujo(nombre, titulo, bajada, src, financiado):
     control(f'{nombre}: VAN', f"=C{van}-{S('C', 70)}*{M}", nombre)
     r += 1
     rng = f'C{fcl}:H{fcl}'
-    fila(s, r, 'TIR', [f'=IFERROR(IRR({rng}),IFERROR(IRR({rng},-0.1),IFERROR(IRR({rng},-0.5),"TIR no converge")))'], fmt=PCT, tipo='sub')
+    fila(s, r, 'TIR', [f'=IF(IFERROR(IRR({rng}),-9)>-0.99,IRR({rng}),IF(IFERROR(IRR({rng},-0.3),-9)>-0.99,IRR({rng},-0.3),'
+                         f'IF(IFERROR(IRR({rng},-0.6),-9)>-0.99,IRR({rng},-0.6),"TIR no definida")))'], fmt=PCT, tipo='sub')
     put(s, r, 4, f'=IF(C{r}>C{tasa_r},"TIR > tasa de descuento: rentable","TIR < tasa de descuento")', italic=True, color=GRIS)
     control(f'{nombre}: TIR (puntos básicos)', f"=(C{r}-{S('C', 71)})*10000", nombre)
     r += 1

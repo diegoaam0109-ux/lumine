@@ -3,8 +3,8 @@
 **Archivo:** `excel/v7_formato_curso.xlsx` (+ PDF de 36 páginas). Se genera con `generador_revision/construir_v7.py`.
 
 > **14-11-2026, noche: cifras vigentes** (secciones «Decisiones del 14-11-2026», «Respaldo con fuentes primarias» y
-> «Local, bodega, mobiliario y demanda de arriba hacia abajo», al final): VAN puro $161,94 M y TIR pura 17,51%;
-> inversionista $137,0 M a Ke y TIR 21,14%. Las cifras de las secciones anteriores
+> «Local, bodega, mobiliario y demanda de arriba hacia abajo» y «Correcciones de la revisión cruzada», al final): VAN puro
+> $148,49 M y TIR pura 16,75%; inversionista $124,3 M a Ke y TIR 20,12%. Las cifras de las secciones anteriores
 > son de antes de esos cambios; los criterios descritos siguen vigentes.
 
 ## Qué se hizo (solo formato)
@@ -272,4 +272,44 @@ porque exige una serie histórica que un producto nuevo no tiene.
 
 Lectura: el local, la bodega y los muebles suman $32,2 M a la inversión y bajan el VAN en $23,6 M (13%). Lo que manda sobre el
 resultado sigue siendo el margen por kit: un alza de 3% en el costo del kit o una baja de 2,2% en el precio dejan el VAN en cero.
+
+## Correcciones de la revisión cruzada (14-11-2026, noche)
+
+Una revisión externa del libro encontró cuatro puntos; los cuatro se corrigieron:
+
+1. **Comisión de tarjetas subestimada.** El 2,19% (+ IVA, que es crédito fiscal) se cobra sobre el monto pagado, que incluye
+   el IVA de la venta. Sobre el ingreso neto, la tarjeta cuesta 2,19% × 1,19 = 2,61%; con 40% de ventas por tarjeta, el
+   promedio pasa de 0,88% a **1,04%** (`Datos!C54 = C37*C40*(1+C44)`).
+2. **TIR sin sentido económico.** La foto del pesimista mostraba una TIR inversionista de −929,28%: Excel y LibreOffice pueden
+   devolver una raíz menor que −100%. La fórmula de TIR de las hojas 4 y 5 ahora solo acepta raíces mayores que −99% (prueba
+   tres valores iniciales y, si ninguna sirve, dice «TIR no definida»), y `construir_v7.py` se detiene si una foto trae una TIR
+   menor que −100%. Con los flujos vigentes, la TIR inversionista del pesimista es −34,08%.
+3. **Alcance explícito.** Datos (fila 24), la nota de la hoja 1 y Notas dicen que se evalúa la etapa comercial, una vez
+   terminado el piloto y publicado el reglamento; la etapa previa se financiaría con un fondo público de I+D no adjudicado, y
+   una evaluación del desarrollo completo tendría que sumarla.
+4. **Fletes y rótulos.** Dinamómetro: flete LCL estimado con las medidas máximas publicadas (1,24 m³) × US$180 por m³ (tope
+   del rango 2026 de Suaid Global) más el seguro teórico de 2% del FOB; el transporte dentro de EE.UU. no está incluido.
+   Escáner y herramientas: provisión de courier de 10% del precio, rotulada como supuesto. La columna «Método» de Datos ya no
+   marca como «dato publicado» las estimaciones, los supuestos, el crédito ilustrativo, las convenciones del curso ni los
+   sueldos tomados de la Fase 3.
+
+| Indicador | Antes de la revisión | Después |
+|---|---:|---:|
+| VAN puro (Ku 8,65%) | $161,94 M | $148,49 M |
+| TIR pura | 17,51% | 16,75% |
+| VAN inversionista (Ke) | $137,0 M | $124,3 M |
+| TIR inversionista | 21,14% | 20,12% |
+| VAN ajustado (puro + deuda) | $169,0 M | $155,6 M |
+| Inversión equivalente en el año 0 | $222,0 M | $223,3 M |
+| Fondos máximos sin deuda | $483,1 M | $486,4 M |
+| Préstamo | $141,6 M | $142,6 M |
+| Payback descontado | 4,63 años | 4,66 años |
+| VAN sin recuperaciones de cierre | −$141,8 M | −$155,7 M |
+| Pesimista (VAN / TIR pura / TIR inversionista) | −$390,56 M / −20,95% / −929,28% (error) | −$399,08 M / −21,56% / −34,08% |
+| Optimista (VAN / TIR) | $490,74 M / 32,11% | $473,45 M / 31,20% |
+| Kit +3% / +5% | −$16,41 M / −$137,14 M | −$29,98 M / −$150,91 M |
+| Baja de precio que lleva el VAN a 0 | ≈2,2% | ≈2,0% (precio −2% da VAN $3,89 M) |
+
+Las capturas de las páginas de precios no se pueden guardar desde esta sesión; la hoja 1.1 indica proveedor, sitio y fecha
+de consulta para que el equipo las tome.
 

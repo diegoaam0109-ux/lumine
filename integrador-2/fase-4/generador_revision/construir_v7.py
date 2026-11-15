@@ -55,6 +55,10 @@ with tempfile.TemporaryDirectory(prefix='lumine-v7-') as tmp:
         subprocess.run([sys.executable, str(HERE / 'tablero.py'), str(formato), str(x), '--escenario', nombre], check=True)
         lecturas[nombre] = leer(recalcular(x, tmp / f'calc_{nombre}'), x.with_suffix('.mapa.json'))
         print(f"  {nombre}: VAN puro {lecturas[nombre]['van_p'] / 1e6:,.2f} MM, TIR {lecturas[nombre]['tir_p']}")
+        for k in ('tir_p', 'tir_i'):   # una TIR menor que -100% no tiene sentido económico
+            v = lecturas[nombre][k]
+            assert not isinstance(v, (int, float)) or v > -1, f'{nombre}: {k} = {v} (raíz sin sentido económico)'
+        print(f"    TIR inversionista {lecturas[nombre]['tir_i']}")
     json.dump(lecturas['Central'], open(tmp / 'base.json', 'w'))
     json.dump({k: lecturas[k] for k in ('Pesimista', 'Optimista')}, open(tmp / 'fotos.json', 'w'))
     # 2) Libro final, en escenario central, con base y fotos
