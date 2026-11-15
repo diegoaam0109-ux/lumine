@@ -25,7 +25,7 @@ ENT, SAL = sys.argv[1], sys.argv[2]
 FASE = int(sys.argv[3]) if len(sys.argv) > 3 else 1
 w = openpyxl.load_workbook(ENT)
 
-CURSO = ['1 Inversión', '2 Ingresos y costos', '3 Capital de trabajo', '4 Flujo puro', '5 Flujo financiado',
+CURSO = ['1 Inversión', '1.1 Respaldo inversión', '1.2 Costo del kit', '2 Ingresos y costos', '2.1 Proyección de demanda', '3 Capital de trabajo', '4 Flujo puro', '5 Flujo financiado',
          '5.1 Tabla de amortización', '6 Tasa de descuento', '7 Punto de equilibrio', 'A1 Calendario inversión',
          'A2 Caja mensual 3 años', 'A3 Capital trabajo mensual', 'A4 Impuestos', 'A5 Sensibilidad']
 if FASE == 1:      # hojas duplicadas de la v6 (en millones) -> hojas del curso
@@ -538,8 +538,8 @@ for ws in w.worksheets:
         ws.sheet_properties.tabColor = '8B9598'
         ws.oddHeader.left.text = 'MOTOR DE CÁLCULO'
 orden = ['Tablero', 'Escenarios y cambios', 'Datos'] + CURSO[:0] + [
-    '1 Inversión', '2 Ingresos y costos', '3 Capital de trabajo', '4 Flujo puro', '5 Flujo financiado',
-    '5.1 Tabla de amortización', '6 Tasa de descuento', '7 Punto de equilibrio', 'A1 Calendario inversión',
+    '1 Inversión', '1.1 Respaldo inversión', '1.2 Costo del kit', '2 Ingresos y costos', '2.1 Proyección de demanda',
+    '3 Capital de trabajo', '4 Flujo puro', '5 Flujo financiado', '5.1 Tabla de amortización', '6 Tasa de descuento', '7 Punto de equilibrio', 'A1 Calendario inversión',
     'A2 Caja mensual 3 años', 'A3 Capital trabajo mensual', 'A4 Impuestos', 'A5 Sensibilidad', 'Controles',
     'Notas y cambios', 'Motor mensual', 'Motor anual', 'Motor depreciación',
     'Motor financiero', 'Motor sensibilidad', 'Datos del tablero']

@@ -308,7 +308,9 @@ def color_serie(sr, color, linea=False):
 # ------------------------------------------------------------------------------------------------
 # Hojas del tablero
 NAV = [('Tablero', 'Tablero'), ('Escenarios y cambios', 'Escenarios y cambios'), ('Datos', 'Datos'),
-       ('1  Inversión', '1 Inversión'), ('2  Ingresos y costos', '2 Ingresos y costos'),
+       ('1  Inversión', '1 Inversión'), ('1.1  Respaldo de equipos', '1.1 Respaldo inversión'),
+       ('1.2  Costo del kit', '1.2 Costo del kit'), ('2  Ingresos y costos', '2 Ingresos y costos'),
+       ('2.1  Proyección de demanda', '2.1 Proyección de demanda'),
        ('3  Capital de trabajo', '3 Capital de trabajo'), ('4  Flujo puro', '4 Flujo puro'),
        ('5  Flujo financiado', '5 Flujo financiado'), ('5.1  Amortización', '5.1 Tabla de amortización'),
        ('6  Tasas de descuento', '6 Tasa de descuento'), ('7  Punto de equilibrio', '7 Punto de equilibrio'),
@@ -321,7 +323,7 @@ def lienzo(nombre, activo, alto=70, ancho_col='U'):
     s.sheet_view.zoomScale = 90
     s.sheet_properties.tabColor = ACC
     pintar(s, f'A1:{ancho_col}{alto}', BG)
-    pintar(s, 'B2:B46', SURF)
+    pintar(s, 'B2:B52', SURF)
     s.column_dimensions['A'].width = 2
     s.column_dimensions['B'].width = 30
     s.column_dimensions['C'].width = 3
@@ -335,9 +337,9 @@ def lienzo(nombre, activo, alto=70, ancho_col='U'):
             lado = Side(style='thin', color=ACC)
             z.border = Border(left=lado, right=lado, top=lado, bottom=lado)
         s.row_dimensions[r0 + i * 2].height = 20
-    put(s, 'B40', 'Los selectores de arriba recalculan todo el libro (escenario) o cambian lo que se muestra (flujo y año).',
+    put(s, 'B46', 'Los selectores de arriba recalculan todo el libro (escenario) o cambian lo que se muestra (flujo y año).',
         MUTED, 8, wrap=True, v_al='top', fill=SURF)
-    s.merge_cells('B40:B44')
+    s.merge_cells('B46:B50')
     s.page_setup.orientation = 'landscape'
     s.page_setup.paperSize = s.PAPERSIZE_LETTER
     s.page_setup.fitToWidth = 1

@@ -1,10 +1,10 @@
 # v7 · formato del curso: qué cambió y qué no calza con la metodología de clases
 
-**Archivo:** `excel/v7_formato_curso.xlsx` (+ PDF de 29 páginas). Se genera con `generador_revision/construir_v7.py`.
+**Archivo:** `excel/v7_formato_curso.xlsx` (+ PDF de 35 páginas). Se genera con `generador_revision/construir_v7.py`.
 
-> **14-11-2026, noche: cambian los números por dos decisiones del equipo** (sección «Decisiones del 14-11-2026», al final).
-> VAN puro $204,53 M, TIR pura 20,99%; inversionista $178,68 M a Ke y TIR 25,96%. Las cifras de las secciones anteriores
-> son de antes de esas decisiones; los criterios descritos siguen vigentes.
+> **14-11-2026, noche: cifras vigentes** (secciones «Decisiones del 14-11-2026» y «Respaldo con fuentes primarias», al final):
+> VAN puro $185,53 M y TIR pura 19,56%; inversionista $160,38 M a Ke y TIR 23,98%. Las cifras de las secciones anteriores
+> son de antes de esos cambios; los criterios descritos siguen vigentes.
 
 ## Qué se hizo (solo formato)
 
@@ -185,3 +185,50 @@ piloto y la transición, $36,7 M más.
 
 **Pendiente de decisión:** si el escenario pesimista suma el alza del costo del kit (el profesor lo sugirió, justificado
 con la historia del dólar) y con qué flujo se presentan los escenarios (el profesor pidió uno solo, el más realista).
+
+## Respaldo con fuentes primarias, demanda y resúmenes (14-11-2026, noche)
+
+Pedido del equipo después de la reunión: hacer todo lo conversado, sin dejar pendientes. Cambios:
+
+1. **Hoja 1.1 Respaldo de la inversión.** Cada equipo con el eslabón más cercano al fabricante que publica precio, la moneda,
+   el tipo de cambio, el arancel, la internación, el valor anterior y el método con su mes. Datos lee el valor de esta hoja.
+   - Dinamómetro: Dynocom 2WD 5000 Series, US$29.995 de lista del fabricante, más US$750 de cargos locales; flete marítimo
+     por confirmar. $30,27 M (antes $22,42 M).
+   - Escáner: Launch X431 PRO V 5.0, US$679 en Alibaba (China). $0,67 M (antes $1,43 M de una tienda minorista).
+   - Elevador: Importadora JAK, precio normal $2.390.000 + IVA (antes la oferta de $2.150.000, sin vigencia informada).
+   - Herramientas de alta tensión por puesto: Wiha 91890 (US$693,31) y Fluke 1587 FC (US$1.080,55), tiendas oficiales.
+     $1,75 M (antes $1,20 M). Los guantes y la protección personal ya estaban en el curso de alta tensión.
+   - Bodega, habilitación y mobiliario: siguen como supuesto del equipo, por confirmar; la bodega tiene como referencia un
+     armario asecos ION-STORE-90 (US$8.560 en DENIOS), que no alcanza para el inventario.
+   - Las notas de vida útil que contradecían los valores aplicados (incongruencia 5) se reemplazaron.
+2. **Hoja 1.2 Costo del kit, pieza por pieza**, para el kit de la Fase 3 (dos motores en las ruedas, 31 celdas de
+   litio-titanato, 71,3 V): motores QS273 de 4.000 W (US$514,54) y 6.000 W (US$583,77) y controladores Fardriver ND72680
+   (US$328,70), todos de QS Motor; celdas Yinlong (US$14, Gobel Power); BMS ANT de 32 series (US$149,28); el resto de las
+   piezas, la logística y la puesta en regla con las fuentes del costeo de septiembre. Esencial $3,17 M (antes $3,03 M) y
+   Plus $3,31 M (antes $3,40 M); la mezcla con 60% Plus queda en $3,26 M, 0,2% sobre la anterior: el costo **cuadra**.
+   La hoja trae una imagen ilustrativa del kit, rotulada como conceptual.
+3. **Tipos de cambio en Datos** (filas 14 y 15): dólar observado del 12-11-2026, $984,49 (SII), y euro del 11-11-2026,
+   $1.089,61 (Banco Central).
+4. **Hoja 2.1 Proyección de demanda**: de la pauta digital y las visitas a las cotizaciones, la cobertura de la biblioteca,
+   la conversión, los pedidos, la capacidad de los dúos y las instalaciones, hasta los ingresos, por año y con total.
+5. **Resúmenes arriba** en las hojas 1, 2, 3, 4, 5, 6 y 7; el detalle va debajo.
+6. **Peso de las personas** en la hoja 2: 13,4% de los ingresos el año 1 y 8,6% a 9,6% después.
+7. **Columna «Método»** en Datos para cada supuesto (dato publicado, encuesta, decisión, estimación o supuesto).
+8. El Tablero suma enlaces a las hojas nuevas.
+
+| Indicador | Tras las decisiones | Con fuentes primarias |
+|---|---:|---:|
+| VAN puro (Ku 8,65%) | $204,53 M | $185,53 M |
+| TIR pura | 20,99% | 19,56% |
+| VAN inversionista (Ke) | $178,68 M | $160,38 M |
+| TIR inversionista | 25,96% | 23,98% |
+| VAN ajustado (puro + deuda) | — | $192,09 M |
+| Inversión equivalente en el año 0 | $173,70 M | $183,22 M |
+| Fondos máximos sin deuda | $435,62 M | $447,94 M |
+| Préstamo | $127,67 M | $131,29 M |
+| Payback descontado | 4,51 años | 4,56 años |
+| VAN sin recuperaciones de cierre | −$85,05 M | −$108,69 M |
+| Pesimista (VAN / TIR) | −$348,62 M / −20,74% | −$362,73 M / −21,17% |
+| Optimista (VAN / TIR) | $537,23 M / 36,85% | $514,23 M / 34,98% |
+| Kit +3% / +5% | $26,86 M / −$93,15 M | $7,34 M / −$113,14 M |
+| Baja de precio que lleva el VAN a 0 | 2,83% | 2,56% |

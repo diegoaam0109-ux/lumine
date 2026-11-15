@@ -132,13 +132,15 @@ def control(etiqueta, formula, hoja=None):
 
 AN = ['C', 'D', 'E', 'F', 'G', 'H']           # años 0 a 5 en las hojas de flujo de la v6 y en las nuevas
 A15 = AN[1:]                                   # años 1 a 5
+RES = {'1 Inversión': 7, '2 Ingresos y costos': 8, '3 Capital de trabajo': 7, '4 Flujo puro': 8,
+       '5 Flujo financiado': 8, '6 Tasa de descuento': 7, '7 Punto de equilibrio': 7}   # filas del resumen arriba
 
 # ---------------------------------------------------------------------------------------------
 # Hoja 1 · Inversión
 s = nueva('1 Inversión', '1. Requerimientos de inversión, depreciación y amortización',
           'Pesos de 2026, netos de IVA. Desembolsos anteriores a la apertura (año 0) y reinversiones de los años 1 a 5.',
           [42, 16, 16, 17, 16, 16, 16, 17, 17])
-r = 4
+r = 4 + RES['1 Inversión']
 seccion(s, r, 'Activo fijo (depreciable)', 10); r += 1
 cabecera(s, r, ['Ítem', 'Cantidad', 'Valor unitario', 'Inversión inicial', 'Vida útil (años)',
                 'Depreciación anual', 'Reinversiones años 1–5', 'Depreciación acumulada año 5', 'Valor libro año 5'])
@@ -227,7 +229,7 @@ s.print_title_rows = '1:2'
 s = nueva('2 Ingresos y costos', '2. Proyección de ingresos, costos y gastos (años 1 a 5)',
           'Pesos de 2026, netos de IVA. Costos con signo negativo. Año operativo de julio a junio; apertura en julio de 2028.',
           [52, 13, 17, 17, 17, 17, 17])
-r = 4
+r = 4 + RES['2 Ingresos y costos']
 cabecera(s, r, ['Ítem', 'Unidad', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'])
 r += 1
 CO = ['E', 'F', 'G', 'H', 'I']    # años 1 a 5 en la hoja Costos de la v6
@@ -285,17 +287,108 @@ r += 1
 put(s, r, 3, '% ventas', color=GRIS, size=10)
 fila(s, r, 'EBITDA sobre ingresos', [f'=IF({c}{ing}=0,0,{c}{eb}/{c}{ing})' for c in 'DEFGH'], fmt=PCT, tipo='memo', c0=4)
 r += 2
+seccion(s, r, 'Peso de las personas en la estructura de costos', 8); r += 1
+fila2(r, 'Remuneraciones totales (técnicos, Responsable Técnico, Ingeniería, Gerencia, Administración y Comercial)', '$',
+      [f'({c}{f1}+{c}{f1+1}+{c}{g1}+{c}{g1+1})' for c in 'DEFGH'], signo='-'); rem = r; r += 1
+put(s, r, 3, '% ventas', color=GRIS, size=10)
+fila(s, r, '% de los ingresos destinado a personas', [f'=IF({c}{ing}=0,0,{c}{rem}/{c}{ing})' for c in 'DEFGH'], fmt=PCT, tipo='sub', c0=4); r += 1
+put(s, r, 3, '% costos', color=GRIS, size=10)
+fila(s, r, '% de los costos totales destinado a personas',
+     [f'=IF({c}{ing}-{c}{eb}=0,0,{c}{rem}/({c}{ing}-{c}{eb}))' for c in 'DEFGH'], fmt=PCT, c0=4); r += 1
+put(s, r, 3, '% fijos', color=GRIS, size=10)
+fila(s, r, '% de los costos fijos y gastos de administración destinado a personas',
+     [f'=IF({c}{cf}+{c}{gav}=0,0,-{c}{rem}/({c}{cf}+{c}{gav}))' for c in 'DEFGH'], fmt=PCT, c0=4); r += 1
+r += 1
 nota(s, r, 'Las cantidades por modelo son una distribución ilustrativa de la mezcla (60% Plus). Los ingresos por instalación '
            'ya descuentan los pilotos comerciales de cada modelo nuevo. Todos los costos son permanentes en el año.', 8, 30)
 s.freeze_panes = 'D5'
 s.print_title_rows = '1:4'
 
 # ---------------------------------------------------------------------------------------------
+# Hoja 2.1 · Proyección de demanda: de dónde sale cada instalación
+s = nueva('2.1 Proyección de demanda', '2.1 Proyección de demanda: de la pauta a las instalaciones',
+          'Embudo comercial mes a mes (Motor mensual) resumido por año de operación. Los supuestos están en Datos, filas 62 a 101, '
+          'y en los calendarios de la fila 181 en adelante.', [62, 13, 15, 15, 15, 15, 15, 16])
+YR = ['D', 'E', 'F', 'G', 'H']
+AA = ['F', 'G', 'H', 'I', 'J']      # años 1 a 5 en la hoja Anual
+MES = lambda f: q('Mensual', f'$D${f}:$CC${f}')
+
+
+def sumifs(f, n):
+    return f"=SUMIFS({MES(f)},{MES(6)},{n})"
+
+
+def fila3(r, etiqueta, unidad, vals, fmt=UNI, tipo=None, total=None):
+    put(s, r, 3, unidad, color=GRIS, size=10)
+    fila(s, r, etiqueta, vals + ([total] if total else []), fmt=fmt, tipo=tipo, c0=4)
+    return r
+
+
+r = 4
+seccion(s, r, 'Resumen', 9); r += 1
+cabecera(s, r, ['Indicador', 'Unidad', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5', 'Total'])
+r += 1
+res21 = r
+r += 4
+cabecera(s, r, ['Ítem', 'Unidad', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5', 'Total'])
+cab21 = r
+r += 1
+seccion(s, r, '1. De la pauta digital y las visitas a las cotizaciones', 9); r += 1
+fila3(r, 'Pauta digital', '$', [sumifs(10, n) for n in range(1, 6)], PESO, total=f'=SUM(D{r}:H{r})'); pauta = r; r += 1
+fila3(r, 'Costo por cotización digital (escenario activo)', '$', ['=Datos!$C$65'] * 5, PESO); r += 1
+fila3(r, 'Cotizaciones digitales (pauta / costo por cotización)', 'cotizaciones', [sumifs(11, n) for n in range(1, 6)], total=f'=SUM(D{r}:H{r})'); dig = r; r += 1
+fila3(r, 'Cotizaciones por visitas a líneas de colectivos', 'cotizaciones', [sumifs(12, n) for n in range(1, 6)], total=f'=SUM(D{r}:H{r})'); vis = r; r += 1
+fila3(r, 'Cotizaciones totales', 'cotizaciones', [f'={c}{dig}+{c}{vis}' for c in YR], tipo='sub', total=f'=SUM(D{r}:H{r})'); cot = r
+control('2.1 Demanda: cotizaciones = motor anual', f"=I{cot}-SUM({q('Anual', 'F3:J3')})")
+r += 2
+seccion(s, r, '2. De las cotizaciones a los pedidos', 9); r += 1
+fila3(r, 'Cotizaciones de modelos ya calibrados (cubiertas por la biblioteca)', 'cotizaciones',
+      [f"=SUMPRODUCT(({MES(6)}={n})*{MES(13)}*{MES(14)})" for n in range(1, 6)], DEC, total=f'=SUM(D{r}:H{r})'); cub = r; r += 1
+fila3(r, 'Cobertura promedio de la biblioteca', '%', [f'=IF({c}{cot}=0,0,{c}{cub}/{c}{cot})' for c in YR], PCT); r += 1
+fila3(r, 'Pedidos nuevos', 'pedidos', [f"={q('Anual', f'{c}4')}" for c in AA], total=f'=SUM(D{r}:H{r})'); ped = r; r += 1
+fila3(r, 'Conversión promedio de cotización cubierta a pedido', '%', [f'=IF({c}{cub}=0,0,{c}{ped}/{c}{cub})' for c in YR], PCT); r += 1
+fila3(r, 'Cancelaciones de pedidos pendientes', 'pedidos', [f"={q('Anual', f'{c}5')}" for c in AA], total=f'=SUM(D{r}:H{r})'); r += 1
+r += 1
+seccion(s, r, '3. De los pedidos a las instalaciones: capacidad del taller', 9); r += 1
+fila3(r, 'Dúos de técnicos en operación al cierre', 'dúos', [f"={q('Anual', f'{c}8')}" for c in AA]); r += 1
+fila3(r, 'Capacidad operativa de los dúos', 'instalaciones', [f"={q('Anual', f'{c}9')}" for c in AA], total=f'=SUM(D{r}:H{r})'); cap = r; r += 1
+fila3(r, 'Instalaciones (el menor entre pedidos, capacidad y kits disponibles, mes a mes)', 'instalaciones',
+      [f"={q('Anual', f'{c}6')}" for c in AA], tipo='total', total=f'=SUM(D{r}:H{r})'); ins = r; r += 1
+fila3(r, 'Uso de la capacidad', '%', [f'=IF({c}{cap}=0,0,{c}{ins}/{c}{cap})' for c in YR], PCT); uso = r; r += 1
+fila3(r, 'Pedidos pendientes al cierre', 'pedidos', [f"={q('Anual', f'{c}7')}" for c in AA]); r += 1
+fila3(r, 'Parque instalado acumulado', 'autos', [f"={q('Anual', f'{c}12')}" for c in AA]); r += 1
+r += 1
+seccion(s, r, '4. De las instalaciones a los ingresos', 9); r += 1
+fila3(r, 'Instalaciones Plus (participación de Datos)', 'instalaciones', [f'={c}{ins}*Datos!$C$48' for c in YR], DEC, total=f'=SUM(D{r}:H{r})'); r += 1
+fila3(r, 'Instalaciones Esencial', 'instalaciones', [f'={c}{ins}*(1-Datos!$C$48)' for c in YR], DEC, total=f'=SUM(D{r}:H{r})'); r += 1
+fila3(r, 'Ingreso neto promedio por instalación (mezcla, sin IVA)', '$', ['=Datos!$C$49'] * 5, PESO); r += 1
+fila3(r, 'Clientes piloto comerciales (50% de descuento, un modelo nuevo cada uno)', 'clientes', [f"={q('Anual', f'{c}11')}" for c in AA], total=f'=SUM(D{r}:H{r})'); r += 1
+fila3(r, 'Ingresos por instalaciones', '$', [f"={q('Anual', f'{c}37')}" for c in AA], PESO, tipo='total', total=f'=SUM(D{r}:H{r})'); ingd = r
+control('2.1 Demanda: ingresos = motor anual', f"=I{ingd}-{q('Anual', 'K37')}")
+r += 2
+nota(s, r, 'Cómo se calcula cada mes: pedidos = (pauta ÷ costo por cotización + visitas) × cobertura de la biblioteca × conversión, '
+           'que sube desde la conversión inicial hasta la de régimen en los meses de rampa (Datos, filas 62 a 79). Las instalaciones '
+           'son el menor valor entre los pedidos acumulados, la capacidad de los dúos (Datos, filas 81 a 93) y los kits en bodega. '
+           'El selector «Escenario de demanda» del Tablero cambia el costo por cotización, la conversión y la rampa.', 9, 62)
+r += 2
+nota(s, r, 'Sustento de mercado: el techo de adopción que mide la encuesta (29 de 91 conductores del foco a bencina con intención '
+           'definitiva y precio aceptado) se contrasta en el informe; no está conectado por fórmula al embudo.', 9, 34)
+# Resumen arriba
+for i, (et, uni, fila_, fmt, tot) in enumerate([('Instalaciones', 'instalaciones', ins, UNI, True),
+                                                 ('Uso de la capacidad', '%', uso, PCT, False),
+                                                 ('Ingresos por instalaciones', '$', ingd, PESO, True)]):
+    rr = res21 + i
+    put(s, rr, 3, uni, color=GRIS, size=10)
+    fila(s, rr, et, [f'={c}{fila_}' for c in YR] + ([f'=I{fila_}'] if tot else []), fmt=fmt, tipo='sub', c0=4)
+s.freeze_panes = f'D{cab21 + 1}'
+s.print_title_rows = f'{cab21}:{cab21}'
+
+# ---------------------------------------------------------------------------------------------
 # Hoja 3 · Capital de trabajo
 s = nueva('3 Capital de trabajo', '3. Inversión en capital de trabajo',
           'Pesos de 2026. Saldo al cierre de cada año; la inversión del año es el aumento del saldo y se recupera al final.',
           [70, 17, 17, 17, 17, 17, 17])
-r = 4
+r = 4 + RES['3 Capital de trabajo']
 cabecera(s, r, ['Ítem', 'Año 0', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'])
 r += 1
 k1 = r
@@ -331,7 +424,7 @@ NOMBRES_AF = ['Dinamómetro de chasis', 'Escáner automotriz', 'Herramientas de 
 def flujo(nombre, titulo, bajada, src, financiado):
     s = nueva(nombre, titulo, bajada, [58, 17, 17, 17, 17, 17, 17])
     S = lambda col, row: q(src, f'{col}{row}')
-    r = 4
+    r = 4 + RES[nombre]
     cabecera(s, r, ['Ítem', 'Año 0', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'])
     r += 1
 
@@ -493,7 +586,7 @@ s.freeze_panes = 'B4'
 s = nueva('6 Tasa de descuento', '6. Tasas de descuento del proyecto puro y financiado',
           'Tasas reales anuales. CAPM para el patrimonio, Hamada para apalancar el beta y Fisher para pasar de nominal a real.',
           [46, 14, 52, 70])
-r = 4
+r = 4 + RES['6 Tasa de descuento']
 cabecera(s, r, ['Parámetro', 'Valor', 'Fórmula', 'Fuente'])
 r += 1
 T = {}
@@ -562,7 +655,7 @@ s.freeze_panes = 'B5'
 s = nueva('7 Punto de equilibrio', '7. Punto de equilibrio en unidades y en ventas (años 1 a 5)',
           'Equilibrio contable: instalaciones que cubren los costos fijos, la depreciación y la amortización del año.',
           [62, 17, 17, 17, 17, 17])
-r = 4
+r = 4 + RES['7 Punto de equilibrio']
 cabecera(s, r, ['Ítem', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'])
 r += 1
 EQ = ['D', 'E', 'F', 'G', 'H']
@@ -658,6 +751,61 @@ s['B4'] = 'Ku real \\ cambio de precio'
 nota(s, r + 1, f"={q('Sensibilidad', 'B16')}", 7, 44)
 
 # ---------------------------------------------------------------------------------------------
+# Resumen al inicio de las hojas 1 a 7 (indicación del profesor: el resumen va arriba y el detalle debajo)
+RESUMEN = {
+    '1 Inversión': (['Resumen', 'Monto'], [('Activo fijo', 'Activo fijo', 'C'),
+                                          ('Activo nominal (puesta en marcha y software)', 'Activo nominal (puesta en marcha y software)', 'C'),
+                                          ('Capital de trabajo inicial', 'Capital de trabajo inicial (stock, anticipos e IVA)', 'C'),
+                                          ('Inversión equivalente en el año 0', 'Inversión equivalente en el año 0', 'C')]),
+    '2 Ingresos y costos': (['Resumen', 'Unidad', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'],
+                            [('Instalaciones', 'Instalaciones', 'CDEFGH'), ('Total ingresos', 'Total ingresos', 'DEFGH'),
+                             ('Margen de contribución', 'Margen de contribución', 'DEFGH'),
+                             ('EBITDA', 'Resultado antes de depreciación, intereses e impuestos (EBITDA)', 'DEFGH'),
+                             ('% de los ingresos destinado a personas', '% de los ingresos destinado a personas', 'CDEFGH')]),
+    '3 Capital de trabajo': (['Resumen', 'Año 0', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'],
+                             [('Capital de trabajo requerido al cierre', 'Capital de trabajo requerido al cierre', 'CDEFGH'),
+                              ('Inversión en capital de trabajo', 'Inversión en capital de trabajo (aumento del saldo)', 'CDEFGH'),
+                              ('Recuperación al cierre', 'Recuperación del capital de trabajo', 'H'),
+                              ('Mayor déficit operativo acumulado (contraste)', 'Mayor déficit operativo acumulado desde la apertura', 'C')]),
+    '4 Flujo puro': (['Resumen', 'Valor'], [('Tasa de descuento (Ku)', 'Tasa de descuento: Ku (CAPM con beta desapalancado)', 'C'),
+                                           ('VAN', 'VAN', 'C'), ('TIR', 'TIR', 'C'), ('Payback descontado', 'Payback descontado', 'C'),
+                                           ('Inversión del año 0', 'Flujo de caja libre (FCL)', 'C')]),
+    '5 Flujo financiado': (['Resumen', 'Valor'], [('Tasa de descuento (Ke)', 'Tasa de descuento: Ke (costo del patrimonio, CAPM con beta apalancado)', 'C'),
+                                                 ('VAN', 'VAN', 'C'), ('TIR', 'TIR', 'C'), ('Payback descontado', 'Payback descontado', 'C'),
+                                                 ('Aporte de los socios en el año 0', 'Flujo de caja del inversionista', 'C')]),
+    '6 Tasa de descuento': (['Resumen', 'Valor'], [('Ku: flujo puro', 'Ku: costo del capital sin deuda', 'C'),
+                                                  ('Ke: flujo financiado', 'Ke: costo del patrimonio', 'C'),
+                                                  ('Kd real', 'Kd: costo real de la deuda', 'C'), ('WACC (referencia)', 'WACC (referencia)', 'C')]),
+    '7 Punto de equilibrio': (['Resumen', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'],
+                              [('Instalaciones proyectadas', 'Instalaciones proyectadas', 'CDEFG'),
+                               ('Punto de equilibrio (instalaciones)', 'Punto de equilibrio (instalaciones)', 'CDEFG'),
+                               ('Sobre (bajo) el equilibrio', 'Instalaciones proyectadas sobre (bajo) el equilibrio', 'CDEFG'),
+                               ('Precio neto que lleva el VAN a cero', 'Precio neto promedio que lleva el VAN a cero', 'C')]),
+}
+for nombre, (cab_, items) in RESUMEN.items():
+    s = w[nombre]
+    k = RES[nombre]
+    seccion(s, 4, 'Resumen', 1 + len(cab_))
+    cabecera(s, 5, ['Indicador'] + cab_[1:])
+    filas = {}
+    for row in s.iter_rows(min_row=4 + k):
+        b = row[1].value
+        if isinstance(b, str) and b.strip() not in filas:
+            filas[b.strip()] = row[1].row
+    for i, (et, buscar, cols) in enumerate(items):
+        rr = 6 + i
+        assert buscar in filas, (nombre, buscar)
+        put(s, rr, 2, et, bold=True)
+        for col in cols:
+            src = s[f'{col}{filas[buscar]}']
+            put(s, rr, ord(col) - 64, f'={col}{filas[buscar]}', fmt=src.number_format, bold=True)
+        estilo_fila(s, rr, 2, 1 + len(cab_), 'sub')
+    assert 6 + len(items) <= 3 + k, nombre
+    col_frz = 'D' if nombre == '2 Ingresos y costos' else 'C'
+    s.freeze_panes = f'{col_frz}{5 + k}'
+    s.print_title_rows = f'{4 + k}:{4 + k}'
+
+# ---------------------------------------------------------------------------------------------
 # Datos: formato de números según la unidad (solo formato, no valores)
 d = w['Datos']
 for row in d.iter_rows(min_row=6):
@@ -716,7 +864,7 @@ for row in n.iter_rows():
 
 # ---------------------------------------------------------------------------------------------
 # Visibilidad y orden
-nuevas = ['1 Inversión', '2 Ingresos y costos', '3 Capital de trabajo', '4 Flujo puro', '5 Flujo financiado',
+nuevas = ['1 Inversión', '1.1 Respaldo inversión', '1.2 Costo del kit', '2 Ingresos y costos', '2.1 Proyección de demanda', '3 Capital de trabajo', '4 Flujo puro', '5 Flujo financiado',
           '5.1 Tabla de amortización', '6 Tasa de descuento', '7 Punto de equilibrio', 'A1 Calendario inversión',
           'A2 Caja mensual 3 años', 'A3 Capital trabajo mensual', 'A4 Impuestos', 'A5 Sensibilidad']
 visibles = ['Resumen', 'Datos'] + nuevas + ['Controles', 'Notas y cambios']
