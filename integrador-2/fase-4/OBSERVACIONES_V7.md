@@ -3,8 +3,8 @@
 **Archivo:** `excel/v7_formato_curso.xlsx` (+ PDF de 36 páginas). Se genera con `generador_revision/construir_v7.py`.
 
 > **14-11-2026, noche: cifras vigentes** (secciones «Decisiones del 14-11-2026», «Respaldo con fuentes primarias» y
-> «Local, bodega, mobiliario y demanda de arriba hacia abajo» y «Correcciones de la revisión cruzada», al final): VAN puro
-> $148,49 M y TIR pura 16,75%; inversionista $124,3 M a Ke y TIR 20,12%. Las cifras de las secciones anteriores
+> «Local, bodega, mobiliario y demanda de arriba hacia abajo», «Correcciones de la revisión cruzada» y «Capital de trabajo por
+> déficit acumulado máximo», al final): VAN puro $114,24 M y TIR pura 13,65%; inversionista $83,84 M a Ke y TIR 15,34%. Las cifras de las secciones anteriores
 > son de antes de esos cambios; los criterios descritos siguen vigentes.
 
 ## Qué se hizo (solo formato)
@@ -312,4 +312,37 @@ Una revisión externa del libro encontró cuatro puntos; los cuatro se corrigier
 
 Las capturas de las páginas de precios no se pueden guardar desde esta sesión; la hoja 1.1 indica proveedor, sitio y fecha
 de consulta para que el equipo las tome.
+
+## Capital de trabajo por déficit acumulado máximo (15-11-2026)
+
+Decisión del equipo: el capital de trabajo se calcula con el método del curso que pidió el profesor guía. Selector en
+`Datos!C23` (1 = déficit acumulado máximo; 0 = saldo de inventario, el método anterior).
+
+- Año 0: stock comprado en la preapertura ($66,4 M) más el mayor déficit de la caja operativa acumulada desde la apertura
+  ($251,9 M, mes 10): $318,3 M. Ese déficit cubre el crecimiento del inventario del primer año y las pérdidas de arranque.
+- Años 2 a 5: solo el aumento del saldo de inventario, tránsito e IVA por crecimiento ($60,2; $0; $74,9 y $3,3 M).
+- Recuperación al cierre: todo lo invertido, $456,7 M (antes $402,2 M).
+- Hoja 1: «Inversión total del año 0 en el flujo de caja» = inversión antes de abrir ($223,3 M) + capital de trabajo adicional
+  al abrir ($251,9 M) = $475,2 M. Controles de la v6 ajustados (filas 7, 12, 24 y 25 de Controles).
+
+Por qué baja el VAN aunque sube la recuperación: el dinero se invierte un año antes y el déficit incluye unos $65 M de
+pérdidas de los primeros diez meses que el flujo operacional del año 1 también resta; el curso las recupera al cierre, donde
+cada peso vale 0,66 de hoy a Ku.
+
+| Indicador | Saldo de inventario | Déficit acumulado máximo |
+|---|---:|---:|
+| VAN puro (Ku) | $148,49 M | $114,24 M |
+| TIR pura | 16,75% | 13,65% |
+| VAN inversionista (Ke) | $124,28 M | $83,84 M |
+| TIR inversionista | 20,12% | 15,34% |
+| VAN ajustado | $155,6 M | $121,37 M |
+| Inversión total del año 0 | $223,3 M | $475,2 M |
+| Aporte de los socios en el año 0 | $81,1 M | $333,0 M |
+| Payback descontado (puro / inversionista) | 4,66 / 4,66 años | 4,76 / 4,79 años |
+| Pesimista (VAN puro / TIR pura / TIR inversionista) | −$399,08 M / −21,56% / −34,08% | −$520,36 M / −10,70% / −14,75% |
+| Optimista (VAN puro / TIR pura) | $473,45 M / 31,20% | $384,95 M / 20,43% |
+| Baja de precio que lleva el VAN a 0 | ≈2,0% | 1,58% |
+
+Sensibilidad a la política de compras (no aplicada; decisión del equipo): con compras que cubren dos meses de pedidos en vez
+de tres, el capital de trabajo inicial baja a $229,3 M y la TIR inversionista sube a 16,50% (VAN puro $112,47 M).
 

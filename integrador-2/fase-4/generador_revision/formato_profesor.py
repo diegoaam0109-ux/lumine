@@ -132,7 +132,7 @@ def control(etiqueta, formula, hoja=None):
 
 AN = ['C', 'D', 'E', 'F', 'G', 'H']           # años 0 a 5 en las hojas de flujo de la v6 y en las nuevas
 A15 = AN[1:]                                   # años 1 a 5
-RES = {'1 Inversión': 7, '2 Ingresos y costos': 8, '3 Capital de trabajo': 7, '4 Flujo puro': 8,
+RES = {'1 Inversión': 9, '2 Ingresos y costos': 8, '3 Capital de trabajo': 7, '4 Flujo puro': 8,
        '5 Flujo financiado': 8, '6 Tasa de descuento': 7, '7 Punto de equilibrio': 7}   # filas del resumen arriba
 
 # ---------------------------------------------------------------------------------------------
@@ -210,7 +210,10 @@ des = r
 control('1 Inversión: desembolso previo', f"=C{des}-{q('Inversión', 'F29')}*{M}")
 r += 1
 fila(s, r, 'Costo financiero de la inversión previa (calendario de inversiones a Ku)', [f"={q('Inversión', 'F30')}*{M}"]); r += 1
-fila(s, r, 'Inversión equivalente en el año 0', [f'=C{des}+C{r-1}'], tipo='total')
+fila(s, r, 'Inversión equivalente en el año 0', [f'=C{des}+C{r-1}'], tipo='sub'); ieq = r
+r += 1
+fila(s, r, 'Capital de trabajo adicional al abrir (déficit acumulado máximo)', [f"={q('Capital de trabajo', 'C20')}*{M}*Datos!$C$23"]); r += 1
+fila(s, r, 'Inversión total del año 0 en el flujo de caja', [f'=C{ieq}+C{r-1}'], tipo='total')
 control('1 Inversión: inversión del año 0 = flujo puro año 0', f"=C{r}+{q('Flujo puro', 'C64')}*{M}")
 r += 1
 nota(s, r, '=IF(Datos!$C$24=1,"Los desembolsos ocurren durante 18 meses antes de abrir (detalle en A1 Calendario inversión).",'
@@ -441,7 +444,7 @@ s.print_title_rows = f'{cab21}:{cab21}'
 # ---------------------------------------------------------------------------------------------
 # Hoja 3 · Capital de trabajo
 s = nueva('3 Capital de trabajo', '3. Inversión en capital de trabajo',
-          'Pesos de 2026. Saldo al cierre de cada año; la inversión del año es el aumento del saldo y se recupera al final.',
+          'Pesos de 2026. Déficit acumulado máximo al abrir y aumentos por crecimiento desde el año 2; todo se recupera al cierre.',
           [70, 17, 17, 17, 17, 17, 17])
 r = 4 + RES['3 Capital de trabajo']
 cabecera(s, r, ['Ítem', 'Año 0', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'])
@@ -451,23 +454,27 @@ fila(s, r, 'Inventario de kits en bodega', [f"={q('Capital de trabajo', f'{c}7')
 fila(s, r, 'Kits en tránsito y anticipos pagados a proveedores', [f"={q('Capital de trabajo', f'{c}8')}*{M}" for c in AN]); r += 1
 fila(s, r, 'Crédito fiscal de IVA por recuperar', [f"={q('Capital de trabajo', f'{c}9')}*{M}" for c in AN]); r += 1
 fila(s, r, '(−) Anticipos recibidos de clientes', [f"=-{q('Capital de trabajo', f'{c}10')}*{M}" for c in AN]); r += 1
-fila(s, r, 'Capital de trabajo requerido al cierre', [f'=SUM({c}{k1}:{c}{r-1})' for c in AN], tipo='sub'); kt = r
+fila(s, r, 'Saldo de capital de trabajo al cierre (inventario, tránsito e IVA)', [f'=SUM({c}{k1}:{c}{r-1})' for c in AN], tipo='sub'); kt = r
 control('3 Capital de trabajo: saldo al cierre año 5', f"=H{kt}-{q('Capital de trabajo', 'H12')}*{M}")
-r += 1
-fila(s, r, 'Inversión en capital de trabajo (aumento del saldo)',
-     [f'=-C{kt}'] + [f'=-({c}{kt}-{p}{kt})' for p, c in zip('CDEFG', 'DEFGH')], tipo='total'); dk = r
+r += 2
+seccion(s, r, 'Método aplicado: déficit acumulado máximo más aumentos por crecimiento', 8); r += 1
+fila(s, r, 'Capital de trabajo comprado antes de abrir (stock, tránsito e IVA)', [f'=C{kt}']); ca = r; r += 1
+fila(s, r, 'Mayor déficit operativo acumulado desde la apertura', [f"={q('Capital de trabajo', 'C20')}*{M}"]); cd_ = r; r += 1
+fila(s, r, 'Mes de operación en que se alcanza', [f"={q('Capital de trabajo', 'C21')}"], fmt=UNI); r += 1
+fila(s, r, 'Capital de trabajo inicial (año 0)', [f'=C{ca}+Datos!$C$23*C{cd_}'], tipo='sub'); ci = r; r += 1
+fila(s, r, 'Inversión en capital de trabajo',
+     [f'=-C{ci}', f'=-(D{kt}-C{kt})*(1-Datos!$C$23)'] + [f'=-({c}{kt}-{p}{kt})' for p, c in zip('DEFG', 'EFGH')], tipo='total'); dk = r
 control('3 Capital de trabajo: inversión = flujo puro', f"=SUM(C{dk}:H{dk})-SUM({q('Flujo puro', 'C55:H55')})*{M}")
 r += 1
-fila(s, r, 'Recuperación del capital de trabajo', [None] * 5 + [f"={q('Capital de trabajo', 'H17')}*{M}"])
-r += 2
-seccion(s, r, 'Contraste: método del déficit acumulado máximo', 8); r += 1
-fila(s, r, 'Mayor déficit operativo acumulado desde la apertura', [f"={q('Capital de trabajo', 'C20')}*{M}"]); r += 1
-fila(s, r, 'Mes de operación en que se alcanza', [f"={q('Capital de trabajo', 'C21')}"], fmt=UNI); r += 1
+fila(s, r, 'Recuperación del capital de trabajo', [None] * 5 + [f"={q('Capital de trabajo', 'H17')}*{M}"]); rc = r
+control('3 Capital de trabajo: se recupera todo lo invertido', f"=IF(Datos!$C$23=1,H{rc}+SUM(C{dk}:H{dk}),0)")
+r += 1
 fila(s, r, 'Necesidad máxima de financiamiento sin deuda (incluye inversión previa)', [f"={q('Capital de trabajo', 'C23')}*{M}"]); r += 1
 r += 1
-nota(s, r, 'Método aplicado: saldo de capital de trabajo al cierre de cada año (inventario, tránsito e IVA, menos anticipos de '
-           'clientes), calculado mes a mes en A3. El déficit acumulado máximo se informa como contraste y para dimensionar el '
-           'financiamiento de los socios; no se suma al capital de trabajo porque incluye pérdidas de arranque que no se recuperan.', 8, 46)
+nota(s, r, 'Método del déficit acumulado máximo (Datos, fila 23): al abrir se invierte el stock comprado en la preapertura más '
+           'el mayor déficit de la caja operativa acumulada desde la apertura (detalle mes a mes en A3). Ese déficit cubre el '
+           'crecimiento del inventario y las pérdidas de los primeros meses. Desde el año 2 se suma solo el aumento del saldo de '
+           'inventario, tránsito e IVA por crecimiento. Todo lo invertido se recupera al cierre del año 5.', 8, 62)
 s.freeze_panes = 'C5'
 
 # ---------------------------------------------------------------------------------------------
@@ -811,18 +818,20 @@ nota(s, r + 1, f"={q('Sensibilidad', 'B16')}", 7, 44)
 RESUMEN = {
     '1 Inversión': (['Resumen', 'Monto'], [('Activo fijo', 'Activo fijo', 'C'),
                                           ('Activo nominal (puesta en marcha y software)', 'Activo nominal (puesta en marcha y software)', 'C'),
-                                          ('Capital de trabajo inicial', 'Capital de trabajo inicial (stock, anticipos e IVA)', 'C'),
-                                          ('Inversión equivalente en el año 0', 'Inversión equivalente en el año 0', 'C')]),
+                                          ('Capital de trabajo comprado antes de abrir', 'Capital de trabajo inicial (stock, anticipos e IVA)', 'C'),
+                                          ('Inversión equivalente antes de abrir (año 0)', 'Inversión equivalente en el año 0', 'C'),
+                                          ('Capital de trabajo adicional al abrir', 'Capital de trabajo adicional al abrir (déficit acumulado máximo)', 'C'),
+                                          ('Inversión total del año 0', 'Inversión total del año 0 en el flujo de caja', 'C')]),
     '2 Ingresos y costos': (['Resumen', 'Unidad', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'],
                             [('Instalaciones', 'Instalaciones', 'CDEFGH'), ('Total ingresos', 'Total ingresos', 'DEFGH'),
                              ('Margen de contribución', 'Margen de contribución', 'DEFGH'),
                              ('EBITDA', 'Resultado antes de depreciación, intereses e impuestos (EBITDA)', 'DEFGH'),
                              ('% de los ingresos destinado a personas', '% de los ingresos destinado a personas', 'CDEFGH')]),
     '3 Capital de trabajo': (['Resumen', 'Año 0', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'],
-                             [('Capital de trabajo requerido al cierre', 'Capital de trabajo requerido al cierre', 'CDEFGH'),
-                              ('Inversión en capital de trabajo', 'Inversión en capital de trabajo (aumento del saldo)', 'CDEFGH'),
+                             [('Capital de trabajo inicial (año 0)', 'Capital de trabajo inicial (año 0)', 'C'),
+                              ('Inversión en capital de trabajo', 'Inversión en capital de trabajo', 'CDEFGH'),
                               ('Recuperación al cierre', 'Recuperación del capital de trabajo', 'H'),
-                              ('Mayor déficit operativo acumulado (contraste)', 'Mayor déficit operativo acumulado desde la apertura', 'C')]),
+                              ('Saldo de inventario, tránsito e IVA al cierre', 'Saldo de capital de trabajo al cierre (inventario, tránsito e IVA)', 'CDEFGH')]),
     '4 Flujo puro': (['Resumen', 'Valor'], [('Tasa de descuento (Ku)', 'Tasa de descuento: Ku (CAPM con beta desapalancado)', 'C'),
                                            ('VAN', 'VAN', 'C'), ('TIR', 'TIR', 'C'), ('Payback descontado', 'Payback descontado', 'C'),
                                            ('Inversión del año 0', 'Flujo de caja libre (FCL)', 'C')]),

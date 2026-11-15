@@ -76,6 +76,32 @@ if originales_124:
 m['A124'] = ('Escáner y herramientas de alta tensión (los compra el piloto; si el piloto queda fuera de la '
              'evaluación, se compran al iniciar la preapertura)')
 
+# ---------------------------------------------------------------- 1b. Capital de trabajo por déficit acumulado máximo
+assert d['B23'].value is None and d['C23'].value is None, 'Datos!B23 no está libre'
+fila_dato(23, 'Capital de trabajo por déficit acumulado máximo (1 = sí; 0 = saldo de inventario)', 1, 'selector',
+          'Decisión del equipo (15-11-2026)',
+          'Método del curso pedido por el profesor guía: al abrir se invierte el stock comprado antes de la apertura más el '
+          'mayor déficit operativo acumulado; desde el año 2 se suma el aumento del saldo de inventario, tránsito e IVA por '
+          'crecimiento. Todo se recupera al cierre del año 5.',
+          'Con 0 se recupera el método del saldo de inventario.')
+ct = w['Capital de trabajo']
+assert ct['C13'].value == '=C12' and ct['D13'].value == '=D12-C12' and ct['H17'].value == '=H12*Datos!$C$34'
+ct['B13'] = 'Inversión en capital de trabajo (déficit al abrir y aumentos por crecimiento)'
+ct['C13'] = '=C12+Datos!$C$23*C20'
+ct['D13'] = '=(D12-C12)*(1-Datos!$C$23)'
+ct['B17'] = 'Recuperación final (todo lo invertido en capital de trabajo)'
+ct['H17'] = '=IF(Datos!$C$23=1,SUM(C13:H13),H12)*Datos!$C$34'
+for h in ('Flujo puro', 'Flujo inversionista'):
+    assert w[h]['C55'].value == "=-'Capital de trabajo'!C12"
+    w[h]['C55'] = "=-'Capital de trabajo'!C13"
+co = w['Controles']
+assert co['C7'].value == "='Flujo puro'!C64+Calendario!U15" and co['C12'].value.startswith("='Flujo puro'!H57-")
+co['C7'] = "='Flujo puro'!C64+Calendario!U15+Datos!$C$23*'Capital de trabajo'!C20"
+co['C12'] = "='Flujo puro'!H57-'Capital de trabajo'!H17"
+for rr, h in ((24, 'Flujo puro'), (25, 'Flujo inversionista')):   # el aumento del año 1 ya está en el déficit del año 0
+    assert co[f'C{rr}'].value.startswith(f"='{h}'!D64-SUM(")
+    co[f'C{rr}'] = co[f'C{rr}'].value + "-Datos!$C$23*('Capital de trabajo'!D12-'Capital de trabajo'!C12)"
+
 # ---------------------------------------------------------------- 2. Medios de cobro
 assert all(d.cell(r, 2).value is None for r in range(36, 41)), 'Datos!B36:B40 no está libre'
 d['B36'] = 'Medios de cobro de la venta (decisión del equipo, 14-11-2026)'
@@ -428,7 +454,7 @@ nt['B62'] = ('1) El piloto y la transición quedan fuera de la evaluación: el f
              'con el dólar y el euro de Datos (filas 14 y 15).')
 nt.merge_cells('B62:H62')
 nt.row_dimensions[62].height = 122
-for r, alto in {24: 46, 37: 32, 38: 32, 39: 32, 40: 62, 54: 32}.items():
+for r, alto in {23: 62, 24: 46, 37: 32, 38: 32, 39: 32, 40: 62, 54: 32}.items():
     d.row_dimensions[r].height = alto
     for c in (6, 7):
         al = copy.copy(d.cell(r, c).alignment)

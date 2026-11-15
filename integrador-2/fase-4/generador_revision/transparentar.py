@@ -131,8 +131,8 @@ if FASE == 1:
     equivalente('Inversión', 'F29', i1, f"C{fila_de(i1, 'Desembolso total antes de abrir')}")
     equivalente('Inversión', 'F31', i1, f"C{fila_de(i1, 'Inversión equivalente en el año 0')}")
     c3 = '3 Capital de trabajo'
-    fila_equiv('Capital de trabajo', 12, AN, c3, fila_de(c3, 'Capital de trabajo requerido al cierre'), AN)
-    fila_equiv('Capital de trabajo', 13, AN, c3, fila_de(c3, 'Inversión en capital de trabajo (aumento del saldo)'), AN, s=-1)
+    fila_equiv('Capital de trabajo', 12, AN, c3, fila_de(c3, 'Saldo de capital de trabajo al cierre (inventario, tránsito e IVA)'), AN)
+    fila_equiv('Capital de trabajo', 13, AN, c3, fila_de(c3, 'Inversión en capital de trabajo'), AN, s=-1)
     d5 = '5.1 Tabla de amortización'
     fila_equiv('Deuda', 50, AN, d5, fila_de(d5, 'Flujo neto de la deuda'), AN)
     equivalente('Deuda', 'C52', d5, f"C{fila_de(d5, 'VAN de la deuda (a Kd)')}")
