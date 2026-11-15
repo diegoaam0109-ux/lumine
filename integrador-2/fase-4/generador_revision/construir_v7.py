@@ -35,6 +35,16 @@ with tempfile.TemporaryDirectory(prefix='lumine-v7-') as tmp:
     subprocess.run([sys.executable, str(HERE / 'decisiones.py'), str(V6), str(decidida)], check=True)
     ref = recalcular(decidida, tmp / 'calc_decidida')
     rv = openpyxl.load_workbook(ref, data_only=True)
+    # Peso de autopartes (Datos!C242): se fija como número con el caso base, para que la sensibilidad del costo del kit no
+    # cambie la tasa de descuento (revisión del 15-11-2026)
+    dd = openpyxl.load_workbook(decidida)
+    if str(dd['Datos']['C242'].value).startswith('='):
+        w_base = round(rv['Datos']['C52'].value / rv['Datos']['C49'].value, 4)
+        dd['Datos']['C242'] = w_base
+        dd.save(decidida)
+        print(f'  peso de autopartes fijado en {w_base:.4f}')
+        ref = recalcular(decidida, tmp / 'calc_decidida2')
+        rv = openpyxl.load_workbook(ref, data_only=True)
     v6v = openpyxl.load_workbook(V6, data_only=True)
     for et, celda in [('VAN puro (MM)', 'C70'), ('TIR pura', 'C71')]:
         print(f"  {et}: v6 {v6v['Flujo puro'][celda].value:,.4f} -> decidida {rv['Flujo puro'][celda].value:,.4f}")
@@ -103,8 +113,16 @@ with tempfile.TemporaryDirectory(prefix='lumine-v7-') as tmp:
     subprocess.run([sys.executable, str(HERE / 'tipografia.py'), str(estilo), str(tipo)], check=True)
     textos_ = tmp / 'claro' / 'textos.xlsx'
     subprocess.run([sys.executable, str(HERE / 'textos.py'), str(tipo), str(textos_)], check=True)
-    subprocess.run([sys.executable, str(HERE / 'supuestos.py'), str(textos_), str(claro)], check=True)
+    sup = tmp / 'claro' / 'supuestos.xlsx'
+    subprocess.run([sys.executable, str(HERE / 'supuestos.py'), str(textos_), str(sup)], check=True)
+    subprocess.run([sys.executable, str(HERE / 'controles.py'), str(sup), str(claro)], check=True)
     calc2 = recalcular(claro, tmp / 'calc_claro')
+    cc = openpyxl.load_workbook(calc2, data_only=True)['Controles']
+    ind = [(cc.cell(r, 2).value, cc.cell(r, 3).value) for r in range(47, cc.max_row + 1)
+           if isinstance(cc.cell(r, 3).value, (int, float)) and isinstance(cc.cell(r, 2).value, str)]
+    malos = [(e, x) for e, x in ind if abs(x) > 1 and not e.startswith('Suma')]
+    assert not malos, f'controles independientes fuera de tolerancia: {malos}'
+    print(f'Controles independientes verificados: {len(ind)} filas')
     REN = {'Mensual': 'Motor mensual', 'Anual': 'Motor anual', 'Calc depreciación': 'Motor depreciación',
            'Calc financiero': 'Motor financiero', 'Calc sensibilidad': 'Motor sensibilidad',
            'Tablero datos': 'Datos del tablero'}
@@ -124,8 +142,8 @@ with tempfile.TemporaryDirectory(prefix='lumine-v7-') as tmp:
                 if isinstance(x, (int, float)) and not isinstance(x, bool):
                     y = b[t2][z.coordinate].value
                     # los controles de la capa anterior comparaban contra la v6; ahora son triviales
-                    if t2 == 'Controles' and z.row > 46:
-                        continue
+                    if t2 == 'Controles' and (z.row > 46 or abs(x) < 1e-6):
+                        continue   # controles: valores ~0 que solo difieren por redondeo
                     igual = isinstance(y, (int, float)) and abs(x - y) <= 1e-6 * max(1, abs(x))
                     escalado = (t2 in EN_PESOS and isinstance(y, (int, float))
                                 and abs(x * 1e6 - y) <= 1e-6 * max(1, abs(x * 1e6)))

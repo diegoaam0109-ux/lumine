@@ -101,10 +101,11 @@ T = {
              'del proveedor; su efecto en el resultado es menor.'),
     'ant': ('Supuesto', 'Capítulo III, Tabla N° 1 «Base de supuestos del capítulo» (anticipo de 30%) y práctica habitual al '
             'importar desde China: 30% al confirmar el pedido y el saldo antes del embarque (Statrys, 2026).'),
-    'lumb': ('Supuesto', 'Bajo 20 kits, el embarque no reparte bien los cargos locales por embarque (US$600 a US$900, Cargo '
-             'Partner), que la hoja 1.2 prorratea justamente en 20 kits.'),
-    'rfl': ('Supuesto', 'Recargo por kit en pedidos bajo 20 kits: 50% del flete y los cargos prorrateados de la hoja 1.2; rango '
-            'posible de 0% a 100%. Supuesto del equipo, sin cotización.'),
+    'lfij': ('Cálculo', 'Hoja 1.2, pie de la tabla: cargos locales del embarque marítimo (US$750, Cargo Partner) y, por cada '
+             'paquete del courier desde EE.UU., la parte fija de la tarifa (US$21) y el manejo (US$20, eShopex), con el 6% de '
+             'derecho sobre esa parte del flete. Se carga en cada mes con pedido; reemplaza al recargo de pedidos pequeños.'),
+    'lfij_n': ('Supuesto', 'Cada pedido mensual viaja como un embarque consolidado desde China y un envío de courier por '
+               'proveedor desde EE.UU. y el Reino Unido.'),
     'b2': ('Decisión', 'Capítulo III, sección 3.3.3.4 «Compensaciones, beneficios e incentivos»: bono único al validar el nivel, '
            'igual a dos meses del alza de renta entre niveles.'),
     'b3': ('Decisión', 'Capítulo III, sección 3.3.3.4 «Compensaciones, beneficios e incentivos»: bono único al validar el nivel, '

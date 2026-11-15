@@ -457,3 +457,45 @@ financiado $115,3 M; con el piloto dentro, VAN puro $240,6 M, TIR 21,35%, año 0
 
 Abierto para el equipo: dos armarios asecos guardan ~8 baterías (600 kg por armario, 75 kg por repisa; batería de 38 kg), lo
 que alcanza para un dúo. Escalar exige más armarios o una bodega certificada.
+
+### Revisión de piezas e importación (15-11-2026, noche)
+
+Revisión pedida por el equipo sobre el libro de la tarde: piezas adecuadas y costo completo respaldado, sin ajustar demanda ni
+precio para compensar. Cada paso se aplicó sobre el anterior (el paso 0 reproduce exacto el libro de la tarde). Millones de pesos
+salvo el kit.
+
+| Paso | Cambio | Kit mezcla ($) | Δ kit | Inversión año 0 | CT año 0 | VAN puro | TIR pura | VAN con deuda | TIR con deuda |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0 | Libro de la tarde | 3.179.575 | | 381,55 | 210,16 | 275,32 | 24,29% | 245,76 | 29,20% |
+| 1 | Controlador ND84680 (US$308, pico 100 V) en vez del precio del ND96680 rotulado ND72680 | 3.138.817 | −40.758 | 371,45 | 200,07 | 350,44 | 28,95% | 317,54 | 35,17% |
+| 2 | Cortacorriente Albright ED250B-1 (96 V DC, £49,96) en vez del de 12–36 V | 3.183.397 | +44.580 | 382,50 | 211,11 | 268,27 | 23,86% | 239,03 | 28,65% |
+| 3 | Fusible clase T 225 A + bloque Blue Sea (125/160 V DC) en vez del ANL de 32 V | 3.354.778 | +171.381 | 424,95 | 253,56 | −49,48 | 5,35% | −65,76 | 5,06% |
+| 4 | Contactor TE Kilovac LEV200 (12–900 V DC, US$145) en vez del clon sin tensión declarada | 3.391.303 | +36.525 | 435,81 | 264,41 | −118,77 | 1,62% | −132,30 | 0,40% |
+| 5 | Logística por embarque real: cargos locales y mínimos del courier por pedido, seguro marítimo, courier completo, envío del Reino Unido y 6% sobre CIF | 3.373.762 | −17.541 | 439,17 | 267,45 | −122,88 | 1,49% | −136,58 | 0,26% |
+| 6 | Peso de autopartes fijado con el nuevo costo (75,52% → 80,14%; Ku 8,10% → 8,21%) | 3.373.762 | 0 | 439,20 | 267,45 | −124,50 | 1,49% | −138,03 | 0,26% |
+
+Sin cambio en el caso base: bridas y caja (siguen como estimación por analogía, ahora rotuladas así), recuperación del CT (método
+del curso, con conciliación en la hoja 3) y controles (ahora comparan caminos independientes).
+
+Sensibilidades sobre el libro nuevo (VAN puro):
+
+| Prueba | VAN puro | TIR con deuda |
+|---|---:|---:|
+| Kit +3% con tasas fijas | −355,81 | −15,51% |
+| Kit +3% recalculando el peso de autopartes | −356,36 | −15,50% |
+| Bridas y caja a la mitad | +97,99 | 15,71% |
+| Bridas y caja al doble | −768,84 | −23,76% |
+| Piezas chinas con 6% de derecho sobre CIF (sin certificado de origen) | −464,26 | −19,49% |
+| CT por el método del saldo (`Datos!C23 = 0`) | −81,28 | 0,39% |
+| CT: recuperar solo el saldo manteniendo el déficit (cuenta dos veces las pérdidas) | −196,74 | −6,21% |
+| Controlador ND96680 (US$328,70) | −213,39 | −6,04% |
+| Tapa de disco de auto (+US$135 por motor) | −861,16 | −24,25% |
+| Recargo de carga peligrosa de 40% | −132,54 | −0,28% |
+| Precio que deja el VAN puro en cero | +1,70% | |
+
+Conciliación del CT (hoja 3, filas 33 a 39): recuperación $205,9 M = saldo de activos operativos netos $98,7 M + $107,2 M del
+déficit que financió pérdidas del arranque (déficit máximo $216,5 M menos el aumento de activos del año 1). Esa segunda parte no
+es caja existente al cierre; el método del curso la invierte en el año 0 y la devuelve en el año 5.
+
+Pendientes que no se suman por falta de precio: disco de freno, tapa de disco de auto sobre 80 km/h, barras entre celdas,
+precio confirmado del ND84680, presupuesto de bridas y caja, envío desde el Reino Unido, certificado de origen chino.

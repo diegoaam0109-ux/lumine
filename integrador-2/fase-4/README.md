@@ -1,5 +1,6 @@
 # Plan financiero de Lumine · versión para revisar
 
+> **15-11-2026 (noche) · revisión de piezas e importación:** piezas eléctricas aptas para 87–90 V, logística por embarque real, controles independientes y conciliación del CT. **VAN puro −$124,50 M (TIR 1,49%); con deuda −$138,03 M (0,26%); kit $3,37 M.** Con precio +1,70% el VAN puro llega a cero. Detalle: [OBSERVACIONES_V7.md](OBSERVACIONES_V7.md#revisión-de-piezas-e-importación-15-11-2026-noche). Las cifras de la tarde ($275,32 M) quedan como históricas.
 > **15-11-2026 (tarde) · precios respaldados:** todas las piezas del kit y los equipos con precio publicado y enlace; cada supuesto de `Datos` explica su origen y cálculo; dinamómetro con 10% de anticipo y 11–13 semanas de plazo (Mustang Dynamometer). **Ku 8,10%, Ke 9,89%; VAN puro $275,32 M y TIR 24,29%; inversionista $245,76 M y 29,20%; año 0 $381,5 M; préstamo $116,6 M; kit mezcla $3,18 M.** El salto viene del kit (−2,4%); con el kit anterior el modelo daría $132,8 M y 18,34%. Detalle: [OBSERVACIONES_V7.md](OBSERVACIONES_V7.md#comentarios-del-equipo-15-11-2026).
 > 15-11-2026 (mañana) · comentarios del equipo aplicados: preapertura de seis meses escalonada, beta y D/P ponderados, payback a la vista. Cifras de entonces (históricas): VAN puro $129,76 M, TIR con deuda 18,05%.
 >

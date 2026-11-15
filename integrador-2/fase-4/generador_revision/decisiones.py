@@ -180,7 +180,7 @@ for c in ('C14', 'C15'):
 
 PESO = r'_ "$"* #,##0_ ;_ "$"* \-#,##0_ ;_ "$"* "-"_ ;_ @_ '
 CEL, CLARO, GRIS, F = '12AAE9', 'EAF7FD', '595959', 'Arial'
-TC = 'IF({m}="US$",Datos!$C$14,IF({m}="€",Datos!$C$15,1))'
+TC = 'IF({m}="US$",Datos!$C$14,IF({m}="€",Datos!$C$15,IF({m}="£",Datos!$C$249,1)))'
 
 
 def hoja(nombre, titulo, bajada, anchos):
@@ -326,58 +326,90 @@ k = hoja('1.2 Costo del kit', '1.2 Costo directo del kit, pieza por pieza (Esenc
 cab(k, 4, ['Bloque', 'Componente', 'Especificación', 'Proveedor (eslabón de la cadena)', 'Moneda', 'Cant. Esencial',
            'Precio unitario Esencial', 'Cant. Plus', 'Precio unitario Plus', 'Arancel', 'Subtotal Esencial (pesos)',
            'Subtotal Plus (pesos)', 'Fuente, método y mes de consulta', 'Enlace'])
+D_ = lambda r: f'Datos!$C${r}'
 P = [
     ('Tren motriz', 'Motor en la rueda trasera', 'QS273 V3, 72 V: 4.000 W (Esencial) y 6.000 W (Plus)', 'QS Motor, fabricante (China)',
-     'US$', 2, 514.54, 2, 583.77, 0, 'Precio oficial publicado por QS Motor en cnqsmotor.com (consultado el 15-11-2026): QS273 de 4.000 W para auto eléctrico liviano, US$514,54 (enlace); QS273 de 6.000 W, US$583,77 (cnqsmotor.com/product/electric-car-hub-motor-72v-6000-watt-v3-electric-hub-motor/). Plazo de producción publicado: 10 a 12 días hábiles. Arancel 0% por el TLC Chile–China.'),
-    ('Tren motriz', 'Controlador del motor', 'Fardriver ND72680, 72 V, para motores de 4 a 6 kW, con regeneración',
-     'QS Motor, distribuidor oficial de Fardriver', 'US$', 2, 328.70, 2, 328.70, 0,
-     'Precio oficial de lista publicado por QS Motor: US$328,70; la oferta vigente es de US$285,97 y no se usa (consultado el 15-11-2026). '
-     'Fardriver lo indica para motores QS de 4 a 6 kW, con regeneración.'),
+     'US$', 2, 514.54, 2, 583.77, 0, 'Precio oficial publicado por QS Motor en cnqsmotor.com (consultado el 15-11-2026): QS273 de 4.000 W para auto eléctrico liviano, US$514,54 (enlace); QS273 de 6.000 W, US$583,77 (cnqsmotor.com/product/electric-car-hub-motor-72v-6000-watt-v3-electric-hub-motor/). La página no dice qué incluye el precio; las listas de kits de QS venden aparte el disco de freno (ver pendientes al pie). Arancel 0% por el TLC Chile–China, sujeto a certificado de origen.'),
+    ('Tren motriz', 'Controlador del motor', 'Fardriver ND84680: 680 A de fase, pico de 100 V, para motores QS de 4 a 6 kW, con regeneración',
+     'QS Motor, distribuidor oficial de Fardriver', 'US$', 2, 308, 2, 308, 0,
+     'Modelo elegido por tensión, no por precio. La batería de 31 celdas carga hasta 2,8 V por celda (ficha de Yinlong 66160H, 30 Ah) '
+     'y algunas fichas admiten 2,9 V: 86,8 a 89,9 V. El ND72680 tiene un pico de 88 V y quedaría sin margen o por debajo, sobre todo al '
+     'regenerar con la batería llena; el ND84680 admite 100 V (11% a 15% de margen) y el ND96680, 115 V. La misma página de QS Motor '
+     'publica ND72680 a US$243,10, ND84680 a «308SD» (se lee US$308; error tipográfico de la página) y ND96680 a US$328,70 '
+     '(consultado el 15-11-2026). Pendiente: confirmar con QS el precio del ND84680; con el ND96680 el kit sube US$41,40.'),
     ('Batería', 'Celda de litio-titanato 2,3 V y 30 Ah', 'Yinlong 66160H; 31 en serie = 71,3 V y 2,14 kWh',
-     'Gobel Power, distribuidor de fábrica', 'US$', 31, 14, 31, 14, 0, 'Precio publicado por Gobel Power: US$14,00 por celda, modelo YL-66160H-30 (consultado el 15-11-2026).'),
+     'Gobel Power, distribuidor de fábrica', 'US$', 31, 14, 31, 14, 0, 'Precio publicado por Gobel Power: US$14,00 por celda, modelo YL-66160H-30 (consultado el 15-11-2026). Carga hasta 2,8 V y descarga hasta 1,5 V por celda (ficha publicada del modelo). Pendiente: confirmar si incluye las barras de conexión entre celdas. Arancel 0% sujeto a certificado de origen.'),
     ('Batería', 'Sistema de gestión de la batería (BMS)', 'ANT de 10 a 32 series, 200 A, apto para LTO',
      'Vendedor comercial (eBay)', 'US$', 1, 149.28, 1, 149.28, 0,
-     'Precio publicado por el vendedor idealmall8 en eBay: US$149,28 la versión de 200 A (consultado el 15-11-2026). El fabricante, Shiyan Ant IoT, no publica precio; es el único dato encontrado para 31 series.'),
-    ('Batería', 'Contactor principal 200 A', 'Tipo Albright SW200', 'EV Drives, distribuidor (EE.UU.)',
-     'US$', 1, 110, 1, 110, 0.06, 'Precio publicado por EV Drives en eBay: US$110, modelo SW200 (código SOL-SW200S), fabricado en China (consultado el 15-11-2026). Arancel general de 6%: al ser de origen chino, no califica para el TLC con EE.UU.'),
+     'Precio publicado por el vendedor idealmall8 en eBay: US$149,28 la versión de 200 A (consultado el 15-11-2026). El fabricante, Shiyan Ant IoT, no publica precio; es el único dato encontrado para 31 series. Se despacha al almacén del transitario en China y viaja con el resto del kit.'),
+    ('Batería', 'Contactor principal', 'TE Kilovac LEV200, bobina de 12 V, contactos de 12 a 900 V DC y 500 A, sellado',
+     'Electric Motorsport, distribuidor (EE.UU.)', 'US$', 1, 145, 1, 145, 0.06,
+     'Reemplaza al contactor «tipo Albright SW200» de US$110, cuya publicación no declara tensión de contactos. Ficha de TE: contactos '
+     'de 12 a 900 V DC, 500 A continuos, 0,60 kg. Precio de Electric Motorsport: US$145 la versión a elección de bobina (la de US$85 '
+     'trae economizador y el vendedor advierte no usarla con controladores que ya lo tienen). Consultado el 15-11-2026. Origen México '
+     '(ficha de RS); arancel de 6% por prudencia, sin certificado de origen.'),
     ('Control', 'Unidad de control (hardware)', 'Macchina M2 Under-the-Hood, 2 CAN', 'Macchina, fabricante (EE.UU.)',
      'US$', 1, 99, 1, 99, 0.06, 'Precio publicado por el fabricante en macchina.cc: US$99 (consultado el 15-11-2026). El software es desarrollo propio. Arancel general de 6% por prudencia: no hay certificado de origen confirmado.'),
     ('Control', 'Sensor de presión de freno', 'Transductor 0,5–4,5 V con sello para líquido de frenos', 'DATAQ, fabricante (EE.UU.)',
-     'US$', 1, 68, 1, 68, 0.06, 'Precio publicado por DATAQ para el modelo 2000361-H de 0,5 a 4,5 V: US$68 (consultado el 15-11-2026).'),
+     'US$', 1, 68, 1, 68, 0.06, 'Precio publicado por DATAQ para el modelo 2000361-H de 0,5 a 4,5 V: US$68 (consultado el 15-11-2026). Arancel general de 6% por prudencia: no hay certificado de origen confirmado.'),
     ('Mecánica', 'Brida motor–mangueta y soporte de pinza (par)', 'Mecanizado CNC en aluminio 6061 T6',
-     'Referencia: WSP Separadores de Rueda (España), mecanizado CNC en aluminio 6061 T6', '€', 2, 72.7273, 2, 72.7273, 0,
-     'Estimación por analogía: WSP publica pares de separadores de rueda mecanizados en CNC en aluminio 6061 T6 desde €88 con IVA '
-     'de España (21%), es decir €72,73 netos (consultado el 15-11-2026). Supuesto del equipo: una brida exige un volumen de aluminio '
-     'y de horas de máquina parecido al de un par de separadores, por lo que se valoriza cada brida al precio de un par.'),
+     'ESTIMACIÓN por analogía, no es cotización: WSP Separadores de Rueda (España)', '€', 2, 72.7273, 2, 72.7273, 0,
+     'ESTIMACIÓN, no cotización. WSP publica pares de separadores de rueda mecanizados en CNC en aluminio 6061 T6 desde €88 con IVA '
+     'de España (21%), €72,73 netos (consultado el 15-11-2026). La fuente prueba el precio de los separadores, no el de la brida: se '
+     'supone que una brida exige un volumen de aluminio y horas de máquina parecidos a los de un par. Pendiente: presupuesto de '
+     'fabricación con plano y cantidades. Sensibilidad en el pie de la hoja: de la mitad al doble.'),
     ('Mecánica', 'Pinza de freno trasera', 'Pinza de repuesto sobre el disco del motor', 'Mercado Libre Chile, avisos de pinzas traseras de auto',
      'CLP', 2, 53762, 2, 53762, 0, 'Promedio de cuatro precios publicados de pinzas traseras de auto y camioneta (consultados el 15-11-2026): '
      '$40.450 (par de Suzuki Nomade a $80.900), $47.500 (par de Ford F150 a $95.000), $76.960 (Maxus T60/T80) y $91.000 (Maxus T60): '
      '$63.978 con IVA, $53.762 netos.'),
     ('Mecánica', 'Cable de potencia 35 mm² (metro)', 'H01N2-D flexible', 'Vitel Energía, distribuidor en Chile',
      'CLP', 5, 10094.96, 5, 10094.96, 0, 'Precio publicado por Vitel Energía: $12.013 con IVA por metro (septiembre de 2026); se usa neto de IVA ($10.095). Ficha del producto en el enlace.'),
-    ('Mecánica', 'Fusible ANL con portafusible', 'Portafusible ANL con fusible de 200 A, corriente continua', 'Mercado Libre Chile',
-     'CLP', 1, 11554.62, 1, 11554.62, 0, 'Precio publicado de $13.750 con IVA por el conjunto portafusible y fusible ANL de 200 A (consultado el 15-11-2026); se usa neto, $11.555.'),
-    ('Mecánica', 'Cortacorriente de batería 300 A', 'Desconectador manual de emergencia', 'Ferretools, comercio en Chile',
-     'CLP', 1, 24690, 1, 24690, 0, 'Precio publicado por Ferretools: $24.690 más IVA, corta corriente reforzado de 300 A a 12/36 V e IP67 (consultado el 15-11-2026; sin stock ese día). Contraste con stock: TTP publica uno de 300 A a $28.280 con IVA ($23.765 netos).'),
-    ('Mecánica', 'Caja metálica de la batería', 'Mecanizado, misma referencia que la brida', 'Referencia: WSP Separadores de Rueda (España)',
-     '€', 1, 72.7273, 1, 72.7273, 0, 'Mismo método que la brida: se valoriza como un par de separadores mecanizados, €88 con IVA de España, €72,73 netos (consultado el 15-11-2026). Supuesto del equipo sobre la equivalencia de mecanizado.'),
+    ('Mecánica', 'Fusible clase T de 225 A con portafusible', 'Blue Sea 5117 (225 A, 20 kA a 125 V DC) y bloque 5502100 (160 V DC, 320 A)',
+     'Fisheries Supply y Del City, distribuidores (EE.UU.)', 'US$', 1, '=92.51+82.79', 1, '=92.51+82.79', 0.06,
+     'Reemplaza al fusible ANL, cuya tensión típica de 32 V DC no sirve para una batería de 87 a 90 V. Fusible Blue Sea 5117 a US$92,51 '
+     '(Fisheries Supply) y bloque con tapa 5502100 a US$82,79 (Del City), consultados el 15-11-2026. Se usa 225 A porque el bloque para '
+     'fusibles de 110 a 200 A (5007100) admite solo 160 A continuos y la versión Plus llega a unos 170 A (12 kW / 71 V); el BMS limita '
+     'a 200 A. Arancel de 6% por prudencia.'),
+    ('Mecánica', 'Cortacorriente de emergencia', 'Albright ED250B-1: 250 A, hasta 96 V DC, con soplado magnético; corta 1.000 A a 96 V DC',
+     'Arc Components, distribuidor de Albright (Reino Unido)', '£', 1, 49.96, 1, 49.96, 0.06,
+     'Reemplaza al cortacorriente de Ferretools (12 a 36 V), que no sirve para la tensión del kit. Ficha de Albright ED250: tensión '
+     'máxima recomendada 96 V DC en la versión B y corte de 1.000 A a 96 V DC; Arc Components publica £49,96 sin IVA del Reino Unido '
+     '(consultado el 15-11-2026). Abre el circuito en una emergencia o para mantención; la conexión y desconexión normal la hace el '
+     'contactor. Arancel de 6% por prudencia, sin certificado de origen.'),
+    ('Mecánica', 'Caja metálica de la batería', 'Mecanizado, misma referencia que la brida', 'ESTIMACIÓN por analogía, no es cotización: WSP (España)',
+     '€', 1, 72.7273, 1, 72.7273, 0, 'ESTIMACIÓN, no cotización. Mismo método que la brida: se valoriza como un par de separadores mecanizados, €72,73 netos (consultado el 15-11-2026). Pendiente: presupuesto de fabricación local o importada con especificaciones.'),
     ('Mecánica', 'Consumibles de conexión', '10 terminales de cobre de 35 mm², un set de termocontraíble y 10 m de cable de señal 18 AWG',
      'Comercios en Chile (Mercado Libre, Easy y Líder)', 'CLP', 1, '=(7500+3990+27990*10/31)/1.19', 1, '=(7500+3990+27990*10/31)/1.19', 0,
      'Precios publicados con IVA (consultados el 15-11-2026): pack de 10 terminales de ojo para 35 mm², $7.500; kit de 530 tubos '
      'termocontraíbles, $3.990; cable automotriz 18 AWG, dos carretes de 15,5 m a $27.990 ($903 el metro). Cantidades, supuesto del '
      'equipo según el circuito: diez extremos de cable de potencia (batería, fusible, contactor, cortacorriente y dos controladores, '
      'ida y vuelta) y diez metros de señal entre la unidad de control, el sensor y los controladores. Total $17.243 netos.'),
-    ('Logística', 'Flete marítimo LCL China–San Antonio', '0,19 m³ por kit (cajas de 43 × 43 × 43 cm de los motores)',
-     'Cargo Partner, transitario', 'US$', 1, 34.2, 1, 34.2, 0,
-     'Cargo Partner publica, para un envío consolidado típico de 5 m³ desde Shanghái, un flete de US$700 a US$1.100 (consultado el '
-     '15-11-2026): punto medio US$900 / 5 m³ = US$180 por m³. Por kit: US$180 × 0,19 m³ = US$34,20. Contraste: SLC Logística '
-     'publica US$180 a US$250 por W/M desde puertos chinos, con unos 40 días de tránsito (agosto de 2026).'),
-    ('Logística', 'Cargos locales por embarque, prorrateados en 20 kits', 'Desconsolidación, agente de aduana y transporte',
-     'Cargo Partner, transitario', 'US$', 1, 37.5, 1, 37.5, 0, 'Cargo Partner publica US$600 a US$900 de cargos locales chilenos por embarque consolidado (consultado el 15-11-2026); punto medio US$750 repartido en un embarque de 20 kits (Datos, fila 101) = US$37,50 por kit.'),
-    ('Logística', 'Recargos de carga peligrosa clase 9, prorrateados', 'Baterías de litio: manejo, documentos y recargo',
-     'Great Hensen, transitario', 'US$', 1, '=0.275*34.2', 1, '=0.275*34.2', 0, 'Great Hensen publica que la carga peligrosa por mar lleva un recargo de 15% a 40% sobre la carga normal (consultado el 15-11-2026); punto medio 27,5% sobre el flete por kit de US$34,20 = US$9,41. Se aplica a todo el kit, aunque solo la batería es clase 9: queda del lado conservador.'),
-    ('Logística', 'Courier de los ítems de EE.UU.', 'Contactor, unidad de control y sensor', 'eShopex, casilla en Miami',
-     'US$', 1, '=(106+20*8.5)/20', 1, '=(106+20*8.5)/20', 0, 'Peso por kit: cerca de 1,5 kg (el contactor pesa 1,28 kg según la ficha de Arc Components; la unidad de control y el sensor, menos de 0,2 kg entre ambos). Tarifa publicada por eShopex desde Miami (consultada el 15-11-2026): US$106 hasta 10 kg y US$8,50 por kilo adicional. Un envío consolidado de 20 kits pesa 30 kg: US$106 + 20 × US$8,50 = US$276, US$13,80 por kit.'),
+    ('Logística', 'Flete marítimo LCL con recargo de carga peligrosa (por kit)', 'Volumen embalado por kit × tarifa por m³ × (1 + recargo); Datos, filas 250 a 253',
+     'Cargo Partner y Great Hensen, transitarios', 'US$', 1, f'={D_(250)}*{D_(252)}*(1+{D_(253)})', 1, f'={D_(250)}*{D_(252)}*(1+{D_(253)})', 0,
+     'Parte variable del flete desde China: 0,19 m³ por kit × US$180 por m³ (Cargo Partner) × 1,275 (recargo de carga peligrosa de '
+     'Great Hensen, punto medio de 15% a 40%, aplicado a todo el kit). El kit pesa unos 95 kg, menos de una tonelada por cada m³, de '
+     'modo que se cobra por volumen. Los cargos locales por embarque van aparte, como costo fijo de cada pedido (pie de la hoja).'),
+    ('Logística', 'Seguro de carga marítima (por kit)', '0,22% del costo y flete de las piezas que vienen de China; Datos, fila 255',
+     'Tasa de referencia de Chubb aceptada por el Servicio Nacional de Aduanas', 'US$', 1,
+     f'={D_(255)}*(G5*H5+G6*H6+G7*H7+G8*H8+H19)', 1, f'={D_(255)}*(I5*J5+I6*J6+I7*J7+I8*J8+J19)', 0,
+     'Resolución N° 307 del Servicio Nacional de Aduanas (valoración): tasa de 0,22% por viaje sobre el costo y flete, con prima mínima '
+     'de US$25 por póliza. Con pedidos de 10 kits o más, la prima supera el mínimo. Sin seguro declarado, Aduanas valora con 2% teórico.'),
+    ('Logística', 'Courier desde EE.UU., parte variable (por kit)', 'US$8,50 por kilo × 1,44 kg + seguro de 1,5% del valor; Datos, filas 257 a 262',
+     'eShopex, casilla en Miami', 'US$', 1, f'={D_(260)}*{D_(257)}+{D_(262)}*(G9*H9+G10*H10+G11*H11+G15*H15)', 1,
+     f'={D_(260)}*{D_(257)}+{D_(262)}*(I9*J9+I10*J10+I11*J11+I15*J15)', 0,
+     'Tarifa publicada por eShopex (consultada el 15-11-2026): US$106 hasta 10 kg y US$8,50 por kilo adicional; manejo de US$2 a US$20 '
+     'por paquete según su valor; seguro de US$1,50 por cada US$100 declarados. eShopex no consolida: llega un paquete por proveedor. '
+     'Peso por kit: contactor 0,60 kg (ficha de TE), fusible 0,14 kg y bloque 0,50 kg (Blue Sea), unidad de control y sensor 0,20 kg '
+     '(supuesto). La parte fija de cada paquete va en el costo fijo por embarque (pie de la hoja).'),
+    ('Logística', 'Courier desde el Reino Unido (por kit)', '0,5 kg por kit × tarifa por kilo; Datos, filas 263 y 264',
+     'ESTIMACIÓN: tarifa de courier desde Europa publicada por eShopex', 'US$', 1, f'={D_(264)}*{D_(263)}', 1, f'={D_(264)}*{D_(263)}', 0,
+     'ESTIMACIÓN. Arc Components no publica su tarifa de exportación; se usa la tarifa publicada por eShopex desde Europa (US$143 por '
+     '10 kg = US$14,30 por kilo) sobre el peso de despacho del cortacorriente, 0,5 kg (Arc Components). Pendiente: cotizar el envío.'),
+    ('Logística', 'Derecho de aduana sobre flete y seguro de las piezas afectas (base CIF)', '6% del flete y seguro del courier; Datos, fila 265',
+     'Servicio Nacional de Aduanas', 'US$', 1, f'={D_(265)}*(H21+H22)', 1, f'={D_(265)}*(J21+J22)', 0,
+     'El derecho ad valorem de 6% se calcula sobre el valor CIF (costo + seguro + flete). Las filas de cada pieza aplican el 6% sobre su '
+     'precio; esta fila agrega el 6% sobre el flete y el seguro del courier. Las piezas de China van con 0% por el TLC, sujeto al '
+     'certificado de origen; con 6% el kit subiría (ver pie de la hoja).'),
     ('Puesta en regla', 'Alineación después de la instalación', 'Taller externo', 'Neumax, servicio en Chile',
      'CLP', 1, 16806.72, 1, 16806.72, 0, 'Precio publicado por Neumax para la alineación de un auto: $20.000 con IVA (consultado el 15-11-2026); se usa neto, $16.807.'),
     ('Puesta en regla', 'Revisión técnica después de la instalación', 'Planta de revisión, Región Metropolitana',
@@ -387,18 +419,19 @@ r = 5
 ENLACE = {
     'Motor en la rueda trasera': 'https://www.cnqsmotor.com/product/4000-watt-72v-80kph-qs273-hub-motor-for-electric-light-car/',
     'Controlador del motor': 'https://www.cnqsmotor.com/product/fardriver-controller-nd72680-nd84680-nd96680-sine-wave-controller/',
-    'Contactor principal 200 A': 'https://www.ebay.com/itm/271860011296',
+    'Contactor principal': 'https://www.electricmotorsport.com/ev-parts?cat=20',
     'Unidad de control (hardware)': 'https://www.macchina.cc/catalog/m2-boards/m2-under-hood',
     'Brida motor–mangueta y soporte de pinza (par)': 'https://www.separadoresderueda.com/separadores/mini/',
     'Pinza de freno trasera': 'https://listado.mercadolibre.cl/caliper-trasero',
-    'Fusible ANL con portafusible': 'https://listado.mercadolibre.cl/fusible-anl',
-    'Cortacorriente de batería 300 A': 'https://ferretools.cl/producto/corta-corriente-reforzado-300amp/',
+    'Fusible clase T de 225 A con portafusible': 'https://www.fisheriessupply.com/blue-sea-systems-class-t-fuses/5114',
+    'Cortacorriente de emergencia': 'https://arc-components.com/ed250b-1-albright-heavy-duty-emergency-stop-switch-250a-96v-max-5210.html',
     'Caja metálica de la batería': 'https://www.separadoresderueda.com/separadores/mini/',
     'Consumibles de conexión': 'https://articulo.mercadolibre.cl/MLC-2631488778-pack-10-terminal-ojo-compresion-2-awg-35mm-para-cables-_JM',
-    'Flete marítimo LCL China–San Antonio': 'https://www.cargopartner.cl/importar-desde/china',
-    'Cargos locales por embarque, prorrateados en 20 kits': 'https://www.cargopartner.cl/importar-desde/china',
-    'Recargos de carga peligrosa clase 9, prorrateados': 'https://www.greathensen.com/en/services/dangerous-goods-freight-from-china.html',
-    'Courier de los ítems de EE.UU.': 'https://eshopex.cl/tarifas/',
+    'Flete marítimo LCL con recargo de carga peligrosa (por kit)': 'https://www.cargopartner.cl/importar-desde/china',
+    'Seguro de carga marítima (por kit)': 'https://www.aduana.cl/valoracion-resolucion-n-307/aduana/2007-02-24/205634.html',
+    'Courier desde EE.UU., parte variable (por kit)': 'https://eshopex.cl/tarifas/',
+    'Courier desde el Reino Unido (por kit)': 'https://eshopex.cl/tarifas/',
+    'Derecho de aduana sobre flete y seguro de las piezas afectas (base CIF)': 'https://www.aduana.cl/cuanto-impuesto-se-paga-al-importar/aduana/2018-12-12/233227.html',
     'Alineación después de la instalación': 'https://neumax.cl/tienda/nuevos-productos/alineacion-auto-2/',
     'Revisión técnica después de la instalación': 'https://practicatest.cl/blog/tramites-y-renovaciones/valores-revision-tecnica-santiago',
     'Celda de litio-titanato 2,3 V y 30 Ah': 'https://www.gobelpower.com/yinlong-23v-30ah-lto-66160h-cells-for-diy-car-audio-battery_p26.html',
@@ -406,6 +439,13 @@ ENLACE = {
     'Sensor de presión de freno': 'https://www.dataq.com/products/accessories/pressure-sensor/5vindex.html',
     'Cable de potencia 35 mm² (metro)': 'https://vitelenergia.com/es/productpagepdf/product/printaction/product_id/4331/',
 }
+# Las fórmulas de logística apuntan a filas fijas del kit: si cambia el orden de P, se detiene
+_orden = [p[1] for p in P]
+assert _orden.index('Controlador del motor') == 1 and _orden.index('Sistema de gestión de la batería (BMS)') == 3
+assert _orden.index('Contactor principal') == 4 and _orden.index('Fusible clase T de 225 A con portafusible') == 10
+assert _orden.index('Flete marítimo LCL con recargo de carga peligrosa (por kit)') == 14
+assert _orden.index('Courier desde EE.UU., parte variable (por kit)') == 16
+assert _orden.index('Courier desde el Reino Unido (por kit)') == 17
 for blo, comp, esp, prov, mon, ce, pe, cp, pp, ara, nota_ in P:
     for c, v in [(2, blo), (3, comp), (4, esp), (5, prov)]:
         celda(k, r, c, v, wrap=True)
@@ -438,6 +478,48 @@ r += 1
 celda(k, r, 3, 'Parte que se paga en moneda extranjera (efecto de cada $10 de dólar)')
 celda(k, r, 12, f'=SUMPRODUCT((F5:F{tot-1}="US$")*G5:G{tot-1}*H5:H{tot-1}*(1+K5:K{tot-1}))*10', PESO)
 celda(k, r, 13, f'=SUMPRODUCT((F5:F{tot-1}="US$")*I5:I{tot-1}*J5:J{tot-1}*(1+K5:K{tot-1}))*10', PESO)
+r += 1
+fij = r
+celda(k, r, 3, 'Costo logístico fijo por embarque (pesos; se paga en cada pedido, no por kit)', bold=True)
+celda(k, r, 12, '=(Datos!$C$254+Datos!$C$258*(Datos!$C$259+Datos!$C$261)+Datos!$C$265*Datos!$C$258*Datos!$C$259)*Datos!$C$14',
+      PESO, bold=True, fill=CLARO)
+celda(k, r, 14, 'Cargos locales del embarque marítimo (US$750, punto medio de US$600 a US$900 de Cargo Partner) más, por cada uno '
+               'de los cinco paquetes del courier desde EE.UU., la parte fija de la tarifa sobre 10 kg (US$106 − 10 × US$8,50 = US$21) y '
+               'el manejo (US$20, tramo de mayor valor), con el 6% de derecho sobre esa parte del flete. Va a Datos, fila 101, y el '
+               'modelo mensual lo carga en cada mes en que se hace un pedido.', wrap=True)
+k.row_dimensions[r].height = 60
+r += 1
+celda(k, r, 3, 'Kits por embarque, promedio de los pedidos del modelo')
+celda(k, r, 12, '=Datos!$C$266', '#,##0.0')
+r += 1
+celda(k, r, 3, 'Costo por kit con el embarque promedio (mezcla de ventas)', bold=True)
+celda(k, r, 12, f'=L{tot+1}+L{fij}/L{fij+1}', PESO, bold=True)
+r += 1
+celda(k, r, 3, 'Sensibilidad de bridas y caja: a la mitad (columna L) y al doble (columna M), pesos por kit')
+celda(k, r, 12, f'=-0.5*(L12+L17)', PESO)
+celda(k, r, 13, f'=1*(M12+M17)', PESO)
+r += 1
+celda(k, r, 3, 'Sensibilidad: piezas de China con 6% de derecho sobre el valor CIF (pesos por kit)')
+celda(k, r, 12, f'=Datos!$C$265*(L5+L6+L7+L8+L19+L20)', PESO)
+celda(k, r, 13, f'=Datos!$C$265*(M5+M6+M7+M8+M19+M20)', PESO)
+r += 2
+celda(k, r, 2, 'Pendientes de confirmar con proveedores (no se suman al costo porque no hay precio publicado):', bold=True)
+k.merge_cells(start_row=r, start_column=2, end_row=r, end_column=15)
+for txt in [
+    '1. Disco de freno: los kits de QS Motor para autos venden el disco aparte («we offer brake disc to fit with motor») y la ficha '
+    'del motor no lo incluye. Falta su precio.',
+    '2. Montaje del disco y velocidad: el QS273 de esta hoja está bobinado para 80 km/h y trae el soporte de disco de moto (3 × 80 mm). '
+    'QS sugiere sobre 80 km/h una tapa con disco de auto (4 × 114,3 mm) por US$135 más por motor. Definir si el kit se desacopla sobre '
+    '80 km/h o se compra esa tapa (US$270 por kit).',
+    '3. Barras de conexión entre las 31 celdas: confirmar si Gobel Power las incluye.',
+    '4. Precio del controlador ND84680 (la página dice «308SD») y certificado de origen de las piezas chinas (0% de arancel).',
+    '5. Bridas y caja: presupuesto de fabricación con plano y cantidades.',
+    '6. Envío desde el Reino Unido: tarifa de exportación de Arc Components.',
+]:
+    r += 1
+    celda(k, r, 2, txt, wrap=True)
+    k.merge_cells(start_row=r, start_column=2, end_row=r, end_column=15)
+    k.row_dimensions[r].height = 30
 r += 2
 celda(k, r, 2, 'Método: cada pieza se cotiza en el eslabón más cercano al fabricante que publica precio. Las piezas sin precio '
                'publicado quedan como supuesto o estimación y lo dicen en su fila. No incluye la mano de obra del dúo (va en '
@@ -506,9 +588,12 @@ assert all(d.cell(rr, 2).value is None for rr in range(241, 247)), 'Datos!B241:B
 d['B241'] = 'Ponderación de industrias para el beta y la relación deuda / patrimonio (decisión del equipo, 15-11-2026)'
 estilo_como(d['B241'], d['B42'])
 DAM = 'Damodaran, «Betas by Sector (US)», enero de 2026: '
-fila_dato(242, 'Peso de autopartes: participación del kit en el ingreso por instalación', '=C52/C49', '%', 'Cálculo',
-          'Costo directo del kit de la mezcla de ventas (fila 52) dividido por el ingreso neto por instalación (fila 49); con '
-          'los precios vigentes, $3,18 / $4,21 millones = 75,5%. El resto del ingreso remunera la instalación, la calibración y el servicio.',
+fila_dato(242, 'Peso de autopartes en el ingreso por instalación (fijo del caso base)', '=C52/C49', '%', 'Supuesto con cálculo',
+          'Lumine cobra un precio único que paga dos actividades: el kit, una autoparte importada y revendida, y la instalación y '
+          'calibración, un servicio automotriz. Sin precios separados, se asigna al kit su costo de compra (fila 52) y el resto del '
+          'ingreso neto (fila 49) al servicio; el cociente del caso base se fija como número, para que una sensibilidad del costo '
+          'del kit no mueva el beta ni la deuda. Es un supuesto: con margen sobre el kit su peso subiría; con 100% (solo '
+          'autopartes) Ku sería 8,65%.',
           'Con 1 se vuelve a la sola industria de autopartes.')
 fila_dato(243, 'Beta desapalancado, autopartes («Auto Parts», corregido por caja)', 1.13, 'beta', 'Dato publicado',
           DAM + '35 empresas, beta desapalancado corregido por caja 1,13.')
@@ -615,6 +700,75 @@ for fila_, tasa in ((15, 'Datos!$C$16'), (18, 'Datos!$C$18')):
 ct['B16'] = 'Capital de trabajo comprado antes de abrir (ya incluido en la inversión del año 0)'
 
 # ---------------------------------------------------------------- Notas
+
+# ---------------------------------------------------------------- 9. Importación del kit por embarque (revisión del 15-11-2026)
+# Los cargos que se pagan por pedido (cargos locales, mínimos del courier y manejo) dejan de prorratearse en 20 kits fijos y
+# se cargan en cada mes con pedido; el kit lleva solo la parte variable. Reemplaza el recargo de pedidos pequeños.
+assert all(d.cell(rr, 2).value is None for rr in range(248, 267)), 'Datos!B248:B266 no está libre'
+d['B248'] = 'Importación del kit: parámetros por embarque (revisión del 15-11-2026)'
+estilo_como(d['B248'], d['B42'])
+LOG = [
+    (249, 'gbp', 'Tipo de cambio de la libra esterlina', 1308.03, 'pesos por libra', 'Dato',
+     'Banco Central de Chile, tipos de cambio y paridades al 5-11-2026 (Diario Oficial N° 44.591): libra esterlina $1.308,03.'),
+    (250, 'm3k', 'Volumen embalado por kit, vía marítima', 0.19, 'm³', 'Dato y supuesto',
+     'Dos cajas de motor de 43 × 43 × 43 cm (QS Motor) = 0,159 m³, más celdas, controladores y BMS, unos 0,03 m³ (supuesto del equipo).'),
+    (251, 'kgk', 'Peso bruto por kit, vía marítima', '=2*25+31*1.24+2*3+1', 'kg', 'Dato y supuesto',
+     'Motores de 25 kg brutos (QS Motor), 31 celdas de 1,24 kg (ficha de Yinlong), dos controladores de 3 kg (ficha del ND72680, misma '
+     'carcasa) y 1 kg de BMS (supuesto). Unos 95 kg: menos de 1 t por m³, por lo que el flete se cobra por volumen.'),
+    (252, 'tlcl', 'Flete marítimo consolidado desde China', 180, 'US$ por m³', 'Dato publicado',
+     'Cargo Partner: US$700 a US$1.100 por 5 m³ desde Shanghái; punto medio US$900 / 5 = US$180 por m³ (consultado el 15-11-2026).'),
+    (253, 'dgr', 'Recargo de carga peligrosa sobre el flete', 0.275, '%', 'Dato publicado (rango)',
+     'Great Hensen: 15% a 40% sobre la carga normal; se usa el punto medio y se aplica a todo el kit (consultado el 15-11-2026).'),
+    (254, 'cloc', 'Cargos locales por embarque marítimo', 750, 'US$ por embarque', 'Dato publicado (rango)',
+     'Cargo Partner: US$600 a US$900 por embarque consolidado (desconsolidación, agente de aduana y transporte); punto medio.'),
+    (255, 'segm', 'Seguro de carga marítima', 0.0022, '% de costo y flete', 'Dato publicado',
+     'Servicio Nacional de Aduanas, Resolución N° 307 (valoración): tasa de 0,22% por viaje certificada por Chubb, prima mínima US$25.'),
+    (256, 'segmin', 'Prima mínima del seguro de carga', 25, 'US$ por póliza', 'Dato publicado',
+     'Misma fuente. No se activa: un pedido mínimo de 10 kits vale más de US$20.000 y su prima pasa de US$44.'),
+    (257, 'kgus', 'Peso por kit de las piezas de EE.UU.', '=0.6+0.14+0.5+0.2', 'kg', 'Dato y supuesto',
+     'Contactor 0,60 kg (ficha de TE), fusible 0,14 kg y bloque 0,50 kg (Blue Sea), unidad de control y sensor 0,20 kg (supuesto).'),
+    (258, 'npus', 'Paquetes por embarque desde EE.UU.', 5, 'paquetes', 'Dato',
+     'Un paquete por proveedor (contactor, fusible, bloque, unidad de control y sensor): eShopex no consolida (página de tarifas).'),
+    (259, 'cbase', 'Parte fija de la tarifa del courier por paquete', '=106-10*8.5', 'US$ por paquete', 'Dato publicado y cálculo',
+     'eShopex: US$106 hasta 10 kg y US$8,50 por kilo adicional; sobre 10 kg la tarifa es US$21 + US$8,50 por kilo.'),
+    (260, 'ckg', 'Tarifa del courier por kilo', 8.5, 'US$ por kg', 'Dato publicado', 'eShopex, tarifa desde Miami (consultada el 15-11-2026).'),
+    (261, 'cman', 'Manejo por paquete', 20, 'US$ por paquete', 'Dato publicado',
+     'eShopex: US$2 a US$20 según el valor del paquete; se usa el tramo mayor (sobre US$1.000), del lado conservador.'),
+    (262, 'cseg', 'Seguro del courier', 0.015, '% del valor declarado', 'Dato publicado',
+     'eShopex: US$1,50 por cada US$100 declarados (cobertura hasta US$500 por paquete).'),
+    (263, 'kguk', 'Peso por kit de las piezas del Reino Unido', 0.5, 'kg', 'Dato publicado',
+     'Peso de despacho del cortacorriente Albright ED250B-1 (Arc Components).'),
+    (264, 'cuk', 'Courier desde Europa por kilo', '=143/10', 'US$ por kg', 'Estimación',
+     'Tarifa publicada por eShopex desde Europa, US$143 por 10 kg. Arc Components no publica la suya: pendiente de cotizar.'),
+    (265, 'ara', 'Derecho ad valorem general', 0.06, '% del valor CIF', 'Dato publicado',
+     'Servicio Nacional de Aduanas: 6% del valor CIF (costo, seguro y flete) para las mercancías sin tratado aplicable.'),
+    (266, 'lote', 'Kits por embarque, promedio de los pedidos del modelo', '=SUM(Mensual!D39:CC39)/MAX(1,COUNTIF(Mensual!D39:CC39,">0"))',
+     'kits', 'Cálculo', 'Promedio de los pedidos mensuales del modelo (fila 39 del motor mensual); solo informa el costo por kit con '
+     'el embarque promedio en la hoja 1.2.'),
+]
+for rr, clave, et, val, uni, est, fue in LOG:
+    d.cell(rr, 1).value = clave
+    fila_dato(rr, et, val, uni, est, fue)
+for rr in (253, 255, 262, 265):
+    d.cell(rr, 3).number_format = '0.00%'
+# Fila 101: costo fijo por embarque, desde la hoja 1.2; fila 102: ya no se usa (recargo de pedidos pequeños)
+d['A101'] = 'lfij'
+fila_dato(101, 'Costo logístico fijo por embarque (se paga en cada pedido)', f"='1.2 Costo del kit'!L{fij}", '$', 'Cálculo',
+          'Hoja 1.2, pie de la tabla: cargos locales del embarque marítimo y parte fija de los paquetes del courier, con el derecho '
+          'sobre esa parte del flete. Reemplaza al recargo de pedidos bajo 20 kits.')
+d['A102'] = 'lfij_n'
+fila_dato(102, 'Embarques por pedido', 1, 'embarques', 'Supuesto',
+          'Cada pedido mensual viaja como un embarque marítimo consolidado y un envío de courier por proveedor.')
+for c in range(4, m.max_column + 1):
+    x = get_column_letter(c)
+    if isinstance(m.cell(3, c).value, int):
+        m[f'{x}43'] = f'=IF({x}39>0,Datos!$C$101*Datos!$C$102,0)'
+m['A43'] = 'Costo logístico fijo del embarque (cargos locales, mínimos del courier y manejo)'
+m['A138'] = 'Costo logístico fijo de los embarques (costo del período en que se paga)'
+an = w['Anual']
+if isinstance(an['A80'].value, str) and 'flete' in an['A80'].value.lower():
+    an['A80'] = 'Costo logístico fijo de los embarques'
+
 nt = w['Notas y cambios']
 for row in nt.iter_rows():
     for z in row:
