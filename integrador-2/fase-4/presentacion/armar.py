@@ -1,11 +1,12 @@
 """Arma la presentación web de la Fase 4.
 
 Salidas:
-  lumine-presentaciones/fase4/index.html  (sitio de GitHub Pages, con fuentes e imágenes como archivos)
+  lumine-presentaciones/fase4/index.html  (visor compartido con Fase 3)
+  lumine-presentaciones/fase4/renderer.html y deck-data.js (contenido animado y metadatos)
   /tmp/propuesta_fase4.html               (una sola página con todo incrustado, para el artefacto de Claude)
 La curva de caja mensual se lee del libro v7 (hoja A3 Capital trabajo mensual, fila 16).
 """
-import base64, json, pathlib, shutil
+import base64, json, pathlib, shutil, re
 import openpyxl
 
 AQUI = pathlib.Path(__file__).resolve().parent
@@ -46,9 +47,30 @@ def main():
         shutil.copy(AQUI / 'a' / f, SITIO / 'img' / f)
         sitio = sitio.replace(k, 'img/' + f)
         unico = unico.replace(k, b64(AQUI / 'a' / f, 'image/png' if f.endswith('png') else 'image/jpeg'))
-    (SITIO / 'index.html').write_text(sitio, encoding='utf-8')
+    (SITIO / 'renderer.html').write_text(sitio, encoding='utf-8')
+    nombres = json.loads(re.search(r'const nombres = (\[.*?\]);', base).group(1).replace("'", '\"'))
+    notas = re.findall(r"L.push\(\{ rol: '[^']*', clara: (?:true|false), nota: '([^']*)'", base)
+    assert len(nombres) == len(notas) == 17
+    datos = dict(title='Lumine · Fase 4 · Plan financiero', mainSlides=14,
+        slides=[dict(title=n, frame=f'renderer.html?embed#lamina-{i+1}',
+                     notes='<p><b>Nota de diseño (no es un guion):</b></p><p>'+notas[i]+'</p>')
+                for i, n in enumerate(nombres)],
+        annex=[dict(code=f'A{i-13}', title=nombres[i], slide=i+1,
+                    question=q, keywords=k) for i, q, k in [
+            (14, '¿Cómo cambian los resultados del proyecto entre escenarios?', ['VAN', 'TIR', 'sensibilidad']),
+            (15, '¿Por qué se utiliza esta prima de mercado?', ['IPSA', 'CAPM', 'tasa', 'riesgo']),
+            (16, '¿Cómo se paga la deuda?', ['crédito', 'amortización', 'interés', 'banco'])]])
+    (SITIO / 'deck-data.js').write_text('window.DECK = '+json.dumps(datos, ensure_ascii=False, indent=2)+';\n', encoding='utf-8')
+    (SITIO / 'index.html').write_text('''<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumine · Fase 4 · Plan financiero</title>
+<link rel="stylesheet" href="../engine/deck.css"></head><body>
+<script src="deck-data.js"></script><script src="../engine/deck.js"></script>
+</body></html>
+''', encoding='utf-8')
     pathlib.Path('/tmp/propuesta_fase4.html').write_text(unico, encoding='utf-8')
-    print('ok', SITIO / 'index.html', len(sitio) // 1024, 'KB')
+    print('ok', SITIO, 'visor + datos + renderer', len(sitio) // 1024, 'KB')
 
 
 if __name__ == '__main__':

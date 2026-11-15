@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Propuesta visual Fase 4</title>
+<title>Lumine · Fase 4 · Plan financiero</title>
 <style>
 :root{
   --negro:#020304; --tinta:#1d1d1f; --gris:#5f6368; --gris-o:#8b9598; --linea:#2e3438;
@@ -82,7 +82,13 @@ svg text{font-variant-numeric:tabular-nums}
 .indice button.act{border-color:var(--celeste);color:#fff}
 @media (max-width:640px){.nota{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.lam,.sube,.traza,.barra,.aguja,.anim{transition:none!important}}
+/* El visor compartido aloja la lámina sin la interfaz de revisión. */
+html.embebida, html.embebida body { height:100%; overflow:hidden; padding:0; background:#020304; }
+.embebida .pagina { position:fixed; inset:0; max-width:none; display:grid; place-items:center; margin:0; }
+.embebida .pagina > :not(.marco) { display:none; }
+.embebida .marco { width:min(100vw,177.777778vh); height:min(56.25vw,100vh); border:0; }
 </style>
+<script>if(new URLSearchParams(location.search).has('embed'))document.documentElement.classList.add('embebida');</script>
 </head>
 <body>
 <main class="pagina">
