@@ -343,7 +343,10 @@ def dato(r, etiqueta, unidad, valor, fuente, fmt=UNI):
     put(s, r, 2, etiqueta)
     z = put(s, r, 4, valor, fmt=fmt)
     z.fill = CEL_IN
-    put(s, r, 5, fuente, italic=True, color=GRIS, size=10)
+    f_ = put(s, r, 5, fuente, italic=True, color=GRIS, size=10)
+    s.merge_cells(start_row=r, start_column=5, end_row=r, end_column=9)
+    f_.alignment = Alignment(wrap_text=True, vertical='top')
+    s.row_dimensions[r].height = 15 * max(1, -(-len(fuente) // 70))
     return r
 
 

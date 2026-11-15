@@ -1,6 +1,6 @@
 # v7 · formato del curso: qué cambió y qué no calza con la metodología de clases
 
-**Archivo:** `excel/v7_formato_curso.xlsx` (+ PDF de 35 páginas). Se genera con `generador_revision/construir_v7.py`.
+**Archivo:** `excel/v7_formato_curso.xlsx` (+ PDF de 36 páginas). Se genera con `generador_revision/construir_v7.py`.
 
 > **14-11-2026, noche: cifras vigentes** (secciones «Decisiones del 14-11-2026», «Respaldo con fuentes primarias» y
 > «Local, bodega, mobiliario y demanda de arriba hacia abajo», al final): VAN puro $161,94 M y TIR pura 17,51%;
