@@ -1,0 +1,22 @@
+LUMINE · IA APLICADA · 7 MINUTOS · DISEÑO V2
+
+Presentación: 12 láminas principales y 5 anexos.
+Guion: 6:45 estimados a 130 palabras/minuto, con 12 segundos de demo. Ensayar; incluye recortes y preguntas difíciles.
+
+ARCHIVOS
+- Lumine_IA_Presentacion.html: presentación completa en un archivo; se abre en Chrome/Edge sin instalar nada y sin internet.
+- Lumine_IA_Presentacion_7_min.pptx: láminas como imágenes de alta resolución y guion en notas del orador.
+- Lumine_IA_Presentacion_7_min.pdf: PDF vectorial del diseño de las 17 láminas.
+- Lumine_IA_Guion.pdf / .docx / .md: texto de exposición, tiempos y defensa.
+
+CONTROLES WEB
+F: pantalla completa; también hay un botón visible. O: orador con guion y reloj. Flechas o espacio: avanzar. P: buscar anexos y Esc: volver al punto de origen. Fin: cierre. Número + Enter: saltar a una lámina. Z: lupa. L: puntero.
+
+La presentación funciona sin consultar datos ni una IA en vivo. La demo externa opcional requiere conexión:
+https://claude.ai/artifact/82sohbXt5ctMKPTXnYzwYx
+Mostrar el caso preparado; ante una falla, continuar con la lámina 6, que ya contiene el resultado.
+
+EDICIÓN
+Editar contenido.json y generar.py; no editar las imágenes finales.
+Los datos pertenecen al informe de IA adjunto. No son cifras actualizadas de la Fase 4 financiera.
+Las métricas de ahorro, pruebas e impacto comercial conservan sus límites explícitos.
