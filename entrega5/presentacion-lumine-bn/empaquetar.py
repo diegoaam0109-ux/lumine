@@ -8,18 +8,20 @@ for i,s in enumerate(d['slides']):
  img='data:image/png;base64,'+base64.b64encode((OUT/'slides'/f'{i+1:02d}.png').read_bytes()).decode()
  notes=html.escape(s.get('script','Respaldo para preguntas.')).replace('\n','<br>')
  data['slides'].append({'title':s['title'],'img':img,'who':s.get('who',''),'sec':round(s.get('seconds',0)),'notes':'<p>'+notes+'</p><p class="plan">'+html.escape(s['source'])+'</p>'})
+ if 'video'in s:
+  v=s['video'].copy();v['src']='data:video/mp4;base64,'+base64.b64encode((P/'recursos/pagina-comercial.mp4').read_bytes()).decode();data['slides'][-1]['video']=v
  if 'annex'in s:data['annex'].append({'code':s['annex'],'title':s['title'],'slide':i+1,'question':s['title'],'keywords':{'A1':['objetivos','hipótesis','H1','H2','H3','datos'],'A2':['Ridge','error','modelo','validación'],'A3':['RAFA','prompt','Claude','JSON'],'A4':['costo','ROI','A/B','margen','retorno','economía'],'A5':['privacidad','riesgo','suspensión','gobernanza']}[s['annex']]})
 text='<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+html.escape(d['title'])+'</title><style>'+css+'</style></head><body><script>window.DECK='+json.dumps(data,ensure_ascii=False).replace('</','<\\/')+';</script><script>'+js+'</script></body></html>'
 (OUT/'Lumine_IA_Presentacion.html').write_text(text)
-notes='''LUMINE · IA APLICADA · 7 MINUTOS · DISEÑO V2
+notes='''LUMINE · IA APLICADA · 7 MINUTOS · DISEÑO V3 · VIDEO COMERCIAL
 
 Presentación: 12 láminas principales y 5 anexos.
-Guion: 6:45 estimados a 130 palabras/minuto, con 12 segundos de demo. Ensayar; incluye recortes y preguntas difíciles.
+Guion: 6:43 estimados a 130 palabras/minuto, con 12 segundos de observación del video. Ensayar; incluye recortes y preguntas difíciles.
 
 ARCHIVOS
 - Lumine_IA_Presentacion.html: presentación completa en un archivo; se abre en Chrome/Edge sin instalar nada y sin internet.
 - Lumine_IA_Presentacion_7_min.pptx: láminas como imágenes de alta resolución y guion en notas del orador.
-- Lumine_IA_Presentacion_7_min.pdf: PDF vectorial del diseño de las 17 láminas.
+- Lumine_IA_Presentacion_7_min.pdf: PDF RGB de las 17 láminas verificadas.
 - Lumine_IA_Guion.pdf / .docx / .md: texto de exposición, tiempos y defensa.
 
 CONTROLES WEB

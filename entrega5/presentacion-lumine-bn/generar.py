@@ -6,6 +6,7 @@ D=json.loads((P/'contenido.json').read_text());S=D['slides']
 F=ROOT/'fase-3/fuentes'; fonts=OUT/'fuentes';fonts.mkdir(exist_ok=True)
 for n in ['Michroma-Regular.ttf','Archivo-Regular.ttf','Archivo-Bold.ttf','ArchivoCondensed-Bold.ttf','IBMPlexMono-Regular.ttf','ArchivoExpandedLight-Italic.ttf']:
  shutil.copy(F/n,fonts/n)
+shutil.copy(P/'recursos/pagina-poster.jpg',OUT/'img/pagina-poster.jpg')
 E=html.escape
 from diseno import visual, CSS as CSS_VISUAL
 img=OUT/'img';img.mkdir(exist_ok=True)

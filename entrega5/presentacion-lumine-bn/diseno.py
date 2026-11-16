@@ -7,7 +7,7 @@ def visual(s,base):
  if k=='evidencia':return '''<div class="eyebrow">METODOLOGÍA / QUÉ RESPALDA LA CIFRA</div><h1>CONDUCIR ES REAL.<br><em>El ahorro se simula.</em></h1><div class="evidence-grid"><div><span class="eyebrow">ENTRENAMIENTO</span><strong>300</strong><h2>Conductores<br>sintéticos</h2><p>Dos semanas por conductor.</p></div><div class="highlight"><span class="eyebrow">CONTRASTE EXTERNO</span><strong>45</strong><h2>Jornadas reales<br>secundarias</h2><p>21 vehículos · Otra ciudad.</p></div><div class="unvalidated"><span class="eyebrow">PRÓXIMA VALIDACIÓN</span><strong>0</strong><h2>Kits con ahorro<br>medido</h2><p>Falta telemetría en Santiago.</p></div></div><div class="evidence-bridge"><span>PATRÓN DE CONDUCCIÓN</span><b>→</b><strong>SIMULADOR</strong><b>→</b><span>AHORRO ESTIMADO</span></div>'''
  if k=='pregunta':return '''<div class="decision-bg"><img src="img/producto-kit.jpg" alt="Ilustración conceptual del kit"></div><div class="eyebrow">PREGUNTA DE INVESTIGACIÓN / DOS RESPUESTAS</div><h1>PODEMOS ESTIMAR.<br><em>Falta probar si vende.</em></h1><div class="question-states"><div><span class="status-dot"></span><div><small>PRECISIÓN</small><h2>Evidencia computacional</h2><p>Modelo, prototipo y gobernanza.</p></div></div><div><span class="status-dot pending"></span><div><small>ADOPCIÓN</small><h2>Efecto comercial pendiente</h2><p>H3 debe medirse con un A/B.</p></div></div></div><div class="illust">Ilustración conceptual · Implementar con ajustes</div>'''
  if k=='arquitectura':return '''<div class="eyebrow">LA SOLUCIÓN / MATEMÁTICA + LENGUAJE</div><h1>CADA CIFRA SE CALCULA<br><em>una sola vez.</em></h1><div class="unit-hero"><img src="img/ventaja-unidad.jpg" alt="Ilustración conceptual de una unidad de control"><span>ILUSTRACIÓN CONCEPTUAL</span></div><div class="system-flow"><div><b>01</b><h2>SIMULAR</h2><p>Energía recuperable</p></div><i>↓</i><div><b>02</b><h2>PREDECIR</h2><p>Ridge · 11 variables</p></div><i>↓</i><div><b>03</b><h2>TRADUCIR</h2><p>Pesos y plazo</p></div><i>↓</i><div class="accent"><b>04</b><h2>EXPLICAR</h2><p>Claude + RAFA</p></div></div><div class="system-rule"><strong>VALI­DADOR + TÉCNICO</strong><span>El lenguaje copia las cifras; una persona supervisa.</span></div>'''
- if k=='caso':return '''<div class="eyebrow">PROTOTIPO / CASO N1 · COLECTIVO DE 213 KM AL DÍA</div><h1>EL AHORRO,<br><em>para tu forma de manejar.</em></h1><div class="case-car"><img src="img/producto-kit.jpg" alt="Ilustración conceptual del producto"><span>CASO SINTÉTICO · SUPUESTOS DEL RAMO IA</span></div><div class="diagnostic"><div class="diagnostic-top"><span>DIAGNÓSTICO N1</span><b>ESTIMACIÓN</b></div><div class="diagnostic-num">19,7<span>%</span></div><div class="diagnostic-range"><span>18,4%</span><i><b></b></i><span>21,0%</span></div><div class="diagnostic-values"><div><strong>$159.000</strong><span>AHORRO MENSUAL</span></div><div><strong>22 <small>meses</small></strong><span>PLAZO CONSERVADOR</span></div></div><div class="diagnostic-foot">Ridge + plantilla de respaldo</div></div>'''
+ if k=='caso':return '''<div class="eyebrow">PROTOTIPO / CASO N1 · COLECTIVO DE 213 KM AL DÍA</div><h1>EL AHORRO,<br><em>para tu forma de manejar.</em></h1><div class="commercial-frame"><img src="img/pagina-poster.jpg" alt="Grabación de la página comercial de Lumine"><span>GRABACIÓN COMERCIAL · EL CASO N1 SE MUESTRA A LA DERECHA</span></div><div class="diagnostic"><div class="diagnostic-top"><span>DIAGNÓSTICO N1</span><b>ESTIMACIÓN</b></div><div class="diagnostic-num">19,7<span>%</span></div><div class="diagnostic-range"><span>18,4%</span><i><b></b></i><span>21,0%</span></div><div class="diagnostic-values"><div><strong>$159.000</strong><span>AHORRO MENSUAL</span></div><div><strong>22 <small>meses</small></strong><span>PLAZO CONSERVADOR</span></div></div><div class="diagnostic-foot">Ridge + plantilla de respaldo</div></div>'''
  if k=='cobertura':
   def ring(v,kind):
    import math
@@ -40,4 +40,17 @@ CSS += """
 .decision-bg img,.unit-hero img,.case-car img,.human-photo img{mix-blend-mode:screen}
 .closing-bg:after{background:linear-gradient(#020304 0%,#020304 47%,#02030433 73%,#02030444)}
 .closing-condition{position:absolute;bottom:4px;left:0;max-width:1250px;font-size:21px;background:#020304A0;padding:9px 12px}
+"""
+
+CSS += """
+.commercial-frame{position:absolute;left:0;top:313.2px;width:883.2px;height:496.8px;border:1px solid #366277}
+.commercial-frame img{width:100%;height:100%;object-fit:cover}
+.commercial-frame span{display:block;font:18px Plex;color:var(--muted);margin-top:18px}
+.slide:has(.commercial-frame) .diagnostic{top:278px;width:690px;height:540px;padding:30px}
+.slide:has(.commercial-frame) .diagnostic-num{font-size:170px;margin-top:30px}
+.slide:has(.commercial-frame) .diagnostic-top{font-size:18px}
+.slide:has(.commercial-frame) .diagnostic-range{font-size:23px;margin:15px 0 0}
+.slide:has(.commercial-frame) .diagnostic-values{gap:30px}
+.slide:has(.commercial-frame) .diagnostic-values strong{font-size:62px}
+.slide:has(.commercial-frame) .diagnostic-values span{font-size:18px}
 """

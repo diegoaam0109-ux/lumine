@@ -64,9 +64,18 @@
       "who": "Benjamín",
       "source": "Informe final, anexo G, figura G1 · Caso N1 sintético; Ridge. Mensaje del MVP: plantilla de respaldo.",
       "demo": 12,
-      "script": "El caso del prototipo es un colectivo de doscientos trece kilómetros diarios. [Clic: caso N1] El ahorro estimado es cercano al veinte por ciento, con el rango que aparece en pantalla. Para el cliente significa ciento cincuenta y nueve mil pesos mensuales y veintidós meses de recuperación conservadora. [Demo: mostrar el caso preparado durante 12 segundos] Es un ejemplo simulado con los supuestos de este ramo. El prototipo usa aquí una plantilla de respaldo; no estamos mostrando una llamada nueva a Claude.",
-      "words": 71,
-      "seconds": 47.2
+      "script": "El prototipo muestra un colectivo de doscientos trece kilómetros diarios. [Clic: caso N1] El ahorro estimado ronda el veinte por ciento, con su intervalo. Eso equivale a ciento cincuenta y nueve mil pesos mensuales y veintidós meses de recuperación conservadora. [Video: observar durante 12 segundos] La grabación muestra la página comercial; el resultado numérico corresponde al estimador. Es un ejemplo simulado del ramo. El mensaje del caso usa una plantilla de respaldo.",
+      "video": {
+        "src": "video/pagina-comercial.mp4",
+        "box": {
+          "x": 5,
+          "y": 39,
+          "w": 46,
+          "h": 46
+        }
+      },
+      "words": 64,
+      "seconds": 43.9
     },
     {
       "id": "cobertura",

@@ -6,7 +6,7 @@ La dirección visual final usa los logos, tipografías e imágenes de Fase 3 y F
 
 ## Contenido y tiempo
 
-12 láminas principales + 5 anexos. Guion de 810 palabras habladas: aproximadamente 6:46 a 130 palabras por minuto, incluidos cambios y 12 segundos de demo, con 14 segundos de margen hasta siete minutos. Reparto: Diego 2:07, Benjamín 2:24 y Lukas 2:15. Ensayar con cronómetro; GUION.md incluye recortes por prioridad y preguntas difíciles.
+12 láminas principales + 5 anexos. Guion de 803 palabras habladas: aproximadamente 6:43 a 130 palabras por minuto, incluidos cambios y 12 segundos de demo, con 17 segundos de margen hasta siete minutos. Reparto: Diego 2:07, Benjamín 2:21 y Lukas 2:15. Ensayar con cronómetro; GUION.md incluye recortes por prioridad y preguntas difíciles.
 
 Se aplicó la skill `guion-defensa-grupal` entregada por el usuario: gancho antes del saludo, identidad alfabética, estructura híbrida, relevos enlazados, reparto equilibrado, cues y defensa. La pasada de estilo se hizo manualmente; no estaba disponible la skill secundaria `revisar-tics-ia`.
 
@@ -62,3 +62,9 @@ node entrega5/presentacion-lumine-bn/verificar.cjs
 - `salida/Lumine_IA_Guion.pdf`, `.docx` y `.md`: guion de exposición y defensa.
 
 Controles web: F o botón de pantalla completa; flechas y espacio; O orador; P anexos; Esc volver; Fin cierre; número + Enter saltar; Z lupa; L puntero. Si el navegador rechaza pantalla completa, se muestra un aviso.
+
+## Publicación web y PDF compatible
+
+`python entrega5/presentacion-lumine-bn/sitio.py` genera `lumine-presentaciones/ia-aplicada/` con el mismo visor de Fase 3. La lámina 6 reproduce automáticamente la grabación comercial de Fase 3, convertida a 1080p, junto al caso numérico del estimador. El guion incluye 12 s de observación. PowerPoint también incrusta el video.
+
+`pdf_seguro.py` sustituye la exportación con máscaras de transparencia por un PDF de imágenes RGB verificadas: conserva las láminas a 1920×1080 y evita depender de cómo cada visor interpreta los degradados. Se verifican las 17 páginas renderizadas y se conserva una captura del cierre. El PDF presenta un fotograma del video; su reproducción ocurre en web y PowerPoint. Requiere `reportlab`, Pillow y PyMuPDF además de las dependencias anteriores.

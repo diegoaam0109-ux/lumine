@@ -5,16 +5,16 @@ Supuestos: Diego → Benjamín → Lukas; profesor y comisión del ramo IA; estr
 | Orador | Láminas | Palabras habladas | Tiempo estimado |
 |---|---:|---:|---:|
 | Diego Alarcón | 1–4 | 255 | 2:07 |
-| Benjamín Torres | 5–8 | 273 | 2:24 |
+| Benjamín Torres | 5–8 | 266 | 2:21 |
 | Lukas Verdugo | 9–12 | 282 | 2:15 |
 
-**Total: 810 palabras; 6:46 estimados. Margen hasta 7:00: 14 segundos.**
+**Total: 803 palabras; 6:43 estimados. Margen hasta 7:00: 17 segundos.**
 
-Cálculo: 130 palabras/minuto + 1,2 s por cambio de lámina + 1,2 s por cue adicional + 3,5 s de silencio inicial/pausa + 12 s de demo. Las pausas breves «/» se absorben en la cadencia. El tiempo es una estimación de escritorio: ensayar con cronómetro. Si el ensayo supera 7:00, aplicar los recortes de abajo.
+Cálculo: 130 palabras/minuto + 1,2 s por cambio de lámina + 1,2 s por cue adicional + 3,5 s de silencio inicial/pausa + 12 s de observación del video. Las pausas breves «/» se absorben en la cadencia. El tiempo es una estimación de escritorio: ensayar con cronómetro. Si el ensayo supera 7:00, aplicar los recortes de abajo.
 
 ## Preparación
 
-Abrir la presentación y el caso N1 antes de empezar. En la lámina 6, mostrar únicamente el caso de 213 km/día durante un máximo de 12 s; usar la captura de la lámina si el MVP falla. No esperar una API ni digitar frente al profesor. El ejemplo actual usa Ridge y plantilla; la batería RAFA registrada usa cifras de E3. La demo es opcional y ya está incluida en el tiempo.
+Abrir la presentación y el caso N1 antes de empezar. En la lámina 6, el video comercial de Fase 3 se reproduce a la izquierda; el caso N1 está a la derecha. Reservar 12 s para observar la grabación, sin abrir otra pestaña. Si el video falla, continuar con el fotograma y el resultado estático. No esperar una API ni digitar frente al profesor. El ejemplo actual usa Ridge y plantilla; la batería RAFA registrada usa cifras de E3. La demo es opcional y ya está incluida en el tiempo.
 
 MVP de referencia entregado por el equipo: https://claude.ai/artifact/82sohbXt5ctMKPTXnYzwYx . Su disponibilidad externa no forma parte de las pruebas de estos archivos.
 
@@ -46,9 +46,9 @@ Benjamín · 63 palabras · 0:30
 Ese recorrido tiene cuatro pasos. El simulador calcula la energía recuperable. Ridge estima el ahorro con once variables. El motor comercial convierte el resultado en pesos y plazo. Claude redacta con RAFA: rol, acción, formato y antecedentes. La frontera es explícita: el modelo de lenguaje recibe cifras cerradas y solo las copia. Un validador comprueba la salida y una persona supervisa el diagnóstico.
 
 ### Lámina 6 · Una cifra que el conductor puede usar.
-Benjamín · 71 palabras · 0:47
+Benjamín · 64 palabras · 0:44
 
-El caso del prototipo es un colectivo de doscientos trece kilómetros diarios. [Clic: caso N1] El ahorro estimado es cercano al veinte por ciento, con el rango que aparece en pantalla. Para el cliente significa ciento cincuenta y nueve mil pesos mensuales y veintidós meses de recuperación conservadora. [Demo: mostrar el caso preparado durante 12 segundos] Es un ejemplo simulado con los supuestos de este ramo. El prototipo usa aquí una plantilla de respaldo; no estamos mostrando una llamada nueva a Claude.
+El prototipo muestra un colectivo de doscientos trece kilómetros diarios. [Clic: caso N1] El ahorro estimado ronda el veinte por ciento, con su intervalo. Eso equivale a ciento cincuenta y nueve mil pesos mensuales y veintidós meses de recuperación conservadora. [Video: observar durante 12 segundos] La grabación muestra la página comercial; el resultado numérico corresponde al estimador. Es un ejemplo simulado del ramo. El mensaje del caso usa una plantilla de respaldo.
 
 ### Lámina 7 · El intervalo también tiene que aprobar.
 Benjamín · 70 palabras · 0:34
