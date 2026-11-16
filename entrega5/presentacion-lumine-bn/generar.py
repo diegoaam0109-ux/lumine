@@ -6,7 +6,6 @@ D=json.loads((P/'contenido.json').read_text());S=D['slides']
 F=ROOT/'fase-3/fuentes'; fonts=OUT/'fuentes';fonts.mkdir(exist_ok=True)
 for n in ['Michroma-Regular.ttf','Archivo-Regular.ttf','Archivo-Bold.ttf','ArchivoCondensed-Bold.ttf','IBMPlexMono-Regular.ttf','ArchivoExpandedLight-Italic.ttf']:
  shutil.copy(F/n,fonts/n)
-shutil.copy(P/'recursos/pagina-poster.jpg',OUT/'img/pagina-poster.jpg')
 E=html.escape
 from diseno import visual, CSS as CSS_VISUAL
 img=OUT/'img';img.mkdir(exist_ok=True)
@@ -14,6 +13,10 @@ for n in ['portada-rayos.jpg','producto-kit.jpg','ventaja-unidad.jpg','proceso-3
  shutil.copy(ROOT/'fase-3/generador/assets'/n,img/n)
 for n in ['logo-claro.png','logo-oscuro.png']:
  shutil.copy(ROOT/'lumine-presentaciones/fase4/img'/n,img/n)
+
+shutil.copy(P/'recursos/pagina-poster.jpg',OUT/'img/pagina-poster.jpg')
+shutil.copy(ROOT/'control-de-gestion/generador/assets/lumine-06-unidad-control.jpg',OUT/'img/ventaja-unidad.jpg')
+shutil.copy(ROOT/'control-de-gestion/generador/assets/lumine-08-duo-tecnicos.jpg',OUT/'img/proceso-3.jpg')
 
 def label(t):return f'<div class="label">{t}</div>'
 def num(v,t,sub=''):return f'<div class="stat"><strong>{v}</strong>{label(t)}<p>{sub}</p></div>'

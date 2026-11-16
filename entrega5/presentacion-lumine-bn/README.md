@@ -68,3 +68,5 @@ Controles web: F o botón de pantalla completa; flechas y espacio; O orador; P a
 `python entrega5/presentacion-lumine-bn/sitio.py` genera `lumine-presentaciones/ia-aplicada/` con el mismo visor de Fase 3. La lámina 6 reproduce automáticamente la grabación comercial de Fase 3, convertida a 1080p, junto al caso numérico del estimador. El guion incluye 12 s de observación. PowerPoint también incrusta el video.
 
 `pdf_seguro.py` sustituye la exportación con máscaras de transparencia por un PDF de imágenes RGB verificadas: conserva las láminas a 1920×1080 y evita depender de cómo cada visor interpreta los degradados. Se verifican las 17 páginas renderizadas y se conserva una captura del cierre. El PDF presenta un fotograma del video; su reproducción ocurre en web y PowerPoint. Requiere `reportlab`, Pillow y PyMuPDF además de las dependencias anteriores.
+
+Encuadres revisados: todos los recursos visuales conservan su proporción con `contain`, sin recorte de relleno. La unidad y los técnicos usan las versiones de mayor resolución disponibles en el repositorio. Apertura y cierre conservan el recurso completo a 16:9.
