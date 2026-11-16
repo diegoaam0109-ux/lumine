@@ -128,7 +128,7 @@ function testigos(encendidos, claro, x, y, w) {
     ['Rentar al socio', 'TIR financiada mayor que Ke'],
     ['Recuperar el aporte', 'Payback descontado antes del año 5'],
     ['Operar sobre el equilibrio', 'Desde el segundo año'],
-    ['Endeudarse con mesura', 'D/P hasta 41,46%, la industria'],
+    ['Endeudarse con mesura', 'D/P hasta 42,37%, la industria'],
   ];
   const col = claro ? C.tinta : C.blanco, sub = claro ? C.gris : C.grisO;
   return `<div style="position:absolute;left:${x}px;top:${y}px;width:${w}px;display:grid;grid-template-columns:repeat(5,1fr);gap:24px">` +
@@ -159,10 +159,10 @@ L.push({ rol: 'Método · blanco', clara: true, nota: 'Los cinco objetivos se pr
 L.push({ rol: 'Método · blanco', clara: true, nota: 'Una sola barra responde quién pone la plata; abajo, las tres etapas del financiamiento como una línea de tiempo. Ninguna tabla: los detalles del crédito van como etiquetas de tablero.',
   html: (n) => chrome(n, 'Plan financiero', 'Estrategias de financiamiento', '¿QUIÉN PONE <em>la plata?</em>', 'Hojas 5 y 5.1 del libro de cálculo. Total del año 0 en el flujo financiado (costo del calendario a Ke).', true) + `
   <div class="sube d1" style="position:absolute;left:96px;top:420px;width:1728px">
-    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:22px"><span class="et" style="font-size:24px;color:var(--gris)">Año 0 · inversión total</span><span class="cifra" style="font-size:72px">$385,6 M</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:22px"><span class="et" style="font-size:24px;color:var(--gris)">Año 0 · inversión total</span><span class="cifra" style="font-size:72px">$402,6 M</span></div>
     <div style="display:flex;height:120px">
-      <div class="anim" id="bSoc" style="width:0;background:#1d1d1f;color:#fff;display:flex;align-items:center;padding:0 36px;justify-content:space-between;overflow:hidden;white-space:nowrap"><span class="et" style="font-size:24px">Socios · 70%</span><span class="cifra" style="font-size:60px">$269,3 M</span></div>
-      <div class="anim" id="bBan" style="width:0;background:var(--celeste);color:#031015;display:flex;align-items:center;padding:0 36px;justify-content:space-between;overflow:hidden;white-space:nowrap"><span class="et" style="font-size:24px">Banco · 30%</span><span class="cifra" style="font-size:60px">$116,3 M</span></div>
+      <div class="anim" id="bSoc" style="width:0;background:#1d1d1f;color:#fff;display:flex;align-items:center;padding:0 36px;justify-content:space-between;overflow:hidden;white-space:nowrap"><span class="et" style="font-size:24px">Socios · 70%</span><span class="cifra" style="font-size:60px">$280,0 M</span></div>
+      <div class="anim" id="bBan" style="width:0;background:var(--celeste);color:#031015;display:flex;align-items:center;padding:0 36px;justify-content:space-between;overflow:hidden;white-space:nowrap"><span class="et" style="font-size:24px">Banco · 30%</span><span class="cifra" style="font-size:60px">$122,6 M</span></div>
     </div>
     <div style="display:flex;justify-content:flex-end;gap:40px;margin-top:18px;font-family:var(--mono);font-size:22px;color:var(--gris)"><span>FRANCÉS · 5 AÑOS · 1 DE GRACIA</span><span>Kd 7,86%</span><span>CON GARANTÍA ESTATAL</span></div>
   </div>
@@ -170,20 +170,20 @@ L.push({ rol: 'Método · blanco', clara: true, nota: 'Una sola barra responde q
     ${[['Antes', 'Piloto y espera de la norma', 'Fondo de I+D por postular, fuera de esta evaluación'], ['Al abrir', 'Etapa comercial', 'Socios y banco, en la proporción de la industria'], ['Desde el mes 13', 'Proveedor', '30% al pedir, saldo 30 días después del embarque']]
       .map((e, i) => `<div class="sube d${i + 3}" style="border-top:2px solid ${i === 1 ? 'var(--celeste-t)' : '#c8cace'};padding-top:20px"><div class="et" style="font-size:22px;color:var(--celeste-t)">${e[0]}</div><div style="font-weight:700;font-size:32px;margin:8px 0 6px">${e[1]}</div><div style="font-size:24px;color:var(--gris);line-height:1.35">${e[2]}</div></div>`).join('')}
   </div>`,
-  on: (s) => { s.querySelector('#bSoc').style.width = '69.9%'; s.querySelector('#bBan').style.width = '30.1%'; },
+  on: (s) => { s.querySelector('#bSoc').style.width = '69.5%'; s.querySelector('#bBan').style.width = '30.5%'; },
   off: (s) => { s.querySelector('#bSoc').style.width = '0'; s.querySelector('#bBan').style.width = '0'; } });
 
 L.push({ rol: 'Método · blanco', clara: true, nota: 'Despiece de la inversión: cada bloque mide lo que cuesta, con rótulos numerados como el explorador del kit en la página comercial. El público ve de inmediato que el capital de trabajo pesa más que los equipos.',
-  html: (n) => chrome(n, 'Plan financiero', 'Inversión inicial', '$385,3 M <em>antes de la primera venta</em>', 'Hojas 1, 1.1 y 3 del libro de cálculo. Pesos de 2026, netos de IVA.', true) + `<svg id="mapa" viewBox="0 0 1728 600" style="position:absolute;left:96px;top:380px;width:1728px;height:600px"></svg>`,
+  html: (n) => chrome(n, 'Plan financiero', 'Inversión inicial', '$402,1 M <em>antes de la primera venta</em>', 'Hojas 1, 1.1 y 3 del libro de cálculo. Pesos de 2026, netos de IVA.', true) + `<svg id="mapa" viewBox="0 0 1728 600" style="position:absolute;left:96px;top:380px;width:1728px;height:600px"></svg>`,
   dibujar: (s) => {
     const g = s.querySelector('#mapa');
     const B = [ // x, y, w, h en px del svg, color, rótulo, nombre, monto
-      [0, 0, 800, 600, '#1d1d1f', '01', 'Capital de trabajo adicional', '179,0', 'Mayor déficit de caja · mes 10'],
-      [808, 0, 520, 360, C.cel, '02', 'Activo fijo', '91,3', 'Dinamómetro, local, bodega, equipos'],
-      [1336, 0, 392, 360, '#7fcdf0', '03', 'Activo nominal', '59,6', 'Puesta en marcha y software'],
-      [808, 368, 680, 232, '#a1a5aa', '04', 'Capital de trabajo al abrir', '50,3', 'Primeros kits e IVA'],
+      [0, 0, 800, 600, '#1d1d1f', '01', 'Capital de trabajo adicional', '180,8', 'Mayor déficit de caja · mes 10'],
+      [808, 0, 520, 360, C.cel, '02', 'Activo fijo', '88,4', 'Dinamómetro, local, bodega, equipos'],
+      [1336, 0, 392, 360, '#7fcdf0', '03', 'Activo nominal', '77,0', 'Puesta en marcha y software'],
+      [808, 368, 680, 232, '#a1a5aa', '04', 'Capital de trabajo al abrir', '49,6', 'Primeros kits e IVA'],
       [1496, 368, 232, 116, '#c8cace', '05', 'Garantía', '3,6', ''],
-      [1496, 492, 232, 108, '#dde1e5', '06', 'Costo financiero', '1,5', ''],
+      [1496, 492, 232, 108, '#dde1e5', '06', 'Costo financiero', '2,7', ''],
     ];
     B.forEach((b, i) => {
       const gr = el('g', { class: 'sube d' + (i + 1) }, g);
@@ -206,30 +206,30 @@ L.push({ rol: 'Método · blanco', clara: true, nota: 'Despiece de la inversión
 L.push({ rol: 'Método · blanco', clara: true, nota: 'El capital de trabajo contado con la caja real, mes a mes: la línea baja hasta el valle del mes 10 y ese punto es el déficit acumulado máximo. El salto del mes 13 muestra el plazo del proveedor. La línea se dibuja en vivo.',
   html: (n) => chrome(n, 'Plan financiero', 'Capital de trabajo', 'EL VALLE <em>que hay que financiar</em>', 'Anexo 3 del libro de cálculo: caja operativa acumulada de 60 meses. Método del déficit acumulado máximo.', true) + `<svg id="caja" viewBox="0 0 1728 600" style="position:absolute;left:96px;top:380px;width:1728px;height:600px"></svg>`,
   dibujar: (s) => {
-    const g = s.querySelector('#caja'), x0 = 90, x1 = 1440, yMin = -330, yMax = 560, h = 520, top = 10;
+    const g = s.querySelector('#caja'), x0 = 90, x1 = 1440, yMin = -330, yMax = Math.max(560, Math.ceil(Math.max(...CAJA) / 100) * 100 + 60), h = 520, top = 10;
     const X = (m) => x0 + (m - 1) * (x1 - x0) / 59, Y = (v) => top + (yMax - v) * h / (yMax - yMin);
-    for (const v of [-200, 0, 200, 400]) { el('line', { x1: x0, x2: x1, y1: Y(v), y2: Y(v), stroke: v === 0 ? '#1d1d1f' : '#c8cace', 'stroke-width': v === 0 ? 2 : 1 }, g); txt(g, x0 - 16, Y(v) + 8, (v > 0 ? '+' : '') + v, { 'text-anchor': 'end', 'font-family': 'Plex', 'font-size': 20, fill: C.gris }); }
+    for (const v of [-200, 0, 200, 400, 600].filter((v) => v < yMax)) { el('line', { x1: x0, x2: x1, y1: Y(v), y2: Y(v), stroke: v === 0 ? '#1d1d1f' : '#c8cace', 'stroke-width': v === 0 ? 2 : 1 }, g); txt(g, x0 - 16, Y(v) + 8, (v > 0 ? '+' : '') + v, { 'text-anchor': 'end', 'font-family': 'Plex', 'font-size': 20, fill: C.gris }); }
     for (let a = 1; a <= 5; a++) txt(g, X(a * 12 - 6), 586, 'AÑO ' + a, { 'text-anchor': 'middle', 'font-family': 'Plex', 'font-size': 20, fill: C.gris });
     const d = CAJA.map((v, i) => (i ? 'L' : 'M') + X(i + 1).toFixed(1) + ' ' + Y(v).toFixed(1)).join(' ');
     el('path', { d: d + ` L${X(60)} ${Y(0)} L${X(1)} ${Y(0)} Z`, fill: 'rgba(10,111,158,.07)' }, g);
     const p = el('path', { d, fill: 'none', stroke: C.celT, 'stroke-width': 5, class: 'traza', 'stroke-linejoin': 'round' }, g);
     p.dataset.traza = 1;
     const gv = el('g', { class: 'sube d5' }, g);
-    el('circle', { cx: X(10), cy: Y(-179), r: 12, fill: '#fff', stroke: '#1d1d1f', 'stroke-width': 4 }, gv);
-    txt(gv, X(10) - 30, Y(-179) + 62, '−$179,0 M · mes 10', { 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 40, fill: '#1d1d1f' });
-    txt(gv, X(10) - 30, Y(-179) + 96, 'déficit acumulado máximo', { 'font-family': 'Archivo', 'font-size': 24, fill: C.gris });
+    el('circle', { cx: X(10), cy: Y(-180.8), r: 12, fill: '#fff', stroke: '#1d1d1f', 'stroke-width': 4 }, gv);
+    txt(gv, X(10) - 30, Y(-180.8) + 62, '−$180,8 M · mes 10', { 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 40, fill: '#1d1d1f' });
+    txt(gv, X(10) - 30, Y(-180.8) + 96, 'déficit acumulado máximo', { 'font-family': 'Archivo', 'font-size': 24, fill: C.gris });
     const gp = el('g', { class: 'sube d6' }, g);
     el('line', { x1: X(13), x2: X(13), y1: Y(-62), y2: Y(120), stroke: C.gris, 'stroke-dasharray': '6 6', 'stroke-width': 2 }, gp);
     txt(gp, X(13) + 14, Y(120) - 8, 'mes 13: el proveedor da plazo', { 'font-family': 'Archivo', 'font-size': 24, fill: C.gris });
     const gr = el('g', { class: 'sube d6' }, g);
-    txt(gr, 1728, 70, '$229,3 M', { 'text-anchor': 'end', 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 72, fill: '#1d1d1f' });
+    txt(gr, 1728, 70, '$230,4 M', { 'text-anchor': 'end', 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 72, fill: '#1d1d1f' });
     txt(gr, 1728, 108, 'capital de trabajo inicial', { 'text-anchor': 'end', 'font-family': 'Archivo', 'font-size': 24, fill: C.gris });
-    txt(gr, 1728, 210, '$169,4 M', { 'text-anchor': 'end', 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 72, fill: C.celT });
+    txt(gr, 1728, 210, '$170,8 M', { 'text-anchor': 'end', 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 72, fill: C.celT });
     txt(gr, 1728, 248, 'se recupera el año 5', { 'text-anchor': 'end', 'font-family': 'Archivo', 'font-size': 24, fill: C.gris });
   } });
 
-L.push({ rol: 'Método · blanco', clara: true, nota: 'Cascada de cada $100 que entran el quinto año: el kit y los costos variables se llevan 79,4 y quedan 7,5 antes de depreciación. A la izquierda, la escala del negocio. Explica por qué el margen del kit es la variable que mueve todo, sin decirlo como advertencia.',
-  html: (n) => chrome(n, 'Plan financiero', 'Ingresos y costos', 'DE CADA $100 <em>quedan $7,5</em>', 'Hoja 2 del libro de cálculo. Año 5 de operación; EBITDA = resultado antes de depreciación.', true) + `<svg id="casc" viewBox="0 0 1728 600" style="position:absolute;left:96px;top:380px;width:1728px;height:600px"></svg>`,
+L.push({ rol: 'Método · blanco', clara: true, nota: 'Cascada de cada $100 que entran el quinto año: el kit y los costos variables se llevan 79,1 y quedan 7,7 antes de depreciación. A la izquierda, la escala del negocio. Explica por qué el margen del kit es la variable que mueve todo, sin decirlo como advertencia.',
+  html: (n) => chrome(n, 'Plan financiero', 'Ingresos y costos', 'DE CADA $100 <em>quedan $7,7</em>', 'Hoja 2 del libro de cálculo. Año 5 de operación; EBITDA = resultado antes de depreciación.', true) + `<svg id="casc" viewBox="0 0 1728 600" style="position:absolute;left:96px;top:380px;width:1728px;height:600px"></svg>`,
   dibujar: (s) => {
     const g = s.querySelector('#casc');
     const ing = [1113.6, 2109.3, 2710.2, 2780.9, 3393.5], inst = [270, 505, 640, 650, 785];
@@ -244,7 +244,7 @@ L.push({ rol: 'Método · blanco', clara: true, nota: 'Cascada de cada $100 que 
     });
     el('line', { x1: 640, x2: 640, y1: 0, y2: 590, stroke: '#c8cace' }, g);
     const base = 500, k = 4.4, xs = 740;
-    const P = [['100', 'Ingresos', 0, 100, '#1d1d1f'], ['−79,4', 'Kit y variables', 20.6, 79.4, C.cel], ['−8,0', 'Fijos', 12.6, 8.0, '#a1a5aa'], ['−5,1', 'Adm. y ventas', 7.5, 5.1, '#c8cace'], ['7,5', 'EBITDA', 0, 7.5, '#1d1d1f']];
+    const P = [['100', 'Ingresos', 0, 100, '#1d1d1f'], ['−79,1', 'Kit y variables', 20.86, 79.14, C.cel], ['−8,0', 'Fijos', 12.87, 7.99, '#a1a5aa'], ['−5,1', 'Adm. y ventas', 7.74, 5.13, '#c8cace'], ['7,7', 'EBITDA', 0, 7.74, '#1d1d1f']];
     P.forEach((p, i) => {
       const x = xs + i * 200, y = base - (p[2] + p[3]) * k, hh = p[3] * k;
       el('rect', { x, y, width: 150, height: hh, fill: p[4], class: 'barra' }, g).style.transitionDelay = (0.5 + i * 0.25) + 's';
@@ -255,15 +255,15 @@ L.push({ rol: 'Método · blanco', clara: true, nota: 'Cascada de cada $100 que 
   } });
 
 L.push({ rol: 'Método · blanco', clara: true, nota: 'El flujo puro en barras año a año y su acumulado descontado a Ku como línea. Los dos indicadores del proyecto puro van como números de tablero a la derecha; el protagonismo se reserva para el flujo del socio.',
-  html: (n) => chrome(n, 'Plan financiero', 'Flujo de caja puro', 'EL PROYECTO <em>sin deuda</em>', 'Hoja 4 del libro de cálculo. Acumulado descontado a Ku 8,65%.', true) + `<svg id="fpuro" viewBox="0 0 1728 600" style="position:absolute;left:96px;top:380px;width:1728px;height:600px"></svg>`,
-  dibujar: (s) => barrasJ(s.querySelector('#fpuro'), [-385.3, -78.7, 159.8, 143.9, 100.5, 413.5], [-385.3, -457.7, -322.3, -210.2, -138.1, 135.0], true,
-    [['$135,0 M', 'VAN puro a Ku'], ['16,73%', 'TIR pura'], ['4,14 años', 'Recuperación simple']]) });
+  html: (n) => chrome(n, 'Plan financiero', 'Flujo de caja puro', 'EL PROYECTO <em>sin deuda</em>', 'Hoja 4 del libro de cálculo. Acumulado descontado a Ku 8,13%.', true) + `<svg id="fpuro" viewBox="0 0 1728 600" style="position:absolute;left:96px;top:380px;width:1728px;height:600px"></svg>`,
+  dibujar: (s) => barrasJ(s.querySelector('#fpuro'), [-402.1, -80.6, 160.3, 151.0, 104.7, 419.4], [-402.1, -476.6, -339.5, -220.1, -143.5, 140.2], true,
+    [['$140,2 M', 'VAN puro a Ku'], ['16,13%', 'TIR pura'], ['4,16 años', 'Recuperación simple']]) });
 
-L.push({ rol: 'Método · blanco', clara: true, nota: 'La tasa como una escalera: cada peldaño suma un riesgo y lleva su fuente. El jurado ve cómo se llega de 2,63% a 10,58% sin leer una tabla. El WACC queda al costado, como referencia.',
-  html: (n) => chrome(n, 'Plan financiero', 'Tasas de descuento', 'CUÁNTO EXIGE <em>cada peso</em>', 'Hoja 6: Banco Central de Chile (BTU a 10 años, inflación meta), Damodaran (beta de autopartes y riesgo país, enero de 2026), Hamada (1972).', true) + `<svg id="esc" viewBox="0 0 1728 600" style="position:absolute;left:96px;top:380px;width:1728px;height:600px"></svg>`,
+L.push({ rol: 'Método · blanco', clara: true, nota: 'La tasa como una escalera: cada peldaño suma un riesgo y lleva su fuente. El jurado ve cómo se llega de 2,63% a 9,93% sin leer una tabla. El WACC queda al costado, como referencia.',
+  html: (n) => chrome(n, 'Plan financiero', 'Tasas de descuento', 'CUÁNTO EXIGE <em>cada peso</em>', 'Hoja 6: Banco Central de Chile (BTU a 10 años, inflación meta), Damodaran (betas de autopartes y de servicio automotriz, riesgo país, enero de 2026), Hamada (1972).', true) + `<svg id="esc" viewBox="0 0 1728 600" style="position:absolute;left:96px;top:380px;width:1728px;height:600px"></svg>`,
   dibujar: (s) => {
     const g = s.querySelector('#esc'), k = 44, base = 520;
-    const P = [[0, 2.63, 'Rf', 'Tasa libre de riesgo', '#c8cace', 'BTU a 10 años'], [2.63, 6.02, '+6,02', 'Riesgo del negocio', '#7fcdf0', 'βu 1,13 × premio 5,33%'], [0, 8.65, 'Ku 8,65%', 'Proyecto puro', C.cel, 'CAPM'], [8.65, 1.93, '+1,93', 'Riesgo de la deuda', '#a1a5aa', 'Hamada: βl 1,49'], [0, 10.58, 'Ke 10,58%', 'Socio', '#1d1d1f', 'CAPM con βl']];
+    const P = [[0, 2.63, 'Rf', 'Tasa libre de riesgo', '#c8cace', 'BTU a 10 años'], [2.63, 5.50, '+5,50', 'Riesgo del negocio', '#7fcdf0', 'βu 1,03 × premio 5,33%'], [0, 8.13, 'Ku 8,13%', 'Proyecto puro', C.cel, 'CAPM'], [8.13, 1.80, '+1,80', 'Riesgo de la deuda', '#a1a5aa', 'Hamada: βl 1,37'], [0, 9.93, 'Ke 9,93%', 'Socio', '#1d1d1f', 'CAPM con βl']];
     P.forEach((p, i) => {
       const x = i * 250, y = base - (p[0] + p[1]) * k, hh = p[1] * k;
       el('rect', { x, y, width: 200, height: hh, fill: p[4], class: 'barra' }, g).style.transitionDelay = (i * 0.3) + 's';
@@ -275,33 +275,33 @@ L.push({ rol: 'Método · blanco', clara: true, nota: 'La tasa como una escalera
     const r = el('g', { class: 'sube d6' }, g);
     el('rect', { x: 1340, y: 160, width: 388, height: 300, fill: 'none', stroke: '#c8cace', 'stroke-width': 2 }, r);
     txt(r, 1372, 216, 'REFERENCIA', { 'font-family': 'ArchivoSC', 'font-weight': 500, 'font-size': 20, 'letter-spacing': 4, fill: C.gris });
-    txt(r, 1372, 290, 'WACC 9,25%', { 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 52, fill: '#1d1d1f' });
+    txt(r, 1372, 290, 'WACC 8,78%', { 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 52, fill: '#1d1d1f' });
     txt(r, 1372, 350, 'Kd 7,86% real', { 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 36, fill: C.gris });
-    txt(r, 1372, 400, 'D/P 41,46% · t 23%', { 'font-family': 'Plex', 'font-size': 22, fill: C.gris });
+    txt(r, 1372, 400, 'D/P 42,37% · t 23%', { 'font-family': 'Plex', 'font-size': 22, fill: C.gris });
   } });
 
 L.push({ rol: 'Resultado · negro', clara: false, nota: 'Cambio a negro: empiezan los resultados. El flujo del socio con su curva en J, la misma figura que recorre la barra superior de todas las láminas. El punto donde cruza el cero es el período de recuperación.',
-  html: (n) => chrome(n, 'Resultados', 'Flujo del inversionista', 'EL VIAJE <em>de la plata del socio</em>', 'Hoja 5 del libro de cálculo. Acumulado descontado a Ke 10,58%.', false) + `<svg id="finv" viewBox="0 0 1728 600" style="position:absolute;left:96px;top:380px;width:1728px;height:600px"></svg>`,
-  dibujar: (s) => barrasJ(s.querySelector('#finv'), [-269.3, -87.9, 124.8, 113.3, 67.5, 379.6], [-269.3, -348.8, -246.7, -162.9, -117.8, 111.9], false,
-    [['4,51 años', 'Recuperación descontada'], ['$269,3 M', 'Aporte de los socios'], ['$116,3 M', 'Préstamo']], 4.51) });
+  html: (n) => chrome(n, 'Resultados', 'Flujo del inversionista', 'EL VIAJE <em>de la plata del socio</em>', 'Hoja 5 del libro de cálculo. Acumulado descontado a Ke 9,93%.', false) + `<svg id="finv" viewBox="0 0 1728 600" style="position:absolute;left:96px;top:380px;width:1728px;height:600px"></svg>`,
+  dibujar: (s) => barrasJ(s.querySelector('#finv'), [-280.0, -90.3, 123.4, 115.6, 73.0, 383.7], [-280.0, -362.2, -260.0, -173.0, -123.0, 116.1], false,
+    [['4,51 años', 'Recuperación descontada'], ['$280,0 M', 'Aporte de los socios'], ['$122,6 M', 'Préstamo']], 4.51) });
 
 L.push({ rol: 'Resultado · negro · clímax', clara: false, nota: 'Una cifra, sola, en el centro, con las esquinas del visor de la marca. Se cuenta desde cero al entrar. Los otros VAN quedan abajo, en pequeño, para la pregunta.',
   html: (n) => chrome(n, 'Resultados', 'Valor actual neto', '', 'Hojas 4 y 5 del libro de cálculo.', false) + `
   <div style="position:absolute;left:50%;top:55%;width:1300px;height:520px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(34,184,240,.16),transparent)"></div>
   <svg viewBox="0 0 1920 1080" style="position:absolute;inset:0" aria-hidden="true"><g stroke="#22B8F0" stroke-width="3" fill="none"><path d="M330 330 v-40 h40"/><path d="M1590 330 v-40 h-40"/><path d="M330 790 v40 h40"/><path d="M1590 790 v40 h-40"/></g></svg>
-  <div style="position:absolute;left:0;right:0;top:300px;text-align:center" class="et"><span style="font-size:28px;color:var(--gris-o);letter-spacing:.3em">VAN DEL INVERSIONISTA · Ke 10,58%</span></div>
-  <div class="cifra" style="position:absolute;left:0;right:0;top:340px;text-align:center;font-size:330px;line-height:1;color:#fff"><span data-cuenta="111.9" data-dec="1" data-pre="$" data-suf=" M">$111,9 M</span></div>
+  <div style="position:absolute;left:0;right:0;top:300px;text-align:center" class="et"><span style="font-size:28px;color:var(--gris-o);letter-spacing:.3em">VAN DEL INVERSIONISTA · Ke 9,93%</span></div>
+  <div class="cifra" style="position:absolute;left:0;right:0;top:340px;text-align:center;font-size:330px;line-height:1;color:#fff"><span data-cuenta="116.1" data-dec="1" data-pre="$" data-suf=" M">$116,1 M</span></div>
   <div class="sube d4" style="position:absolute;left:0;right:0;top:720px;text-align:center;font-family:var(--acento);font-style:italic;font-size:56px;color:var(--celeste)">sobre lo que exige el socio</div>
-  <div class="sube d5" style="position:absolute;left:0;right:0;top:880px;display:flex;justify-content:center;gap:120px;font-family:var(--mono);font-size:26px;color:var(--gris-o)"><span>VAN PURO $135,0 M</span><span>VAN AJUSTADO $140,8 M</span></div>` });
+  <div class="sube d5" style="position:absolute;left:0;right:0;top:880px;display:flex;justify-content:center;gap:120px;font-family:var(--mono);font-size:26px;color:var(--gris-o)"><span>VAN PURO $140,2 M</span><span>VAN AJUSTADO $146,1 M</span></div>` });
 
-L.push({ rol: 'Resultado · negro · clímax', clara: false, nota: 'La TIR como el velocímetro: la aguja barre hasta 19,48% y pasa la línea roja del Ke. La diferencia con el costo de oportunidad se ve como distancia, sin explicar la resta.',
+L.push({ rol: 'Resultado · negro · clímax', clara: false, nota: 'La TIR como el velocímetro: la aguja barre hasta 18,72% y pasa la línea roja del Ke. La diferencia con el costo de oportunidad se ve como distancia, sin explicar la resta.',
   html: (n) => chrome(n, 'Resultados', 'Tasa interna de retorno', 'LA AGUJA <em>pasa la línea roja</em>', 'Hojas 4, 5 y 6 del libro de cálculo.', false) + `<svg id="tir" viewBox="0 0 1728 640" style="position:absolute;left:96px;top:360px;width:1728px;height:640px"></svg>`,
-  dibujar: (s) => reloj(s.querySelector('#tir'), 0, 30, [{ v: 19.48, c: '#fff', w: 8 }], [[10.58, 'Ke 10,58%', C.rojo, 'start'], [8.65, 'Ku 8,65%', C.grisO, 'end']], '19,48%', 'TIR DEL INVERSIONISTA', 'TIR pura 16,73%') });
+  dibujar: (s) => reloj(s.querySelector('#tir'), 0, 30, [{ v: 18.72, c: '#fff', w: 8 }], [[9.93, 'Ke 9,93%', C.rojo, 'end']], '18,72%', 'TIR DEL INVERSIONISTA', 'TIR pura 16,13% · Ku 8,13%') });
 
 L.push({ rol: 'Resultado · negro', clara: false, nota: 'Las barras son las instalaciones proyectadas y la línea es el punto de equilibrio. A la derecha, el primer año en unidades y en pesos, como pide la pauta. El año 1 queda bajo la línea con su explicación de una frase; del segundo en adelante, sobre ella.',
   html: (n) => chrome(n, 'Resultados', 'Punto de equilibrio', 'DESDE EL AÑO 2, <em>sobre la línea</em>', 'Hoja 7 del libro de cálculo. Unidades = costos fijos, depreciación y amortización ÷ margen unitario; ventas = unidades × ingreso neto promedio.', false) + `<svg id="pe" viewBox="0 0 1728 600" style="position:absolute;left:96px;top:380px;width:1728px;height:600px"></svg>`,
   dibujar: (s) => {
-    const g = s.querySelector('#pe'), inst = [270, 505, 640, 650, 785], eq = [410, 429, 491, 467, 470], Y = (v) => 520 - v * 0.6;
+    const g = s.querySelector('#pe'), inst = [270, 505, 640, 650, 785], eq = [423, 435, 493, 462, 463], Y = (v) => 520 - v * 0.6;
     for (const v of [0, 200, 400, 600, 800]) { el('line', { x1: 80, x2: 1340, y1: Y(v), y2: Y(v), stroke: v ? '#1f2427' : '#4b5154' }, g); txt(g, 64, Y(v) + 8, v, { 'text-anchor': 'end', 'font-family': 'Plex', 'font-size': 20, fill: C.grisO }); }
     inst.forEach((v, i) => {
       const x = 140 + i * 250;
@@ -314,9 +314,9 @@ L.push({ rol: 'Resultado · negro', clara: false, nota: 'Las barras son las inst
     eq.forEach((v, i) => el('circle', { cx: 205 + i * 250, cy: Y(v), r: 9, fill: '#020304', stroke: '#fff', 'stroke-width': 4, class: 'sube d6' }, g));
     const r = el('g', { class: 'sube d6' }, g);
     txt(r, 1440, 24, 'AÑO 1', { 'font-family': 'ArchivoSC', 'font-weight': 500, 'font-size': 22, 'letter-spacing': 4, fill: C.cel });
-    txt(r, 1440, 110, '410', { 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 88, fill: '#fff' });
+    txt(r, 1440, 110, '423', { 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 88, fill: '#fff' });
     txt(r, 1440, 148, 'instalaciones de equilibrio', { 'font-family': 'Archivo', 'font-size': 24, fill: C.grisO });
-    txt(r, 1440, 250, '$1.688,7 M', { 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 58, fill: '#fff' });
+    txt(r, 1440, 250, '$1.741,7 M', { 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 58, fill: '#fff' });
     txt(r, 1440, 288, 'ventas de equilibrio', { 'font-family': 'Archivo', 'font-size': 24, fill: C.grisO });
     txt(r, 1440, 390, '270', { 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 72, fill: C.grisO });
     txt(r, 1440, 428, 'proyectadas: un dúo', { 'font-family': 'Archivo', 'font-size': 24, fill: C.grisO });
@@ -325,8 +325,8 @@ L.push({ rol: 'Resultado · negro', clara: false, nota: 'Las barras son las inst
 
 L.push({ rol: 'Resultado · negro', clara: false, nota: 'Los tres escenarios en el mismo reloj: la aguja central encendida y las otras dos como agujas fantasma. El rango se lee de un vistazo y el detalle (VAN de cada uno) va como tres números de tablero.',
   html: (n) => chrome(n, 'Resultados', 'Escenarios', 'TRES AGUJAS, <em>un mismo tablero</em>', 'Hoja Escenarios y cambios del libro de cálculo: costo por cotización, conversión y rampa del primer año.', false) + `<svg id="esc3" viewBox="0 0 1728 640" style="position:absolute;left:96px;top:360px;width:1728px;height:640px"></svg>`,
-  dibujar: (s) => reloj(s.querySelector('#esc3'), -30, 40, [{ v: -21.2, c: '#4b5154', w: 5 }, { v: 35.42, c: '#4b5154', w: 5 }, { v: 19.48, c: '#fff', w: 8 }], [[10.58, 'Ke', C.rojo]], '19,48%', 'ESCENARIO CENTRAL', null,
-    [['Pesimista', '−21,20%', 'VAN −$495,0 M'], ['Central', '19,48%', 'VAN $111,9 M'], ['Optimista', '35,42%', 'VAN $400,6 M']]) });
+  dibujar: (s) => reloj(s.querySelector('#esc3'), -30, 54, [{ v: -22.10, c: '#4b5154', w: 5 }, { v: 35.14, c: '#4b5154', w: 5 }, { v: 18.72, c: '#fff', w: 8 }], [[9.93, 'Ke', C.rojo]], '18,72%', 'ESCENARIO CENTRAL', null,
+    [['Pesimista', '−22,10%', 'VAN −$527,7 M'], ['Central', '18,72%', 'VAN $116,1 M'], ['Optimista', '35,14%', 'VAN $423,6 M']]) });
 
 L.push({ rol: 'Cierre · negro', clara: false, nota: 'Vuelven los cinco testigos de la lámina 2, ahora encendidos: se cobra la promesa del inicio. Cierra con el auto y el logo, igual que la Fase 3.',
   html: () => `<img src="${CIERRE}" alt="" style="position:absolute;left:0;top:430px;width:100%;height:650px;object-fit:cover;object-position:50% 60%;opacity:.6"><div style="position:absolute;inset:0;background:linear-gradient(180deg,#020304 0%,#020304 56%,rgba(2,3,4,0) 74%)"></div>
@@ -339,9 +339,9 @@ L.push({ rol: 'Cierre · negro', clara: false, nota: 'Vuelven los cinco testigos
 
 /* ------------------------------------------------------------------ anexo para la defensa */
 L.push({ rol: 'Anexo · negro', clara: false, nota: 'Anexo para la defensa: los tres escenarios del flujo puro con el mismo reloj de la lámina 13, por si preguntan por el proyecto sin deuda. No se expone; se abre si lo piden.',
-  html: () => chrome('A1', 'Anexo', 'Escenarios del flujo puro', 'EL FLUJO PURO <em>en tres escenarios</em>', 'Hoja Escenarios y cambios del libro de cálculo. Tasa Ku 8,65%.', false, true) + `<svg id="escP" viewBox="0 0 1728 640" style="position:absolute;left:96px;top:360px;width:1728px;height:640px"></svg>`,
-  dibujar: (s) => reloj(s.querySelector('#escP'), -30, 40, [{ v: -15.71, c: '#4b5154', w: 5 }, { v: 28.89, c: '#4b5154', w: 5 }, { v: 16.73, c: '#fff', w: 8 }], [[8.65, 'Ku', C.rojo]], '16,73%', 'TIR PURA · CENTRAL', null,
-    [['Pesimista', '−15,71%', 'VAN −$492,5 M'], ['Central', '16,73%', 'VAN $135,0 M'], ['Optimista', '28,89%', 'VAN $442,9 M']]) });
+  html: () => chrome('A1', 'Anexo', 'Escenarios del flujo puro', 'EL FLUJO PURO <em>en tres escenarios</em>', 'Hoja Escenarios y cambios del libro de cálculo. Tasa Ku 8,13%.', false, true) + `<svg id="escP" viewBox="0 0 1728 640" style="position:absolute;left:96px;top:360px;width:1728px;height:640px"></svg>`,
+  dibujar: (s) => reloj(s.querySelector('#escP'), -30, 54, [{ v: -16.31, c: '#4b5154', w: 5 }, { v: 28.60, c: '#4b5154', w: 5 }, { v: 16.13, c: '#fff', w: 8 }], [[8.13, 'Ku', C.rojo]], '16,13%', 'TIR PURA · CENTRAL', null,
+    [['Pesimista', '−16,31%', 'VAN −$523,2 M'], ['Central', '16,13%', 'VAN $140,2 M'], ['Optimista', '28,60%', 'VAN $466,8 M']]) });
 
 L.push({ rol: 'Anexo · blanco', clara: true, nota: 'Respuesta preparada a una pregunta probable: por qué el premio por riesgo viene de Damodaran y no del IPSA. Las barras muestran cuánto salta el IPSA de un año a otro; la línea es nuestro premio, estable y con fuente.',
   html: () => chrome('A2', 'Anexo', 'Tasa de descuento', '¿Y EL IPSA? <em>salta demasiado</em>', 'Banco Central de Chile, IPSA de cierre 2015–2024 (variación anual); Damodaran (enero de 2026): premio de mercado maduro 4,23% más riesgo país de Chile 1,10%.', true, true) + `<svg id="ipsa" viewBox="0 0 1728 600" style="position:absolute;left:96px;top:380px;width:1728px;height:600px"></svg>`,
@@ -365,29 +365,48 @@ L.push({ rol: 'Anexo · blanco', clara: true, nota: 'Respuesta preparada a una p
 L.push({ rol: 'Anexo · blanco', clara: true, nota: 'El crédito año a año: cuota partida en interés y amortización, con el saldo como línea que baja a cero. Responde cuánto cuesta la deuda y cuándo se paga sin mostrar la tabla de amortización.',
   html: () => chrome('A3', 'Anexo', 'Financiamiento', 'EL CRÉDITO <em>año a año</em>', 'Hoja 5.1 del libro de cálculo. Sistema francés, un año de gracia, tasa real de 7,86%.', true, true) + `<svg id="cred" viewBox="0 0 1728 600" style="position:absolute;left:96px;top:380px;width:1728px;height:600px"></svg>`,
   dibujar: (s) => {
-    const g = s.querySelector('#cred'), I = [9.1, 9.1, 7.1, 4.9, 2.6], A = [0, 25.9, 27.9, 30.1, 32.5], S = [116.3, 116.3, 90.4, 62.5, 32.5, 0];
+    const g = s.querySelector('#cred'), I = [9.6, 9.6, 7.5, 5.2, 2.7], A = [0, 27.3, 29.4, 31.7, 34.2], S = [122.6, 122.6, 95.3, 65.9, 34.2, 0];
     const k = 3.6, base = 500, X = (i) => 160 + i * 220;
     el('line', { x1: 40, x2: 1300, y1: base, y2: base, stroke: '#1d1d1f', 'stroke-width': 2 }, g);
     I.forEach((v, i) => {
       const x = X(i + 1) - 60;
       el('rect', { x, y: base - (v + A[i]) * k, width: 120, height: A[i] * k, fill: C.cel, class: 'barra' }, g).style.transitionDelay = (i * 0.15) + 's';
       el('rect', { x, y: base - v * k, width: 120, height: v * k, fill: '#5f6368', class: 'barra' }, g).style.transitionDelay = (i * 0.15) + 's';
-      txt(g, x + 60, base - (v + A[i]) * k - 14, f1(i ? 35.0 : 9.1), { 'text-anchor': 'middle', 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 36, fill: '#1d1d1f', class: 'sube d' + (i + 1) });
+      txt(g, x + 60, base - (v + A[i]) * k - 14, f1(i ? 36.9 : 9.6), { 'text-anchor': 'middle', 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 36, fill: '#1d1d1f', class: 'sube d' + (i + 1) });
       txt(g, x + 60, 540, 'AÑO ' + (i + 1), { 'text-anchor': 'middle', 'font-family': 'Plex', 'font-size': 20, fill: C.gris });
     });
     txt(g, X(0), 540, 'AÑO 0', { 'text-anchor': 'middle', 'font-family': 'Plex', 'font-size': 20, fill: C.gris });
     const d = S.map((v, i) => (i ? 'L' : 'M') + X(i) + ' ' + (base - v * k * 0.9).toFixed(1)).join(' ');
     const p = el('path', { d, fill: 'none', stroke: '#1d1d1f', 'stroke-width': 4, class: 'traza' }, g); p.dataset.traza = 1;
     S.forEach((v, i) => el('circle', { cx: X(i), cy: base - v * k * 0.9, r: 7, fill: '#f2f6fa', stroke: '#1d1d1f', 'stroke-width': 3, class: 'sube d6' }, g));
-    txt(g, X(0) + 16, base - 116.3 * k * 0.9 - 18, 'saldo $116,3 M', { 'font-family': 'Plex', 'font-size': 20, fill: '#1d1d1f', class: 'sube d6' });
+    txt(g, X(0) + 16, base - 122.6 * k * 0.9 - 18, 'saldo $122,6 M', { 'font-family': 'Plex', 'font-size': 20, fill: '#1d1d1f', class: 'sube d6' });
     const ley = el('g', { class: 'sube d6' }, g);
     el('rect', { x: 40, y: 0, width: 24, height: 24, fill: C.cel }, ley); txt(ley, 76, 20, 'Amortización', { 'font-family': 'Archivo', 'font-size': 22, fill: '#1d1d1f' });
     el('rect', { x: 260, y: 0, width: 24, height: 24, fill: '#5f6368' }, ley); txt(ley, 296, 20, 'Interés', { 'font-family': 'Archivo', 'font-size': 22, fill: '#1d1d1f' });
     const r = el('g', { class: 'sube d6' }, g);
-    txt(r, 1728, 90, '$32,9 M', { 'text-anchor': 'end', 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 80, fill: '#1d1d1f' });
+    txt(r, 1728, 90, '$34,7 M', { 'text-anchor': 'end', 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 80, fill: '#1d1d1f' });
     txt(r, 1728, 130, 'intereses en cinco años', { 'text-anchor': 'end', 'font-family': 'Archivo', 'font-size': 24, fill: C.gris });
-    txt(r, 1728, 250, '$5,8 M', { 'text-anchor': 'end', 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 80, fill: C.celT });
+    txt(r, 1728, 250, '$5,9 M', { 'text-anchor': 'end', 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 80, fill: C.celT });
     txt(r, 1728, 290, 'VAN de la deuda (escudo)', { 'text-anchor': 'end', 'font-family': 'Archivo', 'font-size': 24, fill: C.gris });
+  } });
+
+L.push({ rol: 'Anexo · blanco', clara: true, nota: 'Respuesta a la pregunta más probable: qué pasa si el kit cuesta más. Cada barra es una corrida del libro completo con una sola pieza cambiada. La línea vertical es el caso base; las barras que cruzan el cero son las piezas que hay que cerrar con el proveedor antes del primer pedido.',
+  html: () => chrome('A4', 'Anexo', 'Sensibilidad del kit', '¿Y SI EL KIT <em>sube?</em>', 'Hoja 1.2 del libro de cálculo; cada corrida cambia una pieza en una copia del libro y lo recalcula completo (16-11-2026). VAN del flujo puro a Ku, millones de pesos.', true, true) + `<svg id="sens" viewBox="0 0 1728 600" style="position:absolute;left:96px;top:370px;width:1728px;height:610px"></svg>`,
+  dibujar: (s) => {
+    const g = s.querySelector('#sens'), x0 = 840, k = 1.3, alto = 62, paso = 80;
+    const F = [['Kit 3% más barato', 319.9], ['Caso base', 140.2], ['Kit 3% más caro', -41.4], ['Celdas a US$14 (otro distribuidor)', -46.4], ['Sin certificado de origen chino (6%)', -122.6], ['Bridas y caja al doble', -173.0], ['Tapa del motor para ir sobre 80 km/h', -422.7]];
+    el('line', { x1: x0, x2: x0, y1: 0, y2: F.length * paso, stroke: '#1d1d1f', 'stroke-width': 2 }, g);
+    txt(g, x0, F.length * paso + 34, '0', { 'text-anchor': 'middle', 'font-family': 'Plex', 'font-size': 20, fill: C.gris });
+    F.forEach((f, i) => {
+      const y = i * paso, w = Math.abs(f[1]) * k, x = f[1] >= 0 ? x0 : x0 - w;
+      el('rect', { x, y, width: w, height: alto, fill: i === 1 ? '#1d1d1f' : (f[1] < 0 ? '#5f6368' : (f[1] > 140.2 ? C.cel : '#a1a5aa')), class: 'barra' }, g).style.transitionDelay = (i * 0.1) + 's';
+      txt(g, f[1] >= 0 ? x0 - 24 : x0 + 24, y + 38, f[0], { 'text-anchor': f[1] >= 0 ? 'end' : 'start', 'font-family': 'Archivo', 'font-size': 26, fill: '#1d1d1f' });
+      txt(g, f[1] >= 0 ? x + w + 16 : x - 16, y + 42, (f[1] < 0 ? '−' : '') + '$' + f1(Math.abs(f[1])), { 'text-anchor': f[1] >= 0 ? 'start' : 'end', 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 36, fill: '#1d1d1f', class: 'sube d' + Math.min(6, i + 1) });
+    });
+    const r = el('g', { class: 'sube d6' }, g);
+    txt(r, 1728, 470, '−1,96%', { 'text-anchor': 'end', 'font-family': 'ArchivoC', 'font-weight': 700, 'font-size': 72, fill: C.celT });
+    txt(r, 1728, 506, 'de precio deja el VAN puro en cero', { 'text-anchor': 'end', 'font-family': 'Archivo', 'font-size': 24, fill: C.gris });
+    txt(r, 1728, 560, '+2,3% de costo del kit, también', { 'text-anchor': 'end', 'font-family': 'Archivo', 'font-size': 24, fill: C.gris });
   } });
 
 /* ------------------------------------------------------------------ gráficos reutilizables */
@@ -456,8 +475,8 @@ function reloj(g, vmin, vmax, agujas, marcas, valor, etiqueta, pie, filas) {
   });
 }
 function ruta(svg, i, total, clara) {
-  const acum = [-269.3, -348.8, -246.7, -162.9, -117.8, 111.9];
-  const X = (k) => 10 + k * 68, Y = (v) => 8 + (130 - v) * 48 / 500;
+  const acum = [-280.0, -362.2, -260.0, -173.0, -123.0, 116.1];
+  const X = (k) => 10 + k * 68, Y = (v) => 8 + (290 - v) * 48 / 640;
   const d = acum.map((v, k) => (k ? 'L' : 'M') + X(k) + ' ' + Y(v)).join(' ');
   el('line', { x1: 4, x2: 356, y1: Y(0), y2: Y(0), stroke: clara ? '#c8cace' : '#2e3438', 'stroke-dasharray': '3 4' }, svg);
   el('path', { d, fill: 'none', stroke: clara ? '#c8cace' : '#2e3438', 'stroke-width': 3 }, svg);
@@ -482,7 +501,7 @@ const S = L.map((l, i) => {
   return s;
 });
 const idx = document.getElementById('indice');
-const nombres = ['Portada', 'Objetivos', 'Financiamiento', 'Inversión', 'Capital de trabajo', 'Ingresos y costos', 'Flujo puro', 'Tasas', 'Flujo del socio', 'VAN', 'TIR', 'Equilibrio', 'Escenarios', 'Cierre', 'A1 Escenarios puros', 'A2 ¿Por qué no el IPSA?', 'A3 El crédito'];
+const nombres = ['Portada', 'Objetivos', 'Financiamiento', 'Inversión', 'Capital de trabajo', 'Ingresos y costos', 'Flujo puro', 'Tasas', 'Flujo del socio', 'VAN', 'TIR', 'Equilibrio', 'Escenarios', 'Cierre', 'A1 Escenarios puros', 'A2 ¿Por qué no el IPSA?', 'A3 El crédito', 'A4 ¿Y si el kit sube?'];
 nombres.forEach((n, i) => { const b = document.createElement('button'); b.innerHTML = `<i class="${L[i].clara ? 'c' : 'o'}"></i><span>${String(i + 1).padStart(2, '0')}</span>${n}`; b.onclick = () => ir(i); idx.appendChild(b); });
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 let act = -1;

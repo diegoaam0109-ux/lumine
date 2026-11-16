@@ -32,6 +32,16 @@ def caja():
     return datos
 
 
+def guion(i):
+    """Texto del orador de la lámina i+1, leído de GUION_FASE4.md (las láminas del anexo no tienen guion)."""
+    s = (AQUI / 'GUION_FASE4.md').read_text(encoding='utf-8')
+    m = re.search(rf'^## Lámina {i + 1} · ([^\n]*)\n(.*?)(?=^## |^---)', s, re.S | re.M)
+    if not m:
+        return None
+    cuerpo = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', m.group(2).strip())
+    return '<p><b>' + m.group(1) + '</b></p>' + ''.join('<p>' + x.strip() + '</p>' for x in cuerpo.split('\n\n') if x.strip())
+
+
 def b64(p, mime):
     return f'data:{mime};base64,' + base64.b64encode(p.read_bytes()).decode()
 
@@ -50,17 +60,18 @@ def main():
     (SITIO / 'renderer.html').write_text(sitio, encoding='utf-8')
     nombres = json.loads(re.search(r'const nombres = (\[.*?\]);', base).group(1).replace("'", '\"'))
     notas = re.findall(r"L.push\(\{ rol: '[^']*', clara: (?:true|false), nota: '([^']*)'", base)
-    assert len(nombres) == len(notas) == 17
+    assert len(nombres) == len(notas) == 18
     version = hashlib.sha256((sitio + (SITIO.parent / 'engine/deck.js').read_text() + (SITIO.parent / 'engine/deck.css').read_text()).encode()).hexdigest()[:12]
     datos = dict(title='Lumine · Fase 4 · Plan financiero', mainSlides=14,
         slides=[dict(title=n, frame=f'renderer.html?embed&v={version}#lamina-{i+1}',
-                     notes='<p><b>Nota de diseño (no es un guion):</b></p><p>'+notas[i]+'</p>')
+                     notes=(guion(i) or '') + '<p><b>Nota de diseño:</b> ' + notas[i] + '</p>')
                 for i, n in enumerate(nombres)],
         annex=[dict(code=f'A{i-13}', title=nombres[i], slide=i+1,
                     question=q, keywords=k) for i, q, k in [
             (14, '¿Cómo cambian los resultados del proyecto entre escenarios?', ['VAN', 'TIR', 'sensibilidad']),
             (15, '¿Por qué se utiliza esta prima de mercado?', ['IPSA', 'CAPM', 'tasa', 'riesgo']),
-            (16, '¿Cómo se paga la deuda?', ['crédito', 'amortización', 'interés', 'banco'])]])
+            (16, '¿Cómo se paga la deuda?', ['crédito', 'amortización', 'interés', 'banco']),
+            (17, '¿Qué pasa si sube el costo del kit?', ['kit', 'costo', 'sensibilidad', 'VAN', 'proveedor'])]])
     (SITIO / 'deck-data.js').write_text('window.DECK = '+json.dumps(datos, ensure_ascii=False, indent=2)+';\n', encoding='utf-8')
     (SITIO / 'index.html').write_text('''<!doctype html>
 <html lang="es"><head><meta charset="utf-8">

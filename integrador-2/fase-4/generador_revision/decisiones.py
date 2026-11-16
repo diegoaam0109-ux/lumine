@@ -330,60 +330,78 @@ D_ = lambda r: f'Datos!$C${r}'
 P = [
     ('Tren motriz', 'Motor en la rueda trasera', 'QS273 V3, 72 V: 4.000 W (Esencial) y 6.000 W (Plus)', 'QS Motor, fabricante (China)',
      'US$', 2, 514.54, 2, 583.77, 0, 'Precio oficial publicado por QS Motor en cnqsmotor.com (consultado el 15-11-2026): QS273 de 4.000 W para auto eléctrico liviano, US$514,54 (enlace); QS273 de 6.000 W, US$583,77 (cnqsmotor.com/product/electric-car-hub-motor-72v-6000-watt-v3-electric-hub-motor/). La página no dice qué incluye el precio; las listas de kits de QS venden aparte el disco de freno (ver pendientes al pie). Arancel 0% por el TLC Chile–China, sujeto a certificado de origen.'),
-    ('Tren motriz', 'Controlador del motor', 'Fardriver ND84680: 680 A de fase, pico de 100 V, para motores QS de 4 a 6 kW, con regeneración',
-     'QS Motor, distribuidor oficial de Fardriver', 'US$', 2, 308, 2, 308, 0,
+    ('Tren motriz', 'Controlador del motor', 'Fardriver ND84680: 680 A de fase, 330 A de batería, pico de 100 V, con regeneración',
+     'ZY Mobility, distribuidor de Fardriver (despacho desde Shenzhen)', 'US$', 2, 308, 2, 308, 0,
      'Modelo elegido por tensión, no por precio. La batería de 31 celdas carga hasta 2,8 V por celda (ficha de Yinlong 66160H, 30 Ah) '
      'y algunas fichas admiten 2,9 V: 86,8 a 89,9 V. El ND72680 tiene un pico de 88 V y quedaría sin margen o por debajo, sobre todo al '
-     'regenerar con la batería llena; el ND84680 admite 100 V (11% a 15% de margen) y el ND96680, 115 V. La misma página de QS Motor '
-     'publica ND72680 a US$243,10, ND84680 a «308SD» (se lee US$308; error tipográfico de la página) y ND96680 a US$328,70 '
-     '(consultado el 15-11-2026). Pendiente: confirmar con QS el precio del ND84680; con el ND96680 el kit sube US$41,40.'),
-    ('Batería', 'Celda de litio-titanato 2,3 V y 30 Ah', 'Yinlong 66160H; 31 en serie = 71,3 V y 2,14 kWh',
-     'Gobel Power, distribuidor de fábrica', 'US$', 31, 14, 31, 14, 0, 'Precio publicado por Gobel Power: US$14,00 por celda, modelo YL-66160H-30 (consultado el 15-11-2026). Carga hasta 2,8 V y descarga hasta 1,5 V por celda (ficha publicada del modelo). Pendiente: confirmar si incluye las barras de conexión entre celdas. Arancel 0% sujeto a certificado de origen.'),
+     'regenerar con la batería llena; el ND84680 admite 100 V (11% a 15% de margen). Precio publicado por ZY Mobility para el ND84680: '
+     'US$308 por unidad con su adaptador Bluetooth, despachado desde Shenzhen (consultado el 16-11-2026); QS Motor publica el mismo '
+     'modelo a «308SD». Un reemplazo genérico a US$251 no declara regeneración ni programación y se descartó. Pendiente: ficha del '
+     'fabricante con el rango mínimo de tensión y la regeneración. Arancel 0% sujeto a certificado de origen.'),
+    ('Batería', 'Celda de litio-titanato 2,3 V y 30 Ah', 'Yinlong 66160, 30 Ah; 31 en serie = 71,3 V y 2,14 kWh; 180 A continuos',
+     'Litio Store, distribuidor (despacho desde China)', '€', 31, 9.69, 31, 9.69, 0,
+     'Precio publicado por Litio Store (lifepo4cells.eu): €9,69 por celda, sin IVA ni envío, en múltiplos de 4 (consultado el '
+     '15-11-2026). Ficha del vendedor: 2,3 V y 30 Ah, carga hasta 2,9 V, corte en 1,5 V y 180 A continuos. Gobel Power publica la misma '
+     'celda a US$14. Despacha desde China, por lo que viaja en el embarque marítimo. Pendiente: proforma, certificado del lote y UN38.3. '
+     'Arancel 0% sujeto a certificado de origen chino (sensibilidad con 6% al pie).'),
     ('Batería', 'Sistema de gestión de la batería (BMS)', 'ANT de 10 a 32 series, 200 A, apto para LTO',
      'Vendedor comercial (eBay)', 'US$', 1, 149.28, 1, 149.28, 0,
-     'Precio publicado por el vendedor idealmall8 en eBay: US$149,28 la versión de 200 A (consultado el 15-11-2026). El fabricante, Shiyan Ant IoT, no publica precio; es el único dato encontrado para 31 series. Se despacha al almacén del transitario en China y viaja con el resto del kit.'),
-    ('Batería', 'Contactor principal', 'TE Kilovac LEV200, bobina de 12 V, contactos de 12 a 900 V DC y 500 A, sellado',
-     'Electric Motorsport, distribuidor (EE.UU.)', 'US$', 1, 145, 1, 145, 0.06,
-     'Reemplaza al contactor «tipo Albright SW200» de US$110, cuya publicación no declara tensión de contactos. Ficha de TE: contactos '
-     'de 12 a 900 V DC, 500 A continuos, 0,60 kg. Precio de Electric Motorsport: US$145 la versión a elección de bobina (la de US$85 '
-     'trae economizador y el vendedor advierte no usarla con controladores que ya lo tienen). Consultado el 15-11-2026. Origen México '
-     '(ficha de RS); arancel de 6% por prudencia, sin certificado de origen.'),
+     'Precio publicado por el vendedor idealmall8 en eBay: US$149,28 la versión de 200 A (consultado el 15-11-2026). Se despacha al '
+     'almacén del transitario en China y viaja con el resto del kit. Pendiente: la tienda del fabricante publica para 10 a 32 series '
+     'versiones de 80 y 120 A continuos; hay que confirmar si los 200 A de esta versión son continuos o de pico (ver pendientes al pie).'),
+    ('Batería', 'Contactor principal', 'TE Kilovac LEV200A4ANA, bobina de 12 V, contactos de 12 a 900 V DC y 500 A, sellado',
+     'DigiKey, distribuidor (EE.UU.)', 'US$', 1, 132.7148, 1, 132.7148, 0.06,
+     'Precio publicado por DigiKey para el LEV200A4ANA: US$156,11 por una unidad, US$139,00 desde 10 y US$132,71 desde 25, con 43 en stock (consultado '
+     'el 16-11-2026). Se usa el tramo de 25 porque el pedido promedio del modelo es de unos 49 kits (Datos, fila 266). Ficha de TE: '
+     'contactos de 12 a 900 V DC y 500 A. La bobina consume cerca de 1,1 A y la salida de la unidad de control entrega hasta 1 A, por lo '
+     'que se maneja con un relé de mando. Plazo del fabricante: 33 semanas. Arancel de 6% por prudencia, sin certificado de origen.'),
     ('Control', 'Unidad de control (hardware)', 'Macchina M2 Under-the-Hood, 2 CAN', 'Macchina, fabricante (EE.UU.)',
      'US$', 1, 99, 1, 99, 0.06, 'Precio publicado por el fabricante en macchina.cc: US$99 (consultado el 15-11-2026). El software es desarrollo propio. Arancel general de 6% por prudencia: no hay certificado de origen confirmado.'),
-    ('Control', 'Sensor de presión de freno', 'Transductor 0,5–4,5 V con sello para líquido de frenos', 'DATAQ, fabricante (EE.UU.)',
-     'US$', 1, 68, 1, 68, 0.06, 'Precio publicado por DATAQ para el modelo 2000361-H de 0,5 a 4,5 V: US$68 (consultado el 15-11-2026). Arancel general de 6% por prudencia: no hay certificado de origen confirmado.'),
-    ('Mecánica', 'Brida motor–mangueta y soporte de pinza (par)', 'Mecanizado CNC en aluminio 6061 T6',
-     'ESTIMACIÓN por analogía, no es cotización: WSP Separadores de Rueda (España)', '€', 2, 72.7273, 2, 72.7273, 0,
-     'ESTIMACIÓN, no cotización. WSP publica pares de separadores de rueda mecanizados en CNC en aluminio 6061 T6 desde €88 con IVA '
-     'de España (21%), €72,73 netos (consultado el 15-11-2026). La fuente prueba el precio de los separadores, no el de la brida: se '
-     'supone que una brida exige un volumen de aluminio y horas de máquina parecidos a los de un par. Pendiente: presupuesto de '
-     'fabricación con plano y cantidades. Sensibilidad en el pie de la hoja: de la mitad al doble.'),
-    ('Mecánica', 'Pinza de freno trasera', 'Pinza de repuesto sobre el disco del motor', 'Mercado Libre Chile, avisos de pinzas traseras de auto',
-     'CLP', 2, 53762, 2, 53762, 0, 'Promedio de cuatro precios publicados de pinzas traseras de auto y camioneta (consultados el 15-11-2026): '
-     '$40.450 (par de Suzuki Nomade a $80.900), $47.500 (par de Ford F150 a $95.000), $76.960 (Maxus T60/T80) y $91.000 (Maxus T60): '
-     '$63.978 con IVA, $53.762 netos.'),
-    ('Mecánica', 'Cable de potencia 35 mm² (metro)', 'H01N2-D flexible', 'Vitel Energía, distribuidor en Chile',
-     'CLP', 5, 10094.96, 5, 10094.96, 0, 'Precio publicado por Vitel Energía: $12.013 con IVA por metro (septiembre de 2026); se usa neto de IVA ($10.095). Ficha del producto en el enlace.'),
-    ('Mecánica', 'Fusible clase T de 225 A con portafusible', 'Blue Sea 5117 (225 A, 20 kA a 125 V DC) y bloque 5502100 (160 V DC, 320 A)',
-     'Fisheries Supply y Del City, distribuidores (EE.UU.)', 'US$', 1, '=92.51+82.79', 1, '=92.51+82.79', 0.06,
-     'Reemplaza al fusible ANL, cuya tensión típica de 32 V DC no sirve para una batería de 87 a 90 V. Fusible Blue Sea 5117 a US$92,51 '
-     '(Fisheries Supply) y bloque con tapa 5502100 a US$82,79 (Del City), consultados el 15-11-2026. Se usa 225 A porque el bloque para '
-     'fusibles de 110 a 200 A (5007100) admite solo 160 A continuos y la versión Plus llega a unos 170 A (12 kW / 71 V); el BMS limita '
-     'a 200 A. Arancel de 6% por prudencia.'),
+    ('Control', 'Sensor de presión de freno', 'Bosch 0 261 545 188: 0 a 250 bar, M10 × 1, salida de 0,5 a 4,5 V, apto para líquido de frenos',
+     'Speeding, distribuidor de Bosch Motorsport (Finlandia)', '€', 1, 55.6, 1, 55.6, 0.06,
+     'Reemplaza al DATAQ estándar, cuyo sello FKM no está indicado para líquido de frenos DOT (DATAQ ofrece la versión EPDM solo a '
+     'pedido y sin precio). Speeding publica el sensor Bosch 0 261 545 188 a €55,60 sin IVA, con 0,5 V a 0 bar y 4,5 V a 250 bar, para '
+     'combustible, aceite y líquido de frenos (consultado el 16-11-2026). Xtra Motorsport lo lista como número alternativo del Bosch '
+     'Motorsport PSS-260, que vende a €78,50. Pendiente: conector Bosch Compact de 3 pines, que se vende aparte. Arancel de 6% por prudencia.'),
+    ('Mecánica', 'Brida motor–mangueta y soporte de pinza', 'Mecanizado CNC en aluminio 6061 T6 desde bloque de 200 × 200 × 25 mm',
+     'ESTIMACIÓN de costo de fabricación, no es cotización: talleres CNC de China (PCBWay, JLCCNC)', 'US$', 2, 42.61, 2, 42.61, 0,
+     'ESTIMACIÓN, no cotización. Costo por pieza según los precios de mecanizado CNC en aluminio 6061 publicados por PCBWay y JLCCNC: '
+     'cerca de US$65,55 una pieza suelta y US$42,61 en un lote de 40 piezas, es decir, 20 kits (consultado el 15-11-2026). Se fabrica en '
+     'China y viaja con el resto del kit. Reemplaza la analogía con separadores de rueda de la versión anterior (€72,73 por brida), que '
+     'correspondía a otro producto. Pendiente: presupuesto con plano. Sensibilidad en el pie de la hoja: de la mitad al doble.'),
+    ('Mecánica', 'Pinza y disco de freno trasero (por rueda)', 'Pinza hidráulica trasera de auto y disco sólido de 230 × 9 mm, montados en la brida',
+     'ULTI Repuestos y Mundo VAG, comercios en Chile', 'CLP', 2, '=(54990+24900)/1.19', 2, '=(54990+24900)/1.19', 0,
+     'Precios publicados con IVA (consultados el 15-11-2026): pinza trasera ALS-CH03343 de ULTI Repuestos, $54.990, y disco trasero '
+     'sólido Hipper Freios de 230 × 9 mm de Mundo VAG (mundovag.cl/frenos/discos-traseros), $24.900; netos, $46.210 y $20.924. Suma el '
+     'disco, que QS Motor vende aparte, y reemplaza los avisos de Mercado Libre de la versión anterior. Pendiente: ajuste del disco al '
+     'cubo del motor en el plano de la brida.'),
+    ('Mecánica', 'Cable de potencia 35 mm² (metro)', 'H01N2-D flexible, 100 V y 245 A', 'Diacon, distribuidor en Chile',
+     'CLP', 5, '=8900/1.19', 5, '=8900/1.19', 0, 'Precio publicado por Diacon: $8.900 con IVA por metro de cable H01N2-D de 35 mm², 100 V y 245 A (consultado el 15-11-2026); neto, $7.479. Vitel Energía publica $12.013. Pendiente: stock para pedidos por lote.'),
+    ('Mecánica', 'Fusible clase T de 225 A con portafusible', 'Blue Sea 5117 (225 A, 20 kA a 125 V DC) y bloque 5502 con tapa (225 a 400 A, 160 V DC)',
+     'Harbor Supply y Wholesale Marine, distribuidores (EE.UU.)', 'US$', 1, '=59.99+62.99', 1, '=59.99+62.99', 0.06,
+     'Reemplaza al fusible ANL, cuya tensión típica de 32 V DC no sirve para una batería de 87 a 90 V. Fusible Blue Sea 5117 a US$59,99 '
+     '(Harbor Supply, a pedido) y bloque 5502 con tapa a US$62,99 (Wholesale Marine, con stock), consultados el 15-11-2026; Fisheries '
+     'Supply y Del City publican los mismos a US$92,51 y US$82,79. Se usa 225 A porque el bloque para fusibles de 110 a 200 A (5007100) '
+     'admite solo 160 A continuos y la versión Plus llega a unos 170 A (12 kW / 71 V). Arancel de 6% por prudencia.'),
     ('Mecánica', 'Cortacorriente de emergencia', 'Albright ED250B-1: 250 A, hasta 96 V DC, con soplado magnético; corta 1.000 A a 96 V DC',
      'Arc Components, distribuidor de Albright (Reino Unido)', '£', 1, 49.96, 1, 49.96, 0.06,
      'Reemplaza al cortacorriente de Ferretools (12 a 36 V), que no sirve para la tensión del kit. Ficha de Albright ED250: tensión '
      'máxima recomendada 96 V DC en la versión B y corte de 1.000 A a 96 V DC; Arc Components publica £49,96 sin IVA del Reino Unido '
      '(consultado el 15-11-2026). Abre el circuito en una emergencia o para mantención; la conexión y desconexión normal la hace el '
      'contactor. Arancel de 6% por prudencia, sin certificado de origen.'),
-    ('Mecánica', 'Caja metálica de la batería', 'Mecanizado, misma referencia que la brida', 'ESTIMACIÓN por analogía, no es cotización: WSP (España)',
-     '€', 1, 72.7273, 1, 72.7273, 0, 'ESTIMACIÓN, no cotización. Mismo método que la brida: se valoriza como un par de separadores mecanizados, €72,73 netos (consultado el 15-11-2026). Pendiente: presupuesto de fabricación local o importada con especificaciones.'),
-    ('Mecánica', 'Consumibles de conexión', '10 terminales de cobre de 35 mm², un set de termocontraíble y 10 m de cable de señal 18 AWG',
-     'Comercios en Chile (Mercado Libre, Easy y Líder)', 'CLP', 1, '=(7500+3990+27990*10/31)/1.19', 1, '=(7500+3990+27990*10/31)/1.19', 0,
-     'Precios publicados con IVA (consultados el 15-11-2026): pack de 10 terminales de ojo para 35 mm², $7.500; kit de 530 tubos '
-     'termocontraíbles, $3.990; cable automotriz 18 AWG, dos carretes de 15,5 m a $27.990 ($903 el metro). Cantidades, supuesto del '
-     'equipo según el circuito: diez extremos de cable de potencia (batería, fusible, contactor, cortacorriente y dos controladores, '
-     'ida y vuelta) y diez metros de señal entre la unidad de control, el sensor y los controladores. Total $17.243 netos.'),
+    ('Mecánica', 'Caja metálica de la batería', 'Chapa de acero de 1,5 mm cortada con láser, plegada y pintada (batea, tapa y dos grillas porta-celdas)',
+     'ESTIMACIÓN de costo de fabricación, no es cotización: talleres de chapa de China (Baosheng, PCBWay)', 'US$', 1, 82, 1, 82, 0,
+     'ESTIMACIÓN, no cotización. Desglose de precios de chapa publicado por Baosheng Industry para una caja de este tamaño: US$99 en lote '
+     'de 10, US$82 en lote de 20, US$72,45 en lote de 50 y US$56,70 en lote de 100 (consultado el 15-11-2026). Se usa el lote de 20, del '
+     'lado conservador; viaja en el embarque marítimo. Pendiente: presupuesto con plano.'),
+    ('Mecánica', 'Barras de conexión y consumibles', '30 barras M12 y 62 tuercas entre celdas, 10 terminales de 35 mm², termocontraíble y 10 m de cable de señal 18 AWG',
+     'Jim\'s Machineworx (EE.UU.), Rhona, Easy y Líder (Chile)', 'CLP', 1, '=(1315*10+3990+27990*10/31)/1.19+(30*1+62*0.45)*Datos!$C$14*1.06',
+     1, '=(1315*10+3990+27990*10/31)/1.19+(30*1+62*0.45)*Datos!$C$14*1.06', 0,
+     'Barras de cobre estañado para borne M12 a US$1,00 y tuercas bridadas M12 a US$0,45 (Jim\'s Machineworx, US$57,90 por kit, con 6% '
+     'de arancel por prudencia; viajan por courier). Terminales de compresión Sofamel de 35 mm² para espárrago M12 a $1.315 (Rhona), '
+     'kit de termocontraíble a $3.990 y cable 18 AWG a $903 el metro, con IVA (consultados el 15-11-2026). Cantidades, supuesto del equipo '
+     'según el circuito: diez extremos de cable de potencia y diez metros de señal. Pendiente: ampacidad y distancia entre centros de '
+     'las barras.'),
     ('Logística', 'Flete marítimo LCL con recargo de carga peligrosa (por kit)', 'Volumen embalado por kit × tarifa por m³ × (1 + recargo); Datos, filas 250 a 253',
      'Cargo Partner y Great Hensen, transitarios', 'US$', 1, f'={D_(250)}*{D_(252)}*(1+{D_(253)})', 1, f'={D_(250)}*{D_(252)}*(1+{D_(253)})', 0,
      'Parte variable del flete desde China: 0,19 m³ por kit × US$180 por m³ (Cargo Partner) × 1,275 (recargo de carga peligrosa de '
@@ -391,20 +409,20 @@ P = [
      'modo que se cobra por volumen. Los cargos locales por embarque van aparte, como costo fijo de cada pedido (pie de la hoja).'),
     ('Logística', 'Seguro de carga marítima (por kit)', '0,22% del costo y flete de las piezas que vienen de China; Datos, fila 255',
      'Tasa de referencia de Chubb aceptada por el Servicio Nacional de Aduanas', 'US$', 1,
-     f'={D_(255)}*(G5*H5+G6*H6+G7*H7+G8*H8+H19)', 1, f'={D_(255)}*(I5*J5+I6*J6+I7*J7+I8*J8+J19)', 0,
-     'Resolución N° 307 del Servicio Nacional de Aduanas (valoración): tasa de 0,22% por viaje sobre el costo y flete, con prima mínima '
+     f'={D_(255)}*(G5*H5+G6*H6+G7*H7*{D_(15)}/{D_(14)}+G8*H8+G12*H12+G17*H17+H19)', 1, f'={D_(255)}*(I5*J5+I6*J6+I7*J7*{D_(15)}/{D_(14)}+I8*J8+I12*J12+I17*J17+J19)', 0,
+     'Resolución N° 307 del Servicio Nacional de Aduanas (valoración): tasa de 0,22% por viaje sobre el costo y flete de motores, controladores, celdas, BMS, bridas y caja, con prima mínima '
      'de US$25 por póliza. Con pedidos de 10 kits o más, la prima supera el mínimo. Sin seguro declarado, Aduanas valora con 2% teórico.'),
-    ('Logística', 'Courier desde EE.UU., parte variable (por kit)', 'US$8,50 por kilo × 1,44 kg + seguro de 1,5% del valor; Datos, filas 257 a 262',
-     'eShopex, casilla en Miami', 'US$', 1, f'={D_(260)}*{D_(257)}+{D_(262)}*(G9*H9+G10*H10+G11*H11+G15*H15)', 1,
-     f'={D_(260)}*{D_(257)}+{D_(262)}*(I9*J9+I10*J10+I11*J11+I15*J15)', 0,
+    ('Logística', 'Courier desde EE.UU., parte variable (por kit)', 'US$8,50 por kilo × 3,24 kg + seguro de 1,5% del valor; Datos, filas 257 a 262',
+     'eShopex, casilla en Miami', 'US$', 1, f'={D_(260)}*{D_(257)}+{D_(262)}*(G9*H9+G10*H10+G15*H15+57.9)', 1,
+     f'={D_(260)}*{D_(257)}+{D_(262)}*(I9*J9+I10*J10+I15*J15+57.9)', 0,
      'Tarifa publicada por eShopex (consultada el 15-11-2026): US$106 hasta 10 kg y US$8,50 por kilo adicional; manejo de US$2 a US$20 '
      'por paquete según su valor; seguro de US$1,50 por cada US$100 declarados. eShopex no consolida: llega un paquete por proveedor. '
-     'Peso por kit: contactor 0,60 kg (ficha de TE), fusible 0,14 kg y bloque 0,50 kg (Blue Sea), unidad de control y sensor 0,20 kg '
-     '(supuesto). La parte fija de cada paquete va en el costo fijo por embarque (pie de la hoja).'),
-    ('Logística', 'Courier desde el Reino Unido (por kit)', '0,5 kg por kit × tarifa por kilo; Datos, filas 263 y 264',
+     'Peso por kit: contactor 0,60 kg (ficha de TE), fusible 0,14 kg y bloque 0,50 kg (Blue Sea), unidad de control 0,20 kg '
+     '(supuesto) y barras con tuercas 1,80 kg. La parte fija de cada paquete va en el costo fijo por embarque (pie de la hoja).'),
+    ('Logística', 'Courier desde Europa (por kit)', '0,55 kg por kit × tarifa por kilo; Datos, filas 263 y 264',
      'ESTIMACIÓN: tarifa de courier desde Europa publicada por eShopex', 'US$', 1, f'={D_(264)}*{D_(263)}', 1, f'={D_(264)}*{D_(263)}', 0,
-     'ESTIMACIÓN. Arc Components no publica su tarifa de exportación; se usa la tarifa publicada por eShopex desde Europa (US$143 por '
-     '10 kg = US$14,30 por kilo) sobre el peso de despacho del cortacorriente, 0,5 kg (Arc Components). Pendiente: cotizar el envío.'),
+     'ESTIMACIÓN. Arc Components y Speeding no publican su tarifa de exportación; se usa la tarifa publicada por eShopex desde '
+     'Europa (US$143 por 10 kg = US$14,30 por kilo) sobre el cortacorriente, 0,5 kg (Arc Components), y el sensor, 0,05 kg. Pendiente: cotizar el envío.'),
     ('Logística', 'Derecho de aduana sobre flete y seguro de las piezas afectas (base CIF)', '6% del flete y seguro del courier; Datos, fila 265',
      'Servicio Nacional de Aduanas', 'US$', 1, f'={D_(265)}*(H21+H22)', 1, f'={D_(265)}*(J21+J22)', 0,
      'El derecho ad valorem de 6% se calcula sobre el valor CIF (costo + seguro + flete). Las filas de cada pieza aplican el 6% sobre su '
@@ -413,31 +431,31 @@ P = [
     ('Puesta en regla', 'Alineación después de la instalación', 'Taller externo', 'Neumax, servicio en Chile',
      'CLP', 1, 16806.72, 1, 16806.72, 0, 'Precio publicado por Neumax para la alineación de un auto: $20.000 con IVA (consultado el 15-11-2026); se usa neto, $16.807.'),
     ('Puesta en regla', 'Revisión técnica después de la instalación', 'Planta de revisión, Región Metropolitana',
-     'Tarifas de las plantas de la Región Metropolitana publicadas por PracticaTest', 'CLP', 1, 14705.88, 1, 14705.88, 0, 'Promedio de las tarifas de referencia de nueve concesionarias de la Región Metropolitana para autos, agosto de 2026: de $12.700 a $23.250, promedio $17.500 (consultado el 15-11-2026). Precio al público con IVA; se usa neto, $14.706.'),
+     'Chilena de Revisiones Técnicas, planta en la Región Metropolitana', 'CLP', 1, '=20900/1.19', 1, '=20900/1.19', 0, 'Tarifa publicada por la Chilena de Revisiones Técnicas para automóvil 4 × 2: $20.900 (consultado el 15-11-2026); se trata como precio con IVA, $17.563 netos. SGS publica $21.800 en sus plantas.'),
 ]
 r = 5
 ENLACE = {
     'Motor en la rueda trasera': 'https://www.cnqsmotor.com/product/4000-watt-72v-80kph-qs273-hub-motor-for-electric-light-car/',
-    'Controlador del motor': 'https://www.cnqsmotor.com/product/fardriver-controller-nd72680-nd84680-nd96680-sine-wave-controller/',
-    'Contactor principal': 'https://www.electricmotorsport.com/ev-parts?cat=20',
+    'Controlador del motor': 'https://zymobility.com/product/fardriver-nd84680/',
+    'Contactor principal': 'https://www.digikey.com/en/products/detail/te-connectivity-aerospace-defense-and-marine/LEV200A4ANA/2362822',
     'Unidad de control (hardware)': 'https://www.macchina.cc/catalog/m2-boards/m2-under-hood',
-    'Brida motor–mangueta y soporte de pinza (par)': 'https://www.separadoresderueda.com/separadores/mini/',
-    'Pinza de freno trasera': 'https://listado.mercadolibre.cl/caliper-trasero',
-    'Fusible clase T de 225 A con portafusible': 'https://www.fisheriessupply.com/blue-sea-systems-class-t-fuses/5114',
+    'Brida motor–mangueta y soporte de pinza': 'https://www.pcbway.com/rapid-prototyping/cnc-machining/metal/aluminum/Aluminum-6061/',
+    'Pinza y disco de freno trasero (por rueda)': 'https://ulti.cl/producto/Caliper-de-freno-trasero-izquierdo-ALS-CH03343/67645de1715ffd8219877de5',
+    'Fusible clase T de 225 A con portafusible': 'https://harbor-supply.com/collections/electrical-fuse-blocks-fuses/products/blue-sea-5117-225amp-class-t-fuse-5117',
     'Cortacorriente de emergencia': 'https://arc-components.com/ed250b-1-albright-heavy-duty-emergency-stop-switch-250a-96v-max-5210.html',
-    'Caja metálica de la batería': 'https://www.separadoresderueda.com/separadores/mini/',
-    'Consumibles de conexión': 'https://articulo.mercadolibre.cl/MLC-2631488778-pack-10-terminal-ojo-compresion-2-awg-35mm-para-cables-_JM',
+    'Caja metálica de la batería': 'https://baoshengindustry.com/resources/sheet-metal-fabrication/sendcutsend-vs-direct-sheet-metal-factory/',
+    'Barras de conexión y consumibles': 'https://rhona.cl/producto/11504/terminal-de-compresion-35mm.html',
     'Flete marítimo LCL con recargo de carga peligrosa (por kit)': 'https://www.cargopartner.cl/importar-desde/china',
     'Seguro de carga marítima (por kit)': 'https://www.aduana.cl/valoracion-resolucion-n-307/aduana/2007-02-24/205634.html',
     'Courier desde EE.UU., parte variable (por kit)': 'https://eshopex.cl/tarifas/',
-    'Courier desde el Reino Unido (por kit)': 'https://eshopex.cl/tarifas/',
+    'Courier desde Europa (por kit)': 'https://eshopex.cl/tarifas/',
     'Derecho de aduana sobre flete y seguro de las piezas afectas (base CIF)': 'https://www.aduana.cl/cuanto-impuesto-se-paga-al-importar/aduana/2018-12-12/233227.html',
     'Alineación después de la instalación': 'https://neumax.cl/tienda/nuevos-productos/alineacion-auto-2/',
-    'Revisión técnica después de la instalación': 'https://practicatest.cl/blog/tramites-y-renovaciones/valores-revision-tecnica-santiago',
-    'Celda de litio-titanato 2,3 V y 30 Ah': 'https://www.gobelpower.com/yinlong-23v-30ah-lto-66160h-cells-for-diy-car-audio-battery_p26.html',
+    'Revisión técnica después de la instalación': 'https://chrt.cl/tarifas/',
+    'Celda de litio-titanato 2,3 V y 30 Ah': 'https://www.lifepo4cells.eu/en/cell/yinlong-66160-30ah-lto-cell/',
     'Sistema de gestión de la batería (BMS)': 'https://www.ebay.de/itm/204568705372',
-    'Sensor de presión de freno': 'https://www.dataq.com/products/accessories/pressure-sensor/5vindex.html',
-    'Cable de potencia 35 mm² (metro)': 'https://vitelenergia.com/es/productpagepdf/product/printaction/product_id/4331/',
+    'Sensor de presión de freno': 'https://www.speeding.fi/p/bosch-high-pressure-sensor-m10x1-0-261-545-188.html?vat_disp=0',
+    'Cable de potencia 35 mm² (metro)': 'https://diacon.cl/products/cable-flexible-h01n2-d-1x35mm2-100v-245a-negro-x-metro',
 }
 # Las fórmulas de logística apuntan a filas fijas del kit: si cambia el orden de P, se detiene
 _orden = [p[1] for p in P]
@@ -445,7 +463,7 @@ assert _orden.index('Controlador del motor') == 1 and _orden.index('Sistema de g
 assert _orden.index('Contactor principal') == 4 and _orden.index('Fusible clase T de 225 A con portafusible') == 10
 assert _orden.index('Flete marítimo LCL con recargo de carga peligrosa (por kit)') == 14
 assert _orden.index('Courier desde EE.UU., parte variable (por kit)') == 16
-assert _orden.index('Courier desde el Reino Unido (por kit)') == 17
+assert _orden.index('Courier desde Europa (por kit)') == 17
 for blo, comp, esp, prov, mon, ce, pe, cp, pp, ara, nota_ in P:
     for c, v in [(2, blo), (3, comp), (4, esp), (5, prov)]:
         celda(k, r, c, v, wrap=True)
@@ -500,21 +518,20 @@ celda(k, r, 12, f'=-0.5*(L12+L17)', PESO)
 celda(k, r, 13, f'=1*(M12+M17)', PESO)
 r += 1
 celda(k, r, 3, 'Sensibilidad: piezas de China con 6% de derecho sobre el valor CIF (pesos por kit)')
-celda(k, r, 12, f'=Datos!$C$265*(L5+L6+L7+L8+L19+L20)', PESO)
-celda(k, r, 13, f'=Datos!$C$265*(M5+M6+M7+M8+M19+M20)', PESO)
+celda(k, r, 12, f'=Datos!$C$265*(L5+L6+L7+L8+L12+L17+L19+L20)', PESO)
+celda(k, r, 13, f'=Datos!$C$265*(M5+M6+M7+M8+M12+M17+M19+M20)', PESO)
 r += 2
 celda(k, r, 2, 'Pendientes de confirmar con proveedores (no se suman al costo porque no hay precio publicado):', bold=True)
 k.merge_cells(start_row=r, start_column=2, end_row=r, end_column=15)
 for txt in [
-    '1. Disco de freno: los kits de QS Motor para autos venden el disco aparte («we offer brake disc to fit with motor») y la ficha '
-    'del motor no lo incluye. Falta su precio.',
-    '2. Montaje del disco y velocidad: el QS273 de esta hoja está bobinado para 80 km/h y trae el soporte de disco de moto (3 × 80 mm). '
-    'QS sugiere sobre 80 km/h una tapa con disco de auto (4 × 114,3 mm) por US$135 más por motor. Definir si el kit se desacopla sobre '
-    '80 km/h o se compra esa tapa (US$270 por kit).',
-    '3. Barras de conexión entre las 31 celdas: confirmar si Gobel Power las incluye.',
-    '4. Precio del controlador ND84680 (la página dice «308SD») y certificado de origen de las piezas chinas (0% de arancel).',
-    '5. Bridas y caja: presupuesto de fabricación con plano y cantidades.',
-    '6. Envío desde el Reino Unido: tarifa de exportación de Arc Components.',
+    '1. Disco de freno: se costea un disco de auto de 230 mm montado en la brida; falta confirmar su ajuste al cubo del motor en el plano.',
+    '2. Velocidad: el QS273 de 4 kW publicado está bobinado para 80 km/h. QS sugiere sobre 80 km/h una tapa con disco de auto por US$135 '
+    'más por motor (US$270 por kit, sensibilidad en OBSERVACIONES_V7.md). Pedir a QS el bobinado, las rpm máximas arrastrado y la tensión en vacío.',
+    '3. BMS: confirmar que la versión de 200 A sea continua. Si se necesitara un BMS externo (Orion BMS 2, US$890 sin accesorios), el kit subiría.',
+    '4. Corriente de la versión Plus: las celdas admiten 180 A continuos; los dos controladores deben compartir un límite total de batería de 180 A.',
+    '5. Ficha del fabricante del ND84680, conector del sensor de freno y certificado de origen de las piezas chinas (0% de arancel).',
+    '6. Bridas y caja: presupuesto de fabricación con plano y cantidades; barras: ampacidad y distancia entre centros.',
+    '7. Envío desde Europa: tarifa de exportación de Arc Components y Speeding.',
 ]:
     r += 1
     celda(k, r, 2, txt, wrap=True)
@@ -710,11 +727,11 @@ estilo_como(d['B248'], d['B42'])
 LOG = [
     (249, 'gbp', 'Tipo de cambio de la libra esterlina', 1308.03, 'pesos por libra', 'Dato',
      'Banco Central de Chile, tipos de cambio y paridades al 5-11-2026 (Diario Oficial N° 44.591): libra esterlina $1.308,03.'),
-    (250, 'm3k', 'Volumen embalado por kit, vía marítima', 0.19, 'm³', 'Dato y supuesto',
-     'Dos cajas de motor de 43 × 43 × 43 cm (QS Motor) = 0,159 m³, más celdas, controladores y BMS, unos 0,03 m³ (supuesto del equipo).'),
-    (251, 'kgk', 'Peso bruto por kit, vía marítima', '=2*25+31*1.24+2*3+1', 'kg', 'Dato y supuesto',
+    (250, 'm3k', 'Volumen embalado por kit, vía marítima', 0.23, 'm³', 'Dato y supuesto',
+     'Dos cajas de motor de 43 × 43 × 43 cm (QS Motor) = 0,159 m³, más celdas, controladores, BMS y bridas, unos 0,03 m³ (supuesto del equipo), y la caja de batería embalada, 0,040 m³ (58 × 30 × 23 cm, Baosheng).'),
+    (251, 'kgk', 'Peso bruto por kit, vía marítima', '=2*25+31*1.24+2*3+1+2*1.5+12', 'kg', 'Dato y supuesto',
      'Motores de 25 kg brutos (QS Motor), 31 celdas de 1,24 kg (ficha de Yinlong), dos controladores de 3 kg (ficha del ND72680, misma '
-     'carcasa) y 1 kg de BMS (supuesto). Unos 95 kg: menos de 1 t por m³, por lo que el flete se cobra por volumen.'),
+     'carcasa), 1 kg de BMS (supuesto), dos bridas de 1,5 kg y la caja de 12 kg embalada. Unos 110 kg: menos de 1 t por m³, por lo que el flete se cobra por volumen.'),
     (252, 'tlcl', 'Flete marítimo consolidado desde China', 180, 'US$ por m³', 'Dato publicado',
      'Cargo Partner: US$700 a US$1.100 por 5 m³ desde Shanghái; punto medio US$900 / 5 = US$180 por m³ (consultado el 15-11-2026).'),
     (253, 'dgr', 'Recargo de carga peligrosa sobre el flete', 0.275, '%', 'Dato publicado (rango)',
@@ -725,10 +742,10 @@ LOG = [
      'Servicio Nacional de Aduanas, Resolución N° 307 (valoración): tasa de 0,22% por viaje certificada por Chubb, prima mínima US$25.'),
     (256, 'segmin', 'Prima mínima del seguro de carga', 25, 'US$ por póliza', 'Dato publicado',
      'Misma fuente. No se activa: un pedido mínimo de 10 kits vale más de US$20.000 y su prima pasa de US$44.'),
-    (257, 'kgus', 'Peso por kit de las piezas de EE.UU.', '=0.6+0.14+0.5+0.2', 'kg', 'Dato y supuesto',
-     'Contactor 0,60 kg (ficha de TE), fusible 0,14 kg y bloque 0,50 kg (Blue Sea), unidad de control y sensor 0,20 kg (supuesto).'),
+    (257, 'kgus', 'Peso por kit de las piezas de EE.UU.', '=0.6+0.14+0.5+0.2+1.8', 'kg', 'Dato y supuesto',
+     'Contactor 0,60 kg (ficha de TE), fusible 0,14 kg y bloque 0,50 kg (Blue Sea), unidad de control 0,20 kg (supuesto) y barras con tuercas 1,80 kg (Jim\'s Machineworx).'),
     (258, 'npus', 'Paquetes por embarque desde EE.UU.', 5, 'paquetes', 'Dato',
-     'Un paquete por proveedor (contactor, fusible, bloque, unidad de control y sensor): eShopex no consolida (página de tarifas).'),
+     'Un paquete por proveedor (DigiKey, Harbor Supply, Wholesale Marine, Macchina y Jim\'s Machineworx): eShopex no consolida (página de tarifas).'),
     (259, 'cbase', 'Parte fija de la tarifa del courier por paquete', '=106-10*8.5', 'US$ por paquete', 'Dato publicado y cálculo',
      'eShopex: US$106 hasta 10 kg y US$8,50 por kilo adicional; sobre 10 kg la tarifa es US$21 + US$8,50 por kilo.'),
     (260, 'ckg', 'Tarifa del courier por kilo', 8.5, 'US$ por kg', 'Dato publicado', 'eShopex, tarifa desde Miami (consultada el 15-11-2026).'),
@@ -736,8 +753,8 @@ LOG = [
      'eShopex: US$2 a US$20 según el valor del paquete; se usa el tramo mayor (sobre US$1.000), del lado conservador.'),
     (262, 'cseg', 'Seguro del courier', 0.015, '% del valor declarado', 'Dato publicado',
      'eShopex: US$1,50 por cada US$100 declarados (cobertura hasta US$500 por paquete).'),
-    (263, 'kguk', 'Peso por kit de las piezas del Reino Unido', 0.5, 'kg', 'Dato publicado',
-     'Peso de despacho del cortacorriente Albright ED250B-1 (Arc Components).'),
+    (263, 'kguk', 'Peso por kit de las piezas de Europa', 0.55, 'kg', 'Dato publicado',
+     'Peso de despacho del cortacorriente Albright ED250B-1 (Arc Components), 0,5 kg, y del sensor Bosch, 0,05 kg (supuesto).'),
     (264, 'cuk', 'Courier desde Europa por kilo', '=143/10', 'US$ por kg', 'Estimación',
      'Tarifa publicada por eShopex desde Europa, US$143 por 10 kg. Arc Components no publica la suya: pendiente de cotizar.'),
     (265, 'ara', 'Derecho ad valorem general', 0.06, '% del valor CIF', 'Dato publicado',

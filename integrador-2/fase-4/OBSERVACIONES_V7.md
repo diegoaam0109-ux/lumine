@@ -499,3 +499,25 @@ es caja existente al cierre; el método del curso la invierte en el año 0 y la 
 
 Pendientes que no se suman por falta de precio: disco de freno, tapa de disco de auto sobre 80 km/h, barras entre celdas,
 precio confirmado del ND84680, presupuesto de bridas y caja, envío desde el Reino Unido, certificado de origen chino.
+
+
+## Cierre del costeo (16-11-2026)
+
+Regla de selección: en cada pieza, el precio publicado más bajo entre las opciones que cumplen la ficha técnica, con la página verificada. Se cruzaron el costeo propio, el estudio de Gemini y el de GPT.
+
+| Pieza | Antes (15-11 noche) | Cierre | Fuente verificada |
+|---|---|---|---|
+| Controlador ×2 | ND84680 US$308 (QS) | ND84680 US$308 | ZY Mobility (despacho desde Shenzhen); GPT informó US$250 y la página dice US$308 |
+| Celdas ×31 | Gobel US$14 | Litio Store €9,69 sin IVA, despacho desde China | catálogo LTO de lifepo4cells.eu (precio indicativo) |
+| Contactor | LEV200 US$145 (Electric Motorsport) | LEV200A4ANA US$132,71 (tramo de 25, 43 en stock) | DigiKey |
+| Fusible + bloque | US$92,51 + US$82,79 | US$59,99 + US$62,99 | Harbor Supply y Wholesale Marine (5502: 160 V DC, 225–400 A) |
+| Sensor de freno | DATAQ estándar US$68 (sello FKM, no apto para DOT) | Bosch 0 261 545 188 €55,60 | Speeding (combustible, aceite y líquido de frenos) |
+| Brida ×2 y caja | WSP €72,73 c/u (analogía) | US$42,61 c/u y US$82 (ESTIMACIÓN por costo de fabricación en China) | PCBWay/JLCCNC y Baosheng (estudio de Gemini) |
+| Frenos | pinza Mercado Libre $53.762 | pinza ULTI + disco Mundo VAG, $67.134 netos por rueda | ULTI y Mundo VAG |
+| Barras y consumibles | consumibles $17.243 | + 30 barras M12 y 62 tuercas (US$57,90) y terminales Rhona | Jim's Machineworx y Rhona |
+| Cable | Vitel $10.095/m | Diacon $7.479/m | Diacon |
+| Revisión técnica | promedio PracticaTest $14.706 | CHRT $17.563 | chrt.cl |
+
+Descartados por no cumplir: fusible NH1 gG de Rhona (sin tensión DC publicada) y seccionador Wünkhaus (para operar sin carga), ambos propuestos por Gemini; ANT de 80/120 A continuos; reemplazo genérico del ND84680 (sin regeneración ni programación declaradas).
+
+Resultado: kit $3,23 M en la mezcla, VAN puro $140,2 M, TIR pura 16,13%, VAN inversionista $116,1 M, TIR 18,72%. Sensibilidades (VAN puro, una pieza por corrida en una copia del libro): kit +3% −$41,4 M; kit −3% $319,9 M; tapa del motor −$422,7 M; China 6% −$122,6 M; bridas y caja ×2 −$173,0 M; celdas a US$14 −$46,4 M; BMS Orion −$1.899,7 M; con piloto $104,9 M. Precio −1,96% o kit +2,3% dejan el VAN puro en cero.
