@@ -42,7 +42,7 @@ filas = [
     ('Parte del déficit inicial que no quedó como activo: financió las pérdidas de la caja operativa del arranque, que el flujo '
      'del año 1 ya resta (déficit máximo menos el aumento de activos del año 1)',
      f'=IF(Datos!$C$23=1,{CT}!$C$20-({CT}!$D$16-{CT}!$C$16),0)'),
-    ('Recuperación registrada en el año 5 (método del curso: se recupera todo lo invertido)', f'={CT}!$H$24'),
+    ('Recuperación registrada en el año 5 (método contable del valor de desecho, Sapag Chain et al., 2014: se recupera todo lo invertido)', f'={CT}!$H$24'),
     ('Diferencia (debe ser cero)', None),
 ]
 for i, (et, f) in enumerate(filas, start=1):

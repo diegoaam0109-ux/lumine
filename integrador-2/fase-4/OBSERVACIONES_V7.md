@@ -521,3 +521,29 @@ Regla de selección: en cada pieza, el precio publicado más bajo entre las opci
 Descartados por no cumplir: fusible NH1 gG de Rhona (sin tensión DC publicada) y seccionador Wünkhaus (para operar sin carga), ambos propuestos por Gemini; ANT de 80/120 A continuos; reemplazo genérico del ND84680 (sin regeneración ni programación declaradas).
 
 Resultado: kit $3,23 M en la mezcla, VAN puro $140,2 M, TIR pura 16,13%, VAN inversionista $116,1 M, TIR 18,72%. Sensibilidades (VAN puro, una pieza por corrida en una copia del libro): kit +3% −$41,4 M; kit −3% $319,9 M; tapa del motor −$422,7 M; China 6% −$122,6 M; bridas y caja ×2 −$173,0 M; celdas a US$14 −$46,4 M; BMS Orion −$1.899,7 M; con piloto $104,9 M. Precio −1,96% o kit +2,3% dejan el VAN puro en cero.
+
+
+## Crédito sin año de gracia (19-11-2026)
+
+Decisión del equipo al corregir el informe: no hay respaldo público para un año de gracia. Fogape y Pro Inversión garantizan parte del capital, pero el crédito lo otorga el banco intermediario, que fija el plazo y la gracia (ficha Garantía Pro-Inversión de ChileAtiende). Se modela cuota francesa constante desde el año 1, que es el supuesto más exigente para la caja. Cambio en `generador_revision/decisiones.py` (Datos!C30 = 0) y nota de `Datos!F30` en `supuestos.py`; el libro se regeneró con `construir_v7.py`.
+
+| Indicador (escenario central) | Con gracia (16-11) | Sin gracia (19-11) |
+|---|---:|---:|
+| Préstamo | $122,6 M | $122,6 M |
+| Cuota francesa | $36,9 M, años 2 a 5 | $30,6 M, años 1 a 5 |
+| Intereses totales | $34,7 M | $30,4 M |
+| VAN del inversionista (Ke 9,93%) | $116,1 M | $114,5 M |
+| TIR del inversionista | 18,72% | 18,36% |
+| Payback simple / descontado | 4,15 / 4,51 años | 4,16 / 4,53 años |
+| Acumulado descontado al cierre del año 4 / aporte del año 5 | | −$128,3 M / $242,8 M |
+| VAN de la deuda / VAN ajustado | $5,9 M / $146,1 M | $5,2 M / $145,4 M |
+| Aporte de los socios: año 0 / total según flujo mensual | $280,0 M / $289,4 M | $280,0 M / $310,4 M |
+| Cuota / EBITDA de los años 2 a 5 | 14% a 41% | 34%, 20%, 19% y 12% |
+| Pesimista: VAN / TIR del inversionista | −$527,7 M / −22,10% | −$528,8 M / −21,18% |
+| Optimista: VAN / TIR / payback descontado | $423,6 M / 35,14% / 3,51 | $421,6 M / 34,27% / 3,60 |
+
+El EBITDA del año 1 es −$68,0 M: la cuota de ese año la cubre el aporte de los socios, que por eso sube de $289,4 M a $310,4 M. El ahorro tributario de los intereses suma $7,0 M (1,53 + 4,45 + 1,01 en los años 3 a 5) y su valor a Kd es el VAN de la deuda.
+
+Sin cambios: flujo puro (VAN $140,2 M, TIR 16,13%, payback 4,16 / 4,51 años), costo del kit ($3,23 M en la mezcla), inversión del año 0 ($402,1 M), capital de trabajo, punto de equilibrio, Ku, Ke, Kd y D/P. La comparación celda a celda con el libro anterior solo encuentra diferencias en Datos!C30, las hojas 5, 5.1, 6 (las dos cifras del flujo financiado), A2, A4, el motor financiero, Datos del tablero y Escenarios y cambios. Controles: 43 filas independientes dentro de tolerancia.
+
+También cambió el texto de la hoja 1.2: la tapa del motor sobre 80 km/h y la corriente continua del BMS se declaran como supuestos técnicos, no como pendientes. Las corridas de sensibilidad del «Cierre del costeo» quedan como registro histórico.

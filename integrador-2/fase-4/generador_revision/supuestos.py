@@ -59,8 +59,10 @@ T = {
         'Supuesto', 'Plazo propuesto, sin oferta de un banco: cinco años, igual al horizonte de evaluación, para que el crédito '
         'quede pagado al cierre y el valor de desecho no arrastre deuda.'),
     'Gracia de capital': (
-        'Supuesto', 'El primer año el resultado antes de depreciación es negativo (−$65,8 millones, hoja 2): un año de gracia '
-        'evita pagar capital mientras la caja es negativa. Los intereses se pagan igual. Sin oferta de un banco.'),
+        'Supuesto', 'Sin período de gracia (decisión del equipo, 19-11-2026). Las garantías estatales (Fogape, Pro Inversión) '
+        'respaldan parte del capital, pero el crédito lo otorga el banco intermediario, que fija plazo y gracia (ChileAtiende, '
+        'ficha Garantía Pro-Inversión). Cuota francesa constante desde el año 1, el supuesto más exigente para la caja; la cuota '
+        'del año 1 la cubre el aporte de los socios.'),
     'Recuperación del CT al cierre': (
         'Método', 'Método contable del valor de desecho (Sapag, 2014): el capital de trabajo se recupera por su saldo al cierre '
         'del año 5. Los kits en tránsito y el IVA por recuperar conservan su valor. La hoja 4 muestra el VAN sin esta recuperación.'),

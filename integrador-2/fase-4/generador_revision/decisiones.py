@@ -521,13 +521,12 @@ celda(k, r, 3, 'Sensibilidad: piezas de China con 6% de derecho sobre el valor C
 celda(k, r, 12, f'=Datos!$C$265*(L5+L6+L7+L8+L12+L17+L19+L20)', PESO)
 celda(k, r, 13, f'=Datos!$C$265*(M5+M6+M7+M8+M12+M17+M19+M20)', PESO)
 r += 2
-celda(k, r, 2, 'Pendientes de confirmar con proveedores (no se suman al costo porque no hay precio publicado):', bold=True)
+celda(k, r, 2, 'Supuestos técnicos y verificaciones con proveedores (no se suman al costo porque no hay precio publicado):', bold=True)
 k.merge_cells(start_row=r, start_column=2, end_row=r, end_column=15)
 for txt in [
-    '1. Disco de freno: se costea un disco de auto de 230 mm montado en la brida; falta confirmar su ajuste al cubo del motor en el plano.',
-    '2. Velocidad: el QS273 de 4 kW publicado está bobinado para 80 km/h. QS sugiere sobre 80 km/h una tapa con disco de auto por US$135 '
-    'más por motor (US$270 por kit, sensibilidad en OBSERVACIONES_V7.md). Pedir a QS el bobinado, las rpm máximas arrastrado y la tensión en vacío.',
-    '3. BMS: confirmar que la versión de 200 A sea continua. Si se necesitara un BMS externo (Orion BMS 2, US$890 sin accesorios), el kit subiría.',
+    '1. Disco de freno: se costea un disco de auto de 230 mm montado en la brida, que se supone compatible con el cubo del motor.',
+    '2. Velocidad: se supone que el QS273 de 4 kW publicado no requiere la tapa reforzada que el fabricante ofrece para circular sobre 80 km/h; no se incluye en el costo.',
+    '3. Sistema de gestión de la batería: se supone que la versión de 200 A publicada entrega esa corriente en forma continua.',
     '4. Corriente de la versión Plus: las celdas admiten 180 A continuos; los dos controladores deben compartir un límite total de batería de 180 A.',
     '5. Ficha del fabricante del ND84680, conector del sensor de freno y certificado de origen de las piezas chinas (0% de arancel).',
     '6. Bridas y caja: presupuesto de fabricación con plano y cantidades; barras: ampacidad y distancia entre centros.',
@@ -816,5 +815,11 @@ for r, alto in {23: 62, 24: 46, 96: 46, 97: 76, 162: 62, 37: 32, 38: 32, 39: 32,
         al.wrap_text = True
         al.vertical = 'center'
         d.cell(r, c).alignment = al
+# 3. Crédito sin año de gracia (decisión del equipo, 19-11-2026). No hay respaldo público para un año de gracia: las
+#    garantías estatales (Fogape, Pro Inversión) respaldan parte del capital, pero el plazo y la gracia los fija el banco.
+#    Cuota francesa constante desde el año 1; la del año 1 la cubre el aporte de los socios.
+assert d['B30'].value == 'Gracia de capital', 'Datos!B30 no es la gracia de capital'
+d['C30'] = 0
+
 w.save(SAL)
 print(f'Decisiones aplicadas: {n} celdas del piloto y la transición con selector; medios de pago ponderados.')

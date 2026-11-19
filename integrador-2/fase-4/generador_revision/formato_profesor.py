@@ -942,7 +942,7 @@ for row in d.iter_rows(min_row=4):
 # Controles de la nueva capa (al pie de la hoja Controles; no altera la suma de la v6)
 c = w['Controles']
 r0 = c.max_row + 3
-c.cell(r0, 2, 'Controles de las hojas con formato del curso (deben ser 0; pesos, unidades o puntos básicos)').font = Font(name=F, bold=True, color=CEL)
+c.cell(r0, 2, 'Controles de las hojas con el formato de la pauta (deben ser 0; pesos, unidades o puntos básicos)').font = Font(name=F, bold=True, color=CEL)
 for i, (et, f) in enumerate(controles, start=1):
     c.cell(r0 + i, 2, et).font = Font(name=F)
     z = c.cell(r0 + i, 3, f)
