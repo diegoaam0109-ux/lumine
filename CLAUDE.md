@@ -91,6 +91,8 @@ Esteban Gómez Sotta). Entrega: viernes 20-11-2026, 18:00, por correo, en Word (
 - Edición 80/20 (14-11-2026): se distingue hecho externo, estimación del equipo, decisión de diseño y resultado no medido
   (la sección 4.2 es «debería resolver»); el nivel 3 instala sin supervisión pero siempre en duo; la habilitación es
   interna y no reemplaza la licencia SEC ni la autorización del taller; aprobación 80% y rotación 10% son metas preliminares.
+- Costo de formación y monto del bono: se estiman en el Plan Financiero (fuera del alcance del informe), no «por confirmar».
+  Retención: se propone un pacto de permanencia con devolución proporcional de la formación, a validar con asesoría laboral.
 - Contenido que el profesor pidió y ya está: ejemplos extranjeros (IMI en el Reino Unido, DGUV en Alemania), por qué Ishikawa y
   no árbol de problemas, cómo se seleccionaron las 39 competencias (de las 35 tareas del duo, contrastadas con O*NET, DGUV y
   NF C 18-550) y cuáles son las principales por etapa, cuántas personas cubre el sistema (2 → 36 técnicos según la Fase 3),
