@@ -74,7 +74,9 @@ Esteban Gómez Sotta). Entrega: viernes 20-11-2026, 18:00, por correo, en Word (
   portada, índice ni fuentes; orden obligatorio: 1 Introducción · 2 Contexto del caso (organización, problema y evidencia,
   personas en la estrategia) · 3 Metodología de análisis y construcción de métricas (Ishikawa, selección de competencias,
   correspondencia con módulos, reglas, métricas) · 4 Reflexiones finales (por qué el problema es relevante) · 5 Conclusiones ·
-  Fuentes. Sin resumen ejecutivo ni anexos (no caben); la demo va como nota al pie.
+  Fuentes. Lleva **resumen ejecutivo** antes de la Introducción (skill `resumen-ejecutivo-elite`, formato académico: prosa
+  sin negritas, ~280 palabras) y cabe en las 10 páginas con interlineado 1,0 (`armar_v2.py`); sin anexos; la demo va como
+  nota al pie.
 - Rúbrica de redacción (como una respuesta de solemne): introducción que reformula la pregunta, cada párrafo enlazado con el
   anterior, sin ideas sueltas ni repetidas, conclusión que sintetiza sin ideas nuevas. **Nada de etiquetas en negrita al
   inicio de párrafo** («El país.»): el profesor las marcó. Usar IA con moderación: el texto debe sonar propio y con postura

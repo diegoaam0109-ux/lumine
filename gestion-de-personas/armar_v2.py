@@ -23,7 +23,7 @@ def fuente(nombre, size=None, bold=None, color=None, italic=None):
 for n in ('Normal', 'Body Text', 'First Paragraph', 'Compact'):
     if n in [s.name for s in d.styles]:
         fuente(n, 11, color=RGBColor(0x1A, 0x1A, 0x1A))
-        pf = STY[n].paragraph_format; pf.space_after = Pt(6); pf.space_before = Pt(0); pf.line_spacing = 1.08
+        pf = STY[n].paragraph_format; pf.space_after = Pt(5); pf.space_before = Pt(0); pf.line_spacing = 1.0
         pf.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
 for n, t in (('Heading 1', 15), ('Heading 2', 12.5)):
     fuente(n, t, True, AZUL, False); pf = STY[n].paragraph_format
