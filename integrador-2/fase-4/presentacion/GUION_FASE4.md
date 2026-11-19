@@ -1,6 +1,6 @@
 # Guion · Fase 4 · Plan financiero (jueves 19-11-2026)
 
-Supuestos: 7 minutos de exposición (igual que la versión de la Fase 3, pensada para la presentación final de 20 minutos), ritmo de 130 palabras por minuto, modo híbrido y oradores en orden alfabético por apellido. Todas las cifras salen del libro `v7_formato_curso.xlsx` del 16-11-2026, escenario central. Las conclusiones se dicen y no se escriben, como pidió el profesor Brito.
+Supuestos: 7 minutos de exposición (igual que la versión de la Fase 3, pensada para la presentación final de 20 minutos), ritmo de 130 palabras por minuto, modo híbrido y oradores en orden alfabético por apellido. Todas las cifras salen del libro `v7_formato_curso.xlsx` del 19-11-2026 (crédito francés de cinco cuotas, sin año de gracia), escenario central, y coinciden con el informe final. Las conclusiones se dicen y no se escriben, como pidió el profesor Brito.
 
 | Orador | Láminas | Palabras | Tiempo estimado |
 |---|---|---|---|
@@ -53,11 +53,11 @@ Y cada instalación deja poco. / Los ingresos pasan de **1.114 millones** el pri
 
 ## Lámina 10 · VAN · Lukas · 0:25 · 55 palabras
 
-[Clic: la cifra cuenta desde cero] **116 millones** sobre lo que exige el socio. [PAUSA 1.5s] / Ese es el VAN del flujo financiado. / El del proyecto puro es mayor, 140, porque se descuenta a una tasa más baja; y la deuda suma valor por el ahorro tributario de los intereses.
+[Clic: la cifra cuenta desde cero] **114,5 millones** sobre lo que exige el socio. [PAUSA 1.5s] / Ese es el VAN del flujo financiado. / El del proyecto puro es mayor, 140, porque se descuenta a una tasa más baja; y la deuda suma valor por el ahorro tributario de los intereses.
 
 ## Lámina 11 · TIR · Lukas · 0:25 · 50 palabras
 
-[Clic: la aguja barre] La aguja pasa la línea roja. / El socio rentaría **18,7%** frente a un costo de oportunidad de **9,9%**: casi el doble. / La deuda apalanca esa rentabilidad porque el crédito cuesta menos de lo que rinde el proyecto.
+[Clic: la aguja barre] La aguja pasa la línea roja. / El socio rentaría **18,4%** frente a un costo de oportunidad de **9,9%**: casi el doble. / La deuda apalanca esa rentabilidad porque el crédito cuesta menos de lo que rinde el proyecto.
 
 ## Lámina 12 · Equilibrio · Lukas · 0:30 · 65 palabras
 
@@ -65,11 +65,11 @@ El primer año, en cambio, cerramos bajo la línea. / Necesitaríamos **423** in
 
 ## Lámina 13 · Escenarios · Lukas · 0:35 · 70 palabras
 
-¿Y si vendemos menos? [Clic: tres agujas] Movimos lo que más incertidumbre tiene: el costo por cotización y la conversión del primer año. / Con un primer año débil, el negocio destruye valor: la TIR del socio cae a **−22%**. / Con uno bueno, sube a **35%**. / Pero si lo analizamos desde otro punto de vista, la variable más peligrosa no está aquí: está en el costo del kit.
+¿Y si vendemos menos? [Clic: tres agujas] Movimos lo que más incertidumbre tiene: el costo por cotización y la conversión del primer año. / Con un primer año débil, el negocio destruye valor: la TIR del socio cae a **−21%**. / Con uno bueno, sube a **34%**. / Pero la variable más sensible no está aquí: está en el costo del kit.
 
 ## Lámina 14 · Cierre · Lukas · 0:40 · 75 palabras
 
-[Clic: se encienden los cinco testigos] Las cinco metas se cumplen. / Tres ideas para cerrar. / Primero, el taller **crea valor** con una estrategia de diferenciación enfocada, sostenida por la biblioteca de calibraciones. / Segundo, el capital de trabajo, y no los equipos, es la mayor inversión. / Tercero, el margen es estrecho: **2,3%** más en el kit anula el VAN. / Por eso, antes del primer pedido, cerraríamos con el proveedor el precio y las dos piezas pendientes. / Gracias.
+[Clic: se encienden los cinco testigos] Las cinco metas se cumplen. / Tres ideas para cerrar. / Primero, el taller **crea valor** con una estrategia de diferenciación enfocada, sostenida por la biblioteca de calibraciones. / Segundo, el capital de trabajo, y no los equipos, es la mayor inversión. / Tercero, el margen es estrecho: **2,3%** más en el kit anula el VAN. / Por eso, antes de fijar la lista de precios, cerraríamos con el proveedor un contrato de suministro con precio fijo. / Gracias.
 
 ---
 
@@ -88,13 +88,13 @@ El primer año, en cambio, cerramos bajo la línea. / Necesitaríamos **423** in
 Responde quien expuso el tema; todos deben conocer las tres respuestas.
 
 **1. «Su VAN desaparece con un alza de 2,3% en el kit. ¿No es un proyecto demasiado frágil?»** · Responde Benjamín.
-Es frágil y lo dijimos antes que ustedes. / Por eso costeamos cada pieza con el precio publicado más bajo que cumple la ficha, sin ajustar precio ni demanda para compensar, y dejamos a la vista lo que falta cerrar. / La defensa es contractual: un contrato de suministro con precio fijo y cobertura cambiaria con forward para cada pedido. [Anexo A4]
+Es frágil y lo dijimos antes que ustedes. / Por eso costeamos cada pieza con el precio publicado más bajo que cumple la ficha, sin ajustar precio ni demanda para compensar. / Y el riesgo es administrable: cada 1% de alza en el kit se compensa con cerca de 0,85% de precio. / La defensa es contractual: un contrato de suministro con precio fijo y cobertura cambiaria con forward para cada pedido. [Anexo A4]
 
 **2. «El 57% de la inversión es capital de trabajo y casi todo el VAN depende de recuperarlo al quinto año. ¿Qué pasa si no se recupera?»** · Responde Diego.
 Sin las recuperaciones del cierre, el VAN puro sería de menos 14 millones. / Por eso el método contable importa: el capital de trabajo son kits pagados e IVA por recuperar, que se liquidan al cerrar o se traspasan si el negocio se vende en marcha. / En estricto rigor, el valor exige operar los cinco años.
 
-**3. «¿Qué piezas siguen sin confirmar y cuánto pesan?»** · Responde Lukas.
-Dos. / La tapa reforzada del motor para circular sobre 80 kilómetros por hora, que costaría 135 dólares más por motor y llevaría el VAN a menos 423 millones; y la corriente continua del sistema de gestión de la batería. / Ninguna está cotizada; son las dos primeras preguntas al fabricante antes del primer pedido. [Anexo A4] `[DATO A CONFIRMAR: respuesta de QS sobre bobinado y velocidad]`
+**3. «¿Y si alguna pieza del kit cuesta más de lo que suponen?»** · Responde Lukas.
+Lo probamos pieza por pieza, recalculando el libro completo con una sola pieza cambiada. / Si las celdas costaran lo que publica otro distribuidor, el VAN puro bajaría a menos 46 millones; sin certificado de origen chino, a menos 123; y con las bridas y la caja al doble, a menos 173. / Ninguna corrida se compensó con precio ni demanda, pero el precio sí puede absorber el alza: cada 1% más en el kit se cubre con cerca de 0,85% de precio, y eso se fija al cerrar el contrato de suministro. [Anexo A4]
 
 **4. «¿Por qué Damodaran y no el IPSA para el premio por riesgo?»** · Responde Benjamín.
 Porque el IPSA saltó de menos 10,6% a más 34% anual en la última década; con esa volatilidad, la tasa dependería del año elegido. / Damodaran publica un premio de mercado maduro más el riesgo país de Chile, estable y con fuente. [Anexo A2]
