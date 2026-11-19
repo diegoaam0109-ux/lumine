@@ -210,6 +210,17 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   - Organigrama: el Responsable Técnico es jefe de taller (con autoridad de detención); una sola Área Comercial.
   - El generador del capítulo (texto completo) está en el scratchpad de la sesión y no se sube: el repositorio es público.
 
+- **Capítulo IV: Plan Financiero (Fase 4) corregido (19-11-2026)** sobre la versión con 9 comentarios del equipo, con control de
+  cambios y una respuesta por comentario (el .docx y el libro de cálculo no se suben). Criterio del equipo: en finanzas, apegarse al
+  formato académico (autor, fórmula, cálculo y resultado); el método se atribuye siempre a Sapag Chain, Sapag Chain y Sapag Puelma
+  (2014), nunca «método del curso» ni «definiciones habituales». **Sin año de gracia**: no hay respaldo público (las garantías
+  Fogape y Pro Inversión cubren capital; plazo y gracia los fija el banco), cuota francesa constante desde el año 1 ($30,6 MM).
+  Flujo financiado: VAN $114,5 MM a Ke 9,93%, TIR 18,36%, recuperación 4,16 / 4,53 años, VAN ajustado $145,4 MM, aportes de
+  los socios $310,4 MM; escenarios −528,8 / 114,5 / 421,6. Flujo puro sin cambios (VAN $140,2 MM, TIR 16,13%). La tapa
+  reforzada del motor y el BMS no se discuten: se asumen como supuestos técnicos. La sensibilidad al costo se expresa como
+  ajuste de precio (cada 1% de kit ≈ 0,85% de precio). Nada de «se extendió» ni otras alusiones a versiones anteriores, y la
+  conexión con capítulos previos va implícita («según lo planteado anteriormente»).
+
 ## Pendientes y preguntas abiertas
 
 - **Plan de mejora del Capítulo III (12-11-2026, tras la revisión de Diego y Lukas).** El plan completo está en el scratchpad de la
