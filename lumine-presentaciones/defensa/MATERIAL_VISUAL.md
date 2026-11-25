@@ -16,9 +16,8 @@ Las fotos de personas y los documentos del curso no se suben al repositorio (es 
 
 | # | Material | Para qué | Especificación | Quién |
 |---|---|---|---|---|
-| F1 | ~~Foto de cada experto~~ | Recibidas (25-11): las cinco, uniformes (recorte circular, fondo blanco, 1254 px). En `privado/expertos/`, fuera de git | Pregunta: llegaron los cinco con nombre y foto; ¿sigue alguno citado solo por su cargo? | |
-| F2 | Silueta para el experto citado solo por su cargo | Solo si la respuesta a F1 lo pide | Código | |
-| F3 | ~~Logo de cada institución~~ | Recibidos (25-11): Movener, Santo Tomás, MTT, UNAB, INACAP; en `privado/expertos/`. Ver «Revisar» abajo | | |
+| F1 | ~~Foto de cada experto~~ | Recibidas: las cinco, uniformes. Los cinco van con foto, nombre y cargo (decisión del equipo, 25-11) | En `privado/expertos/`, fuera de git | |
+| F3 | ~~Logo de cada institución~~ | Recibidos; MTT y UNAB reemplazados por los oficiales (25-11) | En `privado/expertos/` | |
 | F4 | Confirmación escrita de que cada experto autorizó foto, nombre y logo | Respaldo; no se proyecta | Correo o audio ya existente | Equipo |
 | F5 | Archivo de cifras maestras del informe final | Todas las cifras de las láminas | Una tabla única (JSON, CSV o Excel) con dato, valor, unidad y fuente | Equipo, al cerrar el informe |
 | F6 | Resultados de la encuesta por hipótesis (H1 a H6), ya agregados | Láminas «medimos… y encontramos…» | Solo totales y porcentajes por grupo; nunca respuestas individuales | Equipo |
@@ -38,12 +37,11 @@ Las fotos de personas y los documentos del curso no se suben al repositorio (es 
 | Dos imágenes de WhatsApp con el logo antiguo (rayo en círculo, «Motors» con líneas) | No se copiaron | No usar: no es el logo vigente |
 | Subcarpetas «2. Cifras y resultados», «3. Informe», «4. Defensa» y «5. Opcional» | Vacías al 25-11 | Pendientes (F5, F6 y la guía de la defensa) |
 
-**Revisar antes de proyectar:**
+**Notas de uso:**
 
-- Los renders de WhatsApp llegaron comprimidos (1600 × 900, unos 200 KB). Alcanzan para una lámina, pero si existen los originales sin comprimir, conviene subirlos (WhatsApp baja la calidad).
-- Logos: el del MTT y el de la UNAB parecen versiones redibujadas dentro de un círculo (el del MTT no es el logotipo de gobierno con la barra de colores; el de la UNAB no trae el nombre). Para una ficha formal conviene usar las versiones oficiales de cada sitio; Movener, Santo Tomás e INACAP se ven fieles.
-- Las cinco fotos tienen el mismo tratamiento (bien para la ficha uniforme que pidió Brito). Si fueron unificadas con IA, verifiquen que cada experto se reconozca.
-- Los renders claros muestran un motor central en el eje trasero y la batería bajo el piso, igual que los oscuros: sigue abierta la química (LFP o LTO) y si es un motor o dos.
+- Fotos y logos de expertos: versiones vigentes en `privado/expertos/`; las reemplazadas quedan en `privado/expertos/anteriores/`. La foto vigente de Alfonso Cádiz es la segunda que subieron.
+- Renders de WhatsApp: llegaron comprimidos (1600 × 900). Hay dos versiones en `material/claros/`: la original y una reescalada a 2560 px (`-2560.jpg`, Lanczos con enfoque suave). El reescalado mejora los bordes pero no agrega detalle: a pantalla completa, usar la `-2560`; en tamaño mediano o menor, cualquiera de las dos.
+- Los cinco expertos van con foto, nombre y cargo (lo de «uno solo por su cargo» fue un error de transcripción).
 
 ## Revisión del Drive (25-11)
 
