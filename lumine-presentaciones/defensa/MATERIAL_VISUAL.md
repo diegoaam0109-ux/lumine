@@ -23,10 +23,45 @@ Las fotos de personas y los documentos del curso no se suben al repositorio (es 
 | F5 | Archivo de cifras maestras del informe final | Todas las cifras de las láminas | Una tabla única (JSON, CSV o Excel) con dato, valor, unidad y fuente | Equipo, al cerrar el informe |
 | F6 | Resultados de la encuesta por hipótesis (H1 a H6), ya agregados | Láminas «medimos… y encontramos…» | Solo totales y porcentajes por grupo; nunca respuestas individuales | Equipo |
 | F7 | Logos de competidores con nombre (conversión a gas, conversión eléctrica, híbrido nuevo, posible entrante) | Benchmarking, si se decide mostrarlos con logo | Uso académico; si no, se nombran en texto | Por decidir |
-| F8 | Foto o render del dinamómetro de chasis | El activo que protege la biblioteca de calibraciones (lo explicaron a Brito el 19-11) | Horizontal, alta resolución | Drive o generar |
-| F9 | Capturas actualizadas de la página comercial (inicio, calculadora, verificador, agenda) | Plataforma comercial conectada con plaza, promoción, proceso y evidencia física (pedido de Brito) | 1920 × 1080, modo oscuro, con el verificador guiado y sin IA | Código (se capturan del sitio) |
-| F10 | Capturas de Lumine Habilita (inicio, niveles, una lección) | Plan de Personas y ventaja propia | 1920 × 1080 | Código (se capturan de la demo) |
+| F8 | ~~Foto o render del dinamómetro de chasis~~ | Resuelto: `lumine-17-banco-pruebas.jpg` muestra el auto sobre los rodillos de un dinamómetro | | |
+| F9 | ~~Capturas de la página comercial~~ | Hechas (25-11): `material/capturas/pagina-01` a `08` (portada, kit, para quién, calculadora, verificador, proceso, confianza, agenda), 2560 × 1440 | Ver «Avisos» abajo | |
+| F10 | ~~Capturas de Lumine Habilita~~ | Hechas (25-11): `material/capturas/habilita-01` a `05` (portada, el sistema, laboratorio, arma el kit, recorrido guiado), 2560 × 1440 | Ver «Avisos» abajo | |
 | F11 | Foto del equipo (opcional) | Portada o cierre | Mismo estilo que las fichas | Equipo, opcional |
+
+## Revisión del Drive (25-11)
+
+Se revisaron las carpetas «Material visual general» (35 archivos) y «Fotos» (16) de «Integrador II».
+
+- Las 25 imágenes que sirven ya están en el repositorio, idénticas o casi, en `integrador-2/identidad/imagenes/`
+  y `fondos/` (rayos X, despiece, trípticos, diagnóstico, taller, dinamómetro, seguridad, capacitación, bodega, centro de
+  control, entrega, equipo, bencinera, flota, taxi con la cordillera, fondos con cuadrícula y la maqueta de la página).
+  Solo hay dos variantes leves que no están: «Fila de sedanes bajo luces nocturnas» (otra luz de la flota) y
+  «Taxi nocturno bajo la lluvia y montañas-2» (otro encuadre del taxi).
+- No hay fotos de los expertos ni logos de sus instituciones (F1 a F3 siguen pendientes).
+- El video «Hibridación_Aditiva.mp4» (27 MB, agosto) no se revisó; es anterior a la marca actual.
+
+**No usar** (piezas antiguas, con datos o marca que ya no corresponden):
+
+| Archivo en Drive | Motivo |
+|---|---|
+| «Ficha de reconversión vehicular híbrida» | Precio $2.521.000 + IVA, recuperación de 12 a 14 meses, «ECU con IA», alianza con BancoEstado, homologación individual 3CV y 2,5 días de instalación: nada de eso coincide con el informe actual |
+| «kit_spec_sheet» y «esquema-tecnico-tri-fuel» | Rotulan «unidad de control (IA)» y compatibilidad tri-fuel; el esquema lleva el nombre de otra empresa |
+| «Taxi chile lumine» y «Luminr motors futurista» | Logo antiguo («Movilidad inteligente») y la marca de un fabricante visible |
+| «Colash futurista» | Collage con «AI system active» y logo antiguo |
+| «diferencia taxi» | Ilustración genérica en amarillo y rojo, fuera de la paleta |
+| «taller lumine motors» | Taller blanco, otro estilo; podría servir solo como referencia de planta |
+| «s00» | Captura antigua de la página comercial |
+| Tres imágenes .jfif (inversor, banco de baterías y motor sobre fondo neutro) | Fotos de producto de terceros, origen sin confirmar; no subir al repositorio ni proyectar sin citar la fuente |
+
+Utilizables con cuidado: «taller_illustration» y «car_silhouette_dark» (ilustraciones de línea, en la paleta, pero más
+simples que el plano del repositorio) y «icon_sheet_preview» (íconos genéricos; se prefiere dibujarlos en código).
+
+## Avisos para el equipo (no se cambió nada)
+
+- La portada de la página comercial dice «una unidad de control con IA decide cuándo asistir», y el laboratorio de
+  Habilita rotula «Unidad de control con IA». Conviene revisar si esa frase sigue vigente en el informe final.
+- El verificador de compatibilidad de la página se ve como un chat. Brito pidió aclarar que es guiado y sin IA; si se
+  muestra en la defensa, conviene decirlo así o rotularlo.
 
 ## 2. Marca y base
 
@@ -98,13 +133,13 @@ Las fotos de personas y los documentos del curso no se suben al repositorio (es 
 | Material | Estado | Dónde |
 |---|---|---|
 | Segmento: colectivero, conductor de aplicación, taxi | Repo y Drive | `lumine-05`, `lumine-07`; Drive «Taxi negro bajo la lluvia nocturna» |
-| Plataforma comercial | Falta F9 | Se capturan del sitio |
+| Plataforma comercial | Repo | `defensa/material/capturas/pagina-01` a `08` |
 | Video de la página comercial | Repo | `fase3/video/pagina.mp4` |
 | Proceso en cinco etapas (cotiza, asesoría, instala, certifica, postventa) | Repo | `fase-3/generador/assets/flujo-1.jpg` a `flujo-5.jpg` |
 | Diagnóstico con tablet bajo el auto | Repo y Drive | `lumine-09-diagnostico.jpg`; Drive «Diagnóstico EV bajo el vehículo» |
 | Taller, bodega, banco de pruebas, seguridad de alta tensión | Repo | `lumine-16-taller.jpg`, `-19-bodega.jpg`, `-17-banco-pruebas.jpg`, `-15-seguridad-alta-tension.jpg` |
 | Dúo de técnicos, capacitación, equipo | Repo | `lumine-08-duo-tecnicos.jpg`, `-14-capacitacion.jpg`, `-18-equipo.jpg` |
-| Lumine Habilita | Repo y falta F10 | `fase3/video/habilita.mp4`; capturas de la demo |
+| Lumine Habilita | Repo | `fase3/video/habilita.mp4`; `defensa/material/capturas/habilita-01` a `05` |
 | Organigrama y dotación | Código | |
 | Carta Gantt con montos por etapa (la más elogiada) | Código | Plantilla «línea de tiempo» del paso 3 |
 | Pronóstico en pesos (unidades × precio promedio, pedido de Brito) | Código, con F5 | |
