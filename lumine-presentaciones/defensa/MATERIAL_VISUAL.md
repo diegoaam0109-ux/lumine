@@ -16,9 +16,9 @@ Las fotos de personas y los documentos del curso no se suben al repositorio (es 
 
 | # | Material | Para qué | Especificación | Quién |
 |---|---|---|---|---|
-| F1 | Foto de cada experto (cuatro con nombre) | Ficha uniforme por experto (pedido de Brito, 5-11) | Profesional, fondo blanco, mismo encuadre (hombros arriba), 1200 × 1500 px o más. Brito sugirió unificarlas con IA | Equipo |
-| F2 | Silueta o ícono para el experto citado solo por su cargo | Su ficha, sin foto ni nombre | Se dibuja en código si no hay otra indicación | Código |
-| F3 | Logo de la institución de cada experto (industria, academia, Estado, formación técnica, universidad) | Ficha por experto | SVG o PNG con fondo transparente, versión para fondo blanco | Equipo (sitios oficiales) |
+| F1 | ~~Foto de cada experto~~ | Recibidas (25-11): las cinco, uniformes (recorte circular, fondo blanco, 1254 px). En `privado/expertos/`, fuera de git | Pregunta: llegaron los cinco con nombre y foto; ¿sigue alguno citado solo por su cargo? | |
+| F2 | Silueta para el experto citado solo por su cargo | Solo si la respuesta a F1 lo pide | Código | |
+| F3 | ~~Logo de cada institución~~ | Recibidos (25-11): Movener, Santo Tomás, MTT, UNAB, INACAP; en `privado/expertos/`. Ver «Revisar» abajo | | |
 | F4 | Confirmación escrita de que cada experto autorizó foto, nombre y logo | Respaldo; no se proyecta | Correo o audio ya existente | Equipo |
 | F5 | Archivo de cifras maestras del informe final | Todas las cifras de las láminas | Una tabla única (JSON, CSV o Excel) con dato, valor, unidad y fuente | Equipo, al cerrar el informe |
 | F6 | Resultados de la encuesta por hipótesis (H1 a H6), ya agregados | Láminas «medimos… y encontramos…» | Solo totales y porcentajes por grupo; nunca respuestas individuales | Equipo |
@@ -27,6 +27,23 @@ Las fotos de personas y los documentos del curso no se suben al repositorio (es 
 | F9 | ~~Capturas de la página comercial~~ | Hechas (25-11): `material/capturas/pagina-01` a `08` (portada, kit, para quién, calculadora, verificador, proceso, confianza, agenda), 2560 × 1440 | Ver «Avisos» abajo | |
 | F10 | ~~Capturas de Lumine Habilita~~ | Hechas (25-11): `material/capturas/habilita-01` a `05` (portada, el sistema, laboratorio, arma el kit, recorrido guiado), 2560 × 1440 | Ver «Avisos» abajo | |
 | F11 | Foto del equipo (opcional) | Portada o cierre | Mismo estilo que las fichas | Equipo, opcional |
+
+## Material recibido en «Defensa final › Material» (25-11)
+
+| Qué | Dónde quedó | Estado |
+|---|---|---|
+| Fotos de los cinco expertos y logos de sus instituciones | `privado/expertos/` (git lo ignora), con `expertos.json` (nombre, cargo, institución, sacados de los nombres de las carpetas del Drive) | Listo para la ficha |
+| Ocho escenarios y fondos en versión clara (zip «Escenarios claros», con su script) | `material/claros/` (`escenario-a/b/c-claro`, `fondo-portada/dato/cierre/rejilla/horizonte-claro`) | Listo para las láminas blancas |
+| Ocho renders en versión de día o fondo blanco (WhatsApp) | `material/claros/`: auto en rayos X (dos vistas), despiece del kit, tríptico, bencinera y taxi con la cordillera de día, técnico de alta tensión, dúo en el taller | Listo; ver «Revisar» |
+| Dos imágenes de WhatsApp con el logo antiguo (rayo en círculo, «Motors» con líneas) | No se copiaron | No usar: no es el logo vigente |
+| Subcarpetas «2. Cifras y resultados», «3. Informe», «4. Defensa» y «5. Opcional» | Vacías al 25-11 | Pendientes (F5, F6 y la guía de la defensa) |
+
+**Revisar antes de proyectar:**
+
+- Los renders de WhatsApp llegaron comprimidos (1600 × 900, unos 200 KB). Alcanzan para una lámina, pero si existen los originales sin comprimir, conviene subirlos (WhatsApp baja la calidad).
+- Logos: el del MTT y el de la UNAB parecen versiones redibujadas dentro de un círculo (el del MTT no es el logotipo de gobierno con la barra de colores; el de la UNAB no trae el nombre). Para una ficha formal conviene usar las versiones oficiales de cada sitio; Movener, Santo Tomás e INACAP se ven fieles.
+- Las cinco fotos tienen el mismo tratamiento (bien para la ficha uniforme que pidió Brito). Si fueron unificadas con IA, verifiquen que cada experto se reconozca.
+- Los renders claros muestran un motor central en el eje trasero y la batería bajo el piso, igual que los oscuros: sigue abierta la química (LFP o LTO) y si es un motor o dos.
 
 ## Revisión del Drive (25-11)
 
