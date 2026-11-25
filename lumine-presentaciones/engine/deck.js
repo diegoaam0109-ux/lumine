@@ -151,7 +151,8 @@
     return layer;
   }
   function go(i, {push = true, jump = false, immediate = false} = {}) {
-    finishTransition(); i = clamp(i);
+    if (transition?.abandon) transition.abandon(); else finishTransition();
+    i = clamp(i);
     if (scene && cur === i) { if (i < 0) { const v = scene.querySelector('video'); v.currentTime = 0; v.play().catch(() => {}); } return; }
     setZoom(false);
     const prev = cur, old = scene;
@@ -163,6 +164,33 @@
     $('hud').textContent = i < 0 ? 'Apertura' : `${i + 1} / ${N}${i + 1 > D.mainSlides ? ' · ANEXO' : ''}`;
     $('bar').firstElementChild.style.width = (i < 0 ? 0 : Math.min(i + 1, D.mainSlides) / D.mainSlides * 100) + '%';
     [i + 1, i + 2, i - 1].forEach(preload); notifySpeaker();
+    /* Lámina embebida (HTML): se mantiene la anterior a la vista hasta que la nueva cargó,
+       para que un avance rápido no deje un cuadro vacío entre las dos. */
+    const embedded = scene.querySelector('iframe.slide-frame');
+    if (old && embedded) {
+      const next = scene;
+      next.style.visibility = 'hidden'; frame.classList.add('transitioning');
+      let started = false, timer = 0;
+      const start = () => {
+        if (started) return; started = true; clearTimeout(timer);
+        next.style.visibility = ''; frame.classList.remove('transitioning'); transition = null;
+        if (scene !== next) { dispose(next); return; }
+        reveal(old, prev, i, jump, immediate);
+      };
+      timer = setTimeout(start, 1500);
+      embedded.addEventListener('load', () => requestAnimationFrame(start), {once: true});
+      /* Mientras carga, otra tecla no la fuerza a la vista: si llega una navegación nueva,
+         se descarta esta lámina y la anterior sigue visible como punto de partida. */
+      transition = {finish: () => {}, abandon: () => {
+        started = true; clearTimeout(timer); transition = null;
+        frame.classList.remove('transitioning'); dispose(next);
+        scene = old; cur = prev;
+      }};
+      return;
+    }
+    reveal(old, prev, i, jump, immediate);
+  }
+  function reveal(old, prev, i, jump, immediate) {
     if (!old || immediate || motion.matches) { dispose(old); return; }
     const fade = prev < 0 || i < 0, duration = fade ? 400 : (jump || Math.abs(i - prev) !== 1 ? 250 : 500);
     const forward = i > prev;

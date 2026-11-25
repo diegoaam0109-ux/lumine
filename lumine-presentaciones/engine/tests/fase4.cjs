@@ -1,6 +1,7 @@
 // Integración del contenido animado de Fase 4 con el visor compartido.
 const {chromium}=require('playwright');
 const assert=require('node:assert/strict');
+global.window={};require('../../fase4/deck-data.js');const N=window.DECK.slides.length;
 (async()=>{
  const b=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox']});
  const c=await b.newContext({viewport:{width:1440,height:900}}),p=await c.newPage(),errors=[];
@@ -22,8 +23,8 @@ const assert=require('node:assert/strict');
  const opened=c.waitForEvent('page');await p.keyboard.press('o');const speaker=await opened;await speaker.waitForLoadState();
  await speaker.waitForSelector('iframe#ic');assert.match(await speaker.locator('#ic').getAttribute('src'),/lamina-1$/);
  await p.mouse.click(1200,450);await ready(2);
- await speaker.waitForFunction(()=>document.querySelector('#cnt').textContent==='2 / 17');
- for(let i=3;i<=17;i++){await p.keyboard.press('ArrowRight');await ready(i)}
+ await speaker.waitForFunction(N=>document.querySelector('#cnt').textContent===`2 / ${N}`,N);
+ for(let i=3;i<=N;i++){await p.keyboard.press('ArrowRight');await ready(i)}
  await p.keyboard.press('Home');await ready(1);
  await p.keyboard.press('p');await p.locator('#annex-search').fill('crédito');await p.keyboard.press('Enter');await ready(17);
  await p.keyboard.press('Escape');await ready(1);
@@ -33,5 +34,5 @@ const assert=require('node:assert/strict');
  await p.goto('http://127.0.0.1:8765/lumine-presentaciones/fase4/#lamina-5');await ready(5);
  await p.setViewportSize({width:900,height:600});const resized=await p.locator('#frame').boundingBox();assert.equal(resized.width,900);
  await p.emulateMedia({reducedMotion:'reduce'});await p.keyboard.press('ArrowRight');await ready(6);
- assert.deepEqual(errors,[]);await b.close();console.log('PASS Fase 4: 17 láminas, orador, anexos/retorno, fullscreen, lupa, tamaño y enlaces anteriores.');
+ assert.deepEqual(errors,[]);await b.close();console.log(`PASS Fase 4: ${N} láminas,`+' orador, anexos/retorno, fullscreen, lupa, tamaño y enlaces anteriores.');
 })().catch(e=>{console.error(e);process.exit(1)});

@@ -1,0 +1,79 @@
+/* Concepto C · Primera plana. Cada lámina es la portada de un diario que informa un hallazgo:
+   un titular que afirma, una cifra monumental y la fuente como pie. Blanco: la evidencia en papel.
+   Negro: la edición de resultados. El celeste aparece una sola vez por lámina. */
+@keyframes sube{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes aparece{to{opacity:1}}
+@keyframes regla{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.folio{position:absolute;left:80px;right:80px;top:48px;display:flex;justify-content:space-between;font:400 20px/1 Plex,monospace;letter-spacing:.16em;text-transform:uppercase;padding-bottom:18px;border-bottom:1.5px solid currentColor;transform-origin:left;animation:regla .9s cubic-bezier(.65,0,.35,1) both}
+.negro .folio{color:#c9ced1;border-color:var(--linea2)}
+.folio .ej2{border:1.5px dashed currentColor;padding:6px 10px;margin:-8px 0}
+.fuente{position:absolute;left:80px;bottom:44px;font:400 22px/1.3 Figtree,sans-serif;color:var(--gris)}
+.blanco .fuente{color:var(--gris-papel)}
+.volanta{font:400 22px/1.3 Plex,monospace;letter-spacing:.16em;text-transform:uppercase}
+
+/* Portada */
+.portada{background:#f7f7f5}
+.cabecera{position:absolute;left:80px;right:80px;top:110px;color:var(--tinta-papel);display:flex;justify-content:center;animation:sube 1s .2s both}
+.cabecera .logo{height:262px;width:auto}
+.doble{position:absolute;left:80px;right:80px;top:398px;height:8px;border-top:3px solid var(--tinta-papel);border-bottom:1px solid var(--tinta-papel);transform-origin:left;animation:regla 1s .4s cubic-bezier(.65,0,.35,1) both}
+.foto{position:absolute;left:80px;top:436px;width:1010px;height:584px;overflow:hidden;animation:revela 1.2s .7s cubic-bezier(.65,0,.35,1) both}
+@keyframes revela{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+.foto img{width:100%;height:100%;object-fit:cover;object-position:50% 65%;filter:grayscale(1) contrast(1.15) brightness(1.05)}
+.foto figcaption{position:absolute;right:16px;bottom:14px;font:400 18px Plex,monospace;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.55);padding:6px 10px}
+.foto .ejemplo{color:#fff;opacity:.9}
+.nota{position:absolute;left:1140px;right:80px;top:436px;bottom:60px;display:flex;flex-direction:column;border-left:1px solid var(--linea-papel);padding-left:44px}
+.nota .volanta{color:var(--celeste-texto);animation:sube .8s 1s both}
+.nota h1{font:400 86px/1.02 Serif,serif;letter-spacing:-.01em;margin:26px 0 0;color:var(--tinta-papel);animation:sube .9s 1.2s both}
+.nota .firma{margin-top:auto;font:400 28px/1.4 Figtree,sans-serif;color:var(--tinta-papel);border-top:1px solid var(--linea-papel);padding-top:22px;animation:sube .8s 1.5s both}
+.nota .firma span{color:var(--gris-papel)}
+
+/* Cifras */
+.gigante{position:absolute;left:52px;top:150px;white-space:nowrap;overflow:hidden;animation:revela 1s .3s cubic-bezier(.65,0,.35,1) both}
+.gigante .num{font:700 470px/1 ArchivoC,sans-serif;letter-spacing:-.03em;display:inline-block;line-height:.86}
+.gigante .pc{font:400 190px/1 ArchivoC,sans-serif;color:var(--celeste);vertical-align:top;margin-left:12px;line-height:1.3}
+.regla{position:absolute;left:80px;width:1080px;top:600px;height:3px;background:var(--tinta);transform-origin:left;animation:regla 1.2s 1s cubic-bezier(.65,0,.35,1) both}
+.pie-num{position:absolute;left:80px;top:630px;font:400 26px/1 Plex,monospace;letter-spacing:.18em;text-transform:uppercase;color:#c9ced1;animation:sube .6s 1.4s both}
+.col{position:absolute;left:1240px;right:80px;top:180px;bottom:120px;border-left:1px solid var(--linea2);padding-left:48px;display:flex;flex-direction:column}
+.col .volanta{color:var(--gris);animation:sube .6s 1.2s both}
+.col h2{font:400 72px/1.04 Serif,serif;margin-top:22px;animation:sube .8s 1.4s both}
+.col dl{margin-top:auto}
+.col dl div{border-top:1px solid var(--linea2);padding:24px 0 26px;animation:sube .6s both}
+.col dl div:nth-child(1){animation-delay:1.8s}.col dl div:nth-child(2){animation-delay:2s}
+.col dt{font:700 76px/1 ArchivoC,sans-serif}
+.col dd{font:400 26px/1.35 Figtree,sans-serif;color:#c9ced1;margin-top:10px}
+
+/* Cronología */
+.crono{background:#f7f7f5}
+.crono h2{position:absolute;left:80px;top:128px;font:400 96px/1 Serif,serif;letter-spacing:-.01em;color:var(--tinta-papel);animation:sube .8s .2s both}
+.eje{position:absolute;left:80px;right:80px;top:312px;height:6px;background:#d9dbe0}
+.eje .pasado{position:absolute;left:0;top:0;bottom:0;width:28.57%;background:var(--tinta-papel);transform-origin:left;animation:regla 1.2s .4s cubic-bezier(.65,0,.35,1) both}
+.eje .punto{position:absolute;left:28.57%;top:50%;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;background:var(--celeste);box-shadow:0 0 0 7px #f7f7f5;animation:aparece .3s 1.5s both;opacity:0}
+.cols{position:absolute;left:80px;right:80px;top:340px;bottom:150px;display:grid;grid-template-columns:repeat(7,1fr)}
+.c{border-left:1px solid var(--linea-papel);padding:16px 22px 0;position:relative;animation:sube .7s var(--d) both}
+.c:first-child{border-left:0;padding-left:0}
+.c .an{font:400 64px/1 Serif,serif;color:var(--tinta-papel);margin-bottom:22px}
+.c.op .an{color:var(--gris-papel)}
+.ev{font:400 26px/1.3 Figtree,sans-serif;color:var(--tinta-papel);margin-bottom:22px}
+.ev b{display:block;font:700 20px/1 Plex,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--gris-papel);margin-bottom:8px}
+.ev.hl b{color:var(--celeste-texto)}
+
+.c .b{position:absolute;left:22px;right:22px;bottom:0;height:calc(var(--h) * 380px);display:flex;flex-direction:column}
+.c .b span{font:700 56px/1 ArchivoC,sans-serif;color:var(--tinta-papel);margin-bottom:10px}
+.c .b i{flex:1;background:var(--tinta-papel);transform-origin:bottom;animation:crece .8s calc(var(--d) + .2s) cubic-bezier(.3,0,.2,1) both}
+@keyframes crece{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.leyenda{position:absolute;left:80px;right:80px;bottom:104px;border-top:3px solid var(--tinta-papel);padding-top:14px;text-align:right;font:400 22px/1 Plex,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--gris-papel)}
+.crono .fuente{bottom:44px}
+
+/* Tesis */
+.tesis h2{position:absolute;left:80px;right:80px;top:150px;font:400 86px/1.08 Serif,serif;letter-spacing:-.01em;animation:sube 1s .2s both}
+.tesis .sub{position:relative;white-space:nowrap}
+.tesis .sub i{position:absolute;left:0;right:0;bottom:-2px;height:6px;background:var(--celeste);transform-origin:left;animation:regla .8s 1.1s cubic-bezier(.65,0,.35,1) both}
+.tesis ol{position:absolute;left:80px;right:80px;top:600px;list-style:none;display:grid;grid-template-columns:repeat(5,1fr);border-top:1.5px solid var(--linea2)}
+.tesis li{padding:26px 26px 0 0;margin-right:26px;font:400 28px/1.32 Figtree,sans-serif;color:#d5d9db;animation:sube .6s var(--d) both}
+.tesis li+li{border-left:1px solid var(--linea2);padding-left:26px}
+.tesis li .n{display:block;font:400 64px/1 Serif,serif;color:var(--tinta);margin-bottom:14px}
+.tesis li b{display:block;font:400 20px/1.2 Plex,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--gris);margin-bottom:12px}
+.tesis footer{position:absolute;left:80px;right:80px;bottom:48px;display:flex;justify-content:space-between;align-items:center;font:400 30px Figtree,sans-serif;color:#c9ced1;border-top:1px solid var(--linea2);padding-top:24px}
+.tesis footer [data-logo]{color:var(--tinta)}
+.contra{position:absolute;left:80px;width:1080px;top:700px;font:400 58px/1.1 Serif,serif;color:#c9ced1;animation:sube .7s 1.7s both}
+.contra span{color:var(--tinta)}
