@@ -109,3 +109,22 @@ cuadro vacío (lo notó el profesor Brito el 19-11). Prueba:
 ```sh
 node lumine-presentaciones/engine/tests/defensa-conceptos.cjs   # conceptos y Fase 4: avance rápido sin cuadros vacíos
 ```
+
+## Defensa final: presentación (primera propuesta, 28-11-2026)
+
+`defensa/index.html` es la defensa de Integrador II con el concepto **Ruta 213** (el colectivo de referencia avanza por una
+ruta de 213 km en la parte superior) y el sistema tipográfico de la Fase 4. 41 láminas en 19 minutos, índice de anexos y
+15 anexos para las preguntas de la comisión.
+
+- **Contenido único:** `defensa/generador/armar.py` (titulares, cifras, fuentes, pasos por clic, orador, tiempo y guion de
+  cada lámina). Se edita ahí y se regenera con `python3 lumine-presentaciones/defensa/generador/armar.py`; escribe
+  `laminas.html` y `deck-data.js`. Toda cifra sale del informe final.
+- **Cifras:** `python3 defensa/generador/verificar_cifras.py informe.txt` busca cada cifra de las láminas y del guion, tal
+  cual, en el texto del informe (que no se sube) y revisa los términos prohibidos.
+- **Expertos:** las fotos, nombres y logos van en `defensa/privado/` (fuera de git). Sin esa carpeta, las fichas muestran el
+  perfil y una silueta, y el guion dice «el especialista».
+- **Imágenes provisionales:** `defensa/img/` guarda las que se reemplazan cuando estén las nuevas (`PROMPTS_IMAGENES.md`).
+- **Motor:** pasos por clic dentro de una lámina (`steps`), vista previa en estado final para el orador (`preview`),
+  tiempo por orador en la vista del orador (`oradores`, con alerta al pasarse), transición configurable (`transition`, 250 ms
+  en la defensa) y la tecla **T** para mostrar un reloj de la exposición. Las Fases 3 y 4 no cambian.
+- **Pruebas:** `node lumine-presentaciones/engine/tests/defensa.cjs` (recorre los 102 clics, orador, P y T, sin red).

@@ -130,6 +130,15 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   cuál es la **ventaja competitiva sostenible** (la biblioteca de calibraciones, activo intangible), sin confundirla con la
   estrategia; el FODA no va en la presentación final.
 
+**Defensa final de Integrador II (28-11-2026)**:
+- Concepto **Ruta 213** (elegido frente a «Plano vivo»): el colectivo de referencia avanza por una ruta de 213 km; sistema
+  tipográfico de la Fase 4 (Michroma + acento en itálica); blanco para evidencia y análisis, negro para resultado y decisión.
+- 20 minutos: abre Diego, sigue Lukas y pasa a Torres; Torres Fases 1–2 e inicio de Fase 3; Diego núcleo de Fase 3; Lukas
+  cierre de Fase 3 y Fase 4; concluyen Lukas, Torres y Diego; cierre «Lumine Motors · Tu mismo auto, ahora híbrido».
+- Fuente única: el informe final (no se sube). El kit lleva **dos motores en las ruedas traseras** y batería de
+  **litio-titanato de 2,14 kWh** (prevalece sobre la identidad anterior). Los cinco expertos van con foto, nombre y cargo,
+  pero los datos personales viven en `defensa/privado/` (fuera de git).
+
 ## Pendientes y preguntas abiertas
 
 - Datos comerciales reales (precio, % de ahorro, garantía, tiempo de instalación, contacto): en proceso; no inventarlos.

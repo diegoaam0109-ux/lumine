@@ -18,7 +18,7 @@
     document.body.innerHTML = `<div class="sp"><header>
       <div class="clock" id="clk">00:00</div><div class="slideclock" id="sclk">00:00</div>
       <div class="count" id="cnt"></div><button id="prev">◀ Anterior</button>
-      <button id="next">Siguiente ▶</button><button id="reset">Reiniciar reloj</button><div class="who" id="who"></div>
+      <button id="next">Siguiente ▶</button><button id="reset">Reiniciar reloj</button><div class="who" id="who"></div><div class="spk" id="spk"></div>
       </header><div class="cur"><div class="label">Ahora</div><img id="ic" alt="Lámina actual">
       <video id="iv" muted playsinline preload="auto" hidden></video></div>
       <div class="side"><div class="nxt"><div class="label">Siguiente</div><img id="in" alt="Lámina siguiente"></div>
@@ -34,12 +34,24 @@
         next.id = id; node.replaceWith(next); node = next;
       }
       node.title = slide.title || 'Lámina';
-      const src = slide.frame || slide.img;
+      const src = slide.preview || slide.frame || slide.img;
       if (node.getAttribute('src') !== src) node.src = src;
       node.hidden = false;
     }
-    function show(i, origin = null) {
+    let frag = 0;
+    /* Tiempo por orador (si la presentación declara D.oradores): presupuesto según los segundos de sus láminas. */
+    const turnos = s => s?.turnos || (s?.who && s?.sec ? {[s.who]: s.sec} : {});
+    const plan = {}, usado = {};
+    (D.oradores || []).forEach(o => { plan[o] = 0; usado[o] = 0; });
+    if (D.oradores) D.slides.forEach(s => Object.entries(turnos(s)).forEach(([o, t]) => { if (o in plan) plan[o] += t; }));
+    function pintarOradores() {
+      if (!D.oradores) return;
+      const ahora = Object.keys(turnos(D.slides[cur]));
+      $('spk').innerHTML = D.oradores.map(o => `<span class="${ahora.includes(o) ? 'now' : ''} ${usado[o] > plan[o] ? 'over' : ''}">${o} ${fmt(usado[o])} / ${fmt(plan[o])}</span>`).join('');
+    }
+    function show(i, origin = null, f = 0) {
       if (!Number.isInteger(i)) return;
+      frag = f || 0;
       i = clamp(i);
       if (cur !== i) ts = Date.now();
       cur = i;
@@ -50,25 +62,33 @@
       if (nx) preview('in', nx);
       else $('in').removeAttribute('src');
       $('in').style.visibility = nx ? 'visible' : 'hidden';
-      $('cnt').textContent = s ? `${i + 1} / ${N}${i + 1 > D.mainSlides ? ' · ANEXO' : ''}` : 'Apertura';
+      $('cnt').textContent = s ? `${i + 1} / ${N}${i + 1 > D.mainSlides ? ' · ANEXO' : ''}${s.steps ? ` · clic ${frag} de ${s.steps}` : ''}` : 'Apertura';
       $('who').textContent = s?.who || '';
+      pintarOradores();
       $('nt').innerHTML = s ? `<h3>${s.title || ''}</h3>${s.notes || '<span class="plan">Sin notas.</span>'}${s.sec ? `<p class="plan">Tiempo previsto: ${s.sec} s</p>` : ''}` : '<h3>Apertura</h3><p>Video del kit. Al terminar continúa la lámina 1. → o clic para saltarlo.</p>';
       $('return-note').textContent = origin !== null && (D.annex || []).some(a => a.slide === i + 1) ? `Volver con Esc a ${origin < 0 ? 'la apertura' : 'la lámina ' + (origin + 1)}` : '';
     }
     window.addEventListener('message', e => {
       if (e.source !== window.opener) return;
       const m = e.data?.lumine;
-      if (m?.type === 'goto') show(m.i, m.origin);
+      if (m?.type === 'goto') show(m.i, m.origin, m.frag);
     });
     $('prev').onclick = () => send({type: 'step', d: -1});
     $('next').onclick = () => send({type: 'step', d: 1});
-    $('reset').onclick = () => { t0 = ts = Date.now(); };
+    $('reset').onclick = () => { t0 = ts = Date.now(); Object.keys(usado).forEach(o => usado[o] = 0); pintarOradores(); };
     document.addEventListener('keydown', e => {
       if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); send({type: 'step', d: 1}); }
       else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); send({type: 'step', d: -1}); }
       else if (['Escape', 'Home', 'End'].includes(e.key)) { e.preventDefault(); send({type: 'key', key: e.key}); }
     });
+    let tick = Date.now();
     setInterval(() => {
+      const dt = (Date.now() - tick) / 1000; tick = Date.now();
+      if (D.oradores && cur >= 0) {
+        const t = turnos(D.slides[cur]), suma = Object.values(t).reduce((a, b) => a + b, 0) || 1;
+        Object.entries(t).forEach(([o, v]) => { if (o in usado) usado[o] += dt * v / suma; });
+        pintarOradores();
+      }
       $('clk').textContent = fmt((Date.now() - t0) / 1000);
       const elapsed = (Date.now() - ts) / 1000, plan = D.slides[cur]?.sec || 0;
       $('sclk').textContent = fmt(elapsed) + (plan ? ' / ' + fmt(plan) : '');
@@ -80,12 +100,12 @@
 
   document.body.innerHTML = `<div id="stage"><div id="frame" tabindex="-1" aria-label="Presentación"></div></div>
     <button id="fs" title="Pantalla completa (F)">⛶ Pantalla completa · F</button><div id="fs-status" role="alert" hidden></div><div id="black"></div>
-    <div id="bar"><i></i></div><div id="hud" aria-live="polite"></div><div id="jump"></div>
+    <div id="bar"><i></i></div><div id="hud" aria-live="polite"></div><div id="jump"></div><div id="reloj" hidden></div>
     <div id="help" role="note"><b>→ / Espacio / AvPág</b> siguiente · saltar apertura<br><b>← / RePág</b> anterior<br>
     <b>O</b> vista del orador (guion y reloj)<br><b>F</b> pantalla completa<br><b>N</b> pantalla negra<br>
     <b>Número + Enter</b> ir a esa lámina (0: apertura)<br><b>Inicio / Fin</b> apertura / cierre<br>
     <b>Z</b> lupa: clic para ampliar o mover el foco; Z / Esc para salir<br>
-    <b>L</b> activar / apagar puntero láser<br><b>P</b> buscar anexos; ↑↓ elegir, Enter abrir<br>
+    <b>L</b> activar / apagar puntero láser<br><b>T</b> mostrar u ocultar el reloj de la exposición<br><b>P</b> buscar anexos; ↑↓ elegir, Enter abrir<br>
     <b>Esc</b> salir de lupa o volver desde preguntas a la lámina de origen<br><b>?</b> mostrar u ocultar esta ayuda</div>
     <dialog id="questions" aria-labelledby="questions-title"><div class="questions-head"><div>
       <span class="eyebrow">DEFENSA · ${D.annex.length} ANEXOS</span><h2 id="questions-title">Preguntas y respaldo</h2></div>
@@ -95,12 +115,18 @@
       <p id="annex-count" role="status"></p><div id="annex-list" role="listbox" aria-label="Anexos"></div>
       <p class="questions-hint">↑ ↓ Seleccionar · Enter Abrir · Esc Volver a la lámina de origen</p></dialog>`;
   const $ = id => document.getElementById(id), frame = $('frame');
-  let scene = null, transition = null, speakerWin = null, typed = '';
+  let scene = null, transition = null, speakerWin = null, typed = '', frag = 0;
+  const steps = i => D.slides[i]?.steps || 0;
+  /* Pasos dentro de una lámina embebida: cada clic muestra el siguiente; con el último, avanza de lámina. */
+  function sendFrag() {
+    const f = scene?.querySelector('iframe.slide-frame');
+    if (f?.contentWindow) f.contentWindow.postMessage({lumine: {type: 'frag', n: frag}}, '*');
+  }
   let zoom = false, laser = false, returnOrigin = null;
   const cached = new Map();
   const preload = i => { if (D.slides[i]?.img && !cached.has(i)) { const img = new Image(); img.src = D.slides[i].img; cached.set(i, img); } };
   const place = (el, b) => Object.assign(el.style, {left: b.x + '%', top: b.y + '%', width: b.w + '%', ...(b.h ? {height: b.h + '%'} : {})});
-  const notifySpeaker = () => { if (speakerWin && !speakerWin.closed) speakerWin.postMessage({lumine: {type: 'goto', i: cur, origin: returnOrigin}}, '*'); };
+  const notifySpeaker = () => { if (speakerWin && !speakerWin.closed) speakerWin.postMessage({lumine: {type: 'goto', i: cur, origin: returnOrigin, frag}}, '*'); };
   const finishTransition = () => transition?.finish();
   function dispose(layer) { layer?.querySelectorAll('video').forEach(v => v.pause()); layer?.remove(); }
   function setZoom(on) {
@@ -127,6 +153,7 @@
         embedded.className = 'slide-frame'; embedded.src = s.frame;
         embedded.title = s.title || `Lámina ${i + 1}`;
         embedded.tabIndex = -1; content.classList.add('embedded-slide');
+        embedded.addEventListener('load', () => { if (scene === layer) sendFrag(); });
         content.appendChild(embedded);
       } else {
         const img = document.createElement('img');
@@ -150,12 +177,13 @@
     }
     return layer;
   }
-  function go(i, {push = true, jump = false, immediate = false} = {}) {
+  function go(i, {push = true, jump = false, immediate = false, fromEnd = false} = {}) {
     if (transition?.abandon) transition.abandon(); else finishTransition();
     i = clamp(i);
     if (scene && cur === i) { if (i < 0) { const v = scene.querySelector('video'); v.currentTime = 0; v.play().catch(() => {}); } return; }
     setZoom(false);
-    const prev = cur, old = scene;
+    const prev = cur, old = scene, prevFrag = frag;
+    frag = fromEnd ? steps(i) : 0;
     old?.querySelectorAll('video').forEach(v => v.pause());
     cur = i; scene = makeScene(i); frame.insertBefore(scene, canvas);
     scene.querySelectorAll('video').forEach(v => v.play().catch(() => {}));
@@ -184,7 +212,7 @@
       transition = {finish: () => {}, abandon: () => {
         started = true; clearTimeout(timer); transition = null;
         frame.classList.remove('transitioning'); dispose(next);
-        scene = old; cur = prev;
+        scene = old; cur = prev; frag = prevFrag;
       }};
       return;
     }
@@ -192,7 +220,8 @@
   }
   function reveal(old, prev, i, jump, immediate) {
     if (!old || immediate || motion.matches) { dispose(old); return; }
-    const fade = prev < 0 || i < 0, duration = fade ? 400 : (jump || Math.abs(i - prev) !== 1 ? 250 : 500);
+    const T = D.transition || 500;
+    const fade = prev < 0 || i < 0, duration = fade ? Math.min(400, T) : (jump || Math.abs(i - prev) !== 1 ? Math.min(250, T) : T);
     const forward = i > prev;
     const animations = [], next = scene;
     let line;
@@ -211,7 +240,11 @@
     frame.classList.add('transitioning'); transition = {finish};
     animations[0].onfinish = finish;
   }
-  const step = d => go(Math.max(0, cur + d));
+  const step = d => {
+    if (cur >= 0 && !transition && d > 0 && frag < steps(cur)) { frag++; sendFrag(); notifySpeaker(); return; }
+    if (cur >= 0 && !transition && d < 0 && frag > 0) { frag--; sendFrag(); notifySpeaker(); return; }
+    go(Math.max(0, cur + d), {fromEnd: d < 0});
+  };
   async function toggleFs() {
     const status = $('fs-status'); status.hidden = true;
     try {
@@ -359,12 +392,24 @@
     else if (k === 'End') { e.preventDefault(); go(D.mainSlides - 1, {jump: true}); }
     else if (lower === 'z') { setLaser(false); setZoom(!zoom); }
     else if (lower === 'l') { setZoom(false); setLaser(!laser); }
+    else if (lower === 't') toggleReloj();
     else if (lower === 'p') { e.preventDefault(); openQuestions(); }
     else if (lower === 'f') toggleFs();
     else if (['n', 'b', '.'].includes(lower)) document.body.classList.toggle('blackout');
     else if (['o', 's'].includes(lower)) openSpeaker();
     else if (['?', 'h'].includes(lower)) document.body.classList.toggle('show-help');
   });
+  let relojT0 = 0, relojInt = 0;
+  function toggleReloj() {
+    const r = $('reloj');
+    if (!relojT0) relojT0 = Date.now();
+    r.hidden = !r.hidden;
+    clearInterval(relojInt);
+    if (!r.hidden) {
+      const pinta = () => { const t = (Date.now() - relojT0) / 1000; r.textContent = String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(Math.floor(t % 60)).padStart(2, '0'); };
+      pinta(); relojInt = setInterval(pinta, 500);
+    }
+  }
   let idle, hudTimer;
   document.addEventListener('mousemove', () => {
     document.body.classList.remove('idle'); document.body.classList.add('show-hud');
