@@ -34,3 +34,10 @@ body{display:grid;place-items:center;font-family:Figtree,sans-serif}
 /* Animaciones: solo corren cuando la lámina está activa (.on). Con movimiento reducido, se ven terminadas. */
 .lam:not(.on) *{animation-play-state:paused !important}
 @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+
+/* Sistema tipográfico de la Fase 4 (opción C del equipo): titulares en Michroma, acento en Archivo Expanded Light itálica,
+   texto en Archivo, etiquetas en Archivo SemiCondensed y cifras en Archivo Condensed. El «%» nunca va en Michroma. */
+@font-face{font-family:'ArchivoXL';font-style:italic;src:url(../../fuentes/ArchivoExpandedLight-Italic.ttf) format('truetype')}
+@font-face{font-family:'Archivo';font-weight:400;src:url(../../fuentes/Archivo-Regular.ttf) format('truetype')}
+@font-face{font-family:'Archivo';font-weight:700;src:url(../../fuentes/Archivo-Bold.ttf) format('truetype')}
+@font-face{font-family:'ArchivoSC';font-weight:500;src:url(../../fuentes/ArchivoSemiCondensed-Medium.ttf) format('truetype')}
