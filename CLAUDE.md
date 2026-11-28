@@ -42,6 +42,7 @@ la app de capacitación y la página comercial (chat "A") y la presentación de 
 | `.claude/skills/presentaciones/` | Skill con el método de presentaciones del equipo: lámina como apoyo y no como guion, tiempo según la rúbrica, anexo para la defensa y un plan aprobado antes de construir. | Úsala con `lumine-marca` para cualquier presentación nueva. |
 | `.claude/skills/lumine-marca/` | Skill con el sistema visual de Lumine (colores, tipografías, motivos, recursos). | Úsala para cualquier pieza nueva con la marca. |
 | `entrega3/`, `entrega4/` | **Trabajo final de IA aplicada** (UNAB, Grupo 1, NRC 4153): estimador de ahorro con IA, prototipo, informe técnico del modelo matemático y revisión cruzada con varias IA. | Pasos para reproducir en `entrega3/README.md`; resultados de la Entrega 4 en `entrega4/Resultados_mejoras_modelo_E4.md`. |
+| `lumine-presentaciones/` | **Sitio de presentaciones** (GitHub Pages): motor propio `engine/` (orador, lupa, láser, anexos con P, sin red), Fase 3, Fase 4, IA aplicada y `defensa/` (defensa final, diciembre 2026: hoy, tres conceptos en `defensa/conceptos/`). | Pruebas en `engine/tests/` con un servidor en el puerto 8765. Ver `lumine-presentaciones/README.md`. |
 | `fase-3/` | **Presentación de la Fase 3** de Integrador II: Taller de Empresas (ICMA 1001, Grupo 1, profesor Roberto Brito): Capítulo III, Plan de Marketing, Operaciones y RR.HH. | Generador propio copiado del de Control de Gestión: `generador/deck.js` + `guion.js` + `render.sh` (también en Git Bash para Windows). El informe .docx no se sube. |
 
 
@@ -128,6 +129,15 @@ artefacto. Si cambian las `DB_RULES` de Habilita, hay que volver a publicar la v
   etiquetas de 12 pt o más, cifras grandes; el detalle lo dice el orador o va al anexo. Decir explícitamente
   cuál es la **ventaja competitiva sostenible** (la biblioteca de calibraciones, activo intangible), sin confundirla con la
   estrategia; el FODA no va en la presentación final.
+
+**Defensa final de Integrador II (28-11-2026)**:
+- Concepto **Ruta 213** (elegido frente a «Plano vivo»): el colectivo de referencia avanza por una ruta de 213 km; sistema
+  tipográfico de la Fase 4 (Michroma + acento en itálica); blanco para evidencia y análisis, negro para resultado y decisión.
+- 20 minutos: abre Diego, sigue Lukas y pasa a Torres; Torres Fases 1–2 e inicio de Fase 3; Diego núcleo de Fase 3; Lukas
+  cierre de Fase 3 y Fase 4; concluyen Lukas, Torres y Diego; cierre «Lumine Motors · Tu mismo auto, ahora híbrido».
+- Fuente única: el informe final (no se sube). El kit lleva **dos motores en las ruedas traseras** y batería de
+  **litio-titanato de 2,14 kWh** (prevalece sobre la identidad anterior). Los cinco expertos van con foto, nombre y cargo,
+  pero los datos personales viven en `defensa/privado/` (fuera de git).
 
 ## Pendientes y preguntas abiertas
 

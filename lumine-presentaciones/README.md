@@ -90,3 +90,41 @@ LUMINE_DECK_URL=http://127.0.0.1:8765/lumine-presentaciones/fase3/ node lumine-p
 ```
 
 Publicación: el workflow de Pages sólo despliega `main`. Subir esta implementación a `fase4-plan-financiero` no cambia por sí solo el sitio público.
+
+## Defensa final (diciembre de 2026)
+
+`defensa/` es la presentación de la defensa del Taller Integrador II. Paso 2 de 3: tres conceptos visuales para elegir.
+
+- `defensa/conceptos/index.html`: galería con las capturas y el enlace a cada concepto.
+- `defensa/conceptos/<concepto>/index.html`: el concepto presentado con el motor (orador, lupa, láser, saltos).
+- `defensa/conceptos/<concepto>/laminas.html#lamina-N`: las láminas en HTML y SVG, 1920 × 1080, con animaciones que
+  corren al llegar a la lámina. `comun/` tiene el logo y el plano del auto en vector, la base tipográfica y los ayudantes.
+- `defensa/fuentes/`: tipografías locales (licencia OFL), para que todo funcione sin internet.
+- Textos y cifras de los conceptos son de ejemplo y están marcados así; las reales saldrán del archivo de cifras maestras.
+
+Cambio en el motor (`engine/deck.js`): con láminas embebidas (Fase 4 y defensa), la lámina anterior se mantiene a la vista
+hasta que la nueva termina de cargar, y una navegación nueva descarta la que aún carga. Antes, avanzar rápido dejaba un
+cuadro vacío (lo notó el profesor Brito el 19-11). Prueba:
+
+```sh
+node lumine-presentaciones/engine/tests/defensa-conceptos.cjs   # conceptos y Fase 4: avance rápido sin cuadros vacíos
+```
+
+## Defensa final: presentación (primera propuesta, 28-11-2026)
+
+`defensa/index.html` es la defensa de Integrador II con el concepto **Ruta 213** (el colectivo de referencia avanza por una
+ruta de 213 km en la parte superior) y el sistema tipográfico de la Fase 4. 41 láminas en 19 minutos, índice de anexos y
+15 anexos para las preguntas de la comisión.
+
+- **Contenido único:** `defensa/generador/armar.py` (titulares, cifras, fuentes, pasos por clic, orador, tiempo y guion de
+  cada lámina). Se edita ahí y se regenera con `python3 lumine-presentaciones/defensa/generador/armar.py`; escribe
+  `laminas.html` y `deck-data.js`. Toda cifra sale del informe final.
+- **Cifras:** `python3 defensa/generador/verificar_cifras.py informe.txt` busca cada cifra de las láminas y del guion, tal
+  cual, en el texto del informe (que no se sube) y revisa los términos prohibidos.
+- **Expertos:** las fotos, nombres y logos van en `defensa/privado/` (fuera de git). Sin esa carpeta, las fichas muestran el
+  perfil y una silueta, y el guion dice «el especialista».
+- **Imágenes provisionales:** `defensa/img/` guarda las que se reemplazan cuando estén las nuevas (`PROMPTS_IMAGENES.md`).
+- **Motor:** pasos por clic dentro de una lámina (`steps`), vista previa en estado final para el orador (`preview`),
+  tiempo por orador en la vista del orador (`oradores`, con alerta al pasarse), transición configurable (`transition`, 250 ms
+  en la defensa) y la tecla **T** para mostrar un reloj de la exposición. Las Fases 3 y 4 no cambian.
+- **Pruebas:** `node lumine-presentaciones/engine/tests/defensa.cjs` (recorre los 102 clics, orador, P y T, sin red).
