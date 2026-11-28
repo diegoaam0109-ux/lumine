@@ -24,8 +24,10 @@ window.LUMINE = (function () {
       motor: '<g class="pz pz-motor"><rect x="326" y="236" width="104" height="54" rx="4"/><path d="M340 250 H416 M340 263 H416 M340 276 H416"/></g>',
       control: '<g class="pz pz-kit pz-control"><rect x="522" y="254" width="60" height="32" rx="3"/><path d="M532 264 H572 M532 272 H562"/></g>',
       baterias: '<g class="pz pz-kit pz-bat"><rect x="640" y="282" width="202" height="36" rx="3"/>' + Array.from({length: 7}, (_, k) => `<line x1="${665 + k * 25}" y1="286" x2="${665 + k * 25}" y2="314"/>`).join('') + '</g>',
-      electrico: '<g class="pz pz-kit pz-em"><rect x="884" y="302" width="92" height="36" rx="8"/><path d="M896 312 H964 M896 320 H964 M896 328 H964"/></g>',
-      cables: '<path class="hv" d="M842 300 C870 300 872 318 886 318"/><path class="hv" d="M640 300 C606 300 604 270 582 270"/>'
+      /* Dos motores en las ruedas traseras (informe final, 1.3): en la vista lateral se ve el de este lado,
+         dibujado dentro de la rueda; el segundo, del otro lado, se indica con «×2» en las llamadas. */
+      electrico: '<g class="pz pz-kit pz-em"><circle cx="930" cy="320" r="27"/><circle cx="930" cy="320" r="17"/><path d="M930 293 V303 M930 337 V347 M903 320 H913 M947 320 H957"/></g>',
+      cables: '<path class="hv" d="M842 300 C880 300 896 304 906 310"/><path class="hv" d="M640 300 C606 300 604 270 582 270"/>'
     };
   }
   return {logo, emblema, auto};

@@ -17,7 +17,7 @@
       <g style="--d:3.0s"><path d="M378 236 V196 H230" class="gris"/><text x="222" y="188" text-anchor="end" class="ll-n gris">01</text><text x="222" y="214" text-anchor="end" class="ll-t">MOTOR ORIGINAL · INTACTO</text></g>
       <g style="--d:3.2s"><path d="M552 254 V40 H600"/><text x="608" y="32" class="ll-n">02</text><text x="608" y="56" class="ll-t">UNIDAD DE CONTROL</text></g>
       <g style="--d:3.4s"><path d="M742 282 V100 H790"/><text x="798" y="92" class="ll-n">03</text><text x="798" y="116" class="ll-t">BANCO DE BATERÍAS</text></g>
-      <g style="--d:3.6s"><path d="M930 302 V160 H978"/><text x="986" y="152" class="ll-n">04</text><text x="986" y="176" class="ll-t">TRACCIÓN ELÉCTRICA</text></g>
+      <g style="--d:3.6s"><path d="M930 302 V160 H978"/><text x="986" y="152" class="ll-n">04</text><text x="986" y="176" class="ll-t">MOTORES EN RUEDA ×2</text></g>
     </g>
   </svg>
   <table class="rotulo">
@@ -105,7 +105,7 @@ document.querySelectorAll('[data-auto]').forEach(g => {
   const linea = g.dataset.auto === 'linea';
   g.innerHTML = A.carroceria + A.ventanas + A.lineas + A.ruedas + A.motor + (linea ? A.control + A.baterias + A.electrico : A.cables + A.control + A.baterias + A.electrico);
   g.querySelectorAll('path,circle,rect,line').forEach(e => e.setAttribute('pathLength', '1'));
-  if (!linea) g.insertAdjacentHTML('beforeend', '<circle r="5" class="pulso"><animateMotion dur="2.4s" repeatCount="indefinite" path="M642 300 C606 300 604 270 582 270" keyPoints="1;0" keyTimes="0;1" calcMode="linear"/></circle><circle r="5" class="pulso"><animateMotion dur="1.6s" repeatCount="indefinite" path="M842 300 C870 300 872 318 886 318"/></circle>');
+  if (!linea) g.insertAdjacentHTML('beforeend', '<circle r="5" class="pulso"><animateMotion dur="2.4s" repeatCount="indefinite" path="M642 300 C606 300 604 270 582 270" keyPoints="1;0" keyTimes="0;1" calcMode="linear"/></circle><circle r="5" class="pulso"><animateMotion dur="1.6s" repeatCount="indefinite" path="M842 300 C880 300 896 304 906 310"/></circle>');
 });
 </script>
 <script src="../comun/cuenta.js"></script>

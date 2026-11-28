@@ -117,3 +117,6 @@
 .marcas text{font:700 20px Plex,monospace;fill:var(--sobre-celeste)}
 .frase{position:absolute;left:1010px;top:400px;width:830px;font:400 60px/1.1 Figtree,sans-serif;opacity:0;animation:sube .8s 2.2s forwards}
 .frase em{font:italic 400 84px/1 Serif,serif;color:var(--celeste)}
+.pz-em circle{fill:rgba(34,184,240,.28);stroke:var(--celeste);stroke-width:2.4}
+.pz-em circle+circle{fill:none;stroke-opacity:.7}
+.pz-em path{stroke:var(--celeste);stroke-width:2}
